@@ -15,10 +15,11 @@ export interface IntlProviderProps {
 
 export interface IntlProviderProps {
     locale: Locale;
+    children: React.ReactNode;
     onError?: (err: any) => void;
 }
 
-const IntlProvider: React.FunctionComponent<IntlProviderProps> = ({ locale, children, onError }) => {
+const IntlProvider: React.FunctionComponent<IntlProviderProps> = ({ locale, children, onError }: IntlProviderProps) => {
     const messages = bokmålstekster;
     return (
         <Provider locale={locale} messages={messages} onError={onError}>

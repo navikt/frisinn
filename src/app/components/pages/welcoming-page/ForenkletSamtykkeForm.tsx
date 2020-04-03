@@ -21,7 +21,7 @@ const ForenkletSamtykkeForm: React.FunctionComponent<Props> = ({
     onConfirm,
     onOpenDinePlikterModal,
     openBehandlingAvPersonopplysningerModal
-}) => {
+}: Props) => {
     const intl = useIntl();
     return (
         <ApplicationFormComponents.Form

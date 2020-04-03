@@ -19,7 +19,7 @@ export interface FormikStepProps {
 
 type Props = FormikStepProps & StepProps;
 
-const ApplicationStep: React.FunctionComponent<Props> = (props) => {
+const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
     const intl = useIntl();
     const { children, onValidFormSubmit, showButtonSpinner, buttonDisabled, id } = props;
     const texts = getStepTexts(intl, id, stepConfig);

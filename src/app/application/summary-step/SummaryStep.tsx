@@ -10,7 +10,6 @@ import Panel from 'nav-frontend-paneler';
 import { sendApplication } from '../../api/api';
 import { StepID } from '../stepConfig';
 import { ApplicantDataContext } from '../../context/ApplicantDataContext';
-import { ApplicantData } from '../../types/ApplicantData';
 import { ApplicationApiData } from '../../types/ApplicationApiData';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import * as apiUtils from '../../utils/apiUtils';
@@ -23,7 +22,7 @@ interface Props {
     onApplicationSent: () => void;
 }
 
-const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }) => {
+const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }: Props) => {
     const intl = useIntl();
     const formik = useFormikContext<ApplicationFormData>();
     const søkerdata = React.useContext(ApplicantDataContext);
@@ -31,7 +30,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
-    async function send(data: ApplicationApiData, søker: ApplicantData) {
+    async function send(data: ApplicationApiData) {
         setSendingInProgress(true);
         try {
             await sendApplication(data);
@@ -55,7 +54,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }
             id={StepID.SUMMARY}
             onValidFormSubmit={() => {
                 setTimeout(() => {
-                    send(apiValues, søkerdata); // La view oppdatere seg først
+                    send(apiValues); // La view oppdatere seg først
                 });
             }}
             useValidationErrorSummary={false}
