@@ -12,7 +12,7 @@
         "prepare": "npm run snyk-protect",
         "rm:dist": "rimraf dist/",
         "rm:nodemods": "rimraf node_modles/",
-        "server-test:local": "PORT=8084 DEMO_MODE=off API_URL=http://localhost:8089 PUBLIC_PATH=/frisinn node ./server-test.js",
+        "server-test:local": "PORT=8084 DEMO_MODE=off API_URL=http://localhost:8089 PUBLIC_PATH=/arbeid/inntektskompensasjon node ./server-test.js",
         "server-test": "node ./server-test.js",
         "snyk-protect": "snyk protect",
         "start-api-mock": "PORT=8089 node ./server/api-mock.js",

@@ -1,7 +1,7 @@
 FROM node
 WORKDIR /usr/src/app
 ENV API_URL=http://api-mock:8083
-ENV PUBLIC_PATH=/frisinn
+ENV PUBLIC_PATH=/arbeid/inntektskompensasjon
 
 COPY . .
 #RUN apk update && apk add bash && apk add curl
