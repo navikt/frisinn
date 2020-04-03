@@ -1,0 +1,8 @@
+/dist
+/.idea
+/.vscode
+/node_modules
+.DS_Store
+/e2e/cypress/screenshots*
+/e2e/cypress/videos*
+.env
