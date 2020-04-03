@@ -3,7 +3,7 @@ import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import { FieldValidationResult } from 'common/validation/types';
 
 export enum AppFieldValidationErrors {
-    'påkrevd' = 'fieldvalidation.påkrevd'
+    'påkrevd' = 'fieldvalidation.påkrevd',
 }
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
