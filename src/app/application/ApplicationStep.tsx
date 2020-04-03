@@ -29,7 +29,7 @@ const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
                 onValidSubmit={onValidFormSubmit}
                 includeButtons={false}
                 includeValidationSummary={true}
-                runDelayedFormValidation={true}
+                runDelayedFormValidation={false}
                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                 {children}
                 <FormBlock>

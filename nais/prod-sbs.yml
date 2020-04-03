@@ -44,5 +44,5 @@ spec:
         - name: PUBLIC_PATH
           value: /frisinn
         - name: LOGIN_URL
-          value: https://loginservice.nav.no/login?redirect=https://frisinn.nav.no/soknad
+          value: https://loginservice.nav.no/login?redirect=https://www.nav.no/arbeid/inntektskompensasjon
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import ConfirmationPage from '../components/pages/confirmation-page/ConfirmationPage';
 import GlobalRoutes from '../config/routeConfig';
@@ -55,6 +55,7 @@ const ApplicationRoutes = () => {
                 <Route key={step} path={getApplicationRoute(step)} render={() => renderApplicationStep(step)} />
             ))}
             <Route path={GlobalRoutes.APPLICATION_SENT} render={() => <ConfirmationPage />} />
+            <Redirect to={getApplicationRoute(StepID.WELCOME)} />
         </Switch>
     );
 };

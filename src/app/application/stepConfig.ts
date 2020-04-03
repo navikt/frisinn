@@ -11,6 +11,7 @@ export interface StepConfigItemTexts {
     stepTitle: string;
     nextButtonLabel: string;
 }
+
 export interface StepItemConfigInterface extends StepConfigItemTexts {
     index: number;
     nextStep?: StepID;
@@ -38,7 +39,8 @@ export const stepConfig: StepConfigInterface = {
     [StepID.DETAILS]: {
         ...getStepConfigItemTextKeys(StepID.DETAILS),
         index: 1,
-        backLinkHref: getApplicationRoute(StepID.WELCOME)
+        backLinkHref: getApplicationRoute(StepID.WELCOME),
+        nextStep: StepID.SUMMARY
     },
     [StepID.SUMMARY]: {
         ...getStepConfigItemTextKeys(StepID.SUMMARY),
