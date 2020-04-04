@@ -16,15 +16,8 @@ const BehandlingAvPersonopplysningerContent: React.FunctionComponent = () => {
 
             <Box margin="l">
                 <Normaltekst>{getText('intro.1')}</Normaltekst>
-                <Normaltekst>
-                    {getText('intro.2a')}{' '}
-                    <Lenke href={getLenker(intl.locale).vilkårOmsorgspenger} target="_blank">
-                        {getText('intro.2b')}
-                    </Lenke>
-                    .
-                </Normaltekst>
+                <Normaltekst>{getText('intro.2a')} .</Normaltekst>
             </Box>
-
             <Box margin="xl">
                 <Ingress>{getText('opplysninger.tittel')}</Ingress>
                 <Normaltekst>{getText('opplysninger.part1')}</Normaltekst>

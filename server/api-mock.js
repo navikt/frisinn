@@ -25,7 +25,7 @@ const søkerMock = {
     fornavn: 'Test',
     mellomnavn: undefined,
     etternavn: 'Testesen',
-    fødselsnummer: '12345123456',
+    fødselsnummer: '22075944547',
     myndig: true,
 };
 
@@ -37,6 +37,10 @@ const startExpressServer = () => {
 
     server.get('/soker', (req, res) => {
         res.send(søkerMock);
+    });
+
+    server.get('/harEnkeltmannsforetak', (req, res) => {
+        res.send({ harEnkeltmannsforetak: false });
     });
 
     server.post('/soknad/send-application', (req, res) => {

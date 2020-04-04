@@ -9,3 +9,9 @@ axios.defaults.withCredentials = true;
 export const getApplicantData = () => axios.get('soker', axiosConfig);
 
 export const sendApplication = (data: ApplicationApiData) => axios.post('soknad', data, axiosConfig);
+
+interface HarEnkeltmannsforetakResponse {
+    harEnkeltmannsforetak: boolean;
+}
+export const getHarEnkeltmannsforetak = () =>
+    axios.get<HarEnkeltmannsforetakResponse>('harEnkeltmannsforetak', axiosConfig);
