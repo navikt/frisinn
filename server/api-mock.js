@@ -5,7 +5,7 @@ const server = express();
 
 server.use(express.json());
 server.use((req, res, next) => {
-    const allowedOrigins = ['http://host.docker.internal:8084', 'http://localhost:8084', 'http://web:8084'];
+    const allowedOrigins = ['http://host.docker.internal:8080', 'http://localhost:8080', 'http://web:8080'];
     const requestOrigin = req.headers.origin;
     if (allowedOrigins.indexOf(requestOrigin) >= 0) {
         res.set('Access-Control-Allow-Origin', requestOrigin);
@@ -26,7 +26,7 @@ const søkerMock = {
     mellomnavn: undefined,
     etternavn: 'Testesen',
     fødselsnummer: '12345123456',
-    myndig: true
+    myndig: true,
 };
 
 const startExpressServer = () => {

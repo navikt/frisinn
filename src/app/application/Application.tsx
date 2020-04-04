@@ -1,17 +1,17 @@
 import React from 'react';
-import IkkeMyndigPage from '../components/pages/ikke-myndig-page/IkkeMyndigPage';
 import { initialApplicationValues } from '../types/ApplicationFormData';
 import ApplicationEssentialsLoader from './ApplicationEssentialsLoader';
 import ApplicationFormComponents from './ApplicationFormComponents';
 import ApplicationRoutes from './ApplicationRoutes';
+import CannotUseApplicationPage from '../pages/ikke-tilgang-page/IkkeTilgangPage';
+import { isApplicationAvailableForApplicant } from '../utils/accessUtils';
 
 const Application = () => (
     <ApplicationEssentialsLoader
-        contentLoadedRenderer={(søkerdata) => {
-            if (søkerdata) {
-                const { person } = søkerdata;
-                if (!person.myndig) {
-                    return <IkkeMyndigPage />;
+        contentLoadedRenderer={(applicantData) => {
+            if (applicantData) {
+                if (isApplicationAvailableForApplicant(applicantData) === false) {
+                    return <CannotUseApplicationPage />;
                 }
             }
             return (

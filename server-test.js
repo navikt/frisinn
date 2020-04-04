@@ -47,7 +47,7 @@ const startServer = (html) => {
         res.send(html);
     });
 
-    const port = process.env.PORT || 8084;
+    const port = process.env.PORT || 8080;
     server.listen(port, () => {
         console.log(`Server-test Web App listening on port: ${port}`);
     });

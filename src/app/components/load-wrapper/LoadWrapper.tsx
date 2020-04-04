@@ -1,6 +1,6 @@
 import React from 'react';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import LoadingPage from '../pages/loading-page/LoadingPage';
+import LoadingPage from '../../pages/loading-page/LoadingPage';
 
 interface Props {
     isLoading: boolean;

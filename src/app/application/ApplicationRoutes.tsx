@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import { useFormikContext } from 'formik';
-import ConfirmationPage from '../components/pages/confirmation-page/ConfirmationPage';
+import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
 import GlobalRoutes from '../config/routeConfig';
 import { StepID, stepConfig } from './stepConfig';
 import { ApplicationFormData } from '../types/ApplicationFormData';
