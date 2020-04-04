@@ -11,6 +11,7 @@ import ApplicationFormComponents from '../ApplicationFormComponents';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import { validateSamtykke } from '../../validation/fieldValidations';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -27,9 +28,7 @@ const WelcomeStep = ({ onValidSubmit }: StepConfigProps) => {
             <ApplicationFormComponents.ConfirmationCheckbox
                 label={intlHelper(intl, 'samtykke.tekst')}
                 name={ApplicationFormField.harForståttRettigheterOgPlikter}
-                validate={(value) => {
-                    return value !== true ? intlHelper(intl, 'samtykke.harIkkeGodkjentVilkår') : undefined;
-                }}>
+                validate={validateSamtykke}>
                 <FormattedMessage
                     id="samtykke.harForståttLabel"
                     values={{

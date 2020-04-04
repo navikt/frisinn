@@ -44,5 +44,7 @@
     "step.oppsummering.stepTitle": "Oppsummering",
 
     "steg.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til omsorgspenger.",
-    "steg.oppsummering.bekrefterOpplysninger.ikkeBekreftet": "Du må bekrefte opplysningene"
+    "steg.oppsummering.bekrefterOpplysninger.ikkeBekreftet": "Du må bekrefte opplysningene",
+
+    "fieldvalidation.samtykkeErPåkrevd": "Du må bekrefte at du har lest og forstått dine plikter"
 }

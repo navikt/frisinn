@@ -4,6 +4,7 @@ import { FieldValidationResult } from 'common/validation/types';
 
 export enum AppFieldValidationErrors {
     'påkrevd' = 'fieldvalidation.påkrevd',
+    'samtykkeErPåkrevd' = 'fieldvalidation.samtykkeErPåkrevd',
 }
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
@@ -15,4 +16,11 @@ export const createAppFieldValidationError = (
     values?: any
 ): FieldValidationResult => {
     return createFieldValidationError<AppFieldValidationErrors | AppFieldValidationErrors>(error, values);
+};
+
+export const validateSamtykke = (value: boolean) => {
+    if (value !== true) {
+        return createAppFieldValidationError(AppFieldValidationErrors.samtykkeErPåkrevd);
+    }
+    return undefined;
 };
