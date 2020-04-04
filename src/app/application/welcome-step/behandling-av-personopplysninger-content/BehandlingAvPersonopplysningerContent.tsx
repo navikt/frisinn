@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
@@ -16,6 +16,13 @@ const BehandlingAvPersonopplysningerContent: React.FunctionComponent = () => {
 
             <Box margin="l">
                 <Normaltekst>{getText('intro.1')}</Normaltekst>
+                <Normaltekst>
+                    {getText('intro.2a')}{' '}
+                    <Lenke href={getLenker(intl.locale).vilkårOmsorgspenger} target="_blank">
+                        {getText('intro.2b')}
+                    </Lenke>
+                    .
+                </Normaltekst>
             </Box>
 
             <Box margin="xl">
@@ -24,10 +31,21 @@ const BehandlingAvPersonopplysningerContent: React.FunctionComponent = () => {
                 <ul>
                     <li>{getText('opplysninger.1')}</li>
                     <li>{getText('opplysninger.2')}</li>
+                    <li>{getText('opplysninger.3')}</li>
                     <li>{getText('opplysninger.4')}</li>
                     <li>{getText('opplysninger.5')}</li>
                 </ul>
                 <Normaltekst>{getText('opplysninger.part2')}</Normaltekst>
+            </Box>
+
+            <Box margin="xl">
+                <Ingress>{getText('svar.tittel')}</Ingress>
+                <Normaltekst>{getText('svar.part1')}</Normaltekst>
+                <ul>
+                    <li>{getText('svar.1')}</li>
+                    <li>{getText('svar.2')}</li>
+                    <li>{getText('svar.3')}</li>
+                </ul>
             </Box>
 
             <Box margin="xl">

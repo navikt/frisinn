@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
@@ -60,21 +60,19 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }
             useValidationErrorSummary={false}
             buttonDisabled={sendingInProgress}
             showButtonSpinner={sendingInProgress}>
-            <CounsellorPanel>
-                <FormattedMessage id="steg.oppsummering.info" />
-            </CounsellorPanel>
+            <CounsellorPanel>Info</CounsellorPanel>
             <Box margin="xl">
                 <Panel border={true}>Summary</Panel>
             </Box>
 
             <Box margin="l">
                 <ApplicationFormComponents.ConfirmationCheckbox
-                    label={intlHelper(intl, 'steg.oppsummering.bekrefterOpplysninger')}
+                    label={intlHelper(intl, 'step.oppsummering.bekrefterOpplysninger')}
                     name={ApplicationFormField.harBekreftetOpplysninger}
                     validate={(value) => {
                         let result;
                         if (value !== true) {
-                            result = intlHelper(intl, 'steg.oppsummering.bekrefterOpplysninger.ikkeBekreftet');
+                            result = intlHelper(intl, 'step.oppsummering.bekrefterOpplysninger.ikkeBekreftet');
                         }
                         return result;
                     }}

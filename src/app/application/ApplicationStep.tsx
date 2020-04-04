@@ -21,7 +21,7 @@ type Props = FormikStepProps & StepProps;
 
 const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
     const intl = useIntl();
-    const { children, onValidFormSubmit, showButtonSpinner, buttonDisabled, id } = props;
+    const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton, buttonDisabled, id } = props;
     const texts = getStepTexts(intl, id, stepConfig);
     return (
         <Step stepConfig={stepConfig} {...props}>
@@ -32,16 +32,18 @@ const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
                 runDelayedFormValidation={false}
                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                 {children}
-                <FormBlock>
-                    <Knapp
-                        type="hoved"
-                        htmlType="submit"
-                        className={'step__button'}
-                        spinner={showButtonSpinner || false}
-                        disabled={buttonDisabled || false}>
-                        {texts.nextButtonLabel}
-                    </Knapp>
-                </FormBlock>
+                {showSubmitButton && (
+                    <FormBlock>
+                        <Knapp
+                            type="hoved"
+                            htmlType="submit"
+                            className={'step__button'}
+                            spinner={showButtonSpinner || false}
+                            disabled={buttonDisabled || false}>
+                            {texts.nextButtonLabel}
+                        </Knapp>
+                    </FormBlock>
+                )}
             </ApplicationFormComponents.Form>
         </Step>
     );

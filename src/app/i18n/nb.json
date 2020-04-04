@@ -1,1 +1,48 @@
-{}
+{
+    "banner.title": "Inntektskompensasjon",
+    "backlink.label": "Tilbake",
+    "step.nextButtonLabel": "Fortsett",
+    "start": "Start søknad",
+
+    "modal.omDinePlikter.tittel": "Om dine plikter",
+    "personopplysninger.lenketekst": "Les om hvordan NAV behandler personopplysningene dine",
+    "modal.behandlingAvPersonalia.tittel": "Om behandling av personopplysninger",
+    "modal.personalopplysninger.tittel": "Slik behandler NAV personopplysningene dine",
+    "modal.personalopplysninger.intro.1": "NAV innhenter og mottar opplysninger om deg når du sender inn en melding. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.",
+    "modal.personalopplysninger.intro.2b": "nav.no/omsorgspenger",
+    "modal.personalopplysninger.opplysninger.tittel": "Opplysningene vi innhenter",
+    "modal.personalopplysninger.opplysninger.part1": "Opplysningene kommer enten fra deg eller fra offentlige registre:",
+    "modal.personalopplysninger.opplysninger.1": "arbeidsforholdene dine og inntekten din",
+    "modal.personalopplysninger.opplysninger.2": "ytelser du mottar fra NAV",
+    "modal.personalopplysninger.opplysninger.4": "tilknytningen din til Norge",
+    "modal.personalopplysninger.opplysninger.5": "trygdeordninger du kan ha rett til i andre land",
+    "modal.personalopplysninger.opplysninger.part2": "Vi kan også sende opplysninger om deg til trygdemyndigheter i andre land.",
+
+    "modal.personalopplysninger.personvern.tittel": "Personvern i NAV",
+    "modal.personalopplysninger.personvern.part1a": "Vil du vite mer om hvordan NAV behandler personopplysninger? Se",
+    "modal.personalopplysninger.personvern.part1b": "nav.no/personvern",
+
+    "modal.minePlikter.tittel": "Mine plikter",
+    "modal.minePlikter.part1": "Jeg forstår at det kan få konsekvenser for retten min til omsorgspenger hvis jeg",
+    "modal.minePlikter.part1a": "gir uriktig informasjon eller",
+    "modal.minePlikter.part1b": "holder tilbake opplysninger",
+    "modal.minePlikter.part2a": "Jeg har lest og forstått det som står på",
+    "modal.minePlikter.part2b": "nav.no/rettogplikt",
+
+    "samtykke.tekst": "Jeg bekrefter at jeg har lest og forstått",
+    "samtykke.harIkkeGodkjentVilkår": "Du må godkjenne vilkårene",
+    "samtykke.harForståttLabel": "For å gå videre med søknaden må du bekrefte at du har lest og forstått {plikterLink}.",
+    "samtykke.harForståttLabel.lenketekst": "dine plikter",
+
+    "step.velkommen.pageTitle": "Velkommen",
+    "step.velkommen.stepTitle": "Velkommen",
+
+    "step.detaljer.pageTitle": "Detaljer",
+    "step.detaljer.stepTitle": "Detaljer",
+
+    "step.oppsummering.pageTitle": "Oppsummering",
+    "step.oppsummering.stepTitle": "Oppsummering",
+
+    "steg.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til omsorgspenger.",
+    "steg.oppsummering.bekrefterOpplysninger.ikkeBekreftet": "Du må bekrefte opplysningene"
+}

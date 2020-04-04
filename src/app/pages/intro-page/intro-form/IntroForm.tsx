@@ -1,12 +1,12 @@
 import React from 'react';
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { canUserContinueToApplication } from '../../../utils/accessUtils';
+import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
