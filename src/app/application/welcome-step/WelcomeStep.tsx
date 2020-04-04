@@ -18,6 +18,7 @@ import { ApplicantDataContext } from '../../context/ApplicantDataContext';
 import { ApplicantData } from '../../types/ApplicantData';
 import { AccessRuleResult } from '../../types/AccessRule';
 import { enkeltmannsforetakRule } from '../../utils/access-rules/enkeltmannsforetakRule';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -28,6 +29,7 @@ const WelcomeStep = ({ onValidSubmit }: StepConfigProps) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const [results, setResults] = useState<Array<AccessRuleResult>>([]);
+    const [canUseApplication, setCanUseApplication] = useState<boolean | undefined>();
     const intl = useIntl();
     const applicant = useContext(ApplicantDataContext);
 
@@ -37,6 +39,8 @@ const WelcomeStep = ({ onValidSubmit }: StepConfigProps) => {
 
     async function checkRules(applicant: ApplicantData) {
         const results = await Promise.all([ageRule(applicant).check(), enkeltmannsforetakRule().check()]);
+        const allChecksPasses = results.find((r) => r.passes === false) === undefined;
+        setCanUseApplication(allChecksPasses);
         setResults(results);
     }
 
@@ -44,34 +48,44 @@ const WelcomeStep = ({ onValidSubmit }: StepConfigProps) => {
         checkRules(applicant);
     }, [applicant]);
 
-    console.log('render');
-
     return (
         <ApplicationStep id={StepID.WELCOME} onValidFormSubmit={onValidSubmit} showSubmitButton={false}>
             <AccessForm accessRules={[ageRule(applicant), enkeltmannsforetakRule()]} results={results} />
-            <ApplicationFormComponents.ConfirmationCheckbox
-                label={intlHelper(intl, 'samtykke.tekst')}
-                name={ApplicationFormField.harForståttRettigheterOgPlikter}
-                validate={validateSamtykke}>
-                <FormattedMessage
-                    id="samtykke.harForståttLabel"
-                    values={{
-                        plikterLink: (
-                            <Lenke href="#" onClick={() => setDialogState({ dinePlikterModalOpen: true })}>
-                                {intlHelper(intl, 'samtykke.harForståttLabel.lenketekst')}
+            {canUseApplication && (
+                <>
+                    <ApplicationFormComponents.ConfirmationCheckbox
+                        label={intlHelper(intl, 'samtykke.tekst')}
+                        name={ApplicationFormField.harForståttRettigheterOgPlikter}
+                        validate={validateSamtykke}>
+                        <FormattedMessage
+                            id="samtykke.harForståttLabel"
+                            values={{
+                                plikterLink: (
+                                    <Lenke href="#" onClick={() => setDialogState({ dinePlikterModalOpen: true })}>
+                                        {intlHelper(intl, 'samtykke.harForståttLabel.lenketekst')}
+                                    </Lenke>
+                                ),
+                            }}
+                        />
+                    </ApplicationFormComponents.ConfirmationCheckbox>
+
+                    <Box textAlignCenter={true} margin="xl">
+                        <Hovedknapp>{intlHelper(intl, 'start')}</Hovedknapp>
+                        <FormBlock>
+                            <Lenke
+                                href="#"
+                                onClick={() => setDialogState({ behandlingAvPersonopplysningerModalOpen: true })}>
+                                <FormattedMessage id="personopplysninger.lenketekst" />
                             </Lenke>
-                        ),
-                    }}
-                />
-            </ApplicationFormComponents.ConfirmationCheckbox>
-            <Box textAlignCenter={true} margin="xl">
-                <Hovedknapp>{intlHelper(intl, 'start')}</Hovedknapp>
+                        </FormBlock>
+                    </Box>
+                </>
+            )}
+            {canUseApplication === false && (
                 <FormBlock>
-                    <Lenke href="#" onClick={() => setDialogState({ behandlingAvPersonopplysningerModalOpen: true })}>
-                        <FormattedMessage id="personopplysninger.lenketekst" />
-                    </Lenke>
+                    <AlertStripeAdvarsel>Nope, du kan ikke</AlertStripeAdvarsel>
                 </FormBlock>
-            </Box>
+            )}
             <DinePlikterModal
                 isOpen={dinePlikterModalOpen === true}
                 onRequestClose={() => setDialogState({ dinePlikterModalOpen: false })}

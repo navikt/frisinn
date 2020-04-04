@@ -40,7 +40,7 @@ const startExpressServer = () => {
     });
 
     server.get('/harEnkeltmannsforetak', (req, res) => {
-        res.send({ harEnkeltmannsforetak: false });
+        res.send({ harEnkeltmannsforetak: true });
     });
 
     server.post('/soknad/send-application', (req, res) => {
