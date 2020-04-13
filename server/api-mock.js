@@ -29,21 +29,89 @@ const søkerMock = {
     myndig: true,
 };
 
+const perioderMock = {
+    søknadsperiode: {
+        fom: '2020-03-13',
+        tom: '2020-04-30',
+    },
+    kanSøkeSomFrilanser: {
+        fom: '2020-04-06',
+        tom: '2020-04-30',
+    },
+    kanSøkeSomSelvstendigNæringsdrivende: {
+        fom: '2020-04-01',
+        tom: '2020-04-30',
+    },
+};
+
+const enkeltpersonforetakMock = {
+    enkeltpersonforetak: [
+        {
+            organisasjonsnummer: '995298775',
+            navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
+            registreringsdato: '2006-06-01',
+        },
+    ],
+    tidligsteReistreringsdato: '2006-06-01',
+};
+
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
+    server.get('/soker-not-logged-in', (req, res) => {
+        res.send(401);
+    });
+
     server.get('/soker', (req, res) => {
-        res.send(søkerMock);
+        setTimeout(() => {
+            res.send(søkerMock);
+        }, 250);
     });
 
-    server.get('/harEnkeltmannsforetak', (req, res) => {
-        res.send({ harEnkeltmannsforetak: true });
+    server.get('/perioder', (req, res) => {
+        setTimeout(() => {
+            res.send(perioderMock);
+        }, 250);
     });
 
-    server.post('/soknad/send-application', (req, res) => {
+    server.get('/enkeltpersonforetak', (req, res) => {
+        setTimeout(() => {
+            res.send(enkeltpersonforetakMock);
+        }, 250);
+    });
+
+    server.get('/krav/alder', (req, res) => {
+        setTimeout(() => {
+            res.send({
+                innfrirKrav: true,
+                beskrivelse:
+                    'Søker er 26 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
+            });
+        }, 1000);
+    });
+
+    server.get('/krav/selvstendig-naeringsdrivende', (req, res) => {
+        setTimeout(() => {
+            res.send({
+                innfrirKrav: true,
+                beskrivelse: 'Er registrert som selvstendig næringsdrivende',
+            });
+        }, 1000);
+    });
+
+    server.get('/krav/frilanser', (req, res) => {
+        setTimeout(() => {
+            res.send({
+                innfrirKrav: false,
+                beskrivelse: 'Er ikke registrert som frilanser',
+            });
+        }, 1000);
+    });
+
+    server.post('/soknad', (req, res) => {
         const body = req.body;
         console.log('[POST] body', body);
         res.sendStatus(200);

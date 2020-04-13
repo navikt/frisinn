@@ -33,6 +33,9 @@ const ConfirmationPage: React.FunctionComponent = () => {
                     <li>
                         <FormattedHTMLMessage id="page.confirmation.hvaSkjer2" />
                     </li>
+                    <li>
+                        <FormattedHTMLMessage id="page.confirmation.hvaSkjer3" />
+                    </li>
                 </ul>
             </Box>
         </Page>

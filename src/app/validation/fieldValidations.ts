@@ -5,7 +5,10 @@ import { FieldValidationResult } from 'common/validation/types';
 export enum AppFieldValidationErrors {
     'påkrevd' = 'fieldvalidation.påkrevd',
     'samtykkeErPåkrevd' = 'fieldvalidation.samtykkeErPåkrevd',
+    'bekrefterOpplysningerPåkrevd' = 'fieldvalidation.bekrefterOpplysningerPåkrevd',
 }
+
+export const MAX_INNTEKT = 9999999;
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
@@ -21,6 +24,13 @@ export const createAppFieldValidationError = (
 export const validateSamtykke = (value: boolean) => {
     if (value !== true) {
         return createAppFieldValidationError(AppFieldValidationErrors.samtykkeErPåkrevd);
+    }
+    return undefined;
+};
+
+export const validateBekrefterOpplysninger = (value: boolean) => {
+    if (value !== true) {
+        return createAppFieldValidationError(AppFieldValidationErrors.bekrefterOpplysningerPåkrevd);
     }
     return undefined;
 };

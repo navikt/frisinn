@@ -11,8 +11,8 @@ import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormCo
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
 const initialValues: IntroFormData = {
-    erSelvstendigNæringsdrivende: YesOrNo.UNANSWERED,
-    erFrilanser: YesOrNo.UNANSWERED,
+    erSelvstendigNæringsdrivendeEllerFrilanser: YesOrNo.UNANSWERED,
+    harHattInntaktstapPgaKorona: YesOrNo.UNANSWERED,
 };
 
 interface Props {
@@ -35,21 +35,23 @@ const IntroForm = ({ onValidSubmit }: Props) => {
                         includeButtons={canUseApplication === true}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                         submitButtonLabel="Gå videre">
-                        {isVisible(IntroFormField.erSelvstendigNæringsdrivende) && (
-                            <FormBlock>
-                                <FormComponent.YesOrNoQuestion
-                                    name={IntroFormField.erSelvstendigNæringsdrivende}
-                                    legend={'Er du selvstendig næringsdrivende'}
-                                />
-                            </FormBlock>
-                        )}
-                        {isVisible(IntroFormField.erFrilanser) && (
-                            <FormBlock>
-                                <FormComponent.YesOrNoQuestion
-                                    name={IntroFormField.erFrilanser}
-                                    legend={'Er du frilanser?'}
-                                />
-                            </FormBlock>
+                        {isVisible(IntroFormField.erSelvstendigNæringsdrivendeEllerFrilanser) && (
+                            <>
+                                <FormBlock>
+                                    <FormComponent.YesOrNoQuestion
+                                        name={IntroFormField.erSelvstendigNæringsdrivendeEllerFrilanser}
+                                        legend={'Er du selvstendig næringsdrivende eller frilanser'}
+                                    />
+                                </FormBlock>
+                                {isVisible(IntroFormField.harHattInntaktstapPgaKorona) && (
+                                    <FormBlock>
+                                        <FormComponent.YesOrNoQuestion
+                                            name={IntroFormField.harHattInntaktstapPgaKorona}
+                                            legend={'Har du hatt inntektstap på grunn av Koronaviruset?'}
+                                        />
+                                    </FormBlock>
+                                )}
+                            </>
                         )}
                         {canUseApplication === false && (
                             <Box margin="xl">

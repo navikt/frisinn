@@ -19,6 +19,8 @@ const bem = bemHelper('step');
 export interface StepProps {
     id: StepID;
     useValidationErrorSummary?: boolean;
+    showStepIndicator?: boolean;
+    topContentRenderer?: () => React.ReactElement<any>;
 }
 
 interface OwnProps {
@@ -32,7 +34,9 @@ const Step: React.FunctionComponent<StepProps & OwnProps> = ({
     id,
     stepConfig,
     useValidationErrorSummary,
-    children
+    topContentRenderer,
+    showStepIndicator = true,
+    children,
 }: Props) => {
     const intl = useIntl();
     const conf = stepConfig[id];
@@ -41,23 +45,31 @@ const Step: React.FunctionComponent<StepProps & OwnProps> = ({
         <Page
             className={bem.block}
             title={stepTexts.pageTitle}
-            topContentRenderer={() => (
+            topContentRenderer={
+                topContentRenderer
+                    ? topContentRenderer
+                    : () => (
+                          <>
+                              <StepBanner text={intlHelper(intl, 'banner.title')} />
+                              {useValidationErrorSummary !== false && <FormikValidationErrorSummary />}
+                          </>
+                      )
+            }>
+            {(showStepIndicator || conf.backLinkHref) && (
                 <>
-                    <StepBanner text={intlHelper(intl, 'banner.title')} />
-                    {useValidationErrorSummary !== false && <FormikValidationErrorSummary />}
+                    {conf.backLinkHref && (
+                        <BackLink
+                            href={conf.backLinkHref}
+                            className={bem.element('backLink')}
+                            onClick={(nextHref: string, history: History, event: React.SyntheticEvent) => {
+                                event.preventDefault();
+                                history.push(nextHref);
+                            }}
+                        />
+                    )}
+                    <StepIndicator stepConfig={stepConfig} activeStep={conf.index} />
                 </>
-            )}>
-            {conf.backLinkHref && (
-                <BackLink
-                    href={conf.backLinkHref}
-                    className={bem.element('backLink')}
-                    onClick={(nextHref: string, history: History, event: React.SyntheticEvent) => {
-                        event.preventDefault();
-                        history.push(nextHref);
-                    }}
-                />
             )}
-            <StepIndicator stepConfig={stepConfig} activeStep={conf.index} />
             <Box margin="xxl">
                 <Systemtittel className={bem.element('title')}>{stepTexts.stepTitle}</Systemtittel>
             </Box>

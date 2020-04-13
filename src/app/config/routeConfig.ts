@@ -5,8 +5,7 @@ enum GlobalRoutes {
     HOME = '/',
     APPLICATION = '/soknad',
     APPLICATION_SENT = '/soknad/soknad-sendt',
-    APPLICATION_ERROR = '/soknad/feil',
-    ERROR = '/feil'
+    ERROR = '/feil',
 }
 
 export const getRouteUrl = (route: GlobalRoutes): string => `${getEnvironmentVariable('PUBLIC_PATH')}${route}`;

@@ -1,28 +1,32 @@
 import React from 'react';
-import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
+import GlobalRoutes, { getRouteUrl } from '../config/routeConfig';
 import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
-import GlobalRoutes from '../config/routeConfig';
-import { StepID, stepConfig } from './stepConfig';
+import EntryPage from '../pages/entry-page/EntryPage';
 import { ApplicationFormData } from '../types/ApplicationFormData';
-import { navigateTo } from '../utils/navigationUtils';
+import { navigateTo, navigateToConfirmationPage } from '../utils/navigationUtils';
 import { getApplicationRoute, getNextStepRoute, isAvailable } from '../utils/routeUtils';
+import FrilanserStep from './frilanser-step/FrilanserStep';
+import SelvstendigStep from './selvstendig-step/SelvstendigStep';
+import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
-import DetailsStep from './details-step/DetailsStep';
-import WelcomeStep from './welcome-step/WelcomeStep';
+import { ApplicantProfile } from '../types/ApplicantProfile';
 
-export interface KvitteringInfo {
-    søkernavn: string;
+interface Props {
+    applicantProfile?: ApplicantProfile;
 }
 
-const ApplicationRoutes = () => {
-    const { values } = useFormikContext<ApplicationFormData>();
+const ApplicationRoutes = ({ applicantProfile }: Props) => {
     const history = useHistory();
+
+    const { values } = useFormikContext<ApplicationFormData>();
+    const stepConfig = getStepConfig(values, applicantProfile);
     const applicationSteps = Object.keys(stepConfig) as Array<StepID>;
 
     const navigateToNextStepFrom = (stepID: StepID) => {
         setTimeout(() => {
-            const nextStepRoute = getNextStepRoute(stepID);
+            const nextStepRoute = getNextStepRoute(stepID, stepConfig);
             if (nextStepRoute) {
                 navigateTo(nextStepRoute, history);
             }
@@ -32,15 +36,15 @@ const ApplicationRoutes = () => {
     const renderApplicationStep = (stepID: StepID) => {
         if (isAvailable(stepID, values)) {
             switch (stepID) {
-                case StepID.WELCOME:
-                    return <WelcomeStep onValidSubmit={() => navigateToNextStepFrom(StepID.WELCOME)} />;
-                case StepID.DETAILS:
-                    return <DetailsStep onValidSubmit={() => navigateToNextStepFrom(StepID.DETAILS)} />;
+                case StepID.SELVSTENDIG:
+                    return <SelvstendigStep onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)} />;
+                case StepID.FRILANSER:
+                    return <FrilanserStep onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)} />;
                 case StepID.SUMMARY:
                     return (
                         <SummaryStep
                             onApplicationSent={() => {
-                                window.location.href = GlobalRoutes.APPLICATION_SENT;
+                                navigateToConfirmationPage();
                             }}
                         />
                     );
@@ -51,11 +55,24 @@ const ApplicationRoutes = () => {
 
     return (
         <Switch>
-            {applicationSteps.map((step) => (
-                <Route key={step} path={getApplicationRoute(step)} render={() => renderApplicationStep(step)} />
-            ))}
+            <Route
+                exact={true}
+                path={GlobalRoutes.APPLICATION}
+                render={() => (
+                    <EntryPage
+                        onStart={() =>
+                            setTimeout(() => {
+                                navigateTo(`${getApplicationRoute(StepID.SELVSTENDIG)}`, history);
+                            })
+                        }
+                    />
+                )}
+            />
+            {applicationSteps.map((step) => {
+                return <Route key={step} path={getApplicationRoute(step)} render={() => renderApplicationStep(step)} />;
+            })}
             <Route path={GlobalRoutes.APPLICATION_SENT} render={() => <ConfirmationPage />} />
-            <Redirect to={getApplicationRoute(StepID.WELCOME)} />
+            <Redirect to={getRouteUrl(GlobalRoutes.APPLICATION)} />
         </Switch>
     );
 };

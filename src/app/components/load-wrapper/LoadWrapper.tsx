@@ -1,6 +1,6 @@
 import React from 'react';
+import LoadingSpinner from '@navikt/sif-common-core/lib/components/loading-spinner/LoadingSpinner';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import LoadingPage from '../../pages/loading-page/LoadingPage';
 
 interface Props {
     isLoading: boolean;
@@ -11,7 +11,13 @@ const bem = bemUtils('loadWrapper');
 
 const LoadWrapper = ({ isLoading, contentRenderer }: Props) => (
     <div className={bem.classNames(bem.block, bem.modifierConditional('loading', isLoading))}>
-        <div className={bem.child('loader')}>{isLoading && <LoadingPage />}</div>
+        <div className={bem.element('loader')}>
+            {isLoading && (
+                <div style={{ display: 'flex', justifyContent: 'center', minHeight: '15rem', alignItems: 'center' }}>
+                    <LoadingSpinner type="XXL" />
+                </div>
+            )}
+        </div>
         {!isLoading && <>{contentRenderer()}</>}
     </div>
 );

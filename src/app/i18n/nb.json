@@ -29,22 +29,51 @@
     "modal.minePlikter.part2a": "Jeg har lest og forstått det som står på",
     "modal.minePlikter.part2b": "nav.no/rettogplikt",
 
+    "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
+    "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
+    "avbrytSøknadDialog.intro": "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til forside for søknaden.",
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden?",
+    "avbrytSøknadDialog.tittel": "Avbryt søknad",
+
+    "fortsettSøknadSenereDialog.avbrytSøknadLabel": "Ja, fortsett senere",
+    "fortsettSøknadSenereDialog.fortsettSøknadLabel": "Nei",
+    "fortsettSøknadSenereDialog.intro": "Vi lagrer søknaden din for deg i 24 timer.",
+    "fortsettSøknadSenereDialog.spørsmål": "Vil du avslutte nå og fortsette senere?",
+    "fortsettSøknadSenereDialog.tittel": "Avslutt og fortsett senere",
+
+    "steg.footer.avbryt": "Avbryt og slett søknad",
+    "steg.footer.fortsettSenere": "Avslutt og fortsett senere",
+
     "samtykke.tekst": "Jeg bekrefter at jeg har lest og forstått",
     "samtykke.harIkkeGodkjentVilkår": "Du må godkjenne vilkårene",
     "samtykke.harForståttLabel": "For å gå videre med søknaden må du bekrefte at du har lest og forstått {plikterLink}.",
     "samtykke.harForståttLabel.lenketekst": "dine plikter",
 
-    "step.velkommen.pageTitle": "Velkommen",
-    "step.velkommen.stepTitle": "Velkommen",
+    "step.selvstendignaringsdrivende.pageTitle": "Selvstendig næringsdrivende",
+    "step.selvstendignaringsdrivende.stepTitle": "Selvstendig næringsdrivende",
+    "step.selvstendignaringsdrivende.nextButtonLabel": "Fortsett",
 
-    "step.detaljer.pageTitle": "Detaljer",
-    "step.detaljer.stepTitle": "Detaljer",
+    "step.frilanser.pageTitle": "Frilanser",
+    "step.frilanser.stepTitle": "Frilanser",
+    "step.frilanser.nextButtonLabel": "Fortsett",
 
     "step.oppsummering.pageTitle": "Oppsummering",
     "step.oppsummering.stepTitle": "Oppsummering",
+    "step.oppsummering.nextButtonLabel": "Send inn søknad",
 
-    "steg.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til omsorgspenger.",
-    "steg.oppsummering.bekrefterOpplysninger.ikkeBekreftet": "Du må bekrefte opplysningene",
+    "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til omsorgspenger.",
 
-    "fieldvalidation.samtykkeErPåkrevd": "Du må bekrefte at du har lest og forstått dine plikter"
+    "fieldvalidation.samtykkeErPåkrevd": "Du må bekrefte at du har lest og forstått dine plikter",
+    "fieldvalidation.bekrefterOpplysningerPåkrevd": "Du må bekrefte opplysningene",
+
+    "page.confirmation.sidetittel": "Vi har mottatt søknaden din",
+    "page.confirmation.tittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",
+    "page.confirmation.undertittel": "Hva skjer videre nå?",
+    "page.confirmation.hvaSkjer1": "Søknaden din vil bli behandlet innen noen få dager",
+    "page.confirmation.hvaSkjer2": "Når søknaden er ferdig behandlet, får du et svarbrev fra oss",
+    "page.confirmation.hvaSkjer3": "Dersom søknaden blir innvilget, vil pengene komme på konto ...",
+
+    "page.generalErrorPage.sidetittel": "Feil",
+    "page.generalErrorPage.tittel": "Noe gikk galt...",
+    "page.generalErrorPage.tekst": "Beklager, her har det dessverre skjedd en feil."
 }

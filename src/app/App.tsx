@@ -1,16 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/sif-common-core/lib/utils/localeUtils';
 import moment from 'moment';
 import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
 import Application from './application/Application';
 import ApplicationWrapper from './components/application-wrapper/ApplicationWrapper';
+import GlobalRoutes from './config/routeConfig';
+import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
 import IntroPage from './pages/intro-page/IntroPage';
 import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavailablePage';
-import GlobalRoutes from './config/routeConfig';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/sif-common-core/lib/utils/localeUtils';
 import 'common/styles/globalStyles.less';
+import './app.less';
+import NotFoundPage from './pages/not-found-page/NotFoundPage';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 moment.locale(localeFromSessionStorage);
@@ -28,7 +31,9 @@ const App: React.FunctionComponent = () => {
                 <Switch>
                     <Route path={GlobalRoutes.SYSTEM_UNAVAILABLE} component={SystemUnavailablePage} />
                     <Route path={GlobalRoutes.APPLICATION} component={Application} />
-                    <Route path="/" component={IntroPage} />
+                    <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                    <Route path="/" component={IntroPage} exact={true} />
+                    <Route component={NotFoundPage} />
                 </Switch>
             </>
         </ApplicationWrapper>

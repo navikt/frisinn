@@ -5,10 +5,10 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import intlHelper from 'common/utils/intlUtils';
-import VeilederLokal from './VeilederLokal';
+import VeilederLokal from '../../components/veileder-local/VeilederLokal';
 import './generalErrorPage.less';
 
-const GeneralErrorPage: React.FunctionComponent = () => {
+const GeneralErrorPage: React.FunctionComponent = ({ children }: { children?: React.ReactNode }) => {
     const intl = useIntl();
     return (
         <Page title={intlHelper(intl, 'page.generalErrorPage.sidetittel')}>
@@ -24,6 +24,7 @@ const GeneralErrorPage: React.FunctionComponent = () => {
                     </Box>
                 </Veilederpanel>
             </div>
+            {children && <Box margin="xxl">{children}</Box>}
         </Page>
     );
 };

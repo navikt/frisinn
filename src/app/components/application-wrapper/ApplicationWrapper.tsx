@@ -2,12 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { Locale } from 'common/types/Locale';
-import { ApplicantData } from '../../types/ApplicantData';
 import { getEnvironmentVariable } from '../../utils/envUtils';
 import IntlProvider from '../intl-provider/IntlProvider';
 
 interface ApplicationWrapperProps {
-    søkerdata?: ApplicantData;
     locale: Locale;
     children: React.ReactNode;
     onChangeLocale: (locale: Locale) => void;
@@ -15,7 +13,7 @@ interface ApplicationWrapperProps {
 
 const ApplicationWrapper: React.FunctionComponent<ApplicationWrapperProps> = ({
     locale,
-    children
+    children,
 }: ApplicationWrapperProps) => {
     return (
         <IntlProvider locale={locale}>
