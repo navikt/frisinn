@@ -11,6 +11,7 @@ import ApplicationFormComponents from './ApplicationFormComponents';
 import ApplicationRoutes from './ApplicationRoutes';
 import { ApplicationEssentials } from '../types/ApplicationEssentials';
 import applicationTempStorage from './ApplicationTempStorage';
+import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 
 interface LoadState {
     isLoading: boolean;
@@ -37,7 +38,10 @@ const Application = () => {
                     applicationDateRanges: søknadsperioder,
                     companies: enkeltpersonforetak,
                 });
-                const storage = applicationTempStorage.getValidStorage(storageData.data);
+
+                const storage = isFeatureEnabled(Feature.PERSISTENCE)
+                    ? applicationTempStorage.getValidStorage(storageData.data)
+                    : undefined;
                 if (storage) {
                     setInitialFormData(storage.formData);
                     setApplicantProfile(storage.metadata.applicantProfile);
