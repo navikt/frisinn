@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Box from 'common/components/box/Box';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
 import Page from 'common/components/page/Page';
@@ -9,9 +8,7 @@ import { navigateToApplication } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import { ApplicationDateRanges } from '../../types/ApplicationEssentials';
 import { getPerioder } from '../../api/perioder';
-
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
-import { Undertittel } from 'nav-frontend-typografi';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 
 const bem = bemUtils('introPage');
@@ -41,13 +38,6 @@ const IntroPage: React.StatelessComponent = () => {
 
     return (
         <Page className={bem.block} title="Introside" topContentRenderer={() => <StepBanner text="Introside" />}>
-            <Box margin="xxxl" padBottom="xxl">
-                <InformationPoster>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam, culpa. Accusamus eveniet optio
-                    tenetur fugiat soluta magni at eligendi saepe, dignissimos incidunt deserunt officia dolores! Eaque
-                    quaerat vel ab tempora.
-                </InformationPoster>
-            </Box>
             <LoadWrapper
                 isLoading={loadState.isLoading}
                 contentRenderer={() => {
@@ -57,20 +47,29 @@ const IntroPage: React.StatelessComponent = () => {
                     const { frilansDateRange, applicationDateRange, selvstendigDateRange } = dateRanges;
                     return (
                         <>
-                            <FormBlock>
-                                <Undertittel>Perioder og frister</Undertittel>
-                                <p>
-                                    Periode det søkes for: <DateRangeView dateRange={applicationDateRange} />
-                                </p>
-                                <p>
-                                    Gyldig søknadsperiode for frilansere: <DateRangeView dateRange={frilansDateRange} />
-                                </p>
-                                <p>
-                                    Gyldig søknadsperiode for selvstendig næringsdrivende:{' '}
-                                    <DateRangeView dateRange={selvstendigDateRange} />
-                                </p>
-                                <IntroForm onValidSubmit={() => navigateToApplication()} />
-                            </FormBlock>{' '}
+                            <Box margin="xxxl" padBottom="xxl">
+                                <InformationPoster>
+                                    <p>
+                                        Sjekk om du kan søke på Korona Cash for Selvstendinge (ENK) og Frilansere. svar
+                                        på spørsmålene under, hvis du kan søke vil de ta deg til søknaden. da vil du bli
+                                        spurt om å logge inn med elekronisk ID.
+                                    </p>
+                                    <Box margin="xl">
+                                        <p>
+                                            Søknadsperioden en kan søke for nå er{' '}
+                                            <strong>
+                                                <DateRangeView dateRange={applicationDateRange} />
+                                            </strong>
+                                        </p>
+                                        <p>
+                                            Selvstendig næringsdrivende kan søke for denne perioden i tidsrommet{' '}
+                                            <DateRangeView dateRange={selvstendigDateRange} />, mens frilansere kan søke
+                                            i tidsrommet i perioden <DateRangeView dateRange={frilansDateRange} />.
+                                        </p>
+                                    </Box>
+                                </InformationPoster>
+                            </Box>
+                            <IntroForm onValidSubmit={() => navigateToApplication()} />
                         </>
                     );
                 }}

@@ -17,6 +17,7 @@ const initialValues: IntroFormData = {
     harFullUtbetalingFraNAV: YesOrNo.UNANSWERED,
     harTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     harInntektUnder6g: YesOrNo.UNANSWERED,
+    harHattInntektOver75000SomFrilanser: YesOrNo.UNANSWERED,
     harSøktAndreYtelserFraNAV: YesOrNo.UNANSWERED,
 };
 
@@ -137,18 +138,39 @@ const IntroForm = ({ onValidSubmit }: Props) => {
                                 </AlertStripeAdvarsel>
                             </FormBlock>
                         )}
-                        {isVisible(IntroFormField.harSøktAndreYtelserFraNAV) && (
+                        {isVisible(IntroFormField.harHattInntektOver75000SomFrilanser) && (
                             <FormBlock>
                                 <FormComponent.YesOrNoQuestion
-                                    name={IntroFormField.harSøktAndreYtelserFraNAV}
-                                    legend={'Er du søkt på andre NAV ytelser i samme periode som du søker for nå?'}
+                                    name={IntroFormField.harHattInntektOver75000SomFrilanser}
+                                    legend={'Er du tjent mer enn 75 000 som frilanser siste 12 måneder?'}
                                 />
                             </FormBlock>
                         )}
-                        {values.harSøktAndreYtelserFraNAV === YesOrNo.YES && (
+                        {rejectionReason === RejectReason.harIkkeHattInntektOver75000SomFrilanser && (
                             <FormBlock>
-                                <AlertStripeInfo>Når du har søkt om andre ytelser samtidig så ...</AlertStripeInfo>
+                                <AlertStripeAdvarsel>
+                                    Dersom du har tjent mindre enn 75 000 som frilanser de siste 12 månedene, kan du
+                                    ikke søke her
+                                </AlertStripeAdvarsel>
                             </FormBlock>
+                        )}
+
+                        {isVisible(IntroFormField.harSøktAndreYtelserFraNAV) && (
+                            <>
+                                <FormBlock>
+                                    <FormComponent.YesOrNoQuestion
+                                        name={IntroFormField.harSøktAndreYtelserFraNAV}
+                                        legend={'Er du søkt på andre NAV ytelser i samme periode som du søker for nå?'}
+                                    />
+                                </FormBlock>
+                                {values.harSøktAndreYtelserFraNAV === YesOrNo.YES && (
+                                    <FormBlock>
+                                        <AlertStripeInfo>
+                                            Når du har søkt om andre ytelser samtidig så ...
+                                        </AlertStripeInfo>
+                                    </FormBlock>
+                                )}
+                            </>
                         )}
                     </FormComponent.Form>
                 );
