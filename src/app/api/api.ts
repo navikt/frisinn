@@ -29,6 +29,7 @@ export enum ApiEndpoint {
     'kravAlder' = 'krav/alder',
     'kravFrilanser' = 'krav/frilanser',
     'kravSelvstendigNæringsdrivende' = 'krav/selvstendig-naeringsdrivende',
+    'mellomlagring' = 'mellomlagring',
 }
 
 const api = {

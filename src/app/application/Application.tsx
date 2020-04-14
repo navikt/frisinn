@@ -5,11 +5,12 @@ import { getSoker } from '../api/soker';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
 import { ApplicationContext } from '../context/ApplicationContext';
 import { ApplicantProfile } from '../types/ApplicantProfile';
-import { initialApplicationValues } from '../types/ApplicationFormData';
+import { initialApplicationValues, ApplicationFormData } from '../types/ApplicationFormData';
 import { navigateToApplication } from '../utils/navigationUtils';
 import ApplicationFormComponents from './ApplicationFormComponents';
 import ApplicationRoutes from './ApplicationRoutes';
 import { ApplicationEssentials } from '../types/ApplicationEssentials';
+import applicationTempStorage from './ApplicationTempStorage';
 
 interface LoadState {
     isLoading: boolean;
@@ -20,20 +21,27 @@ const Application = () => {
     const [loadState, setLoadState] = useState<LoadState>({ isLoading: true });
     const [applicationEssentials, setApplicationEssentials] = useState<ApplicationEssentials | undefined>();
     const [applicantProfile, setApplicantProfile] = useState<ApplicantProfile | undefined>();
+    const [initialFormData, setInitialFormData] = useState<Partial<ApplicationFormData>>(initialApplicationValues);
 
     async function loadEssentials() {
         if (applicationEssentials === undefined && loadState.error === undefined) {
             try {
-                const [person, søknadsperioder, enkeltpersonforetak] = await Promise.all([
+                const [person, søknadsperioder, enkeltpersonforetak, storageData] = await Promise.all([
                     getSoker(),
                     getPerioder(),
                     getEnkeltpersonforetak(),
+                    applicationTempStorage.rehydrate(),
                 ]);
                 setApplicationEssentials({
                     person: person.data,
                     applicationDateRanges: søknadsperioder,
                     companies: enkeltpersonforetak,
                 });
+                const storage = applicationTempStorage.getValidStorage(storageData.data);
+                if (storage) {
+                    setInitialFormData(storage.formData);
+                    setApplicantProfile(storage.metadata.applicantProfile);
+                }
                 setLoadState({ isLoading: false, error: false });
             } catch (response) {
                 console.log('error');
@@ -68,7 +76,7 @@ const Application = () => {
                             resetApplication: () => resetApplication(),
                         }}>
                         <ApplicationFormComponents.FormikWrapper
-                            initialValues={initialApplicationValues}
+                            initialValues={initialFormData}
                             onSubmit={() => null}
                             renderForm={() => {
                                 return <ApplicationRoutes applicantProfile={applicantProfile} />;

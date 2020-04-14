@@ -13,6 +13,7 @@ import FrilanserStep from './frilanser-step/FrilanserStep';
 import SelvstendigStep from './selvstendig-step/SelvstendigStep';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
+import applicationTempStorage from './ApplicationTempStorage';
 
 interface Props {
     applicantProfile?: ApplicantProfile;
@@ -54,20 +55,21 @@ const ApplicationRoutes = ({ applicantProfile }: Props) => {
         return <div>No available route</div>;
     };
 
+    const onStartApplication = () => {
+        if (applicantProfile) {
+            applicationTempStorage.persist(values, StepID.SELVSTENDIG, applicantProfile);
+            setTimeout(() => {
+                navigateTo(`${getApplicationRoute(StepID.SELVSTENDIG)}`, history);
+            });
+        }
+    };
+
     return (
         <Switch>
             <Route
                 exact={true}
                 path={GlobalRoutes.APPLICATION}
-                render={() => (
-                    <EntryPage
-                        onStart={() =>
-                            setTimeout(() => {
-                                navigateTo(`${getApplicationRoute(StepID.SELVSTENDIG)}`, history);
-                            })
-                        }
-                    />
-                )}
+                render={() => <EntryPage onStart={onStartApplication} />}
             />
             {applicationSteps.map((step) => {
                 return <Route key={step} path={getApplicationRoute(step)} render={() => renderApplicationStep(step)} />;

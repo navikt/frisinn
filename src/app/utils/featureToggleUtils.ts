@@ -1,4 +1,6 @@
-export enum Feature {}
+export enum Feature {
+    'PERSISTENCE' = 'PERSISTENCE',
+}
 
 export const isFeatureEnabled = (feature: Feature) => {
     const appSettings = (window as any).appSettings;
