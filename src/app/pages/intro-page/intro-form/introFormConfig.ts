@@ -37,6 +37,7 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
     },
     [Q.erSelvstendigNæringsdrivende]: {
         parentQuestion: Q.erMellom18og67år,
+        isIncluded: ({ erMellom18og67år }) => erMellom18og67år === YesOrNo.YES,
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
     [Q.erFrilanser]: {

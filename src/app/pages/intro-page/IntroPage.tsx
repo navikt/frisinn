@@ -10,6 +10,8 @@ import { ApplicationDateRanges } from '../../types/ApplicationEssentials';
 import { getPerioder } from '../../api/perioder';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
+import { Knapp } from 'nav-frontend-knapper';
+import { Panel } from 'nav-frontend-paneler';
 
 const bem = bemUtils('introPage');
 
@@ -21,6 +23,7 @@ interface LoadState {
 const IntroPage: React.StatelessComponent = () => {
     const [dateRanges, setDateRanges] = useState<ApplicationDateRanges>();
     const [loadState, setLoadState] = useState<LoadState>({ isLoading: true });
+    const [formIsVisible, showForm] = useState<boolean>(true);
 
     async function loadPageData() {
         try {
@@ -69,7 +72,16 @@ const IntroPage: React.StatelessComponent = () => {
                                     </Box>
                                 </InformationPoster>
                             </Box>
-                            <IntroForm onValidSubmit={() => navigateToApplication()} />
+                            {formIsVisible === false && (
+                                <Box textAlignCenter={true}>
+                                    <Knapp onClick={() => showForm(true)}>Se om du kan få</Knapp>
+                                </Box>
+                            )}
+                            {formIsVisible && (
+                                <Panel>
+                                    <IntroForm onValidSubmit={() => navigateToApplication()} />
+                                </Panel>
+                            )}
                         </>
                     );
                 }}

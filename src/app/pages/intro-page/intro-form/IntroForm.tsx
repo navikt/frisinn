@@ -6,6 +6,8 @@ import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { shouldUserBeStoppedFormUsingApplication, RejectReason } from '../../../utils/accessUtils';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
+import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import { Undertittel } from 'nav-frontend-typografi';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -39,12 +41,15 @@ const IntroForm = ({ onValidSubmit }: Props) => {
                     rejectionReason,
                 });
 
+                const canContinue = areAllQuestionsAnswered() && rejectionReason === undefined;
+
                 return (
                     <FormComponent.Form
                         includeValidationSummary={true}
-                        includeButtons={areAllQuestionsAnswered() && rejectionReason === undefined}
+                        includeButtons={canContinue}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
-                        submitButtonLabel="Gå videre">
+                        submitButtonLabel="Gå videre til søknaden">
+                        <Undertittel>Kan jeg bruke søknaden</Undertittel>
                         {isVisible(IntroFormField.erMellom18og67år) && (
                             <FormBlock>
                                 <FormComponent.YesOrNoQuestion
@@ -171,6 +176,11 @@ const IntroForm = ({ onValidSubmit }: Props) => {
                                     </FormBlock>
                                 )}
                             </>
+                        )}
+                        {canContinue && (
+                            <FormBlock>
+                                <CounsellorPanel>Basert på hva du har svart, kan du søke på vedtak 10</CounsellorPanel>
+                            </FormBlock>
                         )}
                     </FormComponent.Form>
                 );
