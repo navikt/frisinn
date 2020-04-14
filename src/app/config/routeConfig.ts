@@ -4,6 +4,7 @@ enum GlobalRoutes {
     SYSTEM_UNAVAILABLE = '/utilgjengelig',
     HOME = '/',
     APPLICATION = '/soknad',
+    APPLICATION_ERROR = '/soknad/feil',
     APPLICATION_SENT = '/soknad/soknad-sendt',
     ERROR = '/feil',
 }

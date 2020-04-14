@@ -1,9 +1,11 @@
 import React from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
-import GlobalRoutes, { getRouteUrl } from '../config/routeConfig';
+import GlobalRoutes from '../config/routeConfig';
+import ApplicationErrorPage from '../pages/application-error-page/ApplicationErrorPage';
 import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
 import EntryPage from '../pages/entry-page/EntryPage';
+import { ApplicantProfile } from '../types/ApplicantProfile';
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { navigateTo, navigateToConfirmationPage } from '../utils/navigationUtils';
 import { getApplicationRoute, getNextStepRoute, isAvailable } from '../utils/routeUtils';
@@ -11,7 +13,6 @@ import FrilanserStep from './frilanser-step/FrilanserStep';
 import SelvstendigStep from './selvstendig-step/SelvstendigStep';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
-import { ApplicantProfile } from '../types/ApplicantProfile';
 
 interface Props {
     applicantProfile?: ApplicantProfile;
@@ -72,7 +73,8 @@ const ApplicationRoutes = ({ applicantProfile }: Props) => {
                 return <Route key={step} path={getApplicationRoute(step)} render={() => renderApplicationStep(step)} />;
             })}
             <Route path={GlobalRoutes.APPLICATION_SENT} render={() => <ConfirmationPage />} />
-            <Redirect to={getRouteUrl(GlobalRoutes.APPLICATION)} />
+            <Route path={GlobalRoutes.APPLICATION_ERROR} render={() => <ApplicationErrorPage />} />
+            <Redirect to={GlobalRoutes.APPLICATION_ERROR} />
         </Switch>
     );
 };

@@ -10,11 +10,12 @@ import { useFormikContext } from 'formik';
 import MissingAppContext from '../../components/missing-app-context/MissingAppContext';
 import { ApplicationContext } from '../../context/ApplicationContext';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
-import { MAX_INNTEKT } from '../../validation/fieldValidations';
+import { MAX_INNTEKT, validateDateInRange } from '../../validation/fieldValidations';
 import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
+import { validateAll } from '../../validation/fieldValidations';
 
 const Q = ApplicationFormField;
 
@@ -52,7 +53,7 @@ const SelvstendigStep = ({ onValidSubmit }: StepConfigProps) => {
                             minDato: dateRange.from,
                             maksDato: dateRange.to,
                         }}
-                        validate={validateRequiredField}
+                        validate={validateAll([validateRequiredField, validateDateInRange(dateRange)])}
                     />
                 </FormBlock>
             )}
@@ -63,7 +64,7 @@ const SelvstendigStep = ({ onValidSubmit }: StepConfigProps) => {
                         type="number"
                         bredde="S"
                         label={'Hvilken inntekt hadde du fra dine bedrifter i 2019?'}
-                        validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                        validate={validateAll([validateRequiredNumber({ min: 0, max: MAX_INNTEKT })])}
                     />
                 </FormBlock>
             )}
