@@ -23,7 +23,7 @@ interface LoadState {
 const IntroPage: React.StatelessComponent = () => {
     const [dateRanges, setDateRanges] = useState<ApplicationDateRanges>();
     const [loadState, setLoadState] = useState<LoadState>({ isLoading: true });
-    const [formIsVisible, showForm] = useState<boolean>(true);
+    const [formIsVisible, showForm] = useState<boolean>(false);
 
     async function loadPageData() {
         try {
