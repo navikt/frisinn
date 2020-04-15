@@ -10,10 +10,13 @@ import ApplicationWrapper from './components/application-wrapper/ApplicationWrap
 import GlobalRoutes from './config/routeConfig';
 import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
 import IntroPage from './pages/intro-page/IntroPage';
+import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavailablePage';
 import 'common/styles/globalStyles.less';
 import './app.less';
-import NotFoundPage from './pages/not-found-page/NotFoundPage';
+
+require('../../node_modules/moment/locale/nb.js');
+require('../../node_modules/moment/locale/nn.js');
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 moment.locale(localeFromSessionStorage);

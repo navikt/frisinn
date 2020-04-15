@@ -64,10 +64,10 @@ const Application = () => {
         navigateToApplication();
     };
 
-    const { isLoading, error, redirectToLoginPage: notLoggedIn } = loadState;
+    const { isLoading, redirectToLoginPage: notLoggedIn } = loadState;
     return (
         <LoadWrapper
-            isLoading={(isLoading === true || notLoggedIn === true) && error === undefined}
+            isLoading={isLoading === true || notLoggedIn === true}
             contentRenderer={() => {
                 if (applicationEssentials === undefined) {
                     return <div>Noe gikk galt under henting av din informasjon</div>;
