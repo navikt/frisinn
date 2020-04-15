@@ -17,6 +17,7 @@ import { useFormikContext } from 'formik';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { shouldLoggedInUserBeStoppedFormUsingApplication, RejectReason } from '../../utils/accessUtils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { pluralize } from '../../utils/pluralize';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -42,7 +43,9 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
         isSelvstendig,
         rejectionReason,
     });
+
     const canUseApplication = areAllQuestionsAnswered() && rejectionReason === undefined;
+    const antallForetak = companies?.enkeltpersonforetak.length || 0;
 
     return (
         <FC.Form
@@ -63,7 +66,11 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
             {isVisible(ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende) && (
                 <FormBlock>
                     <FC.YesOrNoQuestion
-                        legend="Ønsker du å søke kompensasjon for tapt inntekt som selvstendig næringsdrivende?"
+                        legend={`Vi har funnet ${antallForetak} foretak registrert på deg. Ønsker du å søke kompensasjon for tapt inntekt for ${pluralize(
+                            antallForetak,
+                            'dette foretaket',
+                            'disse foretakene'
+                        )}?`}
                         name={ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
                     />
                 </FormBlock>
