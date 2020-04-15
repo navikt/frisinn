@@ -143,7 +143,7 @@ const startExpressServer = () => {
         res.sendStatus(200);
     });
 
-    server.get('/mellomlagring', (req, res) => {
+    server.get('/mellomlagring-s', (req, res) => {
         if (existsSync(MELLOMLAGRING_JSON)) {
             const body = readFileSync(MELLOMLAGRING_JSON);
             res.send(JSON.parse(body));

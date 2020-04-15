@@ -27,21 +27,20 @@ const Application = () => {
     async function loadEssentials() {
         if (applicationEssentials === undefined && loadState.error === undefined) {
             try {
-                const [person, søknadsperioder, enkeltpersonforetak, storageData] = await Promise.all([
-                    getSoker(),
-                    getPerioder(),
-                    getEnkeltpersonforetak(),
-                    applicationTempStorage.rehydrate(),
-                ]);
+                const person = await getSoker();
+                const søknadsperioder = await getPerioder();
+                const enkeltpersonforetak = await getEnkeltpersonforetak();
+                let storageData;
+                if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                    storageData = await applicationTempStorage.rehydrate();
+                }
                 setApplicationEssentials({
                     person: person.data,
                     applicationDateRanges: søknadsperioder,
                     companies: enkeltpersonforetak,
                 });
 
-                const storage = isFeatureEnabled(Feature.PERSISTENCE)
-                    ? applicationTempStorage.getValidStorage(storageData.data)
-                    : undefined;
+                const storage = storageData ? applicationTempStorage.getValidStorage(storageData.data) : undefined;
                 if (storage) {
                     setInitialFormData(storage.formData);
                 }
