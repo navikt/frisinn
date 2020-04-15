@@ -7,7 +7,6 @@ import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper'
 import { shouldUserBeStoppedFormUsingApplication, RejectReason } from '../../../utils/accessUtils';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
-import { Undertittel } from 'nav-frontend-typografi';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
