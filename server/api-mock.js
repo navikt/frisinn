@@ -58,16 +58,16 @@ const søkerMock = {
 
 const perioderMock = {
     søknadsperiode: {
-        fom: '2020-03-13',
+        fom: '2020-04-1',
         tom: '2020-04-30',
     },
     kanSøkeSomFrilanser: {
-        fom: '2020-04-06',
-        tom: '2020-04-30',
+        fom: '2020-05-06',
+        tom: '2020-05-30',
     },
     kanSøkeSomSelvstendigNæringsdrivende: {
-        fom: '2020-04-01',
-        tom: '2020-04-30',
+        fom: '2020-05-01',
+        tom: '2020-05-30',
     },
 };
 

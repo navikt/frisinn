@@ -49,9 +49,9 @@ const IntroForm = ({ onValidSubmit }: Props) => {
                         includeButtons={canContinue}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                         submitButtonLabel="Gå videre til søknaden">
-                        <Undertittel>Kan jeg bruke søknaden</Undertittel>
+                        {/* <Undertittel>Kan jeg bruke søknaden</Undertittel> */}
                         {isVisible(IntroFormField.erMellom18og67år) && (
-                            <FormBlock>
+                            <FormBlock margin="none">
                                 <FormComponent.YesOrNoQuestion
                                     name={IntroFormField.erMellom18og67år}
                                     legend={
