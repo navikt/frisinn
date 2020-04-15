@@ -9,6 +9,7 @@ function createEnvSettingsFile(settingsFile) {
                 LOGIN_URL: '${process.env.LOGIN_URL}',
                 PUBLIC_PATH: '${process.env.PUBLIC_PATH}',
                 UTILGJENGELIG: '${process.env.UTILGJENGELIG}',
+                PERSISTENCE: '${process.env.PERSISTENCE}',
             };`
         );
     });

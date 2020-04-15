@@ -14,6 +14,7 @@ import SelvstendigStep from './selvstendig-step/SelvstendigStep';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
 import applicationTempStorage from './ApplicationTempStorage';
+import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 
 interface Props {
     applicantProfile?: ApplicantProfile;
@@ -27,6 +28,11 @@ const ApplicationRoutes = ({ applicantProfile }: Props) => {
     const applicationSteps = Object.keys(stepConfig) as Array<StepID>;
 
     const navigateToNextStepFrom = (stepID: StepID) => {
+        if (applicantProfile) {
+            if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                applicationTempStorage.persist(values, stepID, applicantProfile);
+            }
+        }
         setTimeout(() => {
             const nextStepRoute = getNextStepRoute(stepID, stepConfig);
             if (nextStepRoute) {
@@ -57,7 +63,9 @@ const ApplicationRoutes = ({ applicantProfile }: Props) => {
 
     const onStartApplication = () => {
         if (applicantProfile) {
-            applicationTempStorage.persist(values, StepID.SELVSTENDIG, applicantProfile);
+            if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                applicationTempStorage.persist(values, StepID.SELVSTENDIG, applicantProfile);
+            }
             setTimeout(() => {
                 navigateTo(`${getApplicationRoute(StepID.SELVSTENDIG)}`, history);
             });
