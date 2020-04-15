@@ -6,6 +6,7 @@ export interface Person {
     mellomnavn: string;
     kjønn: string;
     fødselsnummer: string;
+    kontonummer: string;
 }
 
 export interface Enkeltpersonforetak {

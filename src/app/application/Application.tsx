@@ -4,7 +4,6 @@ import { getPerioder } from '../api/perioder';
 import { getSoker } from '../api/soker';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
 import { ApplicationContext } from '../context/ApplicationContext';
-import { ApplicantProfile } from '../types/ApplicantProfile';
 import { initialApplicationValues, ApplicationFormData } from '../types/ApplicationFormData';
 import { navigateToApplication } from '../utils/navigationUtils';
 import ApplicationFormComponents from './ApplicationFormComponents';
@@ -23,7 +22,6 @@ interface LoadState {
 const Application = () => {
     const [loadState, setLoadState] = useState<LoadState>({ isLoading: true });
     const [applicationEssentials, setApplicationEssentials] = useState<ApplicationEssentials | undefined>();
-    const [applicantProfile, setApplicantProfile] = useState<ApplicantProfile | undefined>();
     const [initialFormData, setInitialFormData] = useState<Partial<ApplicationFormData>>(initialApplicationValues);
 
     async function loadEssentials() {
@@ -46,7 +44,6 @@ const Application = () => {
                     : undefined;
                 if (storage) {
                     setInitialFormData(storage.formData);
-                    setApplicantProfile(storage.metadata.applicantProfile);
                 }
                 setLoadState({ isLoading: false, error: false });
             } catch (error) {
@@ -76,15 +73,13 @@ const Application = () => {
                     <ApplicationContext.Provider
                         value={{
                             applicationEssentials,
-                            applicantProfile,
-                            setApplicantProfile: (profile) => setApplicantProfile(profile),
                             resetApplication: () => resetApplication(),
                         }}>
                         <ApplicationFormComponents.FormikWrapper
                             initialValues={initialFormData}
                             onSubmit={() => null}
                             renderForm={() => {
-                                return <ApplicationRoutes applicantProfile={applicantProfile} />;
+                                return <ApplicationRoutes />;
                             }}
                         />
                     </ApplicationContext.Provider>

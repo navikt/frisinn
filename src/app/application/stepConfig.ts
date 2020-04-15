@@ -1,6 +1,6 @@
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { getApplicationRoute } from '../utils/routeUtils';
-import { ApplicantProfile } from '../types/ApplicantProfile';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',
@@ -32,24 +32,20 @@ const getStepConfigItemTextKeys = (stepId: StepID): StepConfigItemTexts => {
     };
 };
 
-const getAvailableStep = (applicantProfile?: ApplicantProfile): StepID[] => {
+const getAvailableStep = (values?: ApplicationFormData): StepID[] => {
     const steps: StepID[] = [];
-    const { isFrilanser, isSelvstendig } = applicantProfile || {};
-    if (isSelvstendig) {
+    if (values?.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
         steps.push(StepID.SELVSTENDIG);
     }
-    if (isFrilanser) {
+    if (values?.søkerOmTaptInntektSomFrilanser === YesOrNo.YES) {
         steps.push(StepID.FRILANSER);
     }
     steps.push(StepID.SUMMARY);
     return steps;
 };
 
-export const getStepConfig = (
-    values: ApplicationFormData,
-    applicantProfile: ApplicantProfile | undefined
-): StepConfigInterface => {
-    const steps = getAvailableStep(applicantProfile);
+export const getStepConfig = (values: ApplicationFormData): StepConfigInterface => {
+    const steps = getAvailableStep(values);
     const numSteps = steps.length;
     const config: StepConfigInterface = {};
     let idx = 0;

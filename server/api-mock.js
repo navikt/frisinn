@@ -54,6 +54,7 @@ const søkerMock = {
     etternavn: 'Testesen',
     fødselsnummer: '22075944547',
     myndig: true,
+    kontonummer: '45431224877',
 };
 
 const perioderMock = {

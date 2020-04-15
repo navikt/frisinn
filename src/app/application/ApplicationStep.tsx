@@ -33,7 +33,7 @@ const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
         return <MissingAppContext />;
     }
 
-    const stepConfig = getStepConfig(values, appContext.applicantProfile);
+    const stepConfig = getStepConfig(values);
     const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = props;
     const texts = getStepTexts(intl, id, stepConfig);
     const handleAvbrytOgSlettSøknad = () => {

@@ -10,21 +10,23 @@ import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import MissingAppContext from '../../components/missing-app-context/MissingAppContext';
 import { ApplicationContext } from '../../context/ApplicationContext';
 import { AccessCheckResult } from '../../types/AccessCheck';
-import { alderAccessCheck, frilanserAccessCheck, selvstendigAccessCheck } from '../../utils/apiAccessCheck';
-import AccessCheckResultList from './AccessCheckResultList';
-import ConfirmationForm from './ConfirmationForm';
-import { ApplicantProfile } from '../../types/ApplicantProfile';
+import { alderAccessCheck, selvstendigAccessCheck } from '../../utils/apiAccessCheck';
+import AccessCheckFailedResultList from './AccessCheckFailed';
+import EntryForm from './EntryForm';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import DateView from '../../components/date-view/DateView';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { ApiKrav, KlientKrav } from '../../types/Krav';
 
 interface Props {
     onStart: () => void;
 }
 
 export interface AccessChecks {
-    alder: AccessCheckResult;
-    frilanser: AccessCheckResult;
-    selvstendig: AccessCheckResult;
+    [ApiKrav.alder]: AccessCheckResult;
+    [ApiKrav.selvstendig]: AccessCheckResult;
+    [KlientKrav.kontonummer]: AccessCheckResult;
 }
 
 interface AccessCheckState {
@@ -33,7 +35,6 @@ interface AccessCheckState {
     result?: {
         canUseApplication: boolean;
         checks: AccessChecks;
-        profile: ApplicantProfile;
     };
 }
 
@@ -48,22 +49,30 @@ const EntryPage = ({ onStart }: Props) => {
     const {
         applicationEssentials: {
             person,
-            applicationDateRanges: { applicationDateRange, frilansDateRange, selvstendigDateRange },
+            applicationDateRanges: { applicationDateRange, selvstendigDateRange },
             companies,
         },
     } = appContext;
 
     async function runChecks() {
-        const [alderResult, selvstendigResult, frilanserResult] = await Promise.all([
+        const [alderResult, selvstendigResult] = await Promise.all([
             alderAccessCheck().check(),
             selvstendigAccessCheck().check(),
-            frilanserAccessCheck().check(),
         ]);
-        const canUseApplication = alderResult.passes && (selvstendigResult.passes || frilanserResult.passes);
-        const profile: ApplicantProfile = {
-            isFrilanser: frilanserResult.passes,
-            isSelvstendig: selvstendigResult.passes,
+        const harKontonummer = person.kontonummer !== null && person.kontonummer !== undefined;
+        const kontonummerResult: AccessCheckResult = {
+            passes: harKontonummer,
+            checkName: KlientKrav.kontonummer,
+            info: harKontonummer
+                ? `Vi har registrert kontonummeret ${person.kontonummer} på deg`
+                : 'Vi har ikke registrert noe kontonummer på deg',
         };
+        const canUseApplication =
+            alderResult.passes &&
+            kontonummerResult.passes &&
+            selvstendigResult.passes &&
+            person.kontonummer !== undefined;
+
         setAccessCheckState({
             pending: false,
             complete: true,
@@ -71,13 +80,11 @@ const EntryPage = ({ onStart }: Props) => {
                 canUseApplication,
                 checks: {
                     alder: alderResult,
-                    frilanser: frilanserResult,
+                    kontonummer: kontonummerResult,
                     selvstendig: selvstendigResult,
                 },
-                profile,
             },
         });
-        appContext?.setApplicantProfile(profile);
     }
 
     useEffect(() => {
@@ -102,7 +109,23 @@ const EntryPage = ({ onStart }: Props) => {
                 <LoadWrapper
                     isLoading={pending}
                     contentRenderer={() => {
-                        if (result) {
+                        const { applicationEssentials } = appContext;
+                        const harKontonummer =
+                            applicationEssentials.person.kontonummer !== undefined &&
+                            applicationEssentials.person.kontonummer !== null;
+
+                        if (!harKontonummer) {
+                            return (
+                                <FormBlock>
+                                    <AlertStripeAdvarsel>
+                                        Vi har ikke registrert noe kontonummer på deg. Dette må du gjøre ... (mer info
+                                        om hva)
+                                    </AlertStripeAdvarsel>
+                                </FormBlock>
+                            );
+                        }
+
+                        if (result && applicationEssentials) {
                             return (
                                 <>
                                     <FormBlock>
@@ -111,69 +134,67 @@ const EntryPage = ({ onStart }: Props) => {
                                             Periode det søkes for: <DateRangeView dateRange={applicationDateRange} />
                                         </p>
                                         <p>
-                                            Gyldig søknadsperiode for frilansere:{' '}
-                                            <DateRangeView dateRange={frilansDateRange} />
-                                        </p>
-                                        <p>
-                                            Gyldig søknadsperiode for selvstendig næringsdrivende:{' '}
-                                            <DateRangeView dateRange={selvstendigDateRange} />
+                                            Søknadsfrist er til og med <DateView date={selvstendigDateRange.to} />
                                         </p>
                                     </FormBlock>
-                                    <FormBlock>
-                                        <AccessCheckResultList
-                                            canUseApplicaton={result.canUseApplication}
-                                            accessChecks={result.checks}
-                                            profile={result.profile}
-                                        />
-                                        {companies && (
-                                            <>
-                                                <Undertittel>Dine registrerte enkeltpersonforetak</Undertittel>
-                                                <ul>
-                                                    {companies.enkeltpersonforetak.map((e) => {
-                                                        return (
-                                                            <li key={e.organisasjonsnummer}>
-                                                                <div>{e.navn}</div>
-                                                                Orgnr: {e.organisasjonsnummer}:. Registrert{' '}
-                                                                {prettifyDate(e.registreringsdato)}
-                                                            </li>
-                                                        );
-                                                    })}
-                                                </ul>
-                                            </>
-                                        )}
-                                    </FormBlock>
+                                    {result.canUseApplication === false && (
+                                        <AccessCheckFailedResultList accessChecks={result.checks} />
+                                    )}
+
                                     {result.canUseApplication && (
                                         <FormBlock>
-                                            <ConfirmationForm onStart={onStart} />
+                                            <EntryForm onStart={onStart} appEssentials={applicationEssentials} />
                                         </FormBlock>
                                     )}
                                     {!result.canUseApplication && (
-                                        <FormBlock margin="xl">
-                                            <Panel border={true}>
-                                                <Undertittel>Du kan ikke bruke denne søknaden</Undertittel>
-                                                <p>
-                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum ea
-                                                    magni id omnis. At, deserunt quae nihil molestias ut aspernatur
-                                                    itaque optio corrupti totam. Ducimus ipsa maxime possimus fugit eos?
-                                                </p>
-                                                <Box margin="xl">
-                                                    <Element>Mer informasjon finner du her:</Element>
-                                                    <ul>
-                                                        <li style={{ marginBottom: '.5rem' }}>
-                                                            <Lenke href="htts://www.nav.no">
-                                                                At deserunt quae nihil
-                                                            </Lenke>
-                                                        </li>
-                                                        <li>
-                                                            <Lenke href="htts://www.nav.no">
-                                                                Reprehenderit qui in ea voluptate velit esse quam nihil
-                                                                molestiae consequatur
-                                                            </Lenke>
-                                                        </li>
-                                                    </ul>
-                                                </Box>
-                                            </Panel>
-                                        </FormBlock>
+                                        <>
+                                            {' '}
+                                            <FormBlock>
+                                                {companies && (
+                                                    <>
+                                                        <Undertittel>Dine registrerte enkeltpersonforetak</Undertittel>
+                                                        <ul>
+                                                            {companies.enkeltpersonforetak.map((e) => {
+                                                                return (
+                                                                    <li key={e.organisasjonsnummer}>
+                                                                        <div>{e.navn}</div>
+                                                                        Orgnr: {e.organisasjonsnummer}:. Registrert{' '}
+                                                                        {prettifyDate(e.registreringsdato)}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    </>
+                                                )}
+                                            </FormBlock>
+                                            <FormBlock margin="xl">
+                                                <Panel border={true}>
+                                                    <Undertittel>Du kan ikke bruke denne søknaden</Undertittel>
+                                                    <p>
+                                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum ea
+                                                        magni id omnis. At, deserunt quae nihil molestias ut aspernatur
+                                                        itaque optio corrupti totam. Ducimus ipsa maxime possimus fugit
+                                                        eos?
+                                                    </p>
+                                                    <Box margin="xl">
+                                                        <Element>Mer informasjon finner du her:</Element>
+                                                        <ul>
+                                                            <li style={{ marginBottom: '.5rem' }}>
+                                                                <Lenke href="htts://www.nav.no">
+                                                                    At deserunt quae nihil
+                                                                </Lenke>
+                                                            </li>
+                                                            <li>
+                                                                <Lenke href="htts://www.nav.no">
+                                                                    Reprehenderit qui in ea voluptate velit esse quam
+                                                                    nihil molestiae consequatur
+                                                                </Lenke>
+                                                            </li>
+                                                        </ul>
+                                                    </Box>
+                                                </Panel>
+                                            </FormBlock>
+                                        </>
                                     )}
                                 </>
                             );

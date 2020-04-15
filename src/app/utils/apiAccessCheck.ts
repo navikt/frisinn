@@ -1,8 +1,8 @@
 import { AccessCheck, AccessCheckResult } from '../types/AccessCheck';
-import { Krav } from '../types/Krav';
+import { ApiKrav } from '../types/Krav';
 import { sjekkKrav } from '../api/krav';
 
-export async function apiAccessCheck(krav: Krav): Promise<AccessCheckResult> {
+export async function apiAccessCheck(krav: ApiKrav): Promise<AccessCheckResult> {
     try {
         const result = await sjekkKrav(krav);
         const passes = result.data.innfrirKrav === true;
@@ -22,20 +22,14 @@ export async function apiAccessCheck(krav: Krav): Promise<AccessCheckResult> {
 
 export const alderAccessCheck = (): AccessCheck => {
     return {
-        name: Krav.alder,
-        check: () => apiAccessCheck(Krav.alder),
+        name: ApiKrav.alder,
+        check: () => apiAccessCheck(ApiKrav.alder),
     };
 };
 
 export const selvstendigAccessCheck = (): AccessCheck => {
     return {
-        name: Krav.selvstendig,
-        check: () => apiAccessCheck(Krav.selvstendig),
-    };
-};
-export const frilanserAccessCheck = (): AccessCheck => {
-    return {
-        name: Krav.frilanser,
-        check: () => apiAccessCheck(Krav.frilanser),
+        name: ApiKrav.selvstendig,
+        check: () => apiAccessCheck(ApiKrav.selvstendig),
     };
 };

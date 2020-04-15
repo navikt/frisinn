@@ -4,13 +4,11 @@ import axiosConfig from '../config/axiosConfig';
 import { StepID } from './stepConfig';
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { ApiEndpoint } from '../api/api';
-import { ApplicantProfile } from '../types/ApplicantProfile';
 
 export interface TemporaryStorageData {
     metadata: {
         lastStepID: StepID;
         version: string;
-        applicantProfile: ApplicantProfile;
     };
     formData: ApplicationFormData;
 }
@@ -18,11 +16,7 @@ export interface TemporaryStorageData {
 export const STORAGE_VERSION = '1';
 
 interface ApplicationTemporartStorage extends Omit<PersistenceInterface<TemporaryStorageData>, 'persist'> {
-    persist: (
-        formData: ApplicationFormData,
-        lastStepID: StepID,
-        applicantProfile: ApplicantProfile
-    ) => Promise<AxiosResponse>;
+    persist: (formData: ApplicationFormData, lastStepID: StepID) => Promise<AxiosResponse>;
     getValidStorage: (storage: TemporaryStorageData) => TemporaryStorageData | undefined;
 }
 
@@ -39,8 +33,8 @@ export const getValidTemporaryStorage = (data?: TemporaryStorageData): Temporary
 };
 
 const applicationTempStorage: ApplicationTemporartStorage = {
-    persist: (formData: ApplicationFormData, lastStepID: StepID, applicantProfile: ApplicantProfile) => {
-        return persistSetup.persist({ formData, metadata: { lastStepID, version: STORAGE_VERSION, applicantProfile } });
+    persist: (formData: ApplicationFormData, lastStepID: StepID) => {
+        return persistSetup.persist({ formData, metadata: { lastStepID, version: STORAGE_VERSION } });
     },
     purge: persistSetup.purge,
     rehydrate: persistSetup.rehydrate,

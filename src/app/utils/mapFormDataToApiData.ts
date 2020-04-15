@@ -3,16 +3,12 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { ApplicationApiData } from '../types/ApplicationApiData';
 import { ApplicationFormData } from '../types/ApplicationFormData';
-import { ApplicantProfile } from '../types/ApplicantProfile';
 
-export const mapFormDataToApiData = (
-    formData: ApplicationFormData,
-    applicantProfile: ApplicantProfile,
-    språk: Locale
-): ApplicationApiData | undefined => {
+export const mapFormDataToApiData = (formData: ApplicationFormData, språk: Locale): ApplicationApiData | undefined => {
     const {
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         selvstendigHarHattInntektstapHelePerioden,
         selvstendigInntekt2019,
         selvstendigInntekt2020,
@@ -26,7 +22,7 @@ export const mapFormDataToApiData = (
         harForståttRettigheterOgPlikter,
     };
 
-    if (applicantProfile.isSelvstendig) {
+    if (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
         if (selvstendigInntekt2020 !== undefined && selvstendigInntektIPerioden !== undefined) {
             apiData.selvstendigNæringsdrivende = {
                 harHattInntektstapHelePeriode: selvstendigHarHattInntektstapHelePerioden === YesOrNo.YES,

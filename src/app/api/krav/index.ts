@@ -1,13 +1,11 @@
 import api, { ApiEndpoint } from '../api';
-import { Krav } from '../../types/Krav';
+import { ApiKrav } from '../../types/Krav';
 
-const getKravEndPointFromKrav = (krav: Krav) => {
+const getKravEndPointFromKrav = (krav: ApiKrav) => {
     switch (krav) {
-        case Krav.alder:
+        case ApiKrav.alder:
             return ApiEndpoint.kravAlder;
-        case Krav.frilanser:
-            return ApiEndpoint.kravFrilanser;
-        case Krav.selvstendig:
+        case ApiKrav.selvstendig:
             return ApiEndpoint.kravSelvstendigNæringsdrivende;
     }
 };
@@ -17,4 +15,4 @@ export interface KravApiResponse {
     beskrivelse: string;
 }
 
-export const sjekkKrav = (krav: Krav) => api.get<KravApiResponse>(getKravEndPointFromKrav(krav));
+export const sjekkKrav = (krav: ApiKrav) => api.get<KravApiResponse>(getKravEndPointFromKrav(krav));

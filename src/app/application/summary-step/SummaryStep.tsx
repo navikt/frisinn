@@ -7,8 +7,6 @@ import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
 import Panel from 'nav-frontend-paneler';
-import MissingAppContext from '../../components/missing-app-context/MissingAppContext';
-import { ApplicationContext } from '../../context/ApplicationContext';
 import { ApplicationApiData } from '../../types/ApplicationApiData';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import * as apiUtils from '../../utils/apiUtils';
@@ -28,7 +26,6 @@ interface Props {
 const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }: Props) => {
     const intl = useIntl();
     const formik = useFormikContext<ApplicationFormData>();
-    const appContext = React.useContext(ApplicationContext);
     const history = useHistory();
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
@@ -47,13 +44,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }
         }
     }
 
-    const applicantProfile = appContext?.applicantProfile || { isSelvstendig: true, isFrilanser: false };
-
-    if (!applicantProfile) {
-        return <MissingAppContext />;
-    }
-
-    const apiValues = mapFormDataToApiData(formik.values, applicantProfile, intl.locale as Locale);
+    const apiValues = mapFormDataToApiData(formik.values, intl.locale as Locale);
 
     return (
         <ApplicationStep

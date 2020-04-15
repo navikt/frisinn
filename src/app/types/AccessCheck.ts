@@ -1,9 +1,9 @@
-import { Krav } from './Krav';
+import { ApiKrav, KlientKrav } from './Krav';
 
 export type AccessCheckFunction = () => Promise<AccessCheckResult>;
 
 export interface AccessCheckResult {
-    checkName: Krav;
+    checkName: ApiKrav | KlientKrav;
     passes: boolean;
     info: string;
 }

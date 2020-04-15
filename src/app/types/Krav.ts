@@ -1,5 +1,7 @@
-export enum Krav {
+export enum ApiKrav {
     'alder' = 'alder',
-    'frilanser' = 'frilanser',
     'selvstendig' = 'selvstendig',
+}
+export enum KlientKrav {
+    'kontonummer' = 'kontonummer',
 }

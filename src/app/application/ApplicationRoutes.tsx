@@ -5,7 +5,6 @@ import GlobalRoutes from '../config/routeConfig';
 import ApplicationErrorPage from '../pages/application-error-page/ApplicationErrorPage';
 import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
 import EntryPage from '../pages/entry-page/EntryPage';
-import { ApplicantProfile } from '../types/ApplicantProfile';
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { navigateTo, navigateToConfirmationPage } from '../utils/navigationUtils';
 import { getApplicationRoute, getNextStepRoute, isAvailable } from '../utils/routeUtils';
@@ -16,21 +15,17 @@ import SummaryStep from './summary-step/SummaryStep';
 import applicationTempStorage from './ApplicationTempStorage';
 import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 
-interface Props {
-    applicantProfile?: ApplicantProfile;
-}
-
-const ApplicationRoutes = ({ applicantProfile }: Props) => {
+const ApplicationRoutes = () => {
     const history = useHistory();
 
     const { values } = useFormikContext<ApplicationFormData>();
-    const stepConfig = getStepConfig(values, applicantProfile);
+    const stepConfig = getStepConfig(values);
     const applicationSteps = Object.keys(stepConfig) as Array<StepID>;
 
     const navigateToNextStepFrom = (stepID: StepID) => {
-        if (applicantProfile) {
+        if (values) {
             if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                applicationTempStorage.persist(values, stepID, applicantProfile);
+                applicationTempStorage.persist(values, stepID);
             }
         }
         setTimeout(() => {
@@ -62,14 +57,12 @@ const ApplicationRoutes = ({ applicantProfile }: Props) => {
     };
 
     const onStartApplication = () => {
-        if (applicantProfile) {
-            if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                applicationTempStorage.persist(values, StepID.SELVSTENDIG, applicantProfile);
-            }
-            setTimeout(() => {
-                navigateTo(`${getApplicationRoute(StepID.SELVSTENDIG)}`, history);
-            });
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            applicationTempStorage.persist(values, StepID.SELVSTENDIG);
         }
+        setTimeout(() => {
+            navigateTo(`${getApplicationRoute(StepID.SELVSTENDIG)}`, history);
+        });
     };
 
     return (

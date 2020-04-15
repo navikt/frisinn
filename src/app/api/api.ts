@@ -27,7 +27,6 @@ export enum ApiEndpoint {
     'soker' = 'soker',
     'soknad' = 'soknad',
     'kravAlder' = 'krav/alder',
-    'kravFrilanser' = 'krav/frilanser',
     'kravSelvstendigNæringsdrivende' = 'krav/selvstendig-naeringsdrivende',
     'mellomlagring' = 'mellomlagring',
 }

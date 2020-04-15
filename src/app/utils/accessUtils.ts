@@ -1,5 +1,6 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { IntroFormData } from '../pages/intro-page/intro-form/introFormConfig';
+import { ApplicationFormData } from '../types/ApplicationFormData';
 
 export enum RejectReason {
     'erIkkeMellom18og66' = 'erIkkeMellom18og66',
@@ -8,6 +9,8 @@ export enum RejectReason {
     'harIkkeTaptInntektPgaKorona' = 'harIkkeTaptInntektPgaKorona',
     'harIkkeHattInntektOver75000SomFrilanser' = 'harIkkeHattInntektOver75000SomFrilanser',
     'harInntektOver6g' = 'harInntektOver6g',
+    'kontonummerStemmerIkke' = 'kontonummerStemmerIkke',
+    'søkerHverkenSomSelvstendigEllerFrilanser' = 'søkerHverkenSomSelvstendigEllerFrilanser',
 }
 
 export const shouldUserBeStoppedFormUsingApplication = (values: IntroFormData): RejectReason | undefined => {
@@ -42,6 +45,21 @@ export const shouldUserBeStoppedFormUsingApplication = (values: IntroFormData): 
         harHattInntektOver75000SomFrilanser === YesOrNo.NO
     ) {
         return RejectReason.harIkkeHattInntektOver75000SomFrilanser;
+    }
+    return undefined;
+};
+
+export const shouldLoggedInUserBeStoppedFormUsingApplication = (
+    values: ApplicationFormData
+): RejectReason | undefined => {
+    if (values.kontonummerErRiktig === YesOrNo.NO) {
+        return RejectReason.kontonummerStemmerIkke;
+    }
+    if (
+        values.søkerOmTaptInntektSomFrilanser === YesOrNo.NO &&
+        values.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO
+    ) {
+        return RejectReason.søkerHverkenSomSelvstendigEllerFrilanser;
     }
     return undefined;
 };
