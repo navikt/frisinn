@@ -90,7 +90,7 @@ const IntroPage: React.StatelessComponent = () => {
                             </Box>
                             <Box>
                                 <Systemtittel>Sjekk om du kan få søke</Systemtittel>
-                                <Ingress>
+                                <Ingress tag="div">
                                     <p>
                                         Svar på spørsmålene nedenfor og som du du kan ha rett på denne kompensasjonen.
                                         Hvis du har det, vil du kunne gå videre til søknaden, hvor du må logge inn med
