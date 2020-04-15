@@ -12,10 +12,12 @@ import ApplicationRoutes from './ApplicationRoutes';
 import { ApplicationEssentials } from '../types/ApplicationEssentials';
 import applicationTempStorage from './ApplicationTempStorage';
 import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
+import { userNeedsToLogin } from '../utils/apiUtils';
 
 interface LoadState {
     isLoading: boolean;
     error?: boolean;
+    redirectToLoginPage?: boolean;
 }
 
 const Application = () => {
@@ -47,9 +49,8 @@ const Application = () => {
                     setApplicantProfile(storage.metadata.applicantProfile);
                 }
                 setLoadState({ isLoading: false, error: false });
-            } catch (response) {
-                console.log('error');
-                setLoadState({ isLoading: false, error: true });
+            } catch (error) {
+                setLoadState({ isLoading: false, error: true, redirectToLoginPage: userNeedsToLogin(error) });
             }
         }
     }
@@ -63,10 +64,10 @@ const Application = () => {
         navigateToApplication();
     };
 
-    const { isLoading, error } = loadState;
+    const { isLoading, error, redirectToLoginPage: notLoggedIn } = loadState;
     return (
         <LoadWrapper
-            isLoading={isLoading && error === undefined}
+            isLoading={(isLoading === true || notLoggedIn === true) && error === undefined}
             contentRenderer={() => {
                 if (applicationEssentials === undefined) {
                     return <div>Noe gikk galt under henting av din informasjon</div>;
