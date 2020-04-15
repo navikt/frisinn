@@ -22,8 +22,6 @@ export interface RegistrerteEnkeltpersonforetak {
 
 export interface ApplicationDateRanges {
     applicationDateRange: DateRange;
-    frilansDateRange: DateRange;
-    selvstendigDateRange: DateRange;
 }
 
 export interface ApplicationEssentials {

@@ -10,8 +10,6 @@ interface PeriodeTidsperiode {
 
 export interface PerioderApiResponse {
     søknadsperiode: PeriodeTidsperiode;
-    kanSøkeSomFrilanser: PeriodeTidsperiode;
-    kanSøkeSomSelvstendigNæringsdrivende: PeriodeTidsperiode;
 }
 
 const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): ApplicationDateRanges => {
@@ -19,14 +17,6 @@ const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): Applic
         applicationDateRange: {
             from: apiStringDateToDate(søknadsperioder.søknadsperiode.fom),
             to: apiStringDateToDate(søknadsperioder.søknadsperiode.tom),
-        },
-        frilansDateRange: {
-            from: apiStringDateToDate(søknadsperioder.kanSøkeSomFrilanser.fom),
-            to: apiStringDateToDate(søknadsperioder.kanSøkeSomFrilanser.tom),
-        },
-        selvstendigDateRange: {
-            from: apiStringDateToDate(søknadsperioder.kanSøkeSomSelvstendigNæringsdrivende.fom),
-            to: apiStringDateToDate(søknadsperioder.kanSøkeSomSelvstendigNæringsdrivende.tom),
         },
     };
     return ranges;

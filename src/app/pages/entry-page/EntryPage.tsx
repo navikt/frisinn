@@ -15,7 +15,6 @@ import AccessCheckFailedResultList from './AccessCheckFailed';
 import EntryForm from './EntryForm';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import DateView from '../../components/date-view/DateView';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { ApiKrav, KlientKrav } from '../../types/Krav';
 
@@ -49,7 +48,7 @@ const EntryPage = ({ onStart }: Props) => {
     const {
         applicationEssentials: {
             person,
-            applicationDateRanges: { applicationDateRange, selvstendigDateRange },
+            applicationDateRanges: { applicationDateRange },
             companies,
         },
     } = appContext;
@@ -132,9 +131,6 @@ const EntryPage = ({ onStart }: Props) => {
                                         <Undertittel>Perioder og frister</Undertittel>
                                         <p>
                                             Periode det søkes for: <DateRangeView dateRange={applicationDateRange} />
-                                        </p>
-                                        <p>
-                                            Søknadsfrist er til og med <DateView date={selvstendigDateRange.to} />
                                         </p>
                                     </FormBlock>
                                     {result.canUseApplication === false && (

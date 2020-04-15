@@ -24,7 +24,7 @@ const SelvstendigStep = ({ onValidSubmit }: StepConfigProps) => {
     const { values } = useFormikContext<ApplicationFormData>();
     const { isVisible, areAllQuestionsAnswered } = SelvstendigFormQuestions.getVisbility(values);
 
-    const dateRange = appContext?.applicationEssentials?.applicationDateRanges.selvstendigDateRange;
+    const dateRange = appContext?.applicationEssentials?.applicationDateRanges.applicationDateRange;
     if (!appContext || !dateRange) {
         return <MissingAppContext />;
     }

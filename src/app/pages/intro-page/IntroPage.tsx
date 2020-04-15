@@ -53,7 +53,7 @@ const IntroPage: React.StatelessComponent = () => {
                     if (!dateRanges) {
                         return null;
                     }
-                    const { frilansDateRange, applicationDateRange, selvstendigDateRange } = dateRanges;
+                    const { applicationDateRange } = dateRanges;
                     return (
                         <>
                             <Box margin="xxxl" padBottom="xxl">
@@ -73,14 +73,6 @@ const IntroPage: React.StatelessComponent = () => {
                                                 En søker for én måned om gangen, og første måned en kan søke for er{' '}
                                                 <strong>
                                                     <DateView date={applicationDateRange.to} format="monthAndYear" />
-                                                </strong>
-                                                . Selvstendig næringsdrivende kan søke fra og med{' '}
-                                                <strong>
-                                                    <DateView date={selvstendigDateRange.from} />
-                                                </strong>
-                                                , mens frilansere kan søke fra og med{' '}
-                                                <strong>
-                                                    <DateView date={frilansDateRange.from} />
                                                 </strong>
                                                 .
                                             </p>
