@@ -18,6 +18,8 @@ import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { shouldLoggedInUserBeStoppedFormUsingApplication, RejectReason } from '../../utils/accessUtils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { pluralize } from '../../utils/pluralize';
+import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
+import ForetakList from '../../components/foretak-list/ForetakList';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -45,7 +47,8 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
     });
 
     const canUseApplication = areAllQuestionsAnswered() && rejectionReason === undefined;
-    const antallForetak = companies?.enkeltpersonforetak.length || 0;
+    const foretak = companies?.foretak || [];
+    const antallForetak = foretak.length || 0;
 
     return (
         <FC.Form
@@ -71,6 +74,15 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
                             'dette foretaket',
                             'disse foretakene'
                         )}?`}
+                        description={
+                            <Box margin={'m'}>
+                                <ExpandableInfo
+                                    title="Vis registrerte foretak"
+                                    closeTitle={'Skjul registrerte foretak'}>
+                                    <ForetakList foretak={foretak} />
+                                </ExpandableInfo>
+                            </Box>
+                        }
                         name={ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
                     />
                 </FormBlock>

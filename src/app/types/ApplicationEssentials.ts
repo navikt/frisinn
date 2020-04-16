@@ -9,14 +9,14 @@ export interface Person {
     kontonummer: string;
 }
 
-export interface Enkeltpersonforetak {
+export interface Foretak {
     organisasjonsnummer: string;
     navn: string;
     registreringsdato: Date;
 }
 
-export interface RegistrerteEnkeltpersonforetak {
-    enkeltpersonforetak: Enkeltpersonforetak[];
+export interface ForetakInfo {
+    foretak: Foretak[];
     tidligsteRegistreringsdato: Date;
 }
 
@@ -27,5 +27,5 @@ export interface ApplicationDateRanges {
 export interface ApplicationEssentials {
     person: Person;
     applicationDateRanges: ApplicationDateRanges;
-    companies?: RegistrerteEnkeltpersonforetak;
+    companies?: ForetakInfo;
 }

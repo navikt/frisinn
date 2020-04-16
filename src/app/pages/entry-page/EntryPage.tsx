@@ -150,7 +150,7 @@ const EntryPage = ({ onStart }: Props) => {
                                                     <>
                                                         <Undertittel>Dine registrerte enkeltpersonforetak</Undertittel>
                                                         <ul>
-                                                            {companies.enkeltpersonforetak.map((e) => {
+                                                            {companies.foretak.map((e) => {
                                                                 return (
                                                                     <li key={e.organisasjonsnummer}>
                                                                         <div>{e.navn}</div>
