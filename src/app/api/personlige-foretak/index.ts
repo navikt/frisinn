@@ -1,24 +1,24 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import api, { ApiEndpoint } from '../api';
-import { ForetakInfo } from '../../types/ApplicationEssentials';
+import { PersonligeForetak } from '../../types/ApplicationEssentials';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
-interface ApiEnkeltpersonforetak {
+interface ApiPersonligeForetak {
     organisasjonsnummer: string;
     navn: string;
     registreringsdato: ApiStringDate;
 }
 
-export interface EnkeltpersonforetakApiResponse {
-    enkeltpersonforetak: ApiEnkeltpersonforetak[];
+interface PersonligeForetakApiResponse {
+    personligeForetak: ApiPersonligeForetak[];
     tidligsteRegistreringsdato: ApiStringDate;
 }
 
-const parseEnkeltpersonforetakApiResponse = (data: EnkeltpersonforetakApiResponse): ForetakInfo => {
-    const { enkeltpersonforetak: enkeltpersonforetak, tidligsteRegistreringsdato } = data;
+const parsePersonligeForetakApiResponse = (data: PersonligeForetakApiResponse): PersonligeForetak => {
+    const { personligeForetak, tidligsteRegistreringsdato } = data;
     return {
         tidligsteRegistreringsdato: apiStringDateToDate(tidligsteRegistreringsdato),
-        foretak: enkeltpersonforetak.map((e) => ({
+        foretak: personligeForetak.map((e) => ({
             navn: e.navn,
             organisasjonsnummer: e.organisasjonsnummer,
             registreringsdato: apiStringDateToDate(e.registreringsdato),
@@ -26,10 +26,10 @@ const parseEnkeltpersonforetakApiResponse = (data: EnkeltpersonforetakApiRespons
     };
 };
 
-export async function getEnkeltpersonforetak(): Promise<ForetakInfo> {
+export async function getPersonligeForetak(): Promise<PersonligeForetak> {
     try {
-        const { data } = await api.get<EnkeltpersonforetakApiResponse>(ApiEndpoint.enkeltpersonforetak);
-        return Promise.resolve(parseEnkeltpersonforetakApiResponse(data));
+        const { data } = await api.get<PersonligeForetakApiResponse>(ApiEndpoint.personligeForetak);
+        return Promise.resolve(parsePersonligeForetakApiResponse(data));
     } catch (error) {
         return Promise.reject(undefined);
     }

@@ -64,8 +64,8 @@ const perioderMock = {
     },
 };
 
-const enkeltpersonforetakMock = {
-    enkeltpersonforetak: [
+const personligeForetak = {
+    personligeForetak: [
         {
             organisasjonsnummer: '995298775',
             navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
@@ -122,9 +122,9 @@ const startExpressServer = () => {
         }, 250);
     });
 
-    server.get('/enkeltpersonforetak', (req, res) => {
+    server.get('/personlige-foretak', (req, res) => {
         setTimeout(() => {
-            res.send(enkeltpersonforetakMock);
+            res.send(personligeForetak);
         }, 250);
     });
 

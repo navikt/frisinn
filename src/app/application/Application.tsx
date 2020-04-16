@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getEnkeltpersonforetak } from '../api/enkeltpersonforetak';
+import { getPersonligeForetak } from '../api/personlige-foretak';
 import { getPerioder } from '../api/perioder';
 import { getSoker } from '../api/soker';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
@@ -30,7 +30,7 @@ const Application = () => {
             try {
                 const person = await getSoker();
                 const søknadsperioder = await getPerioder();
-                const enkeltpersonforetak = await getEnkeltpersonforetak();
+                const personligeForetak = await getPersonligeForetak();
                 let storageData;
                 if (isFeatureEnabled(Feature.PERSISTENCE)) {
                     storageData = await applicationTempStorage.rehydrate();
@@ -38,7 +38,7 @@ const Application = () => {
                 setApplicationEssentials({
                     person: person.data,
                     applicationDateRanges: søknadsperioder,
-                    registrerteForetakInfo: enkeltpersonforetak,
+                    personligeForetak: personligeForetak,
                 });
 
                 const storage = storageData ? applicationTempStorage.getValidStorage(storageData.data) : undefined;

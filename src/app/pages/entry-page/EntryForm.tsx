@@ -32,7 +32,7 @@ interface Props {
     onStart: () => void;
 }
 
-const EntryForm = ({ onStart, appEssentials: { person, registrerteForetakInfo } }: Props) => {
+const EntryForm = ({ onStart, appEssentials: { person, personligeForetak: registrerteForetakInfo } }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const { values } = useFormikContext<ApplicationFormData>();

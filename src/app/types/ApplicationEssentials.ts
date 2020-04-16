@@ -15,7 +15,7 @@ export interface Foretak {
     registreringsdato: Date;
 }
 
-export interface ForetakInfo {
+export interface PersonligeForetak {
     foretak: Foretak[];
     tidligsteRegistreringsdato: Date;
 }
@@ -27,5 +27,5 @@ export interface ApplicationDateRanges {
 export interface ApplicationEssentials {
     person: Person;
     applicationDateRanges: ApplicationDateRanges;
-    registrerteForetakInfo?: ForetakInfo;
+    personligeForetak?: PersonligeForetak;
 }

@@ -3,14 +3,14 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
-import { ApplicationEssentials, ForetakInfo } from '../../types/ApplicationEssentials';
+import { ApplicationEssentials, PersonligeForetak } from '../../types/ApplicationEssentials';
 import moment from 'moment';
 
 const Q = ApplicationFormField;
 
 type SelvstendigFormPayload = ApplicationFormData & ApplicationEssentials;
 
-const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: ForetakInfo | undefined): boolean => {
+const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: PersonligeForetak | undefined): boolean => {
     if (!registrerteForetakInfo) {
         return false;
     }
@@ -18,7 +18,7 @@ const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: ForetakInfo | u
     return moment(tidligsteRegistreringsdato).isBefore(new Date(2020, 0, 1), 'day');
 };
 
-const selvstendigSkalOppgiInntekt2020 = (registrerteForetakInfo: ForetakInfo | undefined): boolean => {
+const selvstendigSkalOppgiInntekt2020 = (registrerteForetakInfo: PersonligeForetak | undefined): boolean => {
     if (!registrerteForetakInfo) {
         return false;
     }
@@ -35,11 +35,13 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Q.selvstendigInntekt2019]: {
-        isIncluded: ({ registrerteForetakInfo }) => selvstendigSkalOppgiInntekt2019(registrerteForetakInfo),
+        isIncluded: ({ personligeForetak: registrerteForetakInfo }) =>
+            selvstendigSkalOppgiInntekt2019(registrerteForetakInfo),
         isAnswered: ({ selvstendigInntekt2019 }) => hasValue(selvstendigInntekt2019),
     },
     [Q.selvstendigInntekt2020]: {
-        isIncluded: ({ registrerteForetakInfo }) => selvstendigSkalOppgiInntekt2020(registrerteForetakInfo),
+        isIncluded: ({ personligeForetak: registrerteForetakInfo }) =>
+            selvstendigSkalOppgiInntekt2020(registrerteForetakInfo),
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
     },
     [Q.selvstendigInntektIPerioden]: {

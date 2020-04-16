@@ -22,7 +22,7 @@ axios.interceptors.response.use(
 );
 
 export enum ApiEndpoint {
-    'enkeltpersonforetak' = 'enkeltpersonforetak',
+    'personligeForetak' = 'personlige-foretak',
     'perioder' = 'perioder',
     'soker' = 'soker',
     'soknad' = 'soknad',

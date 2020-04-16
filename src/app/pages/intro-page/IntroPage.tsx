@@ -64,10 +64,10 @@ const IntroPage: React.StatelessComponent = () => {
                                         </Systemtittel>
                                         <Ingress tag="div">
                                             <p>
-                                                Dersom du er selvstendig næringsdrivende med enkeltpersonforetak
-                                                og/eller frilanser, og har mistet hele eller deler av inntekten din på
-                                                grunn av korona-pandemien, kan du søke om kompensasjon for dette.
-                                                Ordningen er midlertidig, og en ...
+                                                Dersom du er selvstendig næringsdrivende med personlige foretak og/eller
+                                                frilanser, og har mistet hele eller deler av inntekten din på grunn av
+                                                korona-pandemien, kan du søke om kompensasjon for dette. Ordningen er
+                                                midlertidig, og en ...
                                             </p>
                                             <p>
                                                 En søker for én måned om gangen, og første måned en kan søke for er{' '}
