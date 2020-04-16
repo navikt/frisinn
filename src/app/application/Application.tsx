@@ -12,6 +12,7 @@ import { ApplicationEssentials } from '../types/ApplicationEssentials';
 import applicationTempStorage from './ApplicationTempStorage';
 import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 import { userNeedsToLogin } from '../utils/apiUtils';
+import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
 
 interface LoadState {
     isLoading: boolean;
@@ -66,7 +67,7 @@ const Application = () => {
             isLoading={isLoading === true || notLoggedIn === true}
             contentRenderer={() => {
                 if (applicationEssentials === undefined) {
-                    return <div>Noe gikk galt under henting av din informasjon</div>;
+                    return <GeneralErrorPage />;
                 }
                 return (
                     <ApplicationContext.Provider

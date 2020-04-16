@@ -56,8 +56,8 @@ export const shouldLoggedInUserBeStoppedFormUsingApplication = (
         return RejectReason.kontonummerStemmerIkke;
     }
     if (
-        values.søkerOmTaptInntektSomFrilanser === YesOrNo.NO &&
-        values.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO
+        values.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO &&
+        (values.erFrilanser === YesOrNo.NO || values.søkerOmTaptInntektSomFrilanser === YesOrNo.NO)
     ) {
         return RejectReason.søkerHverkenSomSelvstendigEllerFrilanser;
     }

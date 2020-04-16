@@ -20,6 +20,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { pluralize } from '../../utils/pluralize';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
+import EndreKontonummer from '../../information/EndreKontonummer';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -63,7 +64,9 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
             </FormBlock>
             {rejectionReason === RejectReason.kontonummerStemmerIkke && (
                 <FormBlock>
-                    <AlertStripeAdvarsel>Du må korrigere kontonummeret ditt</AlertStripeAdvarsel>
+                    <AlertStripeAdvarsel>
+                        <EndreKontonummer />
+                    </AlertStripeAdvarsel>
                 </FormBlock>
             )}
             {isVisible(ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende) && (
@@ -102,7 +105,7 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
             )}
             {rejectionReason === RejectReason.søkerHverkenSomSelvstendigEllerFrilanser && (
                 <FormBlock>
-                    <AlertStripeAdvarsel>Du må velge om du vil frilanser og/eller selvstendig</AlertStripeAdvarsel>
+                    <AlertStripeAdvarsel>Du må velge hva du ønsker å søke om</AlertStripeAdvarsel>
                 </FormBlock>
             )}
 

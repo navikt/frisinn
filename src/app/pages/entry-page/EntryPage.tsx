@@ -14,9 +14,9 @@ import { alderAccessCheck, selvstendigAccessCheck } from '../../utils/apiAccessC
 import AccessCheckFailedResultList from './AccessCheckFailed';
 import EntryForm from './EntryForm';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { ApiKrav, KlientKrav } from '../../types/Krav';
+import EndreKontonummer from '../../information/EndreKontonummer';
 
 interface Props {
     onStart: () => void;
@@ -45,17 +45,17 @@ const EntryPage = ({ onStart }: Props) => {
     if (!appContext) {
         return <MissingAppContext />;
     }
+
     const {
         applicationEssentials: {
             person,
             applicationDateRanges: { applicationDateRange },
-            companies,
         },
     } = appContext;
 
-    async function runChecks() {
+    async function runAccessChecks() {
         const [alderResult, selvstendigResult] = await Promise.all([
-            alderAccessCheck().check(),
+            alderAccessCheck(applicationDateRange).check(),
             selvstendigAccessCheck().check(),
         ]);
         const harKontonummer = person.kontonummer !== null && person.kontonummer !== undefined;
@@ -66,11 +66,7 @@ const EntryPage = ({ onStart }: Props) => {
                 ? `Vi har registrert kontonummeret ${person.kontonummer} på deg`
                 : 'Vi har ikke registrert noe kontonummer på deg',
         };
-        const canUseApplication =
-            alderResult.passes &&
-            kontonummerResult.passes &&
-            selvstendigResult.passes &&
-            person.kontonummer !== undefined;
+        const canUseApplication = alderResult.passes && kontonummerResult.passes && selvstendigResult.passes;
 
         setAccessCheckState({
             pending: false,
@@ -87,7 +83,7 @@ const EntryPage = ({ onStart }: Props) => {
     }
 
     useEffect(() => {
-        runChecks();
+        runAccessChecks();
     }, []);
 
     const { result } = accessCheckState;
@@ -117,8 +113,7 @@ const EntryPage = ({ onStart }: Props) => {
                             return (
                                 <FormBlock>
                                     <AlertStripeAdvarsel>
-                                        Vi har ikke registrert noe kontonummer på deg. Dette må du gjøre ... (mer info
-                                        om hva)
+                                        <EndreKontonummer />
                                     </AlertStripeAdvarsel>
                                 </FormBlock>
                             );
@@ -128,40 +123,21 @@ const EntryPage = ({ onStart }: Props) => {
                             return (
                                 <>
                                     <FormBlock>
-                                        <Undertittel>Perioder og frister</Undertittel>
-                                        <p>
-                                            Periode det søkes for: <DateRangeView dateRange={applicationDateRange} />
-                                        </p>
+                                        <Undertittel>
+                                            Kompensasjonsperiode <DateRangeView dateRange={applicationDateRange} />
+                                        </Undertittel>
                                     </FormBlock>
-                                    {result.canUseApplication === false && (
-                                        <AccessCheckFailedResultList accessChecks={result.checks} />
-                                    )}
 
                                     {result.canUseApplication && (
                                         <FormBlock>
                                             <EntryForm onStart={onStart} appEssentials={applicationEssentials} />
                                         </FormBlock>
                                     )}
+
                                     {!result.canUseApplication && (
                                         <>
-                                            {' '}
                                             <FormBlock>
-                                                {companies && (
-                                                    <>
-                                                        <Undertittel>Dine registrerte enkeltpersonforetak</Undertittel>
-                                                        <ul>
-                                                            {companies.foretak.map((e) => {
-                                                                return (
-                                                                    <li key={e.organisasjonsnummer}>
-                                                                        <div>{e.navn}</div>
-                                                                        Orgnr: {e.organisasjonsnummer}:. Registrert{' '}
-                                                                        {prettifyDate(e.registreringsdato)}
-                                                                    </li>
-                                                                );
-                                                            })}
-                                                        </ul>
-                                                    </>
-                                                )}
+                                                <AccessCheckFailedResultList accessChecks={result.checks} />
                                             </FormBlock>
                                             <FormBlock margin="xl">
                                                 <Panel border={true}>

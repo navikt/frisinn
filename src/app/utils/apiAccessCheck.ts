@@ -1,10 +1,11 @@
 import { AccessCheck, AccessCheckResult } from '../types/AccessCheck';
 import { ApiKrav } from '../types/Krav';
 import { sjekkKrav } from '../api/krav';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
-export async function apiAccessCheck(krav: ApiKrav): Promise<AccessCheckResult> {
+export async function apiAccessCheck(krav: ApiKrav, dateRange?: DateRange): Promise<AccessCheckResult> {
     try {
-        const result = await sjekkKrav(krav);
+        const result = await sjekkKrav(krav, dateRange);
         const passes = result.data.innfrirKrav === true;
         return {
             checkName: krav,
@@ -20,10 +21,10 @@ export async function apiAccessCheck(krav: ApiKrav): Promise<AccessCheckResult> 
     }
 }
 
-export const alderAccessCheck = (): AccessCheck => {
+export const alderAccessCheck = (dateRange: DateRange): AccessCheck => {
     return {
         name: ApiKrav.alder,
-        check: () => apiAccessCheck(ApiKrav.alder),
+        check: () => apiAccessCheck(ApiKrav.alder, dateRange),
     };
 };
 

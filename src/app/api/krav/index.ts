@@ -1,5 +1,6 @@
 import api, { ApiEndpoint } from '../api';
 import { ApiKrav } from '../../types/Krav';
+import { DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 const getKravEndPointFromKrav = (krav: ApiKrav) => {
     switch (krav) {
@@ -15,4 +16,9 @@ export interface KravApiResponse {
     beskrivelse: string;
 }
 
-export const sjekkKrav = (krav: ApiKrav) => api.get<KravApiResponse>(getKravEndPointFromKrav(krav));
+export const sjekkKrav = (krav: ApiKrav, dateRange?: DateRange) => {
+    const params = dateRange
+        ? `fom=${formatDateToApiFormat(dateRange.from)}&tom=${formatDateToApiFormat(dateRange.to)}`
+        : undefined;
+    return api.get<KravApiResponse>(getKravEndPointFromKrav(krav), params);
+};
