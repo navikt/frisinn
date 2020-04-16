@@ -32,13 +32,13 @@ interface Props {
     onStart: () => void;
 }
 
-const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => {
+const EntryForm = ({ onStart, appEssentials: { person, registrerteForetakInfo } }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const { values } = useFormikContext<ApplicationFormData>();
     const intl = useIntl();
 
-    const isSelvstendig = companies !== undefined;
+    const isSelvstendig = registrerteForetakInfo !== undefined;
 
     const rejectionReason = shouldLoggedInUserBeStoppedFormUsingApplication(values);
     const { isVisible, areAllQuestionsAnswered } = EntryFormQuestions.getVisbility({
@@ -48,7 +48,7 @@ const EntryForm = ({ onStart, appEssentials: { person, companies } }: Props) => 
     });
 
     const canUseApplication = areAllQuestionsAnswered() && rejectionReason === undefined;
-    const foretak = companies?.foretak || [];
+    const foretak = registrerteForetakInfo?.foretak || [];
     const antallForetak = foretak.length || 0;
 
     return (

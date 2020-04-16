@@ -27,5 +27,5 @@ export interface ApplicationDateRanges {
 export interface ApplicationEssentials {
     person: Person;
     applicationDateRanges: ApplicationDateRanges;
-    companies?: ForetakInfo;
+    registrerteForetakInfo?: ForetakInfo;
 }

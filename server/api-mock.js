@@ -2,7 +2,7 @@ const os = require('os');
 const fs = require('fs');
 const express = require('express');
 const _ = require('lodash');
-
+const moment = require('moment');
 const server = express();
 
 server.use(express.json());
@@ -59,7 +59,7 @@ const søkerMock = {
 
 const perioderMock = {
     søknadsperiode: {
-        fom: '2020-04-1',
+        fom: '2020-03-16',
         tom: '2020-04-30',
     },
 };
@@ -72,9 +72,23 @@ const enkeltpersonforetakMock = {
             registreringsdato: '2006-06-01',
         },
     ],
-    tidligsteReistreringsdato: '2006-06-01',
+    tidligsteRegistreringsdato: '2006-06-01',
 };
 
+const getPerioder = (query) => {
+    const date = moment(query.inntektstapStartet).toDate();
+    const firstApplicationDate = moment(date).add(16, 'days').toDate();
+    const isOk = moment(firstApplicationDate).isSameOrBefore(new Date(2020, 3, 30), 'day');
+    if (!isOk) {
+        return {};
+    }
+    return {
+        søknadsperiode: {
+            fom: moment(firstApplicationDate).format('YYYY-MM-DD'),
+            tom: '2020-04-30',
+        },
+    };
+};
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
 
@@ -99,7 +113,12 @@ const startExpressServer = () => {
 
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
-            res.send(perioderMock);
+            if (req.query && req.query.inntektstapStartet) {
+                const perioder = getPerioder(req.query);
+                res.send(perioder);
+            } else {
+                res.send(perioderMock);
+            }
         }, 250);
     });
 

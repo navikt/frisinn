@@ -1,7 +1,7 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import api, { ApiEndpoint } from '../api';
 import { ApplicationDateRanges } from '../../types/ApplicationEssentials';
-import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { apiStringDateToDate, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface PeriodeTidsperiode {
     fom: ApiStringDate;
@@ -22,9 +22,14 @@ const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): Applic
     return ranges;
 };
 
-export async function getPerioder(): Promise<ApplicationDateRanges> {
+export async function getPerioder(inntektstapStartet?: Date[]): Promise<ApplicationDateRanges> {
     try {
-        const { data } = await api.get<PerioderApiResponse>(ApiEndpoint.perioder);
+        const dateParamName = 'inntektstapStartet';
+        const dates = inntektstapStartet?.map((date) => formatDateToApiFormat(date));
+        const { data } = await api.get<PerioderApiResponse>(
+            ApiEndpoint.perioder,
+            dates ? `${dateParamName}=${dates.join(`&${dateParamName}=`)}` : undefined
+        );
         return Promise.resolve(parsePerioderApiResponse(data));
     } catch (error) {
         return Promise.reject(undefined);

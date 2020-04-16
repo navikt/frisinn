@@ -9,7 +9,6 @@ export const mapFormDataToApiData = (formData: ApplicationFormData, språk: Loca
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-        selvstendigHarHattInntektstapHelePerioden,
         selvstendigInntekt2019,
         selvstendigInntekt2020,
         selvstendigInntektIPerioden,
@@ -22,14 +21,10 @@ export const mapFormDataToApiData = (formData: ApplicationFormData, språk: Loca
         harForståttRettigheterOgPlikter,
     };
 
-    if (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
+    if (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES && selvstendigInntektstapStartetDato) {
         if (selvstendigInntekt2020 !== undefined && selvstendigInntektIPerioden !== undefined) {
             apiData.selvstendigNæringsdrivende = {
-                harHattInntektstapHelePeriode: selvstendigHarHattInntektstapHelePerioden === YesOrNo.YES,
-                inntektstapStartetDato:
-                    selvstendigHarHattInntektstapHelePerioden === YesOrNo.NO && selvstendigInntektstapStartetDato
-                        ? formatDateToApiFormat(selvstendigInntektstapStartetDato)
-                        : undefined,
+                inntektstapStartetDato: formatDateToApiFormat(selvstendigInntektstapStartetDato),
                 inntekt2019: selvstendigInntekt2019,
                 inntekt2020: selvstendigInntekt2020,
                 inntektIPerioden: selvstendigInntektIPerioden,

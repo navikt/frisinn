@@ -3,7 +3,6 @@ import { Ingress } from 'nav-frontend-typografi';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import { SelvstendigNæringsdrivendeApiData } from '../../types/ApplicationApiData';
 import DatoSvar from './DatoSvar';
-import JaNeiSvar from './JaNeiSvar';
 import TallSvar from './TallSvar';
 
 interface Props {
@@ -13,14 +12,9 @@ interface Props {
 const SelvstendigNæringsdrivendeSummary = ({ data }: Props) => (
     <>
         <Ingress>Selvstendig næringsdrivende</Ingress>
-        <SummaryBlock header={'Har hatt inntektstap hele perioden?'}>
-            <JaNeiSvar harSvartJa={data.harHattInntektstapHelePeriode} />
+        <SummaryBlock header={'Inntektstapet startet'}>
+            <DatoSvar apiDato={data.inntektstapStartetDato} />
         </SummaryBlock>
-        {data.inntektstapStartetDato && (
-            <SummaryBlock header={'Inntektstapet startet'}>
-                <DatoSvar apiDato={data.inntektstapStartetDato} />
-            </SummaryBlock>
-        )}
         <SummaryBlock header="Inntekt 2019">
             <TallSvar verdi={data.inntekt2019} />
         </SummaryBlock>

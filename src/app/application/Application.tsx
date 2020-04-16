@@ -38,7 +38,7 @@ const Application = () => {
                 setApplicationEssentials({
                     person: person.data,
                     applicationDateRanges: søknadsperioder,
-                    companies: enkeltpersonforetak,
+                    registrerteForetakInfo: enkeltpersonforetak,
                 });
 
                 const storage = storageData ? applicationTempStorage.getValidStorage(storageData.data) : undefined;

@@ -3,34 +3,48 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
+import { ApplicationEssentials, ForetakInfo } from '../../types/ApplicationEssentials';
+import moment from 'moment';
 
 const Q = ApplicationFormField;
 
-const SelvstendigFormConfig: QuestionConfig<ApplicationFormData, ApplicationFormField> = {
-    [Q.selvstendigHarHattInntektstapHelePerioden]: {
-        isAnswered: ({ selvstendigHarHattInntektstapHelePerioden }) =>
-            yesOrNoIsAnswered(selvstendigHarHattInntektstapHelePerioden),
+type SelvstendigFormPayload = ApplicationFormData & ApplicationEssentials;
+
+const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: ForetakInfo | undefined): boolean => {
+    if (!registrerteForetakInfo) {
+        return false;
+    }
+    const { tidligsteRegistreringsdato } = registrerteForetakInfo;
+    return moment(tidligsteRegistreringsdato).isBefore(new Date(2020, 0, 1), 'day');
+};
+
+const selvstendigSkalOppgiInntekt2020 = (registrerteForetakInfo: ForetakInfo | undefined): boolean => {
+    if (!registrerteForetakInfo) {
+        return false;
+    }
+    const { tidligsteRegistreringsdato } = registrerteForetakInfo;
+    return moment(tidligsteRegistreringsdato).isSameOrAfter(new Date(2020, 0, 1), 'day');
+};
+
+const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationFormField> = {
+    [Q.selvstendigInntektstapErPgaKorona]: {
+        isAnswered: ({ selvstendigInntektstapErPgaKorona }) => yesOrNoIsAnswered(selvstendigInntektstapErPgaKorona),
     },
     [Q.selvstendigInntektstapStartetDato]: {
-        parentQuestion: Q.selvstendigHarHattInntektstapHelePerioden,
-        isIncluded: ({ selvstendigHarHattInntektstapHelePerioden }) =>
-            selvstendigHarHattInntektstapHelePerioden === YesOrNo.NO,
+        isIncluded: ({ selvstendigInntektstapErPgaKorona }) => selvstendigInntektstapErPgaKorona === YesOrNo.YES,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Q.selvstendigInntekt2019]: {
-        parentQuestion: Q.selvstendigHarHattInntektstapHelePerioden,
-        isIncluded: ({ selvstendigHarHattInntektstapHelePerioden, selvstendigInntektstapStartetDato }) =>
-            selvstendigHarHattInntektstapHelePerioden === YesOrNo.YES || hasValue(selvstendigInntektstapStartetDato),
+        isIncluded: ({ registrerteForetakInfo }) => selvstendigSkalOppgiInntekt2019(registrerteForetakInfo),
         isAnswered: ({ selvstendigInntekt2019 }) => hasValue(selvstendigInntekt2019),
     },
     [Q.selvstendigInntekt2020]: {
-        parentQuestion: Q.selvstendigInntekt2019,
+        isIncluded: ({ registrerteForetakInfo }) => selvstendigSkalOppgiInntekt2020(registrerteForetakInfo),
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
     },
     [Q.selvstendigInntektIPerioden]: {
-        parentQuestion: Q.selvstendigInntekt2020,
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
 };
 
-export const SelvstendigFormQuestions = Questions<ApplicationFormData, ApplicationFormField>(SelvstendigFormConfig);
+export const SelvstendigFormQuestions = Questions<SelvstendigFormPayload, ApplicationFormField>(SelvstendigFormConfig);
