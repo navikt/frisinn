@@ -7,20 +7,16 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
-import FC from '../../application/ApplicationFormComponents';
+import FormComponents from '../../application/ApplicationFormComponents';
 import { ApplicationFormField, ApplicationFormData } from '../../types/ApplicationFormData';
 import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { EntryFormQuestions } from './entryFormConfig';
 import { useFormikContext } from 'formik';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { shouldLoggedInUserBeStoppedFormUsingApplication, RejectReason } from '../../utils/accessUtils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { pluralize } from '../../utils/pluralize';
-import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
-import ForetakList from '../../components/foretak-list/ForetakList';
 import EndreKontonummer from '../../information/EndreKontonummer';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -28,41 +24,44 @@ interface DialogState {
 }
 
 interface Props {
-    appEssentials: ApplicationEssentials;
+    kontonummer: string;
+    isSelvstendig: boolean;
     onStart: () => void;
 }
 
-const EntryForm = ({ onStart, appEssentials: { person, personligeForetak: registrerteForetakInfo } }: Props) => {
+const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const { values } = useFormikContext<ApplicationFormData>();
     const intl = useIntl();
 
-    const isSelvstendig = registrerteForetakInfo !== undefined;
+    const {
+        kontonummerErRiktig,
+        søkerOmTaptInntektSomFrilanser,
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+    } = values;
 
-    const rejectionReason = shouldLoggedInUserBeStoppedFormUsingApplication(values);
-    const { isVisible, areAllQuestionsAnswered } = EntryFormQuestions.getVisbility({
-        ...values,
-        isSelvstendig,
-        rejectionReason,
-    });
+    const { isVisible, areAllQuestionsAnswered } = EntryFormQuestions.getVisbility({ ...values, isSelvstendig });
 
-    const canUseApplication = areAllQuestionsAnswered() && rejectionReason === undefined;
-    const foretak = registrerteForetakInfo?.foretak || [];
-    const antallForetak = foretak.length || 0;
+    const hasChosenApplication =
+        søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES;
+
+    const canContinue = areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && hasChosenApplication;
 
     return (
-        <FC.Form
+        <FormComponents.Form
             onValidSubmit={onStart}
             includeButtons={false}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <FormBlock>
-                <FC.YesOrNoQuestion
-                    legend={`Er kontonummeret ${person.kontonummer} ditt riktig?`}
+                <FormComponents.YesOrNoQuestion
+                    legend={`Vi har registrert kontonummeret ${kontonummer} på deg. Er dette riktig kontonummer?`}
                     name={ApplicationFormField.kontonummerErRiktig}
                 />
             </FormBlock>
-            {rejectionReason === RejectReason.kontonummerStemmerIkke && (
+
+            {kontonummerErRiktig === YesOrNo.NO && (
                 <FormBlock>
                     <AlertStripeAdvarsel>
                         <EndreKontonummer />
@@ -71,47 +70,32 @@ const EntryForm = ({ onStart, appEssentials: { person, personligeForetak: regist
             )}
             {isVisible(ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende) && (
                 <FormBlock>
-                    <FC.YesOrNoQuestion
-                        legend={`Vi har funnet ${antallForetak} foretak registrert på deg. Ønsker du å søke kompensasjon for tapt inntekt for ${pluralize(
-                            antallForetak,
-                            'dette foretaket',
-                            'disse foretakene'
-                        )}?`}
-                        description={
-                            <Box margin={'m'}>
-                                <ExpandableInfo
-                                    title="Vis registrerte foretak"
-                                    closeTitle={'Skjul registrerte foretak'}>
-                                    <ForetakList foretak={foretak} />
-                                </ExpandableInfo>
-                            </Box>
-                        }
+                    <FormComponents.YesOrNoQuestion
+                        legend={`Ønsker du å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
                         name={ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
                     />
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.erFrilanser) && (
-                <FormBlock>
-                    <FC.YesOrNoQuestion legend="Er du frilanser?" name={ApplicationFormField.erFrilanser} />
-                </FormBlock>
-            )}
             {isVisible(ApplicationFormField.søkerOmTaptInntektSomFrilanser) && (
                 <FormBlock>
-                    <FC.YesOrNoQuestion
+                    <FormComponents.YesOrNoQuestion
                         legend="Ønsker du å søke kompensasjon for tapt inntekt som frilanser?"
                         name={ApplicationFormField.søkerOmTaptInntektSomFrilanser}
                     />
                 </FormBlock>
             )}
-            {rejectionReason === RejectReason.søkerHverkenSomSelvstendigEllerFrilanser && (
-                <FormBlock>
-                    <AlertStripeAdvarsel>Du må velge hva du ønsker å søke om</AlertStripeAdvarsel>
-                </FormBlock>
+
+            {hasChosenApplication === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && (
+                <>
+                    <FormBlock>
+                        <AlertStripeAdvarsel>Du må velge hva du ønsker å søke om</AlertStripeAdvarsel>
+                    </FormBlock>
+                </>
             )}
 
-            {canUseApplication && (
+            {canContinue && (
                 <FormBlock>
-                    <FC.ConfirmationCheckbox
+                    <FormComponents.ConfirmationCheckbox
                         label={intlHelper(intl, 'samtykke.tekst')}
                         name={ApplicationFormField.harForståttRettigheterOgPlikter}
                         validate={validateSamtykke}>
@@ -125,8 +109,7 @@ const EntryForm = ({ onStart, appEssentials: { person, personligeForetak: regist
                                 ),
                             }}
                         />
-                    </FC.ConfirmationCheckbox>
-
+                    </FormComponents.ConfirmationCheckbox>
                     <Box textAlignCenter={true} margin="xl">
                         <Hovedknapp>{intlHelper(intl, 'start')}</Hovedknapp>
                         <FormBlock>
@@ -153,7 +136,7 @@ const EntryForm = ({ onStart, appEssentials: { person, personligeForetak: regist
                 contentLabel={intlHelper(intl, 'modal.behandlingAvPersonalia.tittel')}>
                 <BehandlingAvPersonopplysningerContent />
             </InfoDialog>
-        </FC.Form>
+        </FormComponents.Form>
     );
 };
 

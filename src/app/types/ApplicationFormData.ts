@@ -1,18 +1,48 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
+export enum SelvstendigFormFields {
+    harTaptInntektPgaKorona = 'harTaptInntektPgaKorona',
+    inntektstapStartetDato = 'inntektstapStartetDato',
+    inntektIPerioden = 'inntektIPerioden',
+    erFrilanser = 'erFrilanser',
+    harHattInntektSomFrilanserIPerioden = 'harHattInntektSomFrilanserIPerioden',
+    inntektSomFrilanserIPerioden = 'inntektSomFrilanserIPerioden',
+    historiskInntekt = 'historiskInntekt',
+}
+
+export interface SelvstendigFormData {
+    [SelvstendigFormFields.harTaptInntektPgaKorona]: YesOrNo;
+    [SelvstendigFormFields.inntektstapStartetDato]: Date;
+    [SelvstendigFormFields.inntektIPerioden]: number;
+    [SelvstendigFormFields.harHattInntektSomFrilanserIPerioden]?: YesOrNo;
+    [SelvstendigFormFields.inntektSomFrilanserIPerioden]?: number;
+    [SelvstendigFormFields.historiskInntekt]: number;
+}
+
+export enum FrilanserFormFields {
+    'inntektstapErPgaKorona' = 'inntektstapErPgaKorona',
+    'inntektstapStartetDato' = 'inntektstapStartetDato',
+    'inntektIPerioden' = 'inntektIPerioden',
+    'harHattInntektSomSelvstendigIPerioden' = 'harHattInntektSomSelvstendigIPerioden',
+    'inntektSomSelvstendigIPerioden' = 'inntektSomSelvstendigIPerioden',
+}
+
+export interface FrilanserFormData {
+    [FrilanserFormFields.inntektstapErPgaKorona]: YesOrNo;
+    [FrilanserFormFields.inntektstapStartetDato]: Date;
+    [FrilanserFormFields.inntektIPerioden]: number;
+    [FrilanserFormFields.harHattInntektSomSelvstendigIPerioden]?: YesOrNo;
+    [FrilanserFormFields.inntektSomSelvstendigIPerioden]?: number;
+}
+
 export enum ApplicationFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
     kontonummerErRiktig = 'kontonummerErRiktig',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
-    erFrilanser = 'erFrilanser',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
-    harTaptInntektSomFrilanser = 'harTaptInntektSomFrilanser',
-    selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
-    selvstendigInntektstapErPgaKorona = 'selvstendigInntektstapErPgaKorona',
-    selvstendigInntekt2019 = 'selvstendigInntekt2019',
-    selvstendigInntekt2020 = 'selvstendigInntekt2020',
-    selvstendigInntektIPerioden = 'selvstendigInntektIPerioden',
+    selvstendig = 'selvstendig',
+    frilanser = 'frilanser',
 }
 
 export interface ApplicationFormData {
@@ -20,18 +50,15 @@ export interface ApplicationFormData {
     [ApplicationFormField.harBekreftetOpplysninger]: boolean;
     [ApplicationFormField.kontonummerErRiktig]: YesOrNo;
     [ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
-    [ApplicationFormField.erFrilanser]: YesOrNo;
     [ApplicationFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
-    [ApplicationFormField.selvstendigInntektstapErPgaKorona]?: YesOrNo;
-    [ApplicationFormField.selvstendigInntektstapStartetDato]?: Date;
-    [ApplicationFormField.selvstendigInntekt2019]?: number;
-    [ApplicationFormField.selvstendigInntekt2020]?: number;
-    [ApplicationFormField.selvstendigInntektIPerioden]?: number;
+    [ApplicationFormField.selvstendig]?: SelvstendigFormData;
+    [ApplicationFormField.frilanser]?: FrilanserFormData;
 }
 
 export const initialApplicationValues: Partial<ApplicationFormData> = {
     [ApplicationFormField.harForståttRettigheterOgPlikter]: false,
     [ApplicationFormField.harBekreftetOpplysninger]: false,
-    [ApplicationFormField.erFrilanser]: YesOrNo.UNANSWERED,
+    [ApplicationFormField.kontonummerErRiktig]: YesOrNo.UNANSWERED,
     [ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo.UNANSWERED,
+    [ApplicationFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo.UNANSWERED,
 };
