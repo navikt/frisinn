@@ -11,7 +11,7 @@ import { ApplicationApiData } from '../../types/ApplicationApiData';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import * as apiUtils from '../../utils/apiUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
-import { navigateToErrorPage, navigateToLoginPage } from '../../utils/navigationUtils';
+import { navigateToErrorPage, relocateToLoginPage } from '../../utils/navigationUtils';
 import { validateBekrefterOpplysninger } from '../../validation/fieldValidations';
 import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
@@ -37,7 +37,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }
             onApplicationSent();
         } catch (error) {
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
-                navigateToLoginPage();
+                relocateToLoginPage();
             } else {
                 navigateToErrorPage(history);
             }

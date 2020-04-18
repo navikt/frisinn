@@ -35,7 +35,7 @@ export async function getPerioder(inntektstapStartet?: Date[]): Promise<Perioder
         );
         return Promise.resolve(parsePerioderApiResponse(data));
     } catch (error) {
-        return Promise.reject(undefined);
+        return Promise.reject(error);
     }
 }
 

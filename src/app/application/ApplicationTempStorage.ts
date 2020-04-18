@@ -17,7 +17,7 @@ export const STORAGE_VERSION = '1';
 
 interface ApplicationTemporartStorage extends Omit<PersistenceInterface<TemporaryStorageData>, 'persist'> {
     persist: (formData: ApplicationFormData, lastStepID: StepID) => Promise<AxiosResponse>;
-    getValidStorage: (storage: TemporaryStorageData) => TemporaryStorageData | undefined;
+    getValidStorage: (storage?: TemporaryStorageData) => TemporaryStorageData | undefined;
 }
 
 const persistSetup = persistence<TemporaryStorageData>({

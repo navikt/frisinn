@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import axiosConfig from '../config/axiosConfig';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 import { getEnvironmentVariable } from '../utils/envUtils';
-import { navigateToLoginPage } from '../utils/navigationUtils';
+import { relocateToLoginPage } from '../utils/navigationUtils';
 
 axios.defaults.baseURL = getEnvironmentVariable('API_URL');
 axios.defaults.withCredentials = true;
@@ -15,7 +15,7 @@ axios.interceptors.response.use(
     },
     (error: AxiosError) => {
         if (isForbidden(error) || isUnauthorized(error)) {
-            navigateToLoginPage();
+            relocateToLoginPage();
         }
         return Promise.reject(error);
     }

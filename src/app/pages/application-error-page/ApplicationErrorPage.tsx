@@ -11,6 +11,7 @@ const ApplicationErrorPage: React.FunctionComponent = ({ children }: { children?
         <Page title="Det oppstod en feil under visning av siden">
             <div className={'applicationErrorPage'}>
                 <Veilederpanel type="plakat" kompakt={true} fargetema="normal" svg={<VeilederLokal mood="uncertain" />}>
+                    <p>ApplicationErrorPage</p>
                     <Systemtittel tag="h2">Nødvendig informasjon mangler</Systemtittel>
                     <Box margin="m" padBottom="l">
                         <Ingress>Vennligst gå tilbake</Ingress>

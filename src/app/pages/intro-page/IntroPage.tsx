@@ -4,7 +4,7 @@ import InformationPoster from 'common/components/information-poster/InformationP
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
-import { navigateToApplication } from '../../utils/navigationUtils';
+import { relocateToApplication } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import { getSøknadsperiode } from '../../api/perioder';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
@@ -98,7 +98,7 @@ const IntroPage: React.StatelessComponent = () => {
                             )}
                             {formIsVisible && (
                                 <Panel>
-                                    <IntroForm onValidSubmit={() => navigateToApplication()} />
+                                    <IntroForm onValidSubmit={() => relocateToApplication()} />
                                 </Panel>
                             )}
                         </>
