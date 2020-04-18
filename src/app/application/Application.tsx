@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getPersonligeForetak } from '../api/personlige-foretak';
-import { getPerioder } from '../api/perioder';
+import { getSøknadsperiode } from '../api/perioder';
 import { getSoker } from '../api/soker';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
 import { ApplicationContext } from '../context/ApplicationContext';
@@ -29,21 +29,19 @@ const Application = () => {
         if (applicationEssentials === undefined && loadState.error === undefined) {
             try {
                 const person = await getSoker();
-                const søknadsperioder = await getPerioder();
+                const søknadsperiode = await getSøknadsperiode();
                 const personligeForetak = await getPersonligeForetak();
-                let storageData;
-                if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                    storageData = await applicationTempStorage.rehydrate();
-                }
                 setApplicationEssentials({
                     person: person.data,
-                    applicationDateRanges: søknadsperioder,
+                    currentSøknadsperiode: søknadsperiode,
                     personligeForetak: personligeForetak,
                 });
-
-                const storage = storageData ? applicationTempStorage.getValidStorage(storageData.data) : undefined;
-                if (storage) {
-                    setInitialFormData(storage.formData);
+                if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                    const storageData = await applicationTempStorage.rehydrate();
+                    const storage = storageData ? applicationTempStorage.getValidStorage(storageData.data) : undefined;
+                    if (storage) {
+                        setInitialFormData(storage.formData);
+                    }
                 }
                 setLoadState({ isLoading: false, error: false });
             } catch (error) {
@@ -79,7 +77,7 @@ const Application = () => {
                             initialValues={initialFormData}
                             onSubmit={() => null}
                             renderForm={() => {
-                                return <ApplicationRoutes />;
+                                return <ApplicationRoutes applicationEssentials={applicationEssentials} />;
                             }}
                         />
                     </ApplicationContext.Provider>

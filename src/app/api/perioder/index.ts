@@ -1,7 +1,6 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import api, { ApiEndpoint } from '../api';
-import { ApplicationDateRanges } from '../../types/ApplicationEssentials';
-import { apiStringDateToDate, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { apiStringDateToDate, formatDateToApiFormat, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface PeriodeTidsperiode {
     fom: ApiStringDate;
@@ -12,9 +11,13 @@ export interface PerioderApiResponse {
     søknadsperiode: PeriodeTidsperiode;
 }
 
-const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): ApplicationDateRanges => {
-    const ranges: ApplicationDateRanges = {
-        applicationDateRange: {
+interface Perioder {
+    søknadsperiode: DateRange;
+}
+
+const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): Perioder => {
+    const ranges: Perioder = {
+        søknadsperiode: {
             from: apiStringDateToDate(søknadsperioder.søknadsperiode.fom),
             to: apiStringDateToDate(søknadsperioder.søknadsperiode.tom),
         },
@@ -22,7 +25,7 @@ const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): Applic
     return ranges;
 };
 
-export async function getPerioder(inntektstapStartet?: Date[]): Promise<ApplicationDateRanges> {
+export async function getPerioder(inntektstapStartet?: Date[]): Promise<Perioder> {
     try {
         const dateParamName = 'inntektstapStartet';
         const dates = inntektstapStartet?.map((date) => formatDateToApiFormat(date));
@@ -33,5 +36,14 @@ export async function getPerioder(inntektstapStartet?: Date[]): Promise<Applicat
         return Promise.resolve(parsePerioderApiResponse(data));
     } catch (error) {
         return Promise.reject(undefined);
+    }
+}
+
+export async function getSøknadsperiode(inntektstapStartet?: Date[]): Promise<DateRange> {
+    try {
+        const perioder = await getPerioder(inntektstapStartet);
+        return Promise.resolve(perioder.søknadsperiode);
+    } catch (error) {
+        return Promise.reject(error);
     }
 }

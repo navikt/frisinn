@@ -6,13 +6,13 @@ import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
 import { navigateToApplication } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
-import { ApplicationDateRanges } from '../../types/ApplicationEssentials';
-import { getPerioder } from '../../api/perioder';
+import { getSøknadsperiode } from '../../api/perioder';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import { Knapp } from 'nav-frontend-knapper';
 import { Panel } from 'nav-frontend-paneler';
 import { Ingress, Systemtittel } from 'nav-frontend-typografi';
 import DateView from '../../components/date-view/DateView';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 const bem = bemUtils('introPage');
 
@@ -22,14 +22,14 @@ interface LoadState {
 }
 
 const IntroPage: React.StatelessComponent = () => {
-    const [dateRanges, setDateRanges] = useState<ApplicationDateRanges>();
+    const [currentPeriode, setCurrentPeriode] = useState<DateRange>();
     const [loadState, setLoadState] = useState<LoadState>({ isLoading: true });
     const [formIsVisible, showForm] = useState<boolean>(false);
 
     async function loadPageData() {
         try {
-            const søknadsperioder = await getPerioder();
-            setDateRanges(søknadsperioder);
+            const søknadsperiode = await getSøknadsperiode();
+            setCurrentPeriode(søknadsperiode);
             setLoadState({ isLoading: false, error: false });
         } catch (error) {
             setLoadState({ isLoading: false, error: true });
@@ -50,10 +50,9 @@ const IntroPage: React.StatelessComponent = () => {
             <LoadWrapper
                 isLoading={loadState.isLoading}
                 contentRenderer={() => {
-                    if (!dateRanges) {
+                    if (!currentPeriode) {
                         return null;
                     }
-                    const { applicationDateRange } = dateRanges;
                     return (
                         <>
                             <Box margin="xxxl" padBottom="xxl">
@@ -72,7 +71,7 @@ const IntroPage: React.StatelessComponent = () => {
                                             <p>
                                                 En søker for én måned om gangen, og første måned en kan søke for er{' '}
                                                 <strong>
-                                                    <DateView date={applicationDateRange.to} format="monthAndYear" />
+                                                    <DateView date={currentPeriode.to} format="monthAndYear" />
                                                 </strong>
                                                 .
                                             </p>

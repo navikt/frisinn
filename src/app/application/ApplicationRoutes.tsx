@@ -14,8 +14,13 @@ import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
 import applicationTempStorage from './ApplicationTempStorage';
 import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
+import { ApplicationEssentials } from '../types/ApplicationEssentials';
 
-const ApplicationRoutes = () => {
+interface Props {
+    applicationEssentials: ApplicationEssentials;
+}
+
+const ApplicationRoutes = ({ applicationEssentials }: Props) => {
     const history = useHistory();
 
     const { values } = useFormikContext<ApplicationFormData>();
@@ -40,9 +45,19 @@ const ApplicationRoutes = () => {
         if (isAvailable(stepID, values)) {
             switch (stepID) {
                 case StepID.SELVSTENDIG:
-                    return <SelvstendigStep onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)} />;
+                    return (
+                        <SelvstendigStep
+                            onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
+                            applicationEssentials={applicationEssentials}
+                        />
+                    );
                 case StepID.FRILANSER:
-                    return <FrilanserStep onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)} />;
+                    return (
+                        <FrilanserStep
+                            onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
+                            applicationEssentials={applicationEssentials}
+                        />
+                    );
                 case StepID.SUMMARY:
                     return (
                         <SummaryStep

@@ -4,7 +4,6 @@ import { useFormikContext } from 'formik';
 import { Knapp } from 'nav-frontend-knapper';
 import FormBlock from 'common/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from 'common/utils/commonFieldErrorRenderer';
-import MissingAppContext from '../components/missing-app-context/MissingAppContext';
 import StepFooter from '../components/step-footer/StepFooter';
 import Step, { StepProps } from '../components/step/Step';
 import { ApplicationContext } from '../context/ApplicationContext';
@@ -29,17 +28,17 @@ const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
     const { values, resetForm } = useFormikContext<ApplicationFormData>();
     const appContext = useContext(ApplicationContext);
 
-    if (!appContext) {
-        return <MissingAppContext />;
-    }
-
     const stepConfig = getStepConfig(values);
     const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = props;
     const texts = getStepTexts(intl, id, stepConfig);
+
     const handleAvbrytOgSlettSøknad = () => {
         resetForm();
-        appContext.resetApplication();
+        if (appContext) {
+            appContext.resetApplication();
+        }
     };
+
     return (
         <Step stepConfig={stepConfig} {...props}>
             <ApplicationFormComponents.Form

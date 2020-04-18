@@ -1,12 +1,17 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import api, { ApiEndpoint } from '../api';
-import { PersonligeForetak } from '../../types/ApplicationEssentials';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { Foretak } from '../../types/ApplicationEssentials';
 
 interface ApiPersonligeForetak {
     organisasjonsnummer: string;
     navn: string;
     registreringsdato: ApiStringDate;
+}
+
+export interface PersonligeForetak {
+    foretak: Foretak[];
+    tidligsteRegistreringsdato: Date;
 }
 
 interface PersonligeForetakApiResponse {
@@ -15,7 +20,7 @@ interface PersonligeForetakApiResponse {
 }
 
 const parsePersonligeForetakApiResponse = (data: PersonligeForetakApiResponse): PersonligeForetak => {
-    const { personligeForetak, tidligsteRegistreringsdato } = data;
+    const { personligeForetak = [], tidligsteRegistreringsdato } = data;
     return {
         tidligsteRegistreringsdato: apiStringDateToDate(tidligsteRegistreringsdato),
         foretak: personligeForetak.map((e) => ({

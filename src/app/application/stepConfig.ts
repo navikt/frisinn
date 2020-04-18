@@ -1,6 +1,7 @@
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { getApplicationRoute } from '../utils/routeUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { ApplicationEssentials } from '../types/ApplicationEssentials';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',
@@ -62,5 +63,6 @@ export const getStepConfig = (values: ApplicationFormData): StepConfigInterface 
 };
 
 export interface StepConfigProps {
+    applicationEssentials: ApplicationEssentials;
     onValidSubmit: () => void;
 }
