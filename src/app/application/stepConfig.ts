@@ -64,5 +64,6 @@ export const getStepConfig = (values: ApplicationFormData): StepConfigInterface 
 
 export interface StepConfigProps {
     applicationEssentials: ApplicationEssentials;
+    resetApplication: () => void;
     onValidSubmit: () => void;
 }

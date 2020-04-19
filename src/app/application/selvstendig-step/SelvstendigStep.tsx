@@ -36,7 +36,7 @@ const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
-const SelvstendigStep = ({ onValidSubmit, applicationEssentials }: StepConfigProps) => {
+const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssentials }: StepConfigProps) => {
     const { values } = useFormikContext<ApplicationFormData>();
 
     const foretak = applicationEssentials.personligeForetak?.foretak || [];
@@ -57,6 +57,7 @@ const SelvstendigStep = ({ onValidSubmit, applicationEssentials }: StepConfigPro
     return (
         <ApplicationStep
             id={StepID.SELVSTENDIG}
+            resetApplication={resetApplication}
             onValidFormSubmit={onValidSubmit}
             showSubmitButton={areAllQuestionsAnswered() && values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES}>
             <Guide kompakt={true} type="normal" svg={<AppVeileder />}>

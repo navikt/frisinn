@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import { useFormikContext } from 'formik';
 import { Knapp } from 'nav-frontend-knapper';
@@ -6,7 +6,6 @@ import FormBlock from 'common/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from 'common/utils/commonFieldErrorRenderer';
 import StepFooter from '../components/step-footer/StepFooter';
 import Step, { StepProps } from '../components/step/Step';
-import { ApplicationContext } from '../context/ApplicationContext';
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { getStepTexts } from '../utils/stepUtils';
 import ApplicationFormComponents from './ApplicationFormComponents';
@@ -19,28 +18,26 @@ export interface FormikStepProps {
     buttonDisabled?: boolean;
     onValidFormSubmit?: () => void;
     skipValidation?: boolean;
+    resetApplication: () => void;
 }
 
 type Props = FormikStepProps & StepProps;
 
-const ApplicationStep: React.FunctionComponent<Props> = (props: Props) => {
+const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, ...restProps }: Props) => {
     const intl = useIntl();
     const { values, resetForm } = useFormikContext<ApplicationFormData>();
-    const appContext = useContext(ApplicationContext);
 
     const stepConfig = getStepConfig(values);
-    const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = props;
+    const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = restProps;
     const texts = getStepTexts(intl, id, stepConfig);
 
     const handleAvbrytOgSlettSøknad = () => {
         resetForm();
-        if (appContext) {
-            appContext.resetApplication();
-        }
+        resetApplication();
     };
 
     return (
-        <Step stepConfig={stepConfig} {...props}>
+        <Step stepConfig={stepConfig} {...restProps}>
             <ApplicationFormComponents.Form
                 onValidSubmit={onValidFormSubmit}
                 includeButtons={false}

@@ -1,10 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
 import { Undertittel } from 'nav-frontend-typografi';
-import MissingAppContext from '../../components/missing-app-context/MissingAppContext';
-import { ApplicationContext } from '../../context/ApplicationContext';
 import { AccessCheckResult } from '../../types/AccessCheck';
 import EntryForm from './EntryForm';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
@@ -13,8 +11,10 @@ import EndreKontonummer from '../../information/EndreKontonummer';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import AppVeileder from '../../components/app-veileder/AppVeileder';
+import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 
 interface Props {
+    applicationEssentials: ApplicationEssentials;
     onStart: () => void;
 }
 
@@ -24,17 +24,11 @@ export interface AccessChecks {
     [KlientKrav.kontonummer]: AccessCheckResult;
 }
 
-const EntryPage = ({ onStart }: Props) => {
-    const appContext = useContext(ApplicationContext);
-    if (!appContext) {
-        return <MissingAppContext />;
-    }
+const EntryPage = ({ onStart, applicationEssentials }: Props) => {
     const {
-        applicationEssentials: {
-            person: { kontonummer },
-            personligeForetak,
-        },
-    } = appContext;
+        person: { kontonummer },
+        personligeForetak,
+    } = applicationEssentials;
 
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;
 

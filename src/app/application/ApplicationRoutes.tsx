@@ -18,10 +18,11 @@ import { ApplicationEssentials } from '../types/ApplicationEssentials';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 interface Props {
+    resetApplication: () => void;
     applicationEssentials: ApplicationEssentials;
 }
 
-const ApplicationRoutes = ({ applicationEssentials }: Props) => {
+const ApplicationRoutes = ({ resetApplication, applicationEssentials }: Props) => {
     const history = useHistory();
 
     const { values } = useFormikContext<ApplicationFormData>();
@@ -47,6 +48,7 @@ const ApplicationRoutes = ({ applicationEssentials }: Props) => {
             case StepID.SELVSTENDIG:
                 return (
                     <SelvstendigStep
+                        resetApplication={resetApplication}
                         applicationEssentials={applicationEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
                     />
@@ -54,6 +56,7 @@ const ApplicationRoutes = ({ applicationEssentials }: Props) => {
             case StepID.FRILANSER:
                 return (
                     <FrilanserStep
+                        resetApplication={resetApplication}
                         applicationEssentials={applicationEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
                     />
@@ -61,6 +64,7 @@ const ApplicationRoutes = ({ applicationEssentials }: Props) => {
             case StepID.SUMMARY:
                 return (
                     <SummaryStep
+                        resetApplication={resetApplication}
                         applicationEssentials={applicationEssentials}
                         onApplicationSent={() => {
                             relocateToConfirmationPage();
@@ -88,7 +92,7 @@ const ApplicationRoutes = ({ applicationEssentials }: Props) => {
             <Route
                 exact={true}
                 path={GlobalRoutes.APPLICATION}
-                render={() => <EntryPage onStart={onStartApplication} />}
+                render={() => <EntryPage onStart={onStartApplication} applicationEssentials={applicationEssentials} />}
             />
             {applicationSteps.map((step) => {
                 return <Route key={step} path={getApplicationRoute(step)} render={() => renderApplicationStep(step)} />;

@@ -7,7 +7,9 @@ import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
 import Panel from 'nav-frontend-paneler';
+import { sendApplication } from '../../api/soknad';
 import { ApplicationApiData } from '../../types/ApplicationApiData';
+import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import * as apiUtils from '../../utils/apiUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
@@ -17,15 +19,18 @@ import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import { StepID } from '../stepConfig';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
-import { sendApplication } from '../../api/soknad';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
+    resetApplication: () => void;
     onApplicationSent: () => void;
 }
 
-const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent, applicationEssentials }: Props) => {
+const OppsummeringStep: React.StatelessComponent<Props> = ({
+    resetApplication,
+    onApplicationSent,
+    applicationEssentials,
+}: Props) => {
     const intl = useIntl();
     const formik = useFormikContext<ApplicationFormData>();
     const history = useHistory();
@@ -51,6 +56,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent, 
     return (
         <ApplicationStep
             id={StepID.SUMMARY}
+            resetApplication={resetApplication}
             onValidFormSubmit={() => {
                 if (apiValues) {
                     setTimeout(() => {

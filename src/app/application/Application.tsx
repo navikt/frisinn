@@ -1,6 +1,5 @@
 import React from 'react';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
-import { ApplicationContext } from '../context/ApplicationContext';
 import { navigateToApplicationFrontpage } from '../utils/navigationUtils';
 import ApplicationFormComponents from './ApplicationFormComponents';
 import ApplicationRoutes from './ApplicationRoutes';
@@ -31,19 +30,18 @@ const Application = () => {
                     return <GeneralErrorPage />;
                 }
                 return (
-                    <ApplicationContext.Provider
-                        value={{
-                            applicationEssentials,
-                            resetApplication,
-                        }}>
-                        <ApplicationFormComponents.FormikWrapper
-                            initialValues={initialValues}
-                            onSubmit={() => null}
-                            renderForm={() => {
-                                return <ApplicationRoutes applicationEssentials={applicationEssentials} />;
-                            }}
-                        />
-                    </ApplicationContext.Provider>
+                    <ApplicationFormComponents.FormikWrapper
+                        initialValues={initialValues}
+                        onSubmit={() => null}
+                        renderForm={() => {
+                            return (
+                                <ApplicationRoutes
+                                    applicationEssentials={applicationEssentials}
+                                    resetApplication={resetApplication}
+                                />
+                            );
+                        }}
+                    />
                 );
             }}
         />
