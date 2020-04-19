@@ -2,14 +2,15 @@ import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { Locale } from 'common/types/Locale';
 
 export interface SelvstendigNæringsdrivendeApiData {
-    inntektstapStartetDato: ApiStringDate;
-    inntekt2019?: number;
-    inntekt2020: number;
+    inntektstapStartet: ApiStringDate;
     inntektIPerioden: number;
+    inntekt2019?: number;
+    inntekt2020?: number;
+    inntektSomFrilanserIPeriode?: number;
 }
 
 export interface FrilanserApiData {
-    inntektstapStartetDato: ApiStringDate;
+    inntektstapStartet: ApiStringDate;
     inntektIPeriode: number;
 }
 

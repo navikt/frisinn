@@ -2,29 +2,13 @@ import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/li
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
-import { ApplicationEssentials, PersonligeForetak } from '../../types/ApplicationEssentials';
-import moment from 'moment';
+import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from '../../utils/selvstendigUtils';
 
 const Field = ApplicationFormField;
 
 type SelvstendigFormPayload = Partial<ApplicationFormData> & ApplicationEssentials;
-
-const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: PersonligeForetak | undefined): boolean => {
-    if (!registrerteForetakInfo) {
-        return false;
-    }
-    const { tidligsteRegistreringsdato } = registrerteForetakInfo;
-    return moment(tidligsteRegistreringsdato).isBefore(new Date(2020, 0, 1), 'day');
-};
-
-const selvstendigSkalOppgiInntekt2020 = (registrerteForetakInfo: PersonligeForetak | undefined): boolean => {
-    if (!registrerteForetakInfo) {
-        return false;
-    }
-    const { tidligsteRegistreringsdato } = registrerteForetakInfo;
-    return moment(tidligsteRegistreringsdato).isSameOrAfter(new Date(2020, 0, 1), 'day');
-};
 
 const showHistoricIncomeQuestion = ({
     søkerOmTaptInntektSomFrilanser,

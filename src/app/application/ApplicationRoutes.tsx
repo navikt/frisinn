@@ -47,20 +47,21 @@ const ApplicationRoutes = ({ applicationEssentials }: Props) => {
             case StepID.SELVSTENDIG:
                 return (
                     <SelvstendigStep
-                        onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
                         applicationEssentials={applicationEssentials}
+                        onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
                     />
                 );
             case StepID.FRILANSER:
                 return (
                     <FrilanserStep
-                        onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
                         applicationEssentials={applicationEssentials}
+                        onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
                     />
                 );
             case StepID.SUMMARY:
                 return (
                     <SummaryStep
+                        applicationEssentials={applicationEssentials}
                         onApplicationSent={() => {
                             relocateToConfirmationPage();
                         }}

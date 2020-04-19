@@ -18,12 +18,14 @@ import ApplicationStep from '../ApplicationStep';
 import { StepID } from '../stepConfig';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import { sendApplication } from '../../api/soknad';
+import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 
 interface Props {
+    applicationEssentials: ApplicationEssentials;
     onApplicationSent: () => void;
 }
 
-const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }: Props) => {
+const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent, applicationEssentials }: Props) => {
     const intl = useIntl();
     const formik = useFormikContext<ApplicationFormData>();
     const history = useHistory();
@@ -44,7 +46,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ onApplicationSent }
         }
     }
 
-    const apiValues = mapFormDataToApiData(formik.values, intl.locale as Locale);
+    const apiValues = mapFormDataToApiData(applicationEssentials, formik.values, intl.locale as Locale);
 
     return (
         <ApplicationStep
