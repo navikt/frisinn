@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
     validateRequiredField,
     validateRequiredNumber,
@@ -9,7 +9,6 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import moment from 'moment';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
@@ -29,10 +28,7 @@ import { SelvstendigFormQuestions } from './selvstendigFormConfig';
 import Guide from '../guide/Guide';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import InfoPanel from '../info-panel/InfoPanel';
-
-const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
-    return moment(dateRange.to).diff(dateRange.from, 'days') + 1;
-};
+import { getNumberOfDaysInDateRange } from '../../utils/dateUtils';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -114,8 +110,8 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                     <>
                                         Du må selv dekke de 16 første dagene etter at inntektstapet startet. De{' '}
                                         {getNumberOfDaysInDateRange(availableDateRange)}{' '}
-                                        {pluralize(getNumberOfDaysInDateRange(availableDateRange), 'dag', 'dagene')} i
-                                        du søker for er da perioden{' '}
+                                        {pluralize(getNumberOfDaysInDateRange(availableDateRange), 'dag', 'dagene')} du
+                                        søker for er da perioden{' '}
                                         <strong>
                                             <DateRangeView dateRange={availableDateRange} extendedFormat={true} />
                                         </strong>{' '}

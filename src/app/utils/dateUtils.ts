@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export * from '@navikt/sif-common-core/lib/utils/dateUtils';
 
@@ -10,4 +11,8 @@ export const isSameDate = (date1: Date | undefined, date2: Date | undefined): bo
         return false;
     }
     return moment(date1).isSame(date2, 'day');
+};
+
+export const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
+    return moment(dateRange.to).diff(dateRange.from, 'days') + 1;
 };

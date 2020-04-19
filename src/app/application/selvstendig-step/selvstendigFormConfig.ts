@@ -8,7 +8,20 @@ import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from
 
 const Field = ApplicationFormField;
 
-type SelvstendigFormPayload = Partial<ApplicationFormData> & ApplicationEssentials;
+type SelvstendigFormData = Pick<
+    ApplicationFormData,
+    | ApplicationFormField.søkerOmTaptInntektSomFrilanser
+    | ApplicationFormField.selvstendigHarTaptInntektPgaKorona
+    | ApplicationFormField.selvstendigInntektstapStartetDato
+    | ApplicationFormField.selvstendigInntektIPerioden
+    | ApplicationFormField.selvstendigErFrilanser
+    | ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden
+    | ApplicationFormField.selvstendigInntektSomFrilanserIPerioden
+    | ApplicationFormField.selvstendigInntekt2019
+    | ApplicationFormField.selvstendigInntekt2020
+>;
+
+type SelvstendigFormPayload = SelvstendigFormData & ApplicationEssentials;
 
 const showHistoricIncomeQuestion = ({
     søkerOmTaptInntektSomFrilanser,
@@ -38,7 +51,7 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
     },
     [Field.selvstendigInntektstapStartetDato]: {
         isIncluded: ({ selvstendigHarTaptInntektPgaKorona }) => selvstendigHarTaptInntektPgaKorona === YesOrNo.YES,
-        isAnswered: (payload) => hasValue(payload[Field.selvstendigInntektstapStartetDato]),
+        isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Field.selvstendigInntektIPerioden]: {
         parentQuestion: Field.selvstendigInntektstapStartetDato,

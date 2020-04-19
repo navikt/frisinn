@@ -16,7 +16,11 @@ export enum ApplicationFormField {
     selvstendigInntektSomFrilanserIPerioden = 'selvstendigInntektSomFrilanserIPerioden',
     selvstendigInntekt2019 = 'selvstendigInntekt2019',
     selvstendigInntekt2020 = 'selvstendigInntekt2020',
-    frilanser = 'frilanser',
+    frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
+    frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
+    frilanserInntektIPerioden = 'frilanserInntektIPerioden',
+    frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
+    frilanserInntektSomSelvstendigIPerioden = 'frilanserInntektSomSelvstendigIPerioden',
 }
 
 export interface ApplicationFormData {
@@ -35,6 +39,11 @@ export interface ApplicationFormData {
     [ApplicationFormField.selvstendigInntektSomFrilanserIPerioden]?: number;
     [ApplicationFormField.selvstendigInntekt2019]?: number;
     [ApplicationFormField.selvstendigInntekt2020]?: number;
+    [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
+    [ApplicationFormField.frilanserInntektstapStartetDato]: Date;
+    [ApplicationFormField.frilanserInntektIPerioden]: number;
+    [ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
+    [ApplicationFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
 }
 
 export const initialApplicationValues: Partial<ApplicationFormData> = {
