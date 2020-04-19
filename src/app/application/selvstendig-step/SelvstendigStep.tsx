@@ -26,9 +26,9 @@ import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
-import CalculatorSvg from '../../assets/CalculatorSvg';
 import Guide from '../guide/Guide';
 import AppVeileder from '../../components/app-veileder/AppVeileder';
+import InfoPanel from '../info-panel/InfoPanel';
 
 const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
     return moment(dateRange.to).diff(dateRange.from, 'days') + 1;
@@ -145,7 +145,7 @@ const SelvstendigStep = ({ onValidSubmit, applicationEssentials }: StepConfigPro
                         }
                         return (
                             <>
-                                <Guide type="plakat" kompakt={true} svg={<CalculatorSvg />} fullHeight={true}>
+                                <InfoPanel>
                                     <Undertittel>Din inntekt som selvstendig næringsdrivende</Undertittel>
                                     <p>
                                         Vi trenger å vite hvilken inntekt du hadde som selvstendig næringsdrivende i
@@ -170,7 +170,7 @@ const SelvstendigStep = ({ onValidSubmit, applicationEssentials }: StepConfigPro
                                             <li>Eventuell inntekt som frilanser</li>
                                         </ul>
                                     </Box>
-                                </Guide>
+                                </InfoPanel>
                                 {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.Input
@@ -242,7 +242,9 @@ const SelvstendigStep = ({ onValidSubmit, applicationEssentials }: StepConfigPro
                                 )}
                                 {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
                                     <Box margin="xxl">
-                                        <Undertittel>Inntekt som selvstendig næringsdrivende i 2020</Undertittel>
+                                        <Undertittel>
+                                            Inntekt som selvstendig næringsdrivende i januar og februar 2020
+                                        </Undertittel>
                                         <FormBlock margin="l">
                                             <ApplicationFormComponents.Input
                                                 name={ApplicationFormField.selvstendigInntekt2020}
