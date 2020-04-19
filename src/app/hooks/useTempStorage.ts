@@ -21,6 +21,8 @@ function useTemporaryStorage() {
     useEffect(() => {
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             fetchStorage();
+        } else {
+            setIsLoading(false);
         }
     }, []);
 

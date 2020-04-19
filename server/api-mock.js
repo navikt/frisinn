@@ -74,6 +74,10 @@ const personligeForetak = {
     ],
     tidligsteRegistreringsdato: '2020-01-01',
 };
+const ingenPersonligeForetak = {
+    personligeForetak: [],
+    tidligsteRegistreringsdato: null,
+};
 
 const getPerioder = (query) => {
     const date = moment(query.inntektstapStartet).toDate();
@@ -124,7 +128,7 @@ const startExpressServer = () => {
 
     server.get('/personlige-foretak', (req, res) => {
         setTimeout(() => {
-            res.send(personligeForetak);
+            res.send(ingenPersonligeForetak);
         }, 250);
     });
 

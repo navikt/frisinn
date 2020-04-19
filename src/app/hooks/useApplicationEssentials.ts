@@ -20,7 +20,7 @@ function useApplicationEssentials() {
             setApplicationEssentials({
                 person,
                 currentSøknadsperiode,
-                personligeForetak,
+                personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
             });
         } catch (error) {
             setError(error);

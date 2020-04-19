@@ -13,7 +13,7 @@ import IntroPage from './pages/intro-page/IntroPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavailablePage';
 import 'common/styles/globalStyles.less';
-import './app.less';
+import './styles/app.less';
 
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');

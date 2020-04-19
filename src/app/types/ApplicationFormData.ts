@@ -4,6 +4,8 @@ export enum ApplicationFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
     kontonummerErRiktig = 'kontonummerErRiktig',
+    erSelvstendigNæringsdrivende = 'erSelvstendigNæringsdrivende',
+    ønskerÅFortsetteKunFrilanserSøknad = 'ønskerÅFortsetteKunFrilanserSøknad',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
@@ -23,6 +25,8 @@ export interface ApplicationFormData {
     [ApplicationFormField.kontonummerErRiktig]: YesOrNo;
     [ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [ApplicationFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
+    [ApplicationFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
+    [ApplicationFormField.ønskerÅFortsetteKunFrilanserSøknad]?: YesOrNo;
     [ApplicationFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [ApplicationFormField.selvstendigInntektstapStartetDato]: Date;
     [ApplicationFormField.selvstendigInntektIPerioden]: number;

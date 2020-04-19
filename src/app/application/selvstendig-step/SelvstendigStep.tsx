@@ -27,7 +27,7 @@ import ApplicationStep from '../ApplicationStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
 import Guide from '../guide/Guide';
-import AppVeileder from '../../components/app-veileder/AppVeileder';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import InfoPanel from '../info-panel/InfoPanel';
 
 const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
@@ -60,7 +60,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
             resetApplication={resetApplication}
             onValidFormSubmit={onValidSubmit}
             showSubmitButton={areAllQuestionsAnswered() && values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES}>
-            <Guide kompakt={true} type="normal" svg={<AppVeileder />}>
+            <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
                 <p>
                     Vi har funnet {antallForetak} foretak registrert på deg som du kan søke om tapt inntekt for.
                     Informasjonen du oppgir på denne siden skal gjelde for alle foretakene dine samlet.

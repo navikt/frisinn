@@ -23,6 +23,17 @@ const EntryFormConfig: QuestionConfig<EntryFormPayload, ApplicationFormField> = 
         isIncluded: ({ kontonummerErRiktig }) => kontonummerErRiktig === YesOrNo.YES,
         isAnswered: ({ søkerOmTaptInntektSomFrilanser }) => yesOrNoIsAnswered(søkerOmTaptInntektSomFrilanser),
     },
+    [Q.erSelvstendigNæringsdrivende]: {
+        visibilityFilter: ({ søkerOmTaptInntektSomFrilanser }) => yesOrNoIsAnswered(søkerOmTaptInntektSomFrilanser),
+        isIncluded: ({ isSelvstendig, kontonummerErRiktig }) =>
+            isSelvstendig === false && kontonummerErRiktig === YesOrNo.YES,
+        isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
+    },
+    [Q.ønskerÅFortsetteKunFrilanserSøknad]: {
+        visibilityFilter: ({ søkerOmTaptInntektSomFrilanser, erSelvstendigNæringsdrivende }) =>
+            erSelvstendigNæringsdrivende === YesOrNo.YES && søkerOmTaptInntektSomFrilanser === YesOrNo.YES,
+        isAnswered: ({ ønskerÅFortsetteKunFrilanserSøknad }) => yesOrNoIsAnswered(ønskerÅFortsetteKunFrilanserSøknad),
+    },
 };
 
 export const EntryFormQuestions = Questions<EntryFormPayload, ApplicationFormField>(EntryFormConfig);

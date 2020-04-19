@@ -1,6 +1,12 @@
 import React from 'react';
 
-function AppVeileder({ mood = 'happy' }: { mood?: 'happy' | 'uncertain' }) {
+type VeilederMood = 'happy' | 'uncertain';
+
+interface Props {
+    mood?: VeilederMood;
+}
+
+function AppVeilederSVG({ mood = 'happy' }: Props) {
     return (
         <svg width={49} height={85} viewBox="0 0 49 85">
             <title>{'Group 2'}</title>
@@ -45,4 +51,4 @@ function AppVeileder({ mood = 'happy' }: { mood?: 'happy' | 'uncertain' }) {
     );
 }
 
-export default AppVeileder;
+export default AppVeilederSVG;

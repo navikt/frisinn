@@ -17,6 +17,9 @@ import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import ApplicationFormComponents from '../../application/ApplicationFormComponents';
+import Guide from '../../application/guide/Guide';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -47,7 +50,21 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES;
 
-    const canContinue = areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && hasChosenApplication;
+    const infoStates = {
+        isSelvstendigButNoForetakFound: values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendig,
+        hasNotChosenApplication:
+            hasChosenApplication === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
+        ønskerIkkeSøkeBareSomFrilanser:
+            values.erSelvstendigNæringsdrivende === YesOrNo.YES &&
+            !isSelvstendig &&
+            values.ønskerÅFortsetteKunFrilanserSøknad === YesOrNo.NO,
+    };
+
+    const canContinue =
+        areAllQuestionsAnswered() &&
+        kontonummerErRiktig === YesOrNo.YES &&
+        hasChosenApplication &&
+        infoStates.ønskerIkkeSøkeBareSomFrilanser !== true;
 
     return (
         <FormComponents.Form
@@ -84,11 +101,50 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                     />
                 </FormBlock>
             )}
-
-            {hasChosenApplication === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && (
+            {isVisible(ApplicationFormField.erSelvstendigNæringsdrivende) && (
+                <FormBlock>
+                    <ApplicationFormComponents.YesOrNoQuestion
+                        legend="Er du selvstendig næringsdrivende?"
+                        name={ApplicationFormField.erSelvstendigNæringsdrivende}
+                    />
+                </FormBlock>
+            )}
+            {infoStates.isSelvstendigButNoForetakFound && (
+                <FormBlock>
+                    <Guide kompakt={true} svg={<AppVeilederSVG mood="uncertain" />} fargetema="advarsel">
+                        Vi kunne ikke finne noen foretak registrert på deg.
+                        <p>
+                            Her må det komme mer informasjon om hva bruker skal gjøre dersom bruker mener at dette er
+                            feil.
+                        </p>
+                    </Guide>
+                </FormBlock>
+            )}
+            {isVisible(ApplicationFormField.ønskerÅFortsetteKunFrilanserSøknad) && (
                 <>
                     <FormBlock>
-                        <AlertStripeAdvarsel>Du må velge hva du ønsker å søke om</AlertStripeAdvarsel>
+                        <ApplicationFormComponents.YesOrNoQuestion
+                            legend="Ønsker du å fortsette med å kun søke som frilanser?"
+                            name={ApplicationFormField.ønskerÅFortsetteKunFrilanserSøknad}
+                        />
+                    </FormBlock>
+                    {infoStates.ønskerIkkeSøkeBareSomFrilanser && (
+                        <FormBlock>
+                            <AlertStripeAdvarsel>
+                                Info om hva bruker skal gjøre, eller bare si stopp?
+                            </AlertStripeAdvarsel>
+                        </FormBlock>
+                    )}
+                </>
+            )}
+
+            {infoStates.hasNotChosenApplication && !infoStates.isSelvstendigButNoForetakFound && (
+                <>
+                    <FormBlock>
+                        <AlertStripeAdvarsel>
+                            Du kan ikke gå videre før du har valgt hva du ønsker å søke om.{' '}
+                            {infoStates.isSelvstendigButNoForetakFound && <p>sdf</p>}
+                        </AlertStripeAdvarsel>
                     </FormBlock>
                 </>
             )}

@@ -9,9 +9,9 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { ApiKrav, KlientKrav } from '../../types/Krav';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import AppVeileder from '../../components/app-veileder/AppVeileder';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
+import Guide from '../../application/guide/Guide';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
@@ -39,11 +39,7 @@ const EntryPage = ({ onStart, applicationEssentials }: Props) => {
                 <StepBanner text="Inntektskompensasjon for selvstendig næringsdrivende og frilansere" />
             )}>
             <Box margin="xxxl">
-                <Veilederpanel
-                    kompakt={true}
-                    type="plakat"
-                    veilederProps={{ transparent: false, fargetema: 'normal' }}
-                    svg={<AppVeileder mood="happy" />}>
+                <Guide kompakt={true} type="plakat" svg={<AppVeilederSVG mood="happy" />}>
                     <Box margin="l">
                         <Undertittel>Kompensasjon for inntektsstap i april 2020</Undertittel>
                     </Box>
@@ -51,7 +47,7 @@ const EntryPage = ({ onStart, applicationEssentials }: Props) => {
                         Du kan ha rett på dette dersom du har tapt inntekt som selvstendig næringsdrivende eller
                         frilanser denne perioden.
                     </Box>
-                </Veilederpanel>
+                </Guide>
                 {!harKontonummer && (
                     <FormBlock>
                         <AlertStripeAdvarsel>
