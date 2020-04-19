@@ -19,6 +19,7 @@ import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import { StepID } from '../stepConfig';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
+import FrilanserSummary from './FrilanserSummary';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
@@ -73,8 +74,9 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                     <Box margin="xl">
                         <Panel border={true}>
                             {apiValues.selvstendigNæringsdrivende && (
-                                <SelvstendigNæringsdrivendeSummary {...apiValues.selvstendigNæringsdrivende} />
+                                <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
                             )}
+                            {apiValues.frilanser && <FrilanserSummary apiData={apiValues.frilanser} />}
                         </Panel>
                     </Box>
 

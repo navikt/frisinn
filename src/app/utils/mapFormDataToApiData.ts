@@ -1,5 +1,5 @@
 import { Locale } from 'common/types/Locale';
-import { ApplicationApiData, SelvstendigNæringsdrivendeApiData } from '../types/ApplicationApiData';
+import { ApplicationApiData, SelvstendigNæringsdrivendeApiData, FrilanserApiData } from '../types/ApplicationApiData';
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
@@ -39,6 +39,26 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
     return undefined;
 };
 
+export const mapFrilanserFormDataToApiData = ({
+    frilanserHarTaptInntektPgaKorona,
+    frilanserInntektIPerioden,
+    frilanserInntektstapStartetDato,
+    frilanserHarHattInntektSomSelvstendigIPerioden,
+    frilanserInntektSomSelvstendigIPerioden,
+}: ApplicationFormData): FrilanserApiData | undefined => {
+    if (frilanserHarTaptInntektPgaKorona === YesOrNo.YES) {
+        return {
+            inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
+            inntektIPerioden: frilanserInntektIPerioden,
+            inntektIPeriodenSomSelvstendigNæringsdrivende:
+                frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES
+                    ? frilanserInntektSomSelvstendigIPerioden
+                    : undefined,
+        };
+    }
+    return undefined;
+};
+
 export const mapFormDataToApiData = (
     appEssentials: ApplicationEssentials,
     formData: ApplicationFormData,
@@ -51,6 +71,7 @@ export const mapFormDataToApiData = (
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,
         selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(appEssentials, formData),
+        frilanser: mapFrilanserFormDataToApiData(formData),
     };
 
     return apiData;

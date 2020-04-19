@@ -5,13 +5,13 @@ import { SelvstendigNæringsdrivendeApiData } from '../../types/ApplicationApiDa
 import DatoSvar from './DatoSvar';
 import TallSvar from './TallSvar';
 
+interface Props {
+    apiData: SelvstendigNæringsdrivendeApiData;
+}
+
 const SelvstendigNæringsdrivendeSummary = ({
-    inntektIPerioden,
-    inntektstapStartet,
-    inntekt2019,
-    inntekt2020,
-    inntektIPeriodenSomFrilanser,
-}: SelvstendigNæringsdrivendeApiData) => (
+    apiData: { inntektIPerioden, inntektstapStartet, inntekt2019, inntekt2020, inntektIPeriodenSomFrilanser },
+}: Props) => (
     <>
         <Ingress>Selvstendig næringsdrivende</Ingress>
         <SummaryBlock header={'Inntektstapet startet'}>
