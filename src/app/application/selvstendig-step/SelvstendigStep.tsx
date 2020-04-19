@@ -58,7 +58,7 @@ const SelvstendigStep = ({ onValidSubmit, applicationEssentials }: StepConfigPro
         <ApplicationStep
             id={StepID.SELVSTENDIG}
             onValidFormSubmit={onValidSubmit}
-            showSubmitButton={areAllQuestionsAnswered()}>
+            showSubmitButton={areAllQuestionsAnswered() && values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES}>
             <Guide kompakt={true} type="normal" svg={<AppVeileder />}>
                 <p>
                     Vi har funnet {antallForetak} foretak registrert på deg som du kan søke om tapt inntekt for.
