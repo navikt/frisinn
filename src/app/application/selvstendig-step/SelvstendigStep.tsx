@@ -9,26 +9,23 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
-import DateView from '../../components/date-view/DateView';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
-import { isDateBeforeKoronatiltak, KORONA_DATE } from '../../utils/koronaUtils';
-import { pluralize } from '../../utils/pluralize';
 import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
 import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
-import Guide from '../guide/Guide';
+import Guide from '../../components/guide/Guide';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
-import InfoPanel from '../info-panel/InfoPanel';
-import { getNumberOfDaysInDateRange } from '../../utils/dateUtils';
+import InfoPanel from '../../components/info-panel/InfoPanel';
+import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -99,26 +96,11 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                     />
                     {isValidDateRange(availableDateRange) && (
                         <Box margin="l" padBottom="xxl">
-                            <AlertStripeInfo>
-                                {isDateBeforeKoronatiltak(selvstendigInntektstapStartetDato) && (
-                                    <Box padBottom="l">
-                                        Du har valgt en dato som er tidligere enn <DateView date={KORONA_DATE} />, som
-                                        er første dag du kan få dekket gjennom denne ordningen.
-                                    </Box>
-                                )}
-                                {isLimitedDateRange && (
-                                    <>
-                                        Du må selv dekke de 16 første dagene etter at inntektstapet startet. De{' '}
-                                        {getNumberOfDaysInDateRange(availableDateRange)}{' '}
-                                        {pluralize(getNumberOfDaysInDateRange(availableDateRange), 'dag', 'dagene')} du
-                                        søker for er da perioden{' '}
-                                        <strong>
-                                            <DateRangeView dateRange={availableDateRange} extendedFormat={true} />
-                                        </strong>{' '}
-                                        .
-                                    </>
-                                )}
-                            </AlertStripeInfo>
+                            <AvailableDateRangeInfo
+                                inntektstapStartetDato={selvstendigInntektstapStartetDato}
+                                availableDateRange={availableDateRange}
+                                isLimitedDateRange={isLimitedDateRange}
+                            />
                         </Box>
                     )}
                 </FormBlock>
@@ -176,7 +158,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             bredde="S"
                                             label={
                                                 <span>
-                                                    Hvilken inntekt har du hatt i{' '}
+                                                    Hvilken inntekt har du hatt i perioden{' '}
                                                     <DateRangeView
                                                         extendedFormat={true}
                                                         dateRange={availableDateRange}

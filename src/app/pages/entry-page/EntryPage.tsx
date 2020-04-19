@@ -11,7 +11,7 @@ import EndreKontonummer from '../../information/EndreKontonummer';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import Guide from '../../application/guide/Guide';
+import Guide from '../../components/guide/Guide';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;

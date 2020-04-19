@@ -128,7 +128,7 @@ const startExpressServer = () => {
 
     server.get('/personlige-foretak', (req, res) => {
         setTimeout(() => {
-            res.send(ingenPersonligeForetak);
+            res.send(personligeForetak);
         }, 250);
     });
 

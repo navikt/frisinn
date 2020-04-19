@@ -18,7 +18,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import ApplicationFormComponents from '../../application/ApplicationFormComponents';
-import Guide from '../../application/guide/Guide';
+import Guide from '../../components/guide/Guide';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 
 interface DialogState {

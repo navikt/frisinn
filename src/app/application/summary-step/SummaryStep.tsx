@@ -76,7 +76,11 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                             {apiValues.selvstendigNæringsdrivende && (
                                 <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
                             )}
-                            {apiValues.frilanser && <FrilanserSummary apiData={apiValues.frilanser} />}
+                            {apiValues.frilanser && (
+                                <Box margin={apiValues.selvstendigNæringsdrivende ? 'xl' : undefined}>
+                                    <FrilanserSummary apiData={apiValues.frilanser} />
+                                </Box>
+                            )}
                         </Panel>
                     </Box>
 

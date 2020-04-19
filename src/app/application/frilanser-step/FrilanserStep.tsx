@@ -1,31 +1,29 @@
 import React from 'react';
-import ApplicationStep from '../ApplicationStep';
-import { StepConfigProps, StepID } from '../stepConfig';
-import { useFormikContext } from 'formik';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
-import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
-import { FrilanserFormQuestions } from './frilanserFormConfig';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
-import Guide from '../guide/Guide';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import ApplicationFormComponents from '../ApplicationFormComponents';
-import DateRangeView from '../../components/date-range-view/DateRangeView';
 import {
-    validateYesOrNoIsAnswered,
     validateRequiredField,
     validateRequiredNumber,
+    validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { validateAll, validateDateInRange, MAX_INNTEKT } from '../../validation/fieldValidations';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { isDateBeforeKoronatiltak, KORONA_DATE } from '../../utils/koronaUtils';
-import DateView from '../../components/date-view/DateView';
-import { getNumberOfDaysInDateRange, apiStringDateToDate } from '../../utils/dateUtils';
-import { pluralize } from '../../utils/pluralize';
-import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { useFormikContext } from 'formik';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Element, Undertittel } from 'nav-frontend-typografi';
-import InfoPanel from '../info-panel/InfoPanel';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import DateRangeView from '../../components/date-range-view/DateRangeView';
+import Guide from '../../components/guide/Guide';
+import InfoPanel from '../../components/info-panel/InfoPanel';
+import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
+import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
+import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { apiStringDateToDate } from '../../utils/dateUtils';
+import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
+import ApplicationFormComponents from '../ApplicationFormComponents';
+import ApplicationStep from '../ApplicationStep';
+import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
+import { StepConfigProps, StepID } from '../stepConfig';
+import { FrilanserFormQuestions } from './frilanserFormConfig';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -88,26 +86,11 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                     />
                     {isValidDateRange(availableDateRange) && (
                         <Box margin="l" padBottom="xxl">
-                            <AlertStripeInfo>
-                                {isDateBeforeKoronatiltak(frilanserInntektstapStartetDato) && (
-                                    <Box padBottom="l">
-                                        Du har valgt en dato som er tidligere enn <DateView date={KORONA_DATE} />, som
-                                        er første dag du kan få dekket gjennom denne ordningen.
-                                    </Box>
-                                )}
-                                {isLimitedDateRange && (
-                                    <>
-                                        Du må selv dekke de 16 første dagene etter at inntektstapet startet. De{' '}
-                                        {getNumberOfDaysInDateRange(availableDateRange)}{' '}
-                                        {pluralize(getNumberOfDaysInDateRange(availableDateRange), 'dag', 'dagene')} du
-                                        søker for er da perioden{' '}
-                                        <strong>
-                                            <DateRangeView dateRange={availableDateRange} extendedFormat={true} />
-                                        </strong>{' '}
-                                        .
-                                    </>
-                                )}
-                            </AlertStripeInfo>
+                            <AvailableDateRangeInfo
+                                inntektstapStartetDato={frilanserInntektstapStartetDato}
+                                availableDateRange={availableDateRange}
+                                isLimitedDateRange={isLimitedDateRange}
+                            />
                         </Box>
                     )}
                 </FormBlock>
