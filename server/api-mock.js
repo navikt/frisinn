@@ -69,10 +69,10 @@ const personligeForetak = {
         {
             organisasjonsnummer: '995298775',
             navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
-            registreringsdato: '2006-06-01',
+            registreringsdato: '2020-01-01',
         },
     ],
-    tidligsteRegistreringsdato: '2006-06-01',
+    tidligsteRegistreringsdato: '2020-01-01',
 };
 
 const getPerioder = (query) => {

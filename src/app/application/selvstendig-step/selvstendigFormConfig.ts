@@ -8,8 +8,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 const Field = ApplicationFormField;
 
-type SelvstendigFormPayload = Partial<ApplicationFormData> &
-    ApplicationEssentials & { søkerForTaptInntektSomFrilanser: boolean };
+type SelvstendigFormPayload = Partial<ApplicationFormData> & ApplicationEssentials;
 
 const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: PersonligeForetak | undefined): boolean => {
     if (!registrerteForetakInfo) {
@@ -27,6 +26,28 @@ const selvstendigSkalOppgiInntekt2020 = (registrerteForetakInfo: PersonligeForet
     return moment(tidligsteRegistreringsdato).isSameOrAfter(new Date(2020, 0, 1), 'day');
 };
 
+const showHistoricIncomeQuestion = ({
+    søkerOmTaptInntektSomFrilanser,
+    selvstendigInntektIPerioden,
+    selvstendigErFrilanser,
+    selvstendigHarHattInntektSomFrilanserIPerioden,
+    selvstendigInntektSomFrilanserIPerioden,
+}: SelvstendigFormPayload): boolean => {
+    if (søkerOmTaptInntektSomFrilanser === YesOrNo.YES) {
+        return hasValue(selvstendigInntektIPerioden);
+    }
+    if (selvstendigErFrilanser === YesOrNo.YES) {
+        if (selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES) {
+            return hasValue(selvstendigInntektSomFrilanserIPerioden);
+        }
+        return yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden);
+    }
+    if (selvstendigErFrilanser === YesOrNo.NO) {
+        return true;
+    }
+    return false;
+};
+
 const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationFormField> = {
     [Field.selvstendigHarTaptInntektPgaKorona]: {
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
@@ -41,7 +62,7 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
     },
     [Field.selvstendigErFrilanser]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ søkerForTaptInntektSomFrilanser }) => søkerForTaptInntektSomFrilanser === true,
+        isIncluded: ({ søkerOmTaptInntektSomFrilanser }) => søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
         isAnswered: ({ selvstendigErFrilanser }) => yesOrNoIsAnswered(selvstendigErFrilanser),
     },
     [Field.selvstendigHarHattInntektSomFrilanserIPerioden]: {
@@ -50,16 +71,19 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
             yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
     },
     [Field.selvstendigInntektSomFrilanserIPerioden]: {
-        isIncluded: ({ selvstendigErFrilanser }) => selvstendigErFrilanser === YesOrNo.YES,
+        isIncluded: ({ selvstendigErFrilanser, selvstendigHarHattInntektSomFrilanserIPerioden }) =>
+            selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES,
         visibilityFilter: ({ selvstendigHarHattInntektSomFrilanserIPerioden }) =>
             yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
         isAnswered: ({ selvstendigInntektSomFrilanserIPerioden }) => hasValue(selvstendigInntektSomFrilanserIPerioden),
     },
     [Field.selvstendigInntekt2019]: {
+        visibilityFilter: showHistoricIncomeQuestion,
         isIncluded: ({ personligeForetak }) => selvstendigSkalOppgiInntekt2019(personligeForetak),
         isAnswered: ({ selvstendigInntekt2019 }) => hasValue(selvstendigInntekt2019),
     },
     [Field.selvstendigInntekt2020]: {
+        visibilityFilter: showHistoricIncomeQuestion,
         isIncluded: ({ personligeForetak }) => selvstendigSkalOppgiInntekt2020(personligeForetak),
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
     },

@@ -12,7 +12,7 @@ import { ApiKrav, KlientKrav } from '../../types/Krav';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import VeilederLokal from '../../components/veileder-local/VeilederLokal';
+import AppVeileder from '../../components/app-veileder/AppVeileder';
 
 interface Props {
     onStart: () => void;
@@ -49,7 +49,7 @@ const EntryPage = ({ onStart }: Props) => {
                     kompakt={true}
                     type="plakat"
                     veilederProps={{ transparent: false, fargetema: 'normal' }}
-                    svg={<VeilederLokal mood="happy" />}>
+                    svg={<AppVeileder mood="happy" />}>
                     <Box margin="l">
                         <Undertittel>Kompensasjon for inntektsstap i april 2020</Undertittel>
                     </Box>
