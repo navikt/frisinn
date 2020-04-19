@@ -8,6 +8,7 @@ import useApplicationEssentials from '../hooks/useApplicationEssentials';
 import useTemporaryStorage from '../hooks/useTempStorage';
 import applicationTempStorage from './ApplicationTempStorage';
 import { useHistory } from 'react-router-dom';
+import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 
 const Application = () => {
     const essentials = useApplicationEssentials();
@@ -18,7 +19,9 @@ const Application = () => {
     const history = useHistory();
 
     async function resetApplication() {
-        await tempStorage.purge();
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            await tempStorage.purge();
+        }
         navigateToApplicationFrontpage(history);
     }
 

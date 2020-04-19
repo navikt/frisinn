@@ -25,14 +25,13 @@ type Props = FormikStepProps & StepProps;
 
 const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, ...restProps }: Props) => {
     const intl = useIntl();
-    const { values, resetForm } = useFormikContext<ApplicationFormData>();
+    const { values } = useFormikContext<ApplicationFormData>();
 
     const stepConfig = getStepConfig(values);
     const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = restProps;
     const texts = getStepTexts(intl, id, stepConfig);
 
     const handleAvbrytOgSlettSøknad = () => {
-        resetForm();
         resetApplication();
     };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
@@ -12,6 +12,8 @@ import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepB
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import Guide from '../../components/guide/Guide';
+import { useFormikContext } from 'formik';
+import { ApplicationFormData } from '../../types/ApplicationFormData';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
@@ -25,10 +27,15 @@ export interface AccessChecks {
 }
 
 const EntryPage = ({ onStart, applicationEssentials }: Props) => {
+    const { resetForm } = useFormikContext<ApplicationFormData>();
     const {
         person: { kontonummer },
         personligeForetak,
     } = applicationEssentials;
+
+    useEffect(() => {
+        resetForm();
+    }, []);
 
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;
 
