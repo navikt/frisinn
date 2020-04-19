@@ -6,12 +6,13 @@ export interface SelvstendigNæringsdrivendeApiData {
     inntektIPerioden: number;
     inntekt2019?: number;
     inntekt2020?: number;
-    inntektSomFrilanserIPeriode?: number;
+    inntektIPeriodenSomFrilanser?: number;
 }
 
 export interface FrilanserApiData {
     inntektstapStartet: ApiStringDate;
     inntektIPeriode: number;
+    inntektIPeriodenSomSelvstendigNæringsdrivende?: number;
 }
 
 export interface ApplicationApiData {

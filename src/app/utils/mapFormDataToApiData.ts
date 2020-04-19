@@ -33,7 +33,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntektIPerioden: selvstendigInntektIPerioden,
             inntekt2019: selvstendigSkalOppgiInntekt2019(personligeForetak) ? selvstendigInntekt2019 : undefined,
             inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak) ? selvstendigInntekt2020 : undefined,
-            inntektSomFrilanserIPeriode: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
+            inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
         };
     }
     return undefined;
