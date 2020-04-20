@@ -50,6 +50,8 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
         setFieldValue(ApplicationFormField.selvstendigCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
 
+    const ensureString = (label: string) => label;
+
     return (
         <ApplicationStep
             id={StepID.SELVSTENDIG}
@@ -64,7 +66,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                 <FormBlock>
                     <ApplicationFormComponents.YesOrNoQuestion
                         name={ApplicationFormField.selvstendigHarTaptInntektPgaKorona}
-                        legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                        legend={ensureString(txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode))}
                         validate={validateYesOrNoIsAnswered}
                     />
                 </FormBlock>
@@ -78,7 +80,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                 <FormBlock>
                     <ApplicationFormComponents.DatePicker
                         name={ApplicationFormField.selvstendigInntektstapStartetDato}
-                        label={txt.selvstendigInntektstapStartetDato}
+                        label={ensureString(txt.selvstendigInntektstapStartetDato)}
                         dateLimitations={{
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
@@ -112,10 +114,10 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                 {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.Input
+                                            label={ensureString(txt.selvstendigInntektIPerioden(availableDateRange))}
                                             name={ApplicationFormField.selvstendigInntektIPerioden}
                                             type="number"
                                             bredde="S"
-                                            label={txt.selvstendigInntektIPerioden(availableDateRange)}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
@@ -123,7 +125,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                 {isVisible(ApplicationFormField.selvstendigErFrilanser) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            legend={txt.selvstendigErFrilanser}
+                                            legend={ensureString(txt.selvstendigErFrilanser)}
                                             name={ApplicationFormField.selvstendigErFrilanser}
                                         />
                                     </FormBlock>
@@ -131,8 +133,8 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                 {isVisible(ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
-                                                availableDateRange
+                                            legend={ensureString(
+                                                txt.selvstendigHarHattInntektSomFrilanserIPerioden(availableDateRange)
                                             )}
                                             name={ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
                                         />
@@ -144,7 +146,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             name={ApplicationFormField.selvstendigInntektSomFrilanserIPerioden}
                                             type="number"
                                             bredde="S"
-                                            label={txt.selvstendigInntektSomFrilanserIPerioden(availableDateRange)}
+                                            label={ensureString(
+                                                txt.selvstendigInntektSomFrilanserIPerioden(availableDateRange)
+                                            )}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
@@ -157,7 +161,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                                 name={ApplicationFormField.selvstendigInntekt2019}
                                                 type="number"
                                                 bredde="S"
-                                                label={txt.selvstendigInntekt2019}
+                                                label={ensureString(txt.selvstendigInntekt2019)}
                                                 validate={validateAll([
                                                     validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
                                                 ])}
@@ -173,7 +177,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                                 name={ApplicationFormField.selvstendigInntekt2020}
                                                 type="number"
                                                 bredde="S"
-                                                label={txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)}
+                                                label={ensureString(
+                                                    txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)
+                                                )}
                                                 validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                             />
                                         </FormBlock>
