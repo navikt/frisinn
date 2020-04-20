@@ -3,43 +3,38 @@ import { Ingress } from 'nav-frontend-typografi';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import { SelvstendigNæringsdrivendeApiData } from '../../types/ApplicationApiData';
 import DatoSvar from './DatoSvar';
-import TallSvar from './TallSvar';
-// import { DateRange } from '../../utils/dateUtils';
-// import DateRangeView from '../../components/date-range-view/DateRangeView';
+import KronerSvar from './KronerSvar';
 
 interface Props {
     apiData: SelvstendigNæringsdrivendeApiData;
-    // applicationPeriod: DateRange;
 }
 
 const SelvstendigNæringsdrivendeSummary = ({
-    // applicationPeriod,
-    apiData: { inntektIPerioden, inntektstapStartet, inntekt2019, inntekt2020, inntektIPeriodenSomFrilanser },
+    apiData: { inntektIPerioden, inntektstapStartet, inntekt2019, inntekt2020, inntektIPeriodenSomFrilanser, info },
 }: Props) => (
     <>
         <Ingress>Selvstendig næringsdrivende</Ingress>
-        <SummaryBlock header={'Inntektstapet startet'}>
+        <SummaryBlock header={'Inntektstapet som selvstendig næringsdrivende startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
-        {/* <SummaryBlock header={'Periode det søkes for'}>
-            <DateRangeView dateRange={applicationPeriod} extendedFormat={true} />
-        </SummaryBlock> */}
-        <SummaryBlock header={`Inntekt i perioden `}>
-            <TallSvar verdi={inntektIPerioden} />
+        <SummaryBlock header={'Periode det søkes for'}>{info.period}</SummaryBlock>
+        <SummaryBlock header={`Inntekt som selvstendig næringsdrivende i perioden ${info.period} `}>
+            <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>
         {inntektIPeriodenSomFrilanser !== undefined && (
             <SummaryBlock header="Inntekt som frilanser i perioden">
-                <TallSvar verdi={inntektIPeriodenSomFrilanser} />
+                <KronerSvar verdi={inntektIPeriodenSomFrilanser} />
             </SummaryBlock>
         )}
         {inntekt2019 !== undefined && (
-            <SummaryBlock header="Inntekt 2019">
-                <TallSvar verdi={inntekt2019} />
+            <SummaryBlock header="Inntekt som selvstendig næringsdrivende i 2019">
+                <KronerSvar verdi={inntekt2019} />
             </SummaryBlock>
         )}
         {inntekt2020 !== undefined && (
-            <SummaryBlock header="Inntekt i 2020 frem til inntektstap startet">
-                <TallSvar verdi={inntekt2020} />
+            <SummaryBlock
+                header={`Inntekt som selvstendig næringsdrivende i 2020 til og med ${info.lastDayWithNormalIncome}`}>
+                <KronerSvar verdi={inntekt2020} />
             </SummaryBlock>
         )}
     </>

@@ -8,6 +8,7 @@ interface Props {
     format?: DateFormat;
     nowrap?: boolean;
 }
+
 const formatDate = (date: Date, dateFormat: DateFormat): string => {
     switch (dateFormat) {
         case 'monthAndYear':

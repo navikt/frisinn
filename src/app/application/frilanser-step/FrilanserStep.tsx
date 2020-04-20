@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import {
@@ -28,7 +28,7 @@ import { FrilanserFormQuestions } from './frilanserFormConfig';
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit }: StepConfigProps) => {
-    const { values } = useFormikContext<ApplicationFormData>();
+    const { values, setFieldValue } = useFormikContext<ApplicationFormData>();
 
     const { frilanserInntektstapStartetDato } = values;
     const { currentSøknadsperiode } = applicationEssentials;
@@ -42,6 +42,10 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
         ...values,
         ...applicationEssentials,
     });
+
+    useEffect(() => {
+        setFieldValue(ApplicationFormField.frilanserCalculatedDateRange, availableDateRange);
+    }, [availableDateRange]);
 
     return (
         <ApplicationStep

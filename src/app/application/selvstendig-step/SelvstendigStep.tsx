@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
@@ -30,7 +30,7 @@ import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssentials }: StepConfigProps) => {
-    const { values } = useFormikContext<ApplicationFormData>();
+    const { values, setFieldValue } = useFormikContext<ApplicationFormData>();
 
     const foretak = applicationEssentials.personligeForetak?.foretak || [];
     const antallForetak = foretak.length;
@@ -46,6 +46,10 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
         ...values,
         ...applicationEssentials,
     });
+
+    useEffect(() => {
+        setFieldValue(ApplicationFormField.selvstendigCalculatedDateRange, availableDateRange);
+    }, [availableDateRange]);
 
     return (
         <ApplicationStep

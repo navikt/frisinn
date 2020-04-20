@@ -41,8 +41,6 @@ function useAvailableSøknadsperiode(selectedDate: Date, currentSøknadsperiode:
             setAvailableDateRange(undefined);
         } else if (!isSameDate(selectedDate, prevSelectedDate)) {
             const dateToUse = moment.max(moment(currentSøknadsperiode.from), moment(selectedDate)).toDate();
-            console.log(dateToUse);
-
             fetchStorage(dateToUse);
         }
     }, [selectedDate]);

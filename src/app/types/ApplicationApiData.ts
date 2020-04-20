@@ -7,12 +7,20 @@ export interface SelvstendigNæringsdrivendeApiData {
     inntekt2019?: number;
     inntekt2020?: number;
     inntektIPeriodenSomFrilanser?: number;
+    info: {
+        period: string;
+        lastDayWithNormalIncome: string;
+    };
 }
 
 export interface FrilanserApiData {
     inntektstapStartet: ApiStringDate;
     inntektIPerioden: number;
     inntektIPeriodenSomSelvstendigNæringsdrivende?: number;
+    info: {
+        period: string;
+        lastDayWithNormalIncome: string;
+    };
 }
 
 export interface ApplicationApiData {

@@ -1,4 +1,5 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '../utils/dateUtils';
 
 export enum ApplicationFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -16,11 +17,13 @@ export enum ApplicationFormField {
     selvstendigInntektSomFrilanserIPerioden = 'selvstendigInntektSomFrilanserIPerioden',
     selvstendigInntekt2019 = 'selvstendigInntekt2019',
     selvstendigInntekt2020 = 'selvstendigInntekt2020',
+    selvstendigCalculatedDateRange = 'selvstendigCalculatedDateRange',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserInntektIPerioden = 'frilanserInntektIPerioden',
     frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
     frilanserInntektSomSelvstendigIPerioden = 'frilanserInntektSomSelvstendigIPerioden',
+    frilanserCalculatedDateRange = 'frilanserCalculatedDateRange',
 }
 
 export interface ApplicationFormData {
@@ -39,11 +42,13 @@ export interface ApplicationFormData {
     [ApplicationFormField.selvstendigInntektSomFrilanserIPerioden]?: number;
     [ApplicationFormField.selvstendigInntekt2019]?: number;
     [ApplicationFormField.selvstendigInntekt2020]?: number;
+    [ApplicationFormField.selvstendigCalculatedDateRange]?: DateRange;
     [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [ApplicationFormField.frilanserInntektstapStartetDato]: Date;
     [ApplicationFormField.frilanserInntektIPerioden]: number;
     [ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
     [ApplicationFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
+    [ApplicationFormField.frilanserCalculatedDateRange]?: DateRange;
 }
 
 export const initialApplicationValues: Partial<ApplicationFormData> = {
