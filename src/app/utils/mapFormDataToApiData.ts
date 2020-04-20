@@ -49,6 +49,19 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
     return undefined;
 };
 
+const formatYesOrNoAnswer = (answer: YesOrNo): string => {
+    switch (answer) {
+        case YesOrNo.YES:
+            return 'Ja';
+        case YesOrNo.NO:
+            return 'Nei';
+        case YesOrNo.DO_NOT_KNOW:
+            return 'Vet ikke';
+        default:
+            return 'Ubesvart';
+    }
+};
+
 export const mapFrilanserFormDataToApiData = ({
     frilanserHarTaptInntektPgaKorona,
     frilanserInntektIPerioden,
@@ -71,6 +84,12 @@ export const mapFrilanserFormDataToApiData = ({
                 period: formatDateRange(frilanserCalculatedDateRange, true),
                 lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
+            questions: [
+                {
+                    question: 'Har du tapt inntekt som frilanser på grunn av koronatiltak i perioden?',
+                    answer: formatYesOrNoAnswer(frilanserHarTaptInntektPgaKorona),
+                },
+            ],
         };
     }
     return undefined;

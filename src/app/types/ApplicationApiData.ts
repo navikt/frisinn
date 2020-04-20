@@ -1,6 +1,11 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { Locale } from 'common/types/Locale';
 
+interface Question {
+    question: string;
+    answer: string;
+}
+
 export interface SelvstendigNæringsdrivendeApiData {
     inntektstapStartet: ApiStringDate;
     inntektIPerioden: number;
@@ -11,6 +16,7 @@ export interface SelvstendigNæringsdrivendeApiData {
         period: string;
         lastDayWithNormalIncome: string;
     };
+    questions?: Question[];
 }
 
 export interface FrilanserApiData {
@@ -21,6 +27,7 @@ export interface FrilanserApiData {
         period: string;
         lastDayWithNormalIncome: string;
     };
+    questions?: Question[];
 }
 
 export interface ApplicationApiData {
