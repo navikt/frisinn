@@ -71,7 +71,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
             )}
 
             {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                <FormBlock>{SelvstendigInfo.advarselIkkeTapPgaKorona}</FormBlock>
+                <FormBlock>{SelvstendigInfo.advarselIkkeTapPgaKorona()}</FormBlock>
             )}
 
             {isVisible(ApplicationFormField.selvstendigInntektstapStartetDato) && (
@@ -104,7 +104,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                             return null;
                         }
                         if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
-                            return <FormBlock>{SelvstendigInfo.advarselForSentInntektstap}</FormBlock>;
+                            return <FormBlock>{SelvstendigInfo.advarselForSentInntektstap()}</FormBlock>;
                         }
                         return (
                             <>
