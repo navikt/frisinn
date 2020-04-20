@@ -4,12 +4,16 @@ import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import { SelvstendigNæringsdrivendeApiData } from '../../types/ApplicationApiData';
 import DatoSvar from './DatoSvar';
 import TallSvar from './TallSvar';
+// import { DateRange } from '../../utils/dateUtils';
+// import DateRangeView from '../../components/date-range-view/DateRangeView';
 
 interface Props {
     apiData: SelvstendigNæringsdrivendeApiData;
+    // applicationPeriod: DateRange;
 }
 
 const SelvstendigNæringsdrivendeSummary = ({
+    // applicationPeriod,
     apiData: { inntektIPerioden, inntektstapStartet, inntekt2019, inntekt2020, inntektIPeriodenSomFrilanser },
 }: Props) => (
     <>
@@ -17,7 +21,10 @@ const SelvstendigNæringsdrivendeSummary = ({
         <SummaryBlock header={'Inntektstapet startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
-        <SummaryBlock header="Inntekt i perioden det søkes for">
+        {/* <SummaryBlock header={'Periode det søkes for'}>
+            <DateRangeView dateRange={applicationPeriod} extendedFormat={true} />
+        </SummaryBlock> */}
+        <SummaryBlock header={`Inntekt i perioden `}>
             <TallSvar verdi={inntektIPerioden} />
         </SummaryBlock>
         {inntektIPeriodenSomFrilanser !== undefined && (

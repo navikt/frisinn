@@ -6,7 +6,6 @@ import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-p
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
-import Panel from 'nav-frontend-paneler';
 import { sendApplication } from '../../api/soknad';
 import { ApplicationApiData } from '../../types/ApplicationApiData';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
@@ -20,6 +19,8 @@ import ApplicationStep from '../ApplicationStep';
 import { StepID } from '../stepConfig';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import FrilanserSummary from './FrilanserSummary';
+import Guide from '../../components/guide/Guide';
+import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
@@ -70,9 +71,13 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
             showButtonSpinner={sendingInProgress}>
             {apiValues && (
                 <>
-                    <CounsellorPanel>Info</CounsellorPanel>
-                    <Box margin="xl">
-                        <Panel border={true}>
+                    <Box margin="xxxl">
+                        <Guide
+                            svg={<ChecklistCircleIcon />}
+                            type={'plakat'}
+                            kompakt={true}
+                            fargetema={'info'}
+                            fullHeight={true}>
                             {apiValues.selvstendigNæringsdrivende && (
                                 <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
                             )}
@@ -81,9 +86,8 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                                     <FrilanserSummary apiData={apiValues.frilanser} />
                                 </Box>
                             )}
-                        </Panel>
+                        </Guide>
                     </Box>
-
                     <Box margin="l">
                         <ApplicationFormComponents.ConfirmationCheckbox
                             label={intlHelper(intl, 'step.oppsummering.bekrefterOpplysninger')}

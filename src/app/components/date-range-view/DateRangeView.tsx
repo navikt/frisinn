@@ -6,12 +6,13 @@ interface Props {
     extendedFormat?: boolean;
 }
 
+export const formatDateRange = (dateRange: DateRange, extendedFormat = false): string => {
+    return extendedFormat
+        ? `${prettifyDateExtended(dateRange.from)} - ${prettifyDateExtended(dateRange.to)}`
+        : `${prettifyDate(dateRange.from)}  - ${prettifyDate(dateRange.to)}`;
+};
 const DateRangeView = ({ dateRange, extendedFormat = false }: Props) => (
-    <span>
-        {extendedFormat
-            ? `${prettifyDateExtended(dateRange.from)} - ${prettifyDateExtended(dateRange.to)}`
-            : `${prettifyDate(dateRange.from)}  - ${prettifyDate(dateRange.to)}`}
-    </span>
+    <span>{formatDateRange(dateRange, extendedFormat)}</span>
 );
 
 export default DateRangeView;
