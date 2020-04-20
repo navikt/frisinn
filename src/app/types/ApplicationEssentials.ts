@@ -3,7 +3,7 @@ import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 export interface Person {
     etternavn: string;
     fornavn: string;
-    mellomnavn: string;
+    mellomnavn?: string;
     kjønn: string;
     fødselsnummer: string;
     kontonummer: string;

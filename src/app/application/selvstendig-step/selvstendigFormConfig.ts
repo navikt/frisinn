@@ -9,7 +9,7 @@ import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from
 const Field = ApplicationFormField;
 
 type SelvstendigFormData = Pick<
-    ApplicationFormData,
+    Partial<ApplicationFormData>,
     | ApplicationFormField.søkerOmTaptInntektSomFrilanser
     | ApplicationFormField.selvstendigHarTaptInntektPgaKorona
     | ApplicationFormField.selvstendigInntektstapStartetDato
@@ -21,7 +21,7 @@ type SelvstendigFormData = Pick<
     | ApplicationFormField.selvstendigInntekt2020
 >;
 
-type SelvstendigFormPayload = SelvstendigFormData & ApplicationEssentials;
+export type SelvstendigFormPayload = SelvstendigFormData & ApplicationEssentials;
 
 const showHistoricIncomeQuestion = ({
     søkerOmTaptInntektSomFrilanser,
