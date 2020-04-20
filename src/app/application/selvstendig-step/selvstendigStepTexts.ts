@@ -1,6 +1,6 @@
+import { formatDateRange } from '../../components/date-range-view/DateRangeView';
 import { ApplicationFormField } from '../../types/ApplicationFormData';
 import { DateRange, prettifyDateExtended } from '../../utils/dateUtils';
-import { formatDateRange } from '../../components/date-range-view/DateRangeView';
 
 export interface SelvstendigStepFormText {
     [ApplicationFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;

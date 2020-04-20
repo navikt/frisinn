@@ -1,6 +1,6 @@
 import React from 'react';
-import { Foretak } from '../../types/ApplicationEssentials';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { Foretak } from '../../types/ApplicationEssentials';
 
 interface Props {
     foretak: Foretak[];

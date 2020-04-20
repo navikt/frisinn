@@ -1,14 +1,14 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
+import useApplicationEssentials from '../hooks/useApplicationEssentials';
+import useTemporaryStorage from '../hooks/useTempStorage';
+import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateToApplicationFrontpage } from '../utils/navigationUtils';
 import ApplicationFormComponents from './ApplicationFormComponents';
 import ApplicationRoutes from './ApplicationRoutes';
-import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
-import useApplicationEssentials from '../hooks/useApplicationEssentials';
-import useTemporaryStorage from '../hooks/useTempStorage';
 import applicationTempStorage from './ApplicationTempStorage';
-import { useHistory } from 'react-router-dom';
-import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 
 const Application = () => {
     const essentials = useApplicationEssentials();

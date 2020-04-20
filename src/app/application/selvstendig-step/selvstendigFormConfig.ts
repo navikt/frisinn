@@ -1,10 +1,10 @@
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from '../../utils/selvstendigUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from '../../utils/selvstendigUtils';
 
 const Field = ApplicationFormField;
 

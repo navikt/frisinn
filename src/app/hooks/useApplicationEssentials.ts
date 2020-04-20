@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { ApplicationEssentials } from '../types/ApplicationEssentials';
+import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
-import { getSoker } from '../api/soker';
 import { getSøknadsperiode } from '../api/perioder';
 import { getPersonligeForetak } from '../api/personlige-foretak';
+import { getSoker } from '../api/soker';
+import { ApplicationEssentials } from '../types/ApplicationEssentials';
 
 function useApplicationEssentials() {
     const [applicationEssentials, setApplicationEssentials] = useState<ApplicationEssentials | undefined>();

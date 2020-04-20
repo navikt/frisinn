@@ -1,12 +1,12 @@
-import { Locale } from 'common/types/Locale';
-import { ApplicationApiData, SelvstendigNæringsdrivendeApiData, FrilanserApiData } from '../types/ApplicationApiData';
-import { ApplicationFormData } from '../types/ApplicationFormData';
 import { formatDateToApiFormat, prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from './selvstendigUtils';
-import { ApplicationEssentials } from '../types/ApplicationEssentials';
-import { formatDateRange } from '../components/date-range-view/DateRangeView';
 import moment from 'moment';
+import { Locale } from 'common/types/Locale';
+import { formatDateRange } from '../components/date-range-view/DateRangeView';
+import { ApplicationApiData, FrilanserApiData, SelvstendigNæringsdrivendeApiData } from '../types/ApplicationApiData';
+import { ApplicationEssentials } from '../types/ApplicationEssentials';
+import { ApplicationFormData } from '../types/ApplicationFormData';
+import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from './selvstendigUtils';
 
 const mapSelvstendigNæringsdrivendeFormDataToApiData = (
     { personligeForetak }: ApplicationEssentials,

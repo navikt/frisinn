@@ -1,10 +1,10 @@
 import React from 'react';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { isDateBeforeKoronatiltak, KORONA_DATE } from '../../utils/koronaUtils';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import DateRangeView from '../../components/date-range-view/DateRangeView';
 import DateView from '../../components/date-view/DateView';
 import { DateRange, getNumberOfDaysInDateRange } from '../../utils/dateUtils';
-import DateRangeView from '../../components/date-range-view/DateRangeView';
+import { isDateBeforeKoronatiltak, KORONA_DATE } from '../../utils/koronaUtils';
 import { pluralize } from '../../utils/pluralize';
 
 interface Props {

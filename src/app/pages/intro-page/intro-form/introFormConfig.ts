@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
 import { RejectReason } from '../../../utils/accessUtils';
+import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
 
 export enum IntroFormField {
     'erMellom18og67år' = 'erMellom18og67år',

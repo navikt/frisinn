@@ -1,7 +1,7 @@
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { sjekkKrav } from '../api/krav';
 import { AccessCheck, AccessCheckResult } from '../types/AccessCheck';
 import { ApiKrav } from '../types/Krav';
-import { sjekkKrav } from '../api/krav';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export async function apiAccessCheck(krav: ApiKrav, dateRange?: DateRange): Promise<AccessCheckResult> {
     try {

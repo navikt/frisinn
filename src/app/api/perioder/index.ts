@@ -1,6 +1,6 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
+import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import api, { ApiEndpoint } from '../api';
-import { apiStringDateToDate, formatDateToApiFormat, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface PeriodeTidsperiode {
     fom: ApiStringDate;

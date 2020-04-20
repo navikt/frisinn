@@ -1,5 +1,5 @@
-import api, { ApiEndpoint } from '../api';
 import { Person } from '../../types/ApplicationEssentials';
+import api, { ApiEndpoint } from '../api';
 
 export async function getSoker(): Promise<Person> {
     try {

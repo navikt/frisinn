@@ -1,5 +1,5 @@
-import moment from 'moment';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import moment from 'moment';
 
 export * from '@navikt/sif-common-core/lib/utils/dateUtils';
 

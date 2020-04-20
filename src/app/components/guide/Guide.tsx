@@ -1,7 +1,7 @@
 import React from 'react';
+import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import Veilederpanel, { VeilederpanelProps } from 'nav-frontend-veilederpanel';
 import './guide.less';
-import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 
 type Fargetema = 'normal' | 'info' | 'suksess' | 'advarsel' | 'feilmelding';
 interface Props extends VeilederpanelProps {

@@ -1,8 +1,8 @@
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
-import { FieldValidationResult } from 'common/validation/types';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
+import { FieldValidationResult } from 'common/validation/types';
 
 export enum AppFieldValidationErrors {
     'påkrevd' = 'fieldvalidation.påkrevd',

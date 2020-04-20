@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 import applicationTempStorage, { TemporaryStorageData } from '../application/ApplicationTempStorage';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 function useTemporaryStorage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);

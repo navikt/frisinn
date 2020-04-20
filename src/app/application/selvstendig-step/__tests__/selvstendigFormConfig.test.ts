@@ -1,8 +1,8 @@
-import { SelvstendigFormQuestions, SelvstendigFormPayload } from '../selvstendigFormConfig';
-import { initialApplicationValues, ApplicationFormField } from '../../../types/ApplicationFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { ApplicationEssentials, Person } from '../../../types/ApplicationEssentials';
+import { ApplicationFormField, initialApplicationValues } from '../../../types/ApplicationFormData';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
+import { SelvstendigFormPayload, SelvstendigFormQuestions } from '../selvstendigFormConfig';
 
 const person: Person = {
     fornavn: 'Test',

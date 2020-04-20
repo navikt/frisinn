@@ -1,13 +1,13 @@
 import React from 'react';
-import { DateRange } from '../../utils/dateUtils';
-import InfoPanel from '../../components/info-panel/InfoPanel';
-import { Undertittel, Element } from 'nav-frontend-typografi';
-import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { Element, Undertittel } from 'nav-frontend-typografi';
+import DateRangeView from '../../components/date-range-view/DateRangeView';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
+import InfoPanel from '../../components/info-panel/InfoPanel';
 import { Foretak } from '../../types/ApplicationEssentials';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { DateRange } from '../../utils/dateUtils';
 
 const intro = (antallForetak: number, foretak: Foretak[]) => (
     <>

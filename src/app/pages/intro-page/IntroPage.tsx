@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { Knapp } from 'nav-frontend-knapper';
+import { Panel } from 'nav-frontend-paneler';
+import { Ingress, Systemtittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
+import { getSøknadsperiode } from '../../api/perioder';
+import DateView from '../../components/date-view/DateView';
+import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import { relocateToApplication } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
-import { getSøknadsperiode } from '../../api/perioder';
-import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
-import { Knapp } from 'nav-frontend-knapper';
-import { Panel } from 'nav-frontend-paneler';
-import { Ingress, Systemtittel } from 'nav-frontend-typografi';
-import DateView from '../../components/date-view/DateView';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 const bem = bemUtils('introPage');
 

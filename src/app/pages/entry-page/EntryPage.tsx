@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
-import { Undertittel } from 'nav-frontend-typografi';
-import { AccessCheckResult } from '../../types/AccessCheck';
-import EntryForm from './EntryForm';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { ApiKrav, KlientKrav } from '../../types/Krav';
-import EndreKontonummer from '../../information/EndreKontonummer';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import Guide from '../../components/guide/Guide';
 import { useFormikContext } from 'formik';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { Undertittel } from 'nav-frontend-typografi';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import Guide from '../../components/guide/Guide';
+import EndreKontonummer from '../../information/EndreKontonummer';
+import { AccessCheckResult } from '../../types/AccessCheck';
+import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { ApplicationFormData } from '../../types/ApplicationFormData';
+import { ApiKrav, KlientKrav } from '../../types/Krav';
+import EntryForm from './EntryForm';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;

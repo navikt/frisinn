@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl';
-import { Ingress, Innholdstittel } from 'nav-frontend-typografi';
+import { FormattedHTMLMessage, FormattedMessage, useIntl, } from 'react-intl';
+import { Ingress, Innholdstittel, } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import CheckmarkIcon from 'common/components/checkmark-icon/CheckmarkIcon';
 import Page from 'common/components/page/Page';

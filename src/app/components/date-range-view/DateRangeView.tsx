@@ -1,5 +1,5 @@
 import React from 'react';
-import { prettifyDate, DateRange, prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, prettifyDate, prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     dateRange: DateRange;

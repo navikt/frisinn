@@ -5,21 +5,20 @@ import InfoDialog from '@navikt/sif-common-core/lib/components/dialogs/info-dial
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { useFormikContext } from 'formik';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
 import FormComponents from '../../application/ApplicationFormComponents';
-import { ApplicationFormField, ApplicationFormData } from '../../types/ApplicationFormData';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import Guide from '../../components/guide/Guide';
+import EndreKontonummer from '../../information/EndreKontonummer';
+import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { EntryFormQuestions } from './entryFormConfig';
-import { useFormikContext } from 'formik';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import EndreKontonummer from '../../information/EndreKontonummer';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import ApplicationFormComponents from '../../application/ApplicationFormComponents';
-import Guide from '../../components/guide/Guide';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;

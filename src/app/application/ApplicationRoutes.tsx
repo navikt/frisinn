@@ -1,21 +1,21 @@
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import GlobalRoutes from '../config/routeConfig';
 import ApplicationErrorPage from '../pages/application-error-page/ApplicationErrorPage';
 import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
 import EntryPage from '../pages/entry-page/EntryPage';
+import { ApplicationEssentials } from '../types/ApplicationEssentials';
 import { ApplicationFormData } from '../types/ApplicationFormData';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateTo, relocateToConfirmationPage } from '../utils/navigationUtils';
 import { getApplicationRoute, getNextStepRoute } from '../utils/routeUtils';
+import applicationTempStorage from './ApplicationTempStorage';
 import FrilanserStep from './frilanser-step/FrilanserStep';
 import SelvstendigStep from './selvstendig-step/SelvstendigStep';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
-import applicationTempStorage from './ApplicationTempStorage';
-import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
-import { ApplicationEssentials } from '../types/ApplicationEssentials';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     resetApplication: () => void;

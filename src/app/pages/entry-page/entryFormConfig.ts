@@ -1,7 +1,7 @@
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 const Q = ApplicationFormField;
 

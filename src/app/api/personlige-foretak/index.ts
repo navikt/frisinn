@@ -1,7 +1,7 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
-import api, { ApiEndpoint } from '../api';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { Foretak } from '../../types/ApplicationEssentials';
+import api, { ApiEndpoint } from '../api';
 
 interface ApiPersonligeForetak {
     organisasjonsnummer: string;

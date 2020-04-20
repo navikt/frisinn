@@ -1,12 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { shouldUserBeStoppedFormUsingApplication, RejectReason } from '../../../utils/accessUtils';
+import { RejectReason, shouldUserBeStoppedFormUsingApplication } from '../../../utils/accessUtils';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
-import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 

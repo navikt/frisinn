@@ -1,7 +1,7 @@
-import { ApplicationFormData } from '../types/ApplicationFormData';
-import { getApplicationRoute } from '../utils/routeUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { ApplicationEssentials } from '../types/ApplicationEssentials';
+import { ApplicationFormData } from '../types/ApplicationFormData';
+import { getApplicationRoute } from '../utils/routeUtils';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',

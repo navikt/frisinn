@@ -7,6 +7,8 @@ import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
 import { sendApplication } from '../../api/soknad';
+import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
+import Guide from '../../components/guide/Guide';
 import { ApplicationApiData } from '../../types/ApplicationApiData';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
@@ -17,10 +19,8 @@ import { validateBekrefterOpplysninger } from '../../validation/fieldValidations
 import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import { StepID } from '../stepConfig';
-import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import FrilanserSummary from './FrilanserSummary';
-import Guide from '../../components/guide/Guide';
-import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
+import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
