@@ -6,7 +6,7 @@ interface Props {
     extendedFormat?: boolean;
 }
 
-export const formatDateRange = (dateRange: DateRange, extendedFormat = false): string => {
+export const formatDateRange = (dateRange: DateRange, extendedFormat = true): string => {
     return extendedFormat
         ? `${prettifyDateExtended(dateRange.from)} - ${prettifyDateExtended(dateRange.to)}`
         : `${prettifyDate(dateRange.from)}  - ${prettifyDate(dateRange.to)}`;

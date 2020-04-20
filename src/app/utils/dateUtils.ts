@@ -16,3 +16,5 @@ export const isSameDate = (date1: Date | undefined, date2: Date | undefined): bo
 export const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
     return moment(dateRange.to).diff(dateRange.from, 'days') + 1;
 };
+
+export const getPreviousDate = (date: Date): Date => moment(date).subtract(1, 'day').toDate();

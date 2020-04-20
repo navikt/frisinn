@@ -9,25 +9,24 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { Element, Undertittel } from 'nav-frontend-typografi';
-import DateRangeView from '../../components/date-range-view/DateRangeView';
-import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
-import ForetakList from '../../components/foretak-list/ForetakList';
+import { Undertittel } from 'nav-frontend-typografi';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
 import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
 import ApplicationFormComponents from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
+import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
-import Guide from '../../components/guide/Guide';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
-import InfoPanel from '../../components/info-panel/InfoPanel';
-import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
+import SelvstendigInfo from './SelvstendigInfo';
+import { selvstendigStepTexts } from './selvstendigStepTexts';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
+
+const txt = selvstendigStepTexts;
 
 const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssentials }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<ApplicationFormData>();
@@ -58,40 +57,28 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
             onValidFormSubmit={onValidSubmit}
             showSubmitButton={areAllQuestionsAnswered() && values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES}>
             <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
-                <p>
-                    Vi har funnet {antallForetak} foretak registrert på deg som du kan søke om tapt inntekt for.
-                    Informasjonen du oppgir på denne siden skal gjelde for alle foretakene dine samlet.
-                </p>
-                <ExpandableInfo closeTitle={'Skjul liste'} title={'Vis foretak vi har registrert'}>
-                    <ForetakList foretak={foretak} />
-                </ExpandableInfo>
+                {SelvstendigInfo.intro(antallForetak, foretak)}
             </Guide>
+
             {isVisible(ApplicationFormField.selvstendigHarTaptInntektPgaKorona) && (
                 <FormBlock>
                     <ApplicationFormComponents.YesOrNoQuestion
                         name={ApplicationFormField.selvstendigHarTaptInntektPgaKorona}
-                        legend={
-                            <span>
-                                Har du tapt inntekt som selvstendig næringsdrivende på grunn av koronatiltak i perioden{' '}
-                                <DateRangeView dateRange={currentSøknadsperiode} />?
-                            </span>
-                        }
+                        legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
                         validate={validateYesOrNoIsAnswered}
                     />
                 </FormBlock>
             )}
+
             {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                <FormBlock>
-                    <AlertStripeAdvarsel>
-                        Du kan ikke søke om kompensasjon for tap som ikke er forårsaket av Korona
-                    </AlertStripeAdvarsel>
-                </FormBlock>
+                <FormBlock>{SelvstendigInfo.advarselIkkeTapPgaKorona}</FormBlock>
             )}
+
             {isVisible(ApplicationFormField.selvstendigInntektstapStartetDato) && (
                 <FormBlock>
                     <ApplicationFormComponents.DatePicker
                         name={ApplicationFormField.selvstendigInntektstapStartetDato}
-                        label={'Når startet inntektstapet ditt som selvstendig næringsdrivende?'}
+                        label={txt.selvstendigInntektstapStartetDato}
                         dateLimitations={{
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
@@ -117,59 +104,18 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                             return null;
                         }
                         if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
-                            return (
-                                <FormBlock>
-                                    <AlertStripeAdvarsel>
-                                        Du kan ikke søke for denne perioden fordi du får dekket først fra og med den 17.
-                                        dagen etter inntektsstapet startet.{' '}
-                                    </AlertStripeAdvarsel>
-                                </FormBlock>
-                            );
+                            return <FormBlock>{SelvstendigInfo.advarselForSentInntektstap}</FormBlock>;
                         }
                         return (
                             <>
-                                <InfoPanel>
-                                    <Undertittel>Din inntekt som selvstendig næringsdrivende</Undertittel>
-                                    <p>
-                                        Vi trenger å vite hvilken inntekt du hadde som selvstendig næringsdrivende i
-                                        perioden{' '}
-                                        <strong>
-                                            <DateRangeView dateRange={availableDateRange} />
-                                        </strong>
-                                        .
-                                    </p>
-                                    <Box margin="l">
-                                        <Element>Inntekter som skal tas med:</Element>
-                                        <ul>
-                                            <li>Inntektene du har på dine foretak. Dette er omsetning - utgifter</li>
-                                            <li>
-                                                Inntekter som er utbetalinger fra NAV som selvstendig næringsdrivende
-                                            </li>
-                                        </ul>
-                                        <Element>Inntekter som IKKE skal tas med:</Element>
-                                        <ul>
-                                            <li>Eventuell uføretrygd</li>
-                                            <li>Eventuell alderspensjon</li>
-                                            <li>Eventuell inntekt som frilanser</li>
-                                        </ul>
-                                    </Box>
-                                </InfoPanel>
+                                {SelvstendigInfo.infoInntektForetak(availableDateRange)}
                                 {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.Input
                                             name={ApplicationFormField.selvstendigInntektIPerioden}
                                             type="number"
                                             bredde="S"
-                                            label={
-                                                <span>
-                                                    Hvilken inntekt har du hatt i perioden{' '}
-                                                    <DateRangeView
-                                                        extendedFormat={true}
-                                                        dateRange={availableDateRange}
-                                                    />
-                                                    ?
-                                                </span>
-                                            }
+                                            label={txt.selvstendigInntektIPerioden(availableDateRange)}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
@@ -177,7 +123,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                 {isVisible(ApplicationFormField.selvstendigErFrilanser) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            legend="Er du frilanser?"
+                                            legend={txt.selvstendigErFrilanser}
                                             name={ApplicationFormField.selvstendigErFrilanser}
                                         />
                                     </FormBlock>
@@ -185,12 +131,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                 {isVisible(ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            legend={
-                                                <span>
-                                                    Har du hatt inntekt som frilanser i perioden{' '}
-                                                    <DateRangeView dateRange={availableDateRange} />?
-                                                </span>
-                                            }
+                                            legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
+                                                availableDateRange
+                                            )}
                                             name={ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
                                         />
                                     </FormBlock>
@@ -201,12 +144,11 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             name={ApplicationFormField.selvstendigInntektSomFrilanserIPerioden}
                                             type="number"
                                             bredde="S"
-                                            label={<span>Hva hadde du i inntekt som frilanser i denne perioden?</span>}
+                                            label={txt.selvstendigInntektSomFrilanserIPerioden(availableDateRange)}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
                                 )}
-
                                 {isVisible(ApplicationFormField.selvstendigInntekt2019) && (
                                     <Box margin="xxl">
                                         <Undertittel>Inntekt som selvstendig næringsdrivende i 2019</Undertittel>
@@ -215,7 +157,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                                 name={ApplicationFormField.selvstendigInntekt2019}
                                                 type="number"
                                                 bredde="S"
-                                                label={'Hvilken inntekt hadde du fra dine bedrifter i 2019?'}
+                                                label={txt.selvstendigInntekt2019}
                                                 validate={validateAll([
                                                     validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
                                                 ])}
@@ -225,15 +167,13 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                 )}
                                 {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
                                     <Box margin="xxl">
-                                        <Undertittel>
-                                            Inntekt som selvstendig næringsdrivende i januar og februar 2020
-                                        </Undertittel>
+                                        <Undertittel>Inntekt som selvstendig næringsdrivende i 2020</Undertittel>
                                         <FormBlock margin="l">
                                             <ApplicationFormComponents.Input
                                                 name={ApplicationFormField.selvstendigInntekt2020}
                                                 type="number"
                                                 bredde="S"
-                                                label={'Hvilken inntekt har du hatt fra dine foretak i 2020?'}
+                                                label={txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)}
                                                 validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                             />
                                         </FormBlock>

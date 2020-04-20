@@ -41,7 +41,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak) ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {
-                period: formatDateRange(selvstendigCalculatedDateRange, true),
+                period: formatDateRange(selvstendigCalculatedDateRange),
                 lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
         };
@@ -81,7 +81,7 @@ export const mapFrilanserFormDataToApiData = ({
                     ? frilanserInntektSomSelvstendigIPerioden
                     : undefined,
             info: {
-                period: formatDateRange(frilanserCalculatedDateRange, true),
+                period: formatDateRange(frilanserCalculatedDateRange),
                 lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
             questions: [
