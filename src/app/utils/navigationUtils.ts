@@ -1,6 +1,7 @@
 import { History } from 'history';
 import routeConfig, { getRouteUrl } from '../config/routeConfig';
 import { getEnvironmentVariable } from './envUtils';
+import GlobalRoutes from '../config/routeConfig';
 
 const loginUrl = getEnvironmentVariable('LOGIN_URL');
 

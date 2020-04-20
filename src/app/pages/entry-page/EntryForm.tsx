@@ -19,6 +19,7 @@ import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { EntryFormQuestions } from './entryFormConfig';
+import ApplicationFormComponents from '../../application/ApplicationFormComponents';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
