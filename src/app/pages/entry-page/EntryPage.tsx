@@ -14,6 +14,8 @@ import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { ApplicationFormData } from '../../types/ApplicationFormData';
 import { ApiKrav, KlientKrav } from '../../types/Krav';
 import EntryForm from './EntryForm';
+import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
+import applicationTempStorage from '../../application/ApplicationTempStorage';
 
 interface Props {
     applicationEssentials: ApplicationEssentials;
@@ -35,6 +37,10 @@ const EntryPage = ({ onStart, applicationEssentials }: Props) => {
 
     useEffect(() => {
         resetForm();
+        // Todo - denne logikken virker ikke med reell mellomlagring, da bruker skal bli sendt til riktig steg
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            applicationTempStorage.purge();
+        }
     }, []);
 
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;

@@ -21,6 +21,7 @@ export enum ApplicationFormField {
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserInntektIPerioden = 'frilanserInntektIPerioden',
+    frilanserErSelvstendigNæringsdrivende = 'frilanserErSelvstendigNæringsdrivende',
     frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
     frilanserInntektSomSelvstendigIPerioden = 'frilanserInntektSomSelvstendigIPerioden',
     frilanserCalculatedDateRange = 'frilanserCalculatedDateRange',
@@ -46,6 +47,7 @@ export interface ApplicationFormData {
     [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [ApplicationFormField.frilanserInntektstapStartetDato]: Date;
     [ApplicationFormField.frilanserInntektIPerioden]: number;
+    [ApplicationFormField.frilanserErSelvstendigNæringsdrivende]: YesOrNo;
     [ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
     [ApplicationFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
     [ApplicationFormField.frilanserCalculatedDateRange]?: DateRange;
