@@ -5,7 +5,6 @@ import { Element, Undertittel } from 'nav-frontend-typografi';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
-import InfoPanel from '../../components/info-panel/InfoPanel';
 import { Foretak } from '../../types/ApplicationEssentials';
 import { DateRange } from '../../utils/dateUtils';
 
@@ -33,7 +32,7 @@ const advarselIkkeTapPgaKorona = () => (
 );
 
 const infoInntektForetak = (availableDateRange: DateRange) => (
-    <InfoPanel>
+    <>
         <Undertittel>Din inntekt som selvstendig næringsdrivende</Undertittel>
         <p>
             Vi trenger å vite hvilken inntekt du hadde som selvstendig næringsdrivende i perioden{' '}
@@ -55,7 +54,7 @@ const infoInntektForetak = (availableDateRange: DateRange) => (
                 <li>Eventuell inntekt som frilanser</li>
             </ul>
         </Box>
-    </InfoPanel>
+    </>
 );
 
 const SelvstendigInfo = {

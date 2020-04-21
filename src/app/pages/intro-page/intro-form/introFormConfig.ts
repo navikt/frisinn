@@ -2,9 +2,11 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
 import introFormUtils from './introFormUtils';
+import { hasValue } from '../../../validation/fieldValidations';
+import { DateRange } from '../../../utils/dateUtils';
 
 export enum IntroFormField {
-    'erMellom18og67år' = 'erMellom18og67år',
+    'fødselsdato' = 'fødselsdato',
     'erSelvstendigNæringsdrivende' = 'erSelvstendigNæringsdrivende',
     'selvstendigHarTaptInntektPgaKorona' = 'selvstendigHarTaptInntektPgaKorona',
     'selvstendigFårDekketTapet' = 'selvstendigFårDekketTapet',
@@ -16,7 +18,7 @@ export enum IntroFormField {
 }
 
 export interface IntroFormData {
-    [IntroFormField.erMellom18og67år]: YesOrNo;
+    [IntroFormField.fødselsdato]: Date;
     [IntroFormField.erSelvstendigNæringsdrivende]: YesOrNo;
     [IntroFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [IntroFormField.selvstendigFårDekketTapet]: YesOrNo;
@@ -29,14 +31,14 @@ export interface IntroFormData {
 
 const Q = IntroFormField;
 
-type IntroFormQuestionsPayload = IntroFormData;
+type IntroFormQuestionsPayload = IntroFormData & { currentPeriode: DateRange };
 
 const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField> = {
-    [Q.erMellom18og67år]: {
-        isAnswered: ({ erMellom18og67år }) => yesOrNoIsAnswered(erMellom18og67år),
+    [Q.fødselsdato]: {
+        isAnswered: ({ fødselsdato }) => hasValue(fødselsdato),
     },
     [Q.erSelvstendigNæringsdrivende]: {
-        isIncluded: ({ erMellom18og67år }) => erMellom18og67år === YesOrNo.YES,
+        isIncluded: ({ fødselsdato, currentPeriode }) => introFormUtils.birthdateIsValid(fødselsdato, currentPeriode),
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
     [Q.selvstendigHarTaptInntektPgaKorona]: {
@@ -51,7 +53,8 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
         isAnswered: ({ selvstendigFårDekketTapet }) => yesOrNoIsAnswered(selvstendigFårDekketTapet),
     },
     [Q.erFrilanser]: {
-        isIncluded: ({ erMellom18og67år }) => erMellom18og67år === YesOrNo.YES,
+        visibilityFilter: (payload) => introFormUtils.selvstendigIsAnswered(payload),
+        isIncluded: ({ fødselsdato, currentPeriode }) => introFormUtils.birthdateIsValid(fødselsdato, currentPeriode),
         isAnswered: ({ erFrilanser }) => yesOrNoIsAnswered(erFrilanser),
     },
     [Q.frilanserHarTaptInntektPgaKorona]: {
