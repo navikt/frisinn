@@ -4,7 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { AlertStripeAdvarsel, AlertStripeInfo, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 import Lenke from 'nav-frontend-lenker';
 import { Undertittel, Element } from 'nav-frontend-typografi';
@@ -157,9 +157,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 )}
                                 {values.selvstendigFårDekketTapet === YesOrNo.NO && (
                                     <FormBlock>
-                                        <AlertStripeInfo>
+                                        <AlertStripeSuksess>
                                             <Element>Du kan søke som selvstendig næringsdrivende</Element>
-                                        </AlertStripeInfo>
+                                        </AlertStripeSuksess>
                                     </FormBlock>
                                 )}
                             </>
@@ -232,9 +232,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 )}
                                 {values.frilanserFårDekketTapet === YesOrNo.NO && (
                                     <FormBlock>
-                                        <AlertStripeInfo>
+                                        <AlertStripeSuksess>
                                             <Element>Du kan søke som frilanser</Element>
-                                        </AlertStripeInfo>
+                                        </AlertStripeSuksess>
                                     </FormBlock>
                                 )}
                             </>
