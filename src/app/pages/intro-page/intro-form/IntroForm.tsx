@@ -1,22 +1,21 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
-import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
-import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
-import { Undertittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import Lenke from 'nav-frontend-lenker';
-import { DateRange } from '../../../utils/dateUtils';
 import moment from 'moment';
-import { formatDate } from '../../../components/date-view/DateView';
-import DateRangeView from '../../../components/date-range-view/DateRangeView';
-import introFormUtils from './introFormUtils';
-import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
+import { AlertStripeAdvarsel, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
+import Lenke from 'nav-frontend-lenker';
+import { Undertittel } from 'nav-frontend-typografi';
+import DateRangeView from '../../../components/date-range-view/DateRangeView';
+import { formatDate } from '../../../components/date-view/DateView';
+import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
+import { DateRange } from '../../../utils/dateUtils';
+import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
+import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
+import introFormUtils from './introFormUtils';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -245,7 +244,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                         {canContinueToApplication && (
                             <>
                                 <FormBlock>
-                                    <CounsellorPanel>
+                                    <AlertStripeInfo>
                                         Basert på hva du har svart, kan du søke om kompensasjon for tapt inntekt som{' '}
                                         {selvstendigIsOk ? <strong>selvstendig næringsdrivende</strong> : null}
                                         {selvstendigIsOk && frilanserIsOk ? <> og </> : null}
@@ -256,7 +255,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                         {values.erFrilanser === YesOrNo.YES && !frilanserIsOk ? (
                                             <p>{renderFrilanserRejection(values)}</p>
                                         ) : null}
-                                    </CounsellorPanel>
+                                    </AlertStripeInfo>
                                 </FormBlock>
                                 <FormBlock>
                                     <EkspanderbartPanel tittel="Sjekkliste: ting du trenger for å fylle ut søknaden">
