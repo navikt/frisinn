@@ -11,7 +11,8 @@ export const formatDateRange = (dateRange: DateRange, extendedFormat = true): st
         ? `${prettifyDateExtended(dateRange.from)} - ${prettifyDateExtended(dateRange.to)}`
         : `${prettifyDate(dateRange.from)}  - ${prettifyDate(dateRange.to)}`;
 };
-const DateRangeView = ({ dateRange, extendedFormat = false }: Props) => (
+
+const DateRangeView = ({ dateRange, extendedFormat = true }: Props) => (
     <span>{formatDateRange(dateRange, extendedFormat)}</span>
 );
 

@@ -1,80 +1,82 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { RejectReason } from '../../../utils/accessUtils';
 import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
+import introFormUtils from './introFormUtils';
 
 export enum IntroFormField {
     'erMellom18og67år' = 'erMellom18og67år',
     'erSelvstendigNæringsdrivende' = 'erSelvstendigNæringsdrivende',
+    'selvstendigHarTaptInntektPgaKorona' = 'selvstendigHarTaptInntektPgaKorona',
+    'selvstendigFårDekketTapet' = 'selvstendigFårDekketTapet',
     'erFrilanser' = 'erFrilanser',
-    'erArbeidstaker' = 'erArbeidstaker',
-    'harFullUtbetalingFraNAV' = 'harFullUtbetalingFraNAV',
-    'harTaptInntektPgaKorona' = 'harTaptInntektPgaKorona',
-    'harHattInntektOver75000SomFrilanser' = 'harHattInntektOver75000SomFrilanser',
-    'harInntektUnder6g' = 'harInntektUnder6g',
-    'harSøktAndreYtelserFraNAV' = 'harSøktAndreYtelserFraNAV',
+    'frilanserHarTaptInntektPgaKorona' = 'frilanserHarTaptInntektPgaKorona',
+    'frilanserFårDekketTapet' = 'frilanserFårDekketTapet',
+    'harAlleredeSøkt' = 'harAlleredeSøkt',
+    'vilFortsetteTilSøknad' = 'vilFortsetteTilSøknad',
 }
 
 export interface IntroFormData {
     [IntroFormField.erMellom18og67år]: YesOrNo;
     [IntroFormField.erSelvstendigNæringsdrivende]: YesOrNo;
+    [IntroFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
+    [IntroFormField.selvstendigFårDekketTapet]: YesOrNo;
     [IntroFormField.erFrilanser]: YesOrNo;
-    [IntroFormField.erArbeidstaker]: YesOrNo;
-    [IntroFormField.harFullUtbetalingFraNAV]: YesOrNo;
-    [IntroFormField.harTaptInntektPgaKorona]: YesOrNo;
-    [IntroFormField.harHattInntektOver75000SomFrilanser]: YesOrNo;
-    [IntroFormField.harInntektUnder6g]: YesOrNo;
-    [IntroFormField.harSøktAndreYtelserFraNAV]: YesOrNo;
+    [IntroFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
+    [IntroFormField.frilanserFårDekketTapet]: YesOrNo;
+    [IntroFormField.harAlleredeSøkt]: YesOrNo;
+    [IntroFormField.vilFortsetteTilSøknad]: YesOrNo;
 }
 
 const Q = IntroFormField;
 
-type IntroFormQuestionsPayload = IntroFormData & { rejectionReason: RejectReason | undefined };
+type IntroFormQuestionsPayload = IntroFormData;
 
 const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField> = {
     [Q.erMellom18og67år]: {
         isAnswered: ({ erMellom18og67år }) => yesOrNoIsAnswered(erMellom18og67år),
     },
     [Q.erSelvstendigNæringsdrivende]: {
-        parentQuestion: Q.erMellom18og67år,
         isIncluded: ({ erMellom18og67år }) => erMellom18og67år === YesOrNo.YES,
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
-    [Q.erFrilanser]: {
+    [Q.selvstendigHarTaptInntektPgaKorona]: {
         parentQuestion: Q.erSelvstendigNæringsdrivende,
+        isIncluded: ({ erSelvstendigNæringsdrivende }) => erSelvstendigNæringsdrivende === YesOrNo.YES,
+        isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
+    },
+    [Q.selvstendigFårDekketTapet]: {
+        parentQuestion: Q.erSelvstendigNæringsdrivende,
+        isIncluded: ({ erSelvstendigNæringsdrivende, selvstendigHarTaptInntektPgaKorona }) =>
+            erSelvstendigNæringsdrivende === YesOrNo.YES && selvstendigHarTaptInntektPgaKorona === YesOrNo.YES,
+        isAnswered: ({ selvstendigFårDekketTapet }) => yesOrNoIsAnswered(selvstendigFårDekketTapet),
+    },
+    [Q.erFrilanser]: {
+        isIncluded: ({ erMellom18og67år }) => erMellom18og67år === YesOrNo.YES,
         isAnswered: ({ erFrilanser }) => yesOrNoIsAnswered(erFrilanser),
     },
-    [Q.erArbeidstaker]: {
+    [Q.frilanserHarTaptInntektPgaKorona]: {
         parentQuestion: Q.erFrilanser,
-        isIncluded: ({ rejectionReason }) => rejectionReason !== RejectReason.erIkkeSelvstendigEllerFrilanser,
-        isAnswered: ({ erArbeidstaker }) => yesOrNoIsAnswered(erArbeidstaker),
+        isIncluded: ({ erFrilanser }) => erFrilanser === YesOrNo.YES,
+        isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
-    [Q.harFullUtbetalingFraNAV]: {
-        parentQuestion: Q.erArbeidstaker,
-        isAnswered: ({ harFullUtbetalingFraNAV }) => yesOrNoIsAnswered(harFullUtbetalingFraNAV),
+    [Q.frilanserFårDekketTapet]: {
+        parentQuestion: Q.erFrilanser,
+        isIncluded: ({ erFrilanser, frilanserHarTaptInntektPgaKorona }) =>
+            erFrilanser === YesOrNo.YES && frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
+        visibilityFilter: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
+        isAnswered: ({ frilanserFårDekketTapet }) => yesOrNoIsAnswered(frilanserFårDekketTapet),
     },
-    [Q.harTaptInntektPgaKorona]: {
-        parentQuestion: Q.harFullUtbetalingFraNAV,
-        isIncluded: ({ rejectionReason }) => rejectionReason !== RejectReason.harFullUtbetalingFraNAV,
-        isAnswered: ({ harTaptInntektPgaKorona }) => yesOrNoIsAnswered(harTaptInntektPgaKorona),
+    [Q.harAlleredeSøkt]: {
+        isIncluded: (payload) =>
+            introFormUtils.selvstendigIsAnswered(payload) &&
+            introFormUtils.frilanserIsAnswered(payload) &&
+            (introFormUtils.canApplyAsFrilanser(payload) || introFormUtils.canApplyAsSelvstendig(payload)),
+        isAnswered: ({ harAlleredeSøkt }) => yesOrNoIsAnswered(harAlleredeSøkt),
     },
-    [Q.harInntektUnder6g]: {
-        parentQuestion: Q.harTaptInntektPgaKorona,
-        isIncluded: ({ rejectionReason }) => rejectionReason !== RejectReason.harIkkeTaptInntektPgaKorona,
-        isAnswered: ({ harInntektUnder6g }) => yesOrNoIsAnswered(harInntektUnder6g),
-    },
-    [Q.harHattInntektOver75000SomFrilanser]: {
-        parentQuestion: Q.harInntektUnder6g,
-        isIncluded: ({ erFrilanser, rejectionReason }) =>
-            erFrilanser === YesOrNo.YES && rejectionReason !== RejectReason.harInntektOver6g,
-        isAnswered: ({ harHattInntektOver75000SomFrilanser }) => yesOrNoIsAnswered(harHattInntektOver75000SomFrilanser),
-    },
-    [Q.harSøktAndreYtelserFraNAV]: {
-        parentQuestion: Q.harInntektUnder6g,
-        visibilityFilter: ({ erFrilanser, harHattInntektOver75000SomFrilanser, rejectionReason }) =>
-            rejectionReason === undefined &&
-            (erFrilanser === YesOrNo.YES ? harHattInntektOver75000SomFrilanser === YesOrNo.YES : true),
-        isAnswered: ({ harSøktAndreYtelserFraNAV }) => yesOrNoIsAnswered(harSøktAndreYtelserFraNAV),
+    [Q.vilFortsetteTilSøknad]: {
+        parentQuestion: Q.harAlleredeSøkt,
+        visibilityFilter: ({ harAlleredeSøkt }) => harAlleredeSøkt === YesOrNo.YES,
+        isAnswered: ({ vilFortsetteTilSøknad }) => yesOrNoIsAnswered(vilFortsetteTilSøknad),
     },
 };
 

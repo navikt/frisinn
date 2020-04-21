@@ -9,7 +9,7 @@ interface Props {
     nowrap?: boolean;
 }
 
-const formatDate = (date: Date, dateFormat: DateFormat): string => {
+export const formatDate = (date: Date, dateFormat: DateFormat = 'default'): string => {
     switch (dateFormat) {
         case 'monthAndYear':
             return moment(date).format(' MMM YYYY');
