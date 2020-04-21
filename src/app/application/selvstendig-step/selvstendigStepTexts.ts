@@ -20,10 +20,10 @@ export const selvstendigStepTexts: SelvstendigStepFormText = {
         )}?`,
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
-        `Hvilken inntekt har du hatt i perioden  ${formatDateRange(dateRange)}?`,
-    selvstendigInntekt2019: 'Hvilken inntekt har du hatt fra dine foretak i 2019?',
+        `Hvilken inntekt hadde du i perioden  ${formatDateRange(dateRange)}?`,
+    selvstendigInntekt2019: 'Hvilken inntekt haddde du fra dine foretak i 2019?',
     selvstendigInntekt2020: (date: Date) =>
-        `Hvilken inntekt har du hatt fra dine foretak i 2020 til og med ${prettifyDateExtended(date)}?`,
+        `Hvilken inntekt hadde du fra dine foretak i 2020 til og med ${prettifyDateExtended(date)}?`,
     selvstendigErFrilanser: 'Er du frilanser?',
     selvstendigHarHattInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
         `Har du hatt inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,

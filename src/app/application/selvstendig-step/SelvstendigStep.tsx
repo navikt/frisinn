@@ -23,6 +23,7 @@ import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
 import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
+import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -110,7 +111,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                         }
                         return (
                             <>
-                                {SelvstendigInfo.infoInntektForetak(availableDateRange)}
+                                <Undertittel className="sectionTitle">Inntekt i perioden du søker for</Undertittel>
                                 {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.Input
@@ -118,17 +119,58 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             name={ApplicationFormField.selvstendigInntektIPerioden}
                                             type="number"
                                             bredde="S"
+                                            description={
+                                                <ExpandableInfo title="Hvordan beregner du inntekt?">
+                                                    {SelvstendigInfo.infoInntektForetak()}
+                                                </ExpandableInfo>
+                                            }
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
                                 )}
+
+                                {isVisible(ApplicationFormField.selvstendigInntekt2019) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Inntekt i 2019</Undertittel>
+                                        <FormBlock>
+                                            <ApplicationFormComponents.Input
+                                                name={ApplicationFormField.selvstendigInntekt2019}
+                                                type="number"
+                                                bredde="S"
+                                                label={ensureString(txt.selvstendigInntekt2019)}
+                                                validate={validateAll([
+                                                    validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
+                                                ])}
+                                            />
+                                        </FormBlock>
+                                    </Box>
+                                )}
+                                {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Inntekt i 2019</Undertittel>
+                                        <FormBlock>
+                                            <ApplicationFormComponents.Input
+                                                name={ApplicationFormField.selvstendigInntekt2020}
+                                                type="number"
+                                                bredde="S"
+                                                label={ensureString(
+                                                    txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)
+                                                )}
+                                                validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                            />
+                                        </FormBlock>
+                                    </Box>
+                                )}
                                 {isVisible(ApplicationFormField.selvstendigErFrilanser) && (
-                                    <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
-                                            legend={ensureString(txt.selvstendigErFrilanser)}
-                                            name={ApplicationFormField.selvstendigErFrilanser}
-                                        />
-                                    </FormBlock>
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Frilanser</Undertittel>
+                                        <FormBlock>
+                                            <ApplicationFormComponents.YesOrNoQuestion
+                                                legend={ensureString(txt.selvstendigErFrilanser)}
+                                                name={ApplicationFormField.selvstendigErFrilanser}
+                                            />
+                                        </FormBlock>
+                                    </Box>
                                 )}
                                 {isVisible(ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden) && (
                                     <FormBlock>
@@ -152,38 +194,6 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
-                                )}
-                                {isVisible(ApplicationFormField.selvstendigInntekt2019) && (
-                                    <Box margin="xxl">
-                                        <Undertittel>Inntekt som selvstendig næringsdrivende i 2019</Undertittel>
-                                        <FormBlock margin="l">
-                                            <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.selvstendigInntekt2019}
-                                                type="number"
-                                                bredde="S"
-                                                label={ensureString(txt.selvstendigInntekt2019)}
-                                                validate={validateAll([
-                                                    validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
-                                                ])}
-                                            />
-                                        </FormBlock>
-                                    </Box>
-                                )}
-                                {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
-                                    <Box margin="xxl">
-                                        <Undertittel>Inntekt som selvstendig næringsdrivende i 2020</Undertittel>
-                                        <FormBlock margin="l">
-                                            <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.selvstendigInntekt2020}
-                                                type="number"
-                                                bredde="S"
-                                                label={ensureString(
-                                                    txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)
-                                                )}
-                                                validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
-                                            />
-                                        </FormBlock>
-                                    </Box>
                                 )}
                             </>
                         );

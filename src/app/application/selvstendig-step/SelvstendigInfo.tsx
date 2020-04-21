@@ -1,12 +1,10 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { Element, Undertittel } from 'nav-frontend-typografi';
-import DateRangeView from '../../components/date-range-view/DateRangeView';
+import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/ApplicationEssentials';
-import { DateRange } from '../../utils/dateUtils';
 
 const intro = (antallForetak: number, foretak: Foretak[]) => (
     <>
@@ -31,16 +29,8 @@ const advarselIkkeTapPgaKorona = () => (
     <AlertStripeAdvarsel>Du kan ikke søke om kompensasjon for tap som ikke er forårsaket av Korona</AlertStripeAdvarsel>
 );
 
-const infoInntektForetak = (availableDateRange: DateRange) => (
+const infoInntektForetak = () => (
     <>
-        <Undertittel>Din inntekt som selvstendig næringsdrivende</Undertittel>
-        <p>
-            Vi trenger å vite hvilken inntekt du hadde som selvstendig næringsdrivende i perioden{' '}
-            <strong>
-                <DateRangeView dateRange={availableDateRange} />
-            </strong>
-            .
-        </p>
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul>
