@@ -24,6 +24,7 @@ import { SelvstendigFormQuestions } from './selvstendigFormConfig';
 import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
+import { ensureString } from '../../utils/ensureString';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -50,8 +51,6 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
     useEffect(() => {
         setFieldValue(ApplicationFormField.selvstendigCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
-
-    const ensureString = (label: string) => label;
 
     return (
         <ApplicationStep
@@ -112,19 +111,19 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                         return (
                             <>
                                 <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
-                                {isVisible(ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV) && (
+                                {isVisible(ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV}
-                                            legend="Har du ytelser fra NAV som dekker hele eller deler av inntektstapet?"
+                                            name={ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet}
+                                            legend={ensureString(txt.selvstendigHarYtelseFraNavSomDekkerTapet)}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigTapHeltDekketAvNAV) && (
+                                {isVisible(ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.selvstendigTapHeltDekketAvNAV}
-                                            legend="Dekker disse ytelsene hele inntektstapet?"
+                                            name={ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet}
+                                            legend={ensureString(txt.selvstendigYtelseFraNavDekkerHeleTapet)}
                                         />
                                     </FormBlock>
                                 )}

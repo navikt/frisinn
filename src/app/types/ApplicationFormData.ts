@@ -11,8 +11,8 @@ export enum ApplicationFormField {
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
-    selvstendigTapHeltEllerDelvisDekketAvNAV = 'selvstendigTapHeltEllerDelvisDekketAvNAV',
-    selvstendigTapHeltDekketAvNAV = 'selvstendigTapHeltDekketAvNAV',
+    selvstendigHarYtelseFraNavSomDekkerTapet = 'selvstendigHarYtelseFraNavSomDekkerTapet',
+    selvstendigYtelseFraNavDekkerHeleTapet = 'selvstendigYtelseFraNavDekkerHeleTapet',
     selvstendigInntektIPerioden = 'selvstendigInntektIPerioden',
     selvstendigErFrilanser = 'selvstendigErFrilanser',
     selvstendigHarHattInntektSomFrilanserIPerioden = 'selvstendigHarHattInntektSomFrilanserIPerioden',
@@ -22,8 +22,8 @@ export enum ApplicationFormField {
     selvstendigCalculatedDateRange = 'selvstendigCalculatedDateRange',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
-    frilanserTapHeltEllerDelvisDekketAvNAV = 'frilanserTapHeltEllerDelvisDekketAvNAV',
-    frilanserTapHeltDekketAvNAV = 'frilanserTapHeltDekketAvNAV',
+    frilanserHarYtelseFraNavSomDekkerTapet = 'frilanserHarYtelseFraNavSomDekkerTapet',
+    frilanserYtelseFraNavDekkerHeleTapet = 'frilanserYtelseFraNavDekkerHeleTapet',
     frilanserInntektIPerioden = 'frilanserInntektIPerioden',
     frilanserErSelvstendigNæringsdrivende = 'frilanserErSelvstendigNæringsdrivende',
     frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
@@ -41,8 +41,8 @@ export interface ApplicationFormData {
     [ApplicationFormField.ønskerÅFortsetteKunFrilanserSøknad]?: YesOrNo;
     [ApplicationFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [ApplicationFormField.selvstendigInntektstapStartetDato]: Date;
-    [ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV]: YesOrNo;
-    [ApplicationFormField.selvstendigTapHeltDekketAvNAV]: YesOrNo;
+    [ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: YesOrNo;
+    [ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet]: YesOrNo;
     [ApplicationFormField.selvstendigInntektIPerioden]: number;
     [ApplicationFormField.selvstendigErFrilanser]?: YesOrNo;
     [ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden]?: YesOrNo;
@@ -52,8 +52,8 @@ export interface ApplicationFormData {
     [ApplicationFormField.selvstendigCalculatedDateRange]?: DateRange;
     [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [ApplicationFormField.frilanserInntektstapStartetDato]: Date;
-    [ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV]: YesOrNo;
-    [ApplicationFormField.frilanserTapHeltDekketAvNAV]: YesOrNo;
+    [ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet]: YesOrNo;
+    [ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet]: YesOrNo;
     [ApplicationFormField.frilanserInntektIPerioden]: number;
     [ApplicationFormField.frilanserErSelvstendigNæringsdrivende]: YesOrNo;
     [ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;

@@ -13,8 +13,8 @@ type SelvstendigFormData = Pick<
     | ApplicationFormField.søkerOmTaptInntektSomFrilanser
     | ApplicationFormField.selvstendigHarTaptInntektPgaKorona
     | ApplicationFormField.selvstendigInntektstapStartetDato
-    | ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV
-    | ApplicationFormField.selvstendigTapHeltDekketAvNAV
+    | ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet
+    | ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet
     | ApplicationFormField.selvstendigInntektIPerioden
     | ApplicationFormField.selvstendigErFrilanser
     | ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden
@@ -55,20 +55,21 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
         isIncluded: ({ selvstendigHarTaptInntektPgaKorona }) => selvstendigHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
-    [Field.selvstendigTapHeltEllerDelvisDekketAvNAV]: {
+    [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
         visibilityFilter: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
-        isAnswered: ({ selvstendigTapHeltEllerDelvisDekketAvNAV }) =>
-            hasValue(selvstendigTapHeltEllerDelvisDekketAvNAV),
+        isAnswered: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
+            hasValue(selvstendigHarYtelseFraNavSomDekkerTapet),
     },
-    [Field.selvstendigTapHeltDekketAvNAV]: {
-        isIncluded: ({ selvstendigTapHeltEllerDelvisDekketAvNAV }) =>
-            selvstendigTapHeltEllerDelvisDekketAvNAV === YesOrNo.YES,
-        isAnswered: ({ selvstendigTapHeltDekketAvNAV }) => hasValue(selvstendigTapHeltDekketAvNAV),
+    [Field.selvstendigYtelseFraNavDekkerHeleTapet]: {
+        isIncluded: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
+            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES,
+        isAnswered: ({ selvstendigYtelseFraNavDekkerHeleTapet }) => hasValue(selvstendigYtelseFraNavDekkerHeleTapet),
     },
 
     [Field.selvstendigInntektIPerioden]: {
-        visibilityFilter: ({ selvstendigTapHeltEllerDelvisDekketAvNAV, selvstendigTapHeltDekketAvNAV }) =>
-            selvstendigTapHeltEllerDelvisDekketAvNAV === YesOrNo.NO || yesOrNoIsAnswered(selvstendigTapHeltDekketAvNAV),
+        visibilityFilter: ({ selvstendigHarYtelseFraNavSomDekkerTapet, selvstendigYtelseFraNavDekkerHeleTapet }) =>
+            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
+            yesOrNoIsAnswered(selvstendigYtelseFraNavDekkerHeleTapet),
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
     [Field.selvstendigErFrilanser]: {

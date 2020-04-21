@@ -6,6 +6,8 @@ export interface SelvstendigStepFormText {
     [ApplicationFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
     [ApplicationFormField.selvstendigInntektstapStartetDato]: string;
     [ApplicationFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
+    [ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
+    [ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet]: string;
     [ApplicationFormField.selvstendigInntekt2019]: string;
     [ApplicationFormField.selvstendigInntekt2020]: (sisteDageMedInntekt: Date) => string;
     [ApplicationFormField.selvstendigErFrilanser]: string;
@@ -19,6 +21,8 @@ export const selvstendigStepTexts: SelvstendigStepFormText = {
             dateRange
         )}?`,
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
+    selvstendigHarYtelseFraNavSomDekkerTapet: 'Har du ytelser fra NAV som dekker hele eller deler av inntektstapet?',
+    selvstendigYtelseFraNavDekkerHeleTapet: 'Dekker disse ytelsene hele inntektstapet?',
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken inntekt hadde du i perioden  ${formatDateRange(dateRange)}?`,
     selvstendigInntekt2019: 'Hvilken inntekt haddde du fra dine foretak i 2019?',

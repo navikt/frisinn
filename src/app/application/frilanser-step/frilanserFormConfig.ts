@@ -12,8 +12,8 @@ type FrilanserFormData = Pick<
     | ApplicationFormField.erSelvstendigNæringsdrivende
     | ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | ApplicationFormField.frilanserHarTaptInntektPgaKorona
-    | ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV
-    | ApplicationFormField.frilanserTapHeltDekketAvNAV
+    | ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet
+    | ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet
     | ApplicationFormField.frilanserInntektstapStartetDato
     | ApplicationFormField.frilanserInntektIPerioden
     | ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
@@ -30,18 +30,19 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormF
         isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
-    [Field.frilanserTapHeltEllerDelvisDekketAvNAV]: {
+    [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
         visibilityFilter: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
-        isAnswered: ({ frilanserTapHeltEllerDelvisDekketAvNAV }) => hasValue(frilanserTapHeltEllerDelvisDekketAvNAV),
+        isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) => hasValue(frilanserHarYtelseFraNavSomDekkerTapet),
     },
-    [Field.frilanserTapHeltDekketAvNAV]: {
-        isIncluded: ({ frilanserTapHeltEllerDelvisDekketAvNAV }) =>
-            frilanserTapHeltEllerDelvisDekketAvNAV === YesOrNo.YES,
-        isAnswered: ({ frilanserTapHeltDekketAvNAV }) => hasValue(frilanserTapHeltDekketAvNAV),
+    [Field.frilanserYtelseFraNavDekkerHeleTapet]: {
+        isIncluded: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
+            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES,
+        isAnswered: ({ frilanserYtelseFraNavDekkerHeleTapet }) => hasValue(frilanserYtelseFraNavDekkerHeleTapet),
     },
     [Field.frilanserInntektIPerioden]: {
-        visibilityFilter: ({ frilanserTapHeltEllerDelvisDekketAvNAV, frilanserTapHeltDekketAvNAV }) =>
-            frilanserTapHeltEllerDelvisDekketAvNAV === YesOrNo.NO || yesOrNoIsAnswered(frilanserTapHeltDekketAvNAV),
+        visibilityFilter: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>
+            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
+            yesOrNoIsAnswered(frilanserYtelseFraNavDekkerHeleTapet),
         isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
     },
     [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {

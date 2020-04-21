@@ -79,10 +79,12 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                             fargetema={'info'}
                             fullHeight={true}>
                             {apiValues.selvstendigNæringsdrivende && (
-                                <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
+                                <Box margin="xl">
+                                    <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
+                                </Box>
                             )}
                             {apiValues.frilanser && (
-                                <Box margin={apiValues.selvstendigNæringsdrivende ? 'xl' : undefined}>
+                                <Box margin={apiValues.selvstendigNæringsdrivende ? 'xxl' : undefined}>
                                     <FrilanserSummary apiData={apiValues.frilanser} />
                                 </Box>
                             )}

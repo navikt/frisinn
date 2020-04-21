@@ -24,8 +24,12 @@ import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
+import { frilanserStepTexts } from './frilanserStepTexts';
+import { ensureString } from '../../utils/ensureString';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
+
+const txt = frilanserStepTexts;
 
 const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<ApplicationFormData>();
@@ -60,12 +64,7 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                 <FormBlock>
                     <ApplicationFormComponents.YesOrNoQuestion
                         name={ApplicationFormField.frilanserHarTaptInntektPgaKorona}
-                        legend={
-                            <span>
-                                Har du tapt inntekt som frilanser på grunn av koronatiltak i perioden{' '}
-                                <DateRangeView dateRange={currentSøknadsperiode} />?
-                            </span>
-                        }
+                        legend={ensureString(txt.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode))}
                         validate={validateYesOrNoIsAnswered}
                     />
                 </FormBlock>
@@ -81,7 +80,7 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                 <FormBlock>
                     <ApplicationFormComponents.DatePicker
                         name={ApplicationFormField.frilanserInntektstapStartetDato}
-                        label={'Når startet inntektstapet ditt som frilanser?'}
+                        label={ensureString(txt.frilanserInntektstapStartetDato)}
                         dateLimitations={{
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
@@ -119,19 +118,19 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                         return (
                             <>
                                 <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
-                                {isVisible(ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV) && (
+                                {isVisible(ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV}
-                                            legend="Har du ytelser fra NAV som dekker hele eller deler av inntektstapet?"
+                                            name={ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet}
+                                            legend={ensureString(txt.frilanserHarYtelseFraNavSomDekkerTapet)}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.frilanserTapHeltDekketAvNAV) && (
+                                {isVisible(ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet) && (
                                     <FormBlock>
                                         <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.frilanserTapHeltDekketAvNAV}
-                                            legend="Dekker disse ytelsene hele inntektstapet?"
+                                            name={ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet}
+                                            legend={ensureString(txt.frilanserYtelseFraNavDekkerHeleTapet)}
                                         />
                                     </FormBlock>
                                 )}
@@ -189,12 +188,11 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                                         <Undertittel className="sectionTitle">Selvstendig næringsdrivende</Undertittel>
                                         <FormBlock>
                                             <ApplicationFormComponents.YesOrNoQuestion
-                                                legend={
-                                                    <span>
-                                                        Har du hatt inntekt som selvstendig næringsdrivende i perioden{' '}
-                                                        <DateRangeView dateRange={availableDateRange} />?
-                                                    </span>
-                                                }
+                                                legend={ensureString(
+                                                    txt.frilanserHarHattInntektSomSelvstendigIPerioden(
+                                                        availableDateRange
+                                                    )
+                                                )}
                                                 name={
                                                     ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
                                                 }
@@ -208,12 +206,7 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                                             name={ApplicationFormField.frilanserInntektSomSelvstendigIPerioden}
                                             type="number"
                                             bredde="S"
-                                            label={
-                                                <span>
-                                                    Hva hadde du i inntekt som selvstendig næringsdrivende i denne
-                                                    perioden?
-                                                </span>
-                                            }
+                                            label={ensureString(txt.frilanserInntektSomSelvstendigIPerioden)}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>

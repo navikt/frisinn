@@ -1,7 +1,7 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { Locale } from 'common/types/Locale';
 
-interface Question {
+export interface ApiQuestion {
     question: string;
     answer: string;
 }
@@ -16,7 +16,7 @@ export interface SelvstendigNæringsdrivendeApiData {
         period: string;
         lastDayWithNormalIncome: string;
     };
-    questions?: Question[];
+    questions?: ApiQuestion[];
 }
 
 export interface FrilanserApiData {
@@ -27,7 +27,7 @@ export interface FrilanserApiData {
         period: string;
         lastDayWithNormalIncome: string;
     };
-    questions?: Question[];
+    questions?: ApiQuestion[];
 }
 
 export interface ApplicationApiData {

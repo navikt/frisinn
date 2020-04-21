@@ -3,10 +3,30 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
-import { ApplicationApiData, FrilanserApiData, SelvstendigNæringsdrivendeApiData } from '../types/ApplicationApiData';
+import {
+    ApplicationApiData,
+    FrilanserApiData,
+    SelvstendigNæringsdrivendeApiData,
+    ApiQuestion,
+} from '../types/ApplicationApiData';
 import { ApplicationEssentials } from '../types/ApplicationEssentials';
 import { ApplicationFormData } from '../types/ApplicationFormData';
 import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from './selvstendigUtils';
+import { selvstendigStepTexts } from '../application/selvstendig-step/selvstendigStepTexts';
+import { frilanserStepTexts } from '../application/frilanser-step/frilanserStepTexts';
+
+const formatYesOrNoAnswer = (answer: YesOrNo): string => {
+    switch (answer) {
+        case YesOrNo.YES:
+            return 'Ja';
+        case YesOrNo.NO:
+            return 'Nei';
+        case YesOrNo.DO_NOT_KNOW:
+            return 'Vet ikke';
+        default:
+            return 'Ubesvart';
+    }
+};
 
 const mapSelvstendigNæringsdrivendeFormDataToApiData = (
     { personligeForetak }: ApplicationEssentials,
@@ -14,6 +34,8 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         selvstendigHarTaptInntektPgaKorona,
         selvstendigInntektstapStartetDato,
+        selvstendigHarYtelseFraNavSomDekkerTapet,
+        selvstendigYtelseFraNavDekkerHeleTapet,
         selvstendigInntektIPerioden,
         selvstendigInntekt2019,
         selvstendigInntekt2020,
@@ -34,7 +56,20 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 
         const lastDayWithNormalIncome = moment(selvstendigInntektstapStartetDato).subtract(1, 'day').toDate();
 
-        return {
+        const questions: ApiQuestion[] = [
+            {
+                question: selvstendigStepTexts.selvstendigHarYtelseFraNavSomDekkerTapet,
+                answer: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
+            },
+        ];
+        if (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
+            questions.push({
+                question: selvstendigStepTexts.selvstendigYtelseFraNavDekkerHeleTapet,
+                answer: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
+            });
+        }
+
+        const apiData: SelvstendigNæringsdrivendeApiData = {
             inntektstapStartet: formatDateToApiFormat(selvstendigInntektstapStartetDato),
             inntektIPerioden: selvstendigInntektIPerioden,
             inntekt2019: selvstendigSkalOppgiInntekt2019(personligeForetak) ? selvstendigInntekt2019 : undefined,
@@ -44,35 +79,43 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 period: formatDateRange(selvstendigCalculatedDateRange),
                 lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
+            questions,
         };
+
+        return apiData;
     }
     return undefined;
 };
 
-const formatYesOrNoAnswer = (answer: YesOrNo): string => {
-    switch (answer) {
-        case YesOrNo.YES:
-            return 'Ja';
-        case YesOrNo.NO:
-            return 'Nei';
-        case YesOrNo.DO_NOT_KNOW:
-            return 'Vet ikke';
-        default:
-            return 'Ubesvart';
-    }
-};
-
-export const mapFrilanserFormDataToApiData = ({
-    frilanserHarTaptInntektPgaKorona,
-    frilanserInntektIPerioden,
-    frilanserInntektstapStartetDato,
-    frilanserHarHattInntektSomSelvstendigIPerioden,
-    frilanserInntektSomSelvstendigIPerioden,
-    frilanserCalculatedDateRange,
-}: ApplicationFormData): FrilanserApiData | undefined => {
+export const mapFrilanserFormDataToApiData = (
+    { personligeForetak }: ApplicationEssentials,
+    {
+        frilanserHarTaptInntektPgaKorona,
+        frilanserInntektIPerioden,
+        frilanserHarYtelseFraNavSomDekkerTapet,
+        frilanserYtelseFraNavDekkerHeleTapet,
+        frilanserInntektstapStartetDato,
+        frilanserHarHattInntektSomSelvstendigIPerioden,
+        frilanserInntektSomSelvstendigIPerioden,
+        frilanserCalculatedDateRange,
+    }: ApplicationFormData
+): FrilanserApiData | undefined => {
     if (frilanserHarTaptInntektPgaKorona === YesOrNo.YES && frilanserCalculatedDateRange) {
         const lastDayWithNormalIncome = moment(frilanserInntektstapStartetDato).subtract(1, 'day').toDate();
 
+        const questions: ApiQuestion[] = [];
+        if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
+            questions.push({
+                question: frilanserStepTexts.frilanserHarYtelseFraNavSomDekkerTapet,
+                answer: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
+            });
+            if (frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
+                questions.push({
+                    question: frilanserStepTexts.frilanserYtelseFraNavDekkerHeleTapet,
+                    answer: formatYesOrNoAnswer(frilanserYtelseFraNavDekkerHeleTapet),
+                });
+            }
+        }
         return {
             inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
             inntektIPerioden: frilanserInntektIPerioden,
@@ -84,12 +127,7 @@ export const mapFrilanserFormDataToApiData = ({
                 period: formatDateRange(frilanserCalculatedDateRange),
                 lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
-            questions: [
-                {
-                    question: 'Har du tapt inntekt som frilanser på grunn av koronatiltak i perioden?',
-                    answer: formatYesOrNoAnswer(frilanserHarTaptInntektPgaKorona),
-                },
-            ],
+            questions,
         };
     }
     return undefined;
@@ -107,7 +145,7 @@ export const mapFormDataToApiData = (
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,
         selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(appEssentials, formData),
-        frilanser: mapFrilanserFormDataToApiData(formData),
+        frilanser: mapFrilanserFormDataToApiData(appEssentials, formData),
     };
 
     return apiData;

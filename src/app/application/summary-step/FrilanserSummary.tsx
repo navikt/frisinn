@@ -1,19 +1,20 @@
 import React from 'react';
-import { Ingress } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import { FrilanserApiData } from '../../types/ApplicationApiData';
 import DatoSvar from './DatoSvar';
 import KronerSvar from './KronerSvar';
+import ApiQuestionsSummary from '../../components/api-questions-summary/ApiQuestionsSummary';
 
 interface Props {
     apiData: FrilanserApiData;
 }
 
 const FrilanserSummary = ({
-    apiData: { inntektIPerioden, inntektstapStartet, inntektIPeriodenSomSelvstendigNæringsdrivende, info },
+    apiData: { inntektIPerioden, inntektstapStartet, inntektIPeriodenSomSelvstendigNæringsdrivende, info, questions },
 }: Props) => (
     <>
-        <Ingress>Frilanser</Ingress>
+        <Undertittel className="sectionTitle">Frilanser</Undertittel>
         <SummaryBlock header={'Inntektstapet som frilanser startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
@@ -26,6 +27,7 @@ const FrilanserSummary = ({
                 <KronerSvar verdi={inntektIPeriodenSomSelvstendigNæringsdrivende} />
             </SummaryBlock>
         )}
+        <ApiQuestionsSummary questions={questions} />
     </>
 );
 
