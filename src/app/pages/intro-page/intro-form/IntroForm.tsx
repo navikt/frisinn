@@ -69,6 +69,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                         showYearSelector={true}
                                         name={IntroFormField.fødselsdato}
                                         label="Når er du født?"
+                                        dayPickerProps={{ initialMonth: new Date(2000, 0, 1) }}
                                     />
                                 </FormBlock>
                             </>
