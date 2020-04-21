@@ -118,45 +118,70 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                         }
                         return (
                             <>
-                                <Undertittel className="sectionTitle">
-                                    Frilanserinntekt i perioden du søker for
-                                </Undertittel>
-                                {isVisible(ApplicationFormField.frilanserInntektIPerioden) && (
+                                <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
+                                {isVisible(ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.Input
-                                            name={ApplicationFormField.frilanserInntektIPerioden}
-                                            type="number"
-                                            bredde="S"
-                                            description={
-                                                <ExpandableInfo title="Hvordan beregner du inntekt?">
-                                                    <Box margin="l">
-                                                        <Element>Inntekter som skal tas med:</Element>
-                                                        <ul>
-                                                            <li>Inntektene du har på ditt arbeid som frilanser</li>
-                                                            <li>Inntekter som er utbetalinger fra NAV som frilanser</li>
-                                                        </ul>
-                                                        <Element>Inntekter som IKKE skal tas med:</Element>
-                                                        <ul>
-                                                            <li>Eventuell uføretrygd</li>
-                                                            <li>Eventuell alderspensjon</li>
-                                                            <li>Eventuell inntekt som selvstendig næringsdrivende</li>
-                                                        </ul>
-                                                    </Box>
-                                                </ExpandableInfo>
-                                            }
-                                            label={
-                                                <span>
-                                                    Hvilken inntekt har du hatt som frilanser i perioden{' '}
-                                                    <DateRangeView
-                                                        extendedFormat={true}
-                                                        dateRange={availableDateRange}
-                                                    />
-                                                    ?
-                                                </span>
-                                            }
-                                            validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                        <ApplicationFormComponents.YesOrNoQuestion
+                                            name={ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV}
+                                            legend="Har du ytelser fra NAV som dekker hele eller deler av inntektstapet?"
                                         />
                                     </FormBlock>
+                                )}
+                                {isVisible(ApplicationFormField.frilanserTapHeltDekketAvNAV) && (
+                                    <FormBlock>
+                                        <ApplicationFormComponents.YesOrNoQuestion
+                                            name={ApplicationFormField.frilanserTapHeltDekketAvNAV}
+                                            legend="Dekker disse ytelsene hele inntektstapet?"
+                                        />
+                                    </FormBlock>
+                                )}
+                                {isVisible(ApplicationFormField.frilanserInntektIPerioden) && (
+                                    <>
+                                        <Box margin="xxl">
+                                            <Undertittel className="sectionTitle">
+                                                Frilanserinntekt i perioden du søker for
+                                            </Undertittel>
+                                        </Box>
+                                        <FormBlock>
+                                            <ApplicationFormComponents.Input
+                                                name={ApplicationFormField.frilanserInntektIPerioden}
+                                                type="number"
+                                                bredde="S"
+                                                description={
+                                                    <ExpandableInfo title="Hvordan beregner du inntekt?">
+                                                        <Box margin="l">
+                                                            <Element>Inntekter som skal tas med:</Element>
+                                                            <ul>
+                                                                <li>Inntektene du har på ditt arbeid som frilanser</li>
+                                                                <li>
+                                                                    Inntekter som er utbetalinger fra NAV som frilanser
+                                                                </li>
+                                                            </ul>
+                                                            <Element>Inntekter som IKKE skal tas med:</Element>
+                                                            <ul>
+                                                                <li>Eventuell uføretrygd</li>
+                                                                <li>Eventuell alderspensjon</li>
+                                                                <li>
+                                                                    Eventuell inntekt som selvstendig næringsdrivende
+                                                                </li>
+                                                            </ul>
+                                                        </Box>
+                                                    </ExpandableInfo>
+                                                }
+                                                label={
+                                                    <span>
+                                                        Hvilken inntekt har du hatt som frilanser i perioden{' '}
+                                                        <DateRangeView
+                                                            extendedFormat={true}
+                                                            dateRange={availableDateRange}
+                                                        />
+                                                        ?
+                                                    </span>
+                                                }
+                                                validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                            />
+                                        </FormBlock>
+                                    </>
                                 )}
 
                                 {isVisible(ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (

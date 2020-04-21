@@ -12,6 +12,8 @@ type FrilanserFormData = Pick<
     | ApplicationFormField.erSelvstendigNæringsdrivende
     | ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | ApplicationFormField.frilanserHarTaptInntektPgaKorona
+    | ApplicationFormField.frilanserTapHeltEllerDelvisDekketAvNAV
+    | ApplicationFormField.frilanserTapHeltDekketAvNAV
     | ApplicationFormField.frilanserInntektstapStartetDato
     | ApplicationFormField.frilanserInntektIPerioden
     | ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
@@ -28,8 +30,18 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormF
         isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
-    [Field.frilanserInntektIPerioden]: {
+    [Field.frilanserTapHeltEllerDelvisDekketAvNAV]: {
         visibilityFilter: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
+        isAnswered: ({ frilanserTapHeltEllerDelvisDekketAvNAV }) => hasValue(frilanserTapHeltEllerDelvisDekketAvNAV),
+    },
+    [Field.frilanserTapHeltDekketAvNAV]: {
+        isIncluded: ({ frilanserTapHeltEllerDelvisDekketAvNAV }) =>
+            frilanserTapHeltEllerDelvisDekketAvNAV === YesOrNo.YES,
+        isAnswered: ({ frilanserTapHeltDekketAvNAV }) => hasValue(frilanserTapHeltDekketAvNAV),
+    },
+    [Field.frilanserInntektIPerioden]: {
+        visibilityFilter: ({ frilanserTapHeltEllerDelvisDekketAvNAV, frilanserTapHeltDekketAvNAV }) =>
+            frilanserTapHeltEllerDelvisDekketAvNAV === YesOrNo.NO || yesOrNoIsAnswered(frilanserTapHeltDekketAvNAV),
         isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
     },
     [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {

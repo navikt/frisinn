@@ -111,56 +111,49 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                         }
                         return (
                             <>
-                                <Undertittel className="sectionTitle">Inntekt i perioden du søker for</Undertittel>
-                                {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
+                                <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
+                                {isVisible(ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.Input
-                                            label={ensureString(txt.selvstendigInntektIPerioden(availableDateRange))}
-                                            name={ApplicationFormField.selvstendigInntektIPerioden}
-                                            type="number"
-                                            bredde="S"
-                                            description={
-                                                <ExpandableInfo title="Hvordan beregner du inntekt?">
-                                                    {SelvstendigInfo.infoInntektForetak()}
-                                                </ExpandableInfo>
-                                            }
-                                            validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                        <ApplicationFormComponents.YesOrNoQuestion
+                                            name={ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV}
+                                            legend="Har du ytelser fra NAV som dekker hele eller deler av inntektstapet?"
                                         />
                                     </FormBlock>
                                 )}
-
-                                {isVisible(ApplicationFormField.selvstendigInntekt2019) && (
-                                    <Box margin="xxl">
-                                        <Undertittel className="sectionTitle">Inntekt i 2019</Undertittel>
-                                        <FormBlock>
-                                            <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.selvstendigInntekt2019}
-                                                type="number"
-                                                bredde="S"
-                                                label={ensureString(txt.selvstendigInntekt2019)}
-                                                validate={validateAll([
-                                                    validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
-                                                ])}
-                                            />
-                                        </FormBlock>
-                                    </Box>
+                                {isVisible(ApplicationFormField.selvstendigTapHeltDekketAvNAV) && (
+                                    <FormBlock>
+                                        <ApplicationFormComponents.YesOrNoQuestion
+                                            name={ApplicationFormField.selvstendigTapHeltDekketAvNAV}
+                                            legend="Dekker disse ytelsene hele inntektstapet?"
+                                        />
+                                    </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
-                                    <Box margin="xxl">
-                                        <Undertittel className="sectionTitle">Inntekt i 2019</Undertittel>
+                                {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
+                                    <>
+                                        <Box margin="xxl">
+                                            <Undertittel className="sectionTitle">
+                                                Inntekt i perioden du søker for
+                                            </Undertittel>
+                                        </Box>
                                         <FormBlock>
                                             <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.selvstendigInntekt2020}
+                                                label={ensureString(
+                                                    txt.selvstendigInntektIPerioden(availableDateRange)
+                                                )}
+                                                name={ApplicationFormField.selvstendigInntektIPerioden}
                                                 type="number"
                                                 bredde="S"
-                                                label={ensureString(
-                                                    txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)
-                                                )}
+                                                description={
+                                                    <ExpandableInfo title="Hvordan beregner du inntekt?">
+                                                        {SelvstendigInfo.infoInntektForetak()}
+                                                    </ExpandableInfo>
+                                                }
                                                 validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                             />
                                         </FormBlock>
-                                    </Box>
+                                    </>
                                 )}
+
                                 {isVisible(ApplicationFormField.selvstendigErFrilanser) && (
                                     <Box margin="xxl">
                                         <Undertittel className="sectionTitle">Frilanser</Undertittel>
@@ -194,6 +187,38 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </FormBlock>
+                                )}
+                                {isVisible(ApplicationFormField.selvstendigInntekt2019) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Inntekt i 2019</Undertittel>
+                                        <FormBlock>
+                                            <ApplicationFormComponents.Input
+                                                name={ApplicationFormField.selvstendigInntekt2019}
+                                                type="number"
+                                                bredde="S"
+                                                label={ensureString(txt.selvstendigInntekt2019)}
+                                                validate={validateAll([
+                                                    validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
+                                                ])}
+                                            />
+                                        </FormBlock>
+                                    </Box>
+                                )}
+                                {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Inntekt i 2020</Undertittel>
+                                        <FormBlock>
+                                            <ApplicationFormComponents.Input
+                                                name={ApplicationFormField.selvstendigInntekt2020}
+                                                type="number"
+                                                bredde="S"
+                                                label={ensureString(
+                                                    txt.selvstendigInntekt2020(selvstendigInntektstapStartetDato)
+                                                )}
+                                                validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                            />
+                                        </FormBlock>
+                                    </Box>
                                 )}
                             </>
                         );

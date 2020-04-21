@@ -13,6 +13,8 @@ type SelvstendigFormData = Pick<
     | ApplicationFormField.søkerOmTaptInntektSomFrilanser
     | ApplicationFormField.selvstendigHarTaptInntektPgaKorona
     | ApplicationFormField.selvstendigInntektstapStartetDato
+    | ApplicationFormField.selvstendigTapHeltEllerDelvisDekketAvNAV
+    | ApplicationFormField.selvstendigTapHeltDekketAvNAV
     | ApplicationFormField.selvstendigInntektIPerioden
     | ApplicationFormField.selvstendigErFrilanser
     | ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden
@@ -53,8 +55,20 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
         isIncluded: ({ selvstendigHarTaptInntektPgaKorona }) => selvstendigHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
+    [Field.selvstendigTapHeltEllerDelvisDekketAvNAV]: {
+        visibilityFilter: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
+        isAnswered: ({ selvstendigTapHeltEllerDelvisDekketAvNAV }) =>
+            hasValue(selvstendigTapHeltEllerDelvisDekketAvNAV),
+    },
+    [Field.selvstendigTapHeltDekketAvNAV]: {
+        isIncluded: ({ selvstendigTapHeltEllerDelvisDekketAvNAV }) =>
+            selvstendigTapHeltEllerDelvisDekketAvNAV === YesOrNo.YES,
+        isAnswered: ({ selvstendigTapHeltDekketAvNAV }) => hasValue(selvstendigTapHeltDekketAvNAV),
+    },
+
     [Field.selvstendigInntektIPerioden]: {
-        parentQuestion: Field.selvstendigInntektstapStartetDato,
+        visibilityFilter: ({ selvstendigTapHeltEllerDelvisDekketAvNAV, selvstendigTapHeltDekketAvNAV }) =>
+            selvstendigTapHeltEllerDelvisDekketAvNAV === YesOrNo.NO || yesOrNoIsAnswered(selvstendigTapHeltDekketAvNAV),
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
     [Field.selvstendigErFrilanser]: {

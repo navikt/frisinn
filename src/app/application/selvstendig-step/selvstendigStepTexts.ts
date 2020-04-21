@@ -1,6 +1,6 @@
 import { formatDateRange } from '../../components/date-range-view/DateRangeView';
 import { ApplicationFormField } from '../../types/ApplicationFormData';
-import { DateRange, prettifyDateExtended } from '../../utils/dateUtils';
+import { DateRange } from '../../utils/dateUtils';
 
 export interface SelvstendigStepFormText {
     [ApplicationFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
@@ -22,8 +22,7 @@ export const selvstendigStepTexts: SelvstendigStepFormText = {
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken inntekt hadde du i perioden  ${formatDateRange(dateRange)}?`,
     selvstendigInntekt2019: 'Hvilken inntekt haddde du fra dine foretak i 2019?',
-    selvstendigInntekt2020: (date: Date) =>
-        `Hvilken inntekt hadde du fra dine foretak i 2020 til og med ${prettifyDateExtended(date)}?`,
+    selvstendigInntekt2020: () => `Hvilken inntekt hadde du fra dine foretak i 2020 frem til 1. mars 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',
     selvstendigHarHattInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
         `Har du hatt inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
