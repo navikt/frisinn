@@ -17,7 +17,7 @@ const ApplicationWrapper: React.FunctionComponent<ApplicationWrapperProps> = ({
 }: ApplicationWrapperProps) => {
     return (
         <IntlProvider locale={locale}>
-            <Normaltekst tag="div">
+            <Normaltekst tag="div" style={{ paddingBottom: '5rem' }}>
                 <Router basename={getEnvironmentVariable('PUBLIC_PATH')}>{children}</Router>
             </Normaltekst>
         </IntlProvider>

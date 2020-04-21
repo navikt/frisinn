@@ -16,6 +16,7 @@ import { formatDate } from '../../../components/date-view/DateView';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import introFormUtils from './introFormUtils';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
+import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -242,21 +243,33 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                         )}
 
                         {canContinueToApplication && (
-                            <FormBlock>
-                                <CounsellorPanel>
-                                    Basert på hva du har svart, kan du søke om kompenasjon for tapt inntekt som{' '}
-                                    <ul>
-                                        {selvstendigIsOk ? <li>Selvstendig næringsdrivende</li> : null}
-                                        {frilanserIsOk ? <li>Frilanser</li> : null}
-                                    </ul>
-                                    {values.erSelvstendigNæringsdrivende === YesOrNo.YES && !selvstendigIsOk ? (
-                                        <p>{renderSelvstendigRejection(values)}</p>
-                                    ) : null}
-                                    {values.erFrilanser === YesOrNo.YES && !frilanserIsOk ? (
-                                        <p>{renderFrilanserRejection(values)}</p>
-                                    ) : null}
-                                </CounsellorPanel>
-                            </FormBlock>
+                            <>
+                                <FormBlock>
+                                    <CounsellorPanel>
+                                        Basert på hva du har svart, kan du søke om kompensasjon for tapt inntekt som{' '}
+                                        {selvstendigIsOk ? <strong>selvstendig næringsdrivende</strong> : null}
+                                        {selvstendigIsOk && frilanserIsOk ? <> og </> : null}
+                                        {frilanserIsOk ? <strong>frilanser</strong> : null}.
+                                        {values.erSelvstendigNæringsdrivende === YesOrNo.YES && !selvstendigIsOk ? (
+                                            <p>{renderSelvstendigRejection(values)}</p>
+                                        ) : null}
+                                        {values.erFrilanser === YesOrNo.YES && !frilanserIsOk ? (
+                                            <p>{renderFrilanserRejection(values)}</p>
+                                        ) : null}
+                                    </CounsellorPanel>
+                                </FormBlock>
+                                <FormBlock>
+                                    <EkspanderbartPanel tittel="Sjekkliste: ting du trenger for å fylle ut søknaden">
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab iste nemo quas
+                                        sequi cum corporis id
+                                        <ul>
+                                            <li>inventore laudantium</li>
+                                            <li>repellendus odit distinctio delectus animi tempora</li>
+                                            <li>officia reiciendis et error veniam possimus</li>
+                                        </ul>
+                                    </EkspanderbartPanel>
+                                </FormBlock>
+                            </>
                         )}
                     </FormComponent.Form>
                 );
