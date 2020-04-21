@@ -15,6 +15,7 @@ import moment from 'moment';
 import { formatDate } from '../../../components/date-view/DateView';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import introFormUtils from './introFormUtils';
+import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -98,7 +99,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 <FormBlock margin="l">
                                     <FormComponent.YesOrNoQuestion
                                         name={IntroFormField.erSelvstendigNæringsdrivende}
-                                        description="Foretaket må ha vært registert i Brønnøysundregisteret før 1. mars for at du kan trykke ja her"
+                                        description={
+                                            'Foretaket må ha vært registert i Brønnøysundregisteret før 1. mars for at du kan trykke ja her'
+                                        }
                                         legend={'Er du selvstendig næringsdrivende med ENK, DA/ANS?'}
                                     />
                                 </FormBlock>
@@ -136,7 +139,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                         name={IntroFormField.erFrilanser}
                                         legend={'Er du frilanser pr. NAVs definisjon?'}
                                         description={
-                                            <>
+                                            <ExpandableInfo title="Hva er NAVs definisjon?" closeTitle={'Skjul info'}>
                                                 Det vil si en ikke ansatt lønnsmottaker. Du kan sjekke om oppdragene
                                                 dine er registert som frilansoppdrag, på{' '}
                                                 <Lenke
@@ -145,7 +148,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                                     skatteetaten sine nettsider
                                                 </Lenke>{' '}
                                                 (åpnes i nytt vindu).
-                                            </>
+                                            </ExpandableInfo>
                                         }
                                     />
                                 </FormBlock>

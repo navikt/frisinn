@@ -13,7 +13,7 @@ interface Props {
     initialOpen?: boolean;
 }
 
-const bem = bemUtils('expandableContent');
+const bem = bemUtils('expandableInfo');
 
 const ExpandableInfo = ({ children, initialOpen, closeTitle, title }: Props) => {
     const [isOpen, setIsOpen] = useState<boolean>(initialOpen || false);
@@ -21,13 +21,15 @@ const ExpandableInfo = ({ children, initialOpen, closeTitle, title }: Props) => 
 
     return (
         <div className={bem.block}>
-            <div className={bem.element('toggler')}>
+            <div className={bem.element('toggler', isOpen ? 'open' : undefined)}>
                 <InfoToggleButton onToggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
                     <Normaltekst tag="span">{isOpen ? closeTitle || title : title}</Normaltekst>
                 </InfoToggleButton>
             </div>
             <div className={bem.element('content')} id={contentId}>
-                <CollapsableContainer isOpen={isOpen}>{children}</CollapsableContainer>
+                <CollapsableContainer isOpen={isOpen} animated={true}>
+                    {children}
+                </CollapsableContainer>
             </div>
         </div>
     );

@@ -4,7 +4,7 @@ import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import NavFrontendChevron from 'nav-frontend-chevron';
 import './infoToggleButton.less';
 
-const cls = bemUtils('infoToggler');
+const cls = bemUtils('infoToggleButton');
 
 interface Props {
     children: React.ReactNode;
