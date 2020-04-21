@@ -120,12 +120,12 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 </FormBlock>
                                 {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
                                     <FormBlock>
-                                        <AlertStripeInfo>
+                                        <AlertStripeAdvarsel>
                                             <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
                                             Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av
                                             koronasituasjonen for å kunne søke om kompensasjon som selvstendig
                                             næringsdrivende.
-                                        </AlertStripeInfo>
+                                        </AlertStripeAdvarsel>
                                     </FormBlock>
                                 )}
                             </>
@@ -148,11 +148,11 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 </FormBlock>
                                 {values.selvstendigFårDekketTapet === YesOrNo.YES && (
                                     <FormBlock>
-                                        <AlertStripeInfo>
+                                        <AlertStripeAdvarsel>
                                             <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
                                             Dersom du allerede får dekket tapet, kan du ikke søke om kompensasjon som
                                             selvstendig næringsdrivende.
-                                        </AlertStripeInfo>
+                                        </AlertStripeAdvarsel>
                                     </FormBlock>
                                 )}
                                 {values.selvstendigFårDekketTapet === YesOrNo.NO && (
@@ -204,11 +204,11 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 </FormBlock>
                                 {values.frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
                                     <FormBlock>
-                                        <AlertStripeInfo>
+                                        <AlertStripeAdvarsel>
                                             <Element>Du kan ikke søke som frilanser</Element>
                                             Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av
                                             koronasituasjonen for å kunne søke om kompensasjon som frilanser.
-                                        </AlertStripeInfo>
+                                        </AlertStripeAdvarsel>
                                     </FormBlock>
                                 )}
                             </>
@@ -223,11 +223,11 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 </FormBlock>
                                 {values.frilanserFårDekketTapet === YesOrNo.YES && (
                                     <FormBlock>
-                                        <AlertStripeInfo>
+                                        <AlertStripeAdvarsel>
                                             <Element>Du kan ikke søke som frilanser</Element>
                                             Dersom du allerede får dekket tapet, kan du ikke søke om kompensasjon som
                                             frilanser.
-                                        </AlertStripeInfo>
+                                        </AlertStripeAdvarsel>
                                     </FormBlock>
                                 )}
                                 {values.frilanserFårDekketTapet === YesOrNo.NO && (
