@@ -1,8 +1,7 @@
 import React from 'react';
 import { Panel } from 'nav-frontend-paneler';
-import { Ingress, Undertittel } from 'nav-frontend-typografi';
+import { Ingress, Undertittel, Systemtittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
-import InformationPoster from 'common/components/information-poster/InformationPoster';
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
@@ -11,6 +10,8 @@ import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useCurrentPeriode from '../../hooks/useCurrentPeriode';
 import { relocateToApplication } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
+import Guide from '../../components/guide/Guide';
+import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 
 const bem = bemUtils('introPage');
 
@@ -32,36 +33,47 @@ const IntroPage: React.StatelessComponent = () => {
                     }
                     return (
                         <>
-                            <Box margin="xxxl">
-                                <InformationPoster>
-                                    <Box margin="xl">
-                                        <Ingress tag="div">
-                                            <p>
-                                                Dersom du er selvstendig næringsdrivende med personlige foretak og/eller
-                                                frilanser, og har mistet hele eller deler av inntekten din på grunn av
-                                                korona-pandemien, kan du søke om kompensasjon for dette. Ordningen er
-                                                midlertidig, og en ...
-                                            </p>
-                                        </Ingress>
-                                        <Undertittel>Perioden du kan søke for: </Undertittel>
-                                        <Ingress>
-                                            <DateRangeView dateRange={currentPeriode} />.
-                                        </Ingress>
-                                    </Box>
-                                </InformationPoster>
+                            <Box margin="xxxl" padBottom="l">
+                                <Systemtittel>
+                                    Søknad om kompensasjon for tapt inntekt for selvstendig næringsdrivende (ENK,
+                                    DA/ANS) og frilansere
+                                </Systemtittel>
+                                <Ingress tag="div">
+                                    <p>
+                                        Dersom du mistet hele eller deler av inntekten din på grunn av korona-pandemien,
+                                        kan du søke om kompensasjon for dette. De første 16 dagene etter at du startet å
+                                        miste inntekt, må du dekke selv, mens dagene etter kan du få kompensasjon for.
+                                        <br /> Dette er en midlertidig ordning.
+                                    </p>
+                                    <p>
+                                        Ordningen er lagt opp slik at du søker for én og én periode i etterkant av
+                                        perioden. Perioden du kan søke kompensasjon for nå er{' '}
+                                        <strong>
+                                            <DateRangeView dateRange={currentPeriode} />
+                                        </strong>
+                                        .
+                                    </p>
+                                </Ingress>
                             </Box>
-                            <Box margin="xxl">
-                                <Undertittel>Sjekk om du kan få søke</Undertittel>
-                                <p>
-                                    Svar på spørsmålene nedenfor for å se om du har rett på denne kompansasjonen Hvis du
-                                    har det, vil du kunne gå videre til søknaden, hvor du må logge deg inn med
-                                    elektonisk ID.
-                                </p>
-                                <p>
-                                    Om du har kombinasjonsinntekt som både selvstending næringsdrivende (ENK, DA/ANS) og
-                                    frilans krysser du av at du er begge. Inne i søknaden vil du bli bedt om å oppgi
-                                    inntektene separat.
-                                </p>
+                            <Box margin="xxxl" padBottom="xl">
+                                <Guide
+                                    svg={<ChecklistCircleIcon />}
+                                    kompakt={true}
+                                    type="plakat"
+                                    fullHeight={false}
+                                    fargetema="info">
+                                    <Undertittel>Sjekk om du kan få søke</Undertittel>
+                                    <p>
+                                        Svar på spørsmålene nedenfor for å se om du har rett på denne kompansasjonen
+                                        Hvis du har det, vil du kunne gå videre til søknaden, hvor du må logge deg inn
+                                        med elektronisk ID.
+                                    </p>
+                                    <p>
+                                        Om du har kombinasjonsinntekt som både selvstending næringsdrivende (ENK,
+                                        DA/ANS) og frilans krysser du av at du er begge. Inne i søknaden vil du bli bedt
+                                        om å oppgi inntektene separat.
+                                    </p>
+                                </Guide>
                             </Box>
                             <Panel>
                                 <IntroForm

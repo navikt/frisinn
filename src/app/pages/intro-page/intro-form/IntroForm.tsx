@@ -36,6 +36,31 @@ interface Props {
     onValidSubmit: (values: IntroFormData) => void;
 }
 
+const renderSelvstendigRejection = ({
+    selvstendigFårDekketTapet,
+    selvstendigHarTaptInntektPgaKorona,
+}: IntroFormData): string | null => {
+    if (selvstendigHarTaptInntektPgaKorona === YesOrNo.NO) {
+        return 'Som selvstendig næringsdrivende må du ha hatt inntektstap på grunn av korona-pandemien for å søke om kompensasjon her.';
+    }
+    if (selvstendigFårDekketTapet === YesOrNo.YES) {
+        return 'Som selvstendig næringsdrivende kan du ikke søke om kompensasjon her når du allerede får dekket inntektstapet.';
+    }
+    return null;
+};
+const renderFrilanserRejection = ({
+    frilanserFårDekketTapet,
+    frilanserHarTaptInntektPgaKorona,
+}: IntroFormData): string | null => {
+    if (frilanserHarTaptInntektPgaKorona === YesOrNo.NO) {
+        return 'Som frilanser du ha hatt inntektstap på grunn av korona-pandemien for å søke om kompensasjon her.';
+    }
+    if (frilanserFårDekketTapet === YesOrNo.YES) {
+        return 'Som frilanser kan du ikke søke om kompensasjon her når du allerede får dekket inntektstapet.';
+    }
+    return null;
+};
+
 const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
     const intl = useIntl();
 
@@ -59,8 +84,6 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
 
                 const minBirthDate: Date = moment(currentPeriode.to).subtract(18, 'years').toDate();
                 const maxBirthDate: Date = moment(currentPeriode.from).subtract(67, 'years').toDate();
-
-                console.log();
 
                 return (
                     <FormComponent.Form
@@ -99,10 +122,10 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                 <FormBlock margin="l">
                                     <FormComponent.YesOrNoQuestion
                                         name={IntroFormField.erSelvstendigNæringsdrivende}
+                                        legend={'Er du selvstendig næringsdrivende med ENK, DA/ANS?'}
                                         description={
                                             'Foretaket må ha vært registert i Brønnøysundregisteret før 1. mars for at du kan trykke ja her'
                                         }
-                                        legend={'Er du selvstendig næringsdrivende med ENK, DA/ANS?'}
                                     />
                                 </FormBlock>
                             </>
@@ -114,7 +137,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     legend={
                                         'Har du tapt inntekt som selvstendig næringsdrivende i perioden på grunn av koronasituasjonen?'
                                     }
-                                    description="inntektstapet er det reelle tapet du har hatt i mars og april, ikke fremtige tap; det søker du om neste måned."
+                                    info="inntektstapet er det reelle tapet du har hatt i mars og april, ikke fremtige tap; det søker du om neste måned."
                                 />
                             </FormBlock>
                         )}
@@ -139,11 +162,13 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                         name={IntroFormField.erFrilanser}
                                         legend={'Er du frilanser pr. NAVs definisjon?'}
                                         description={
-                                            <ExpandableInfo title="Hva er NAVs definisjon?" closeTitle={'Skjul info'}>
+                                            <ExpandableInfo
+                                                title="Hva er NAVs definisjon på frilanser?"
+                                                closeTitle={'Skjul info'}>
                                                 Det vil si en ikke ansatt lønnsmottaker. Du kan sjekke om oppdragene
                                                 dine er registert som frilansoppdrag, på{' '}
                                                 <Lenke
-                                                    href="https://skatt.skatteetaten.no/web/innsynamelding/"
+                                                    href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/"
                                                     target="_blank">
                                                     skatteetaten sine nettsider
                                                 </Lenke>{' '}
@@ -219,11 +244,17 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                         {canContinueToApplication && (
                             <FormBlock>
                                 <CounsellorPanel>
-                                    Basert på hva du har svart, kan du søke på vedtak 10 som{' '}
+                                    Basert på hva du har svart, kan du søke om kompenasjon for tapt inntekt som{' '}
                                     <ul>
                                         {selvstendigIsOk ? <li>Selvstendig næringsdrivende</li> : null}
                                         {frilanserIsOk ? <li>Frilanser</li> : null}
                                     </ul>
+                                    {values.erSelvstendigNæringsdrivende === YesOrNo.YES && !selvstendigIsOk ? (
+                                        <p>{renderSelvstendigRejection(values)}</p>
+                                    ) : null}
+                                    {values.erFrilanser === YesOrNo.YES && !frilanserIsOk ? (
+                                        <p>{renderFrilanserRejection(values)}</p>
+                                    ) : null}
                                 </CounsellorPanel>
                             </FormBlock>
                         )}
