@@ -159,36 +159,23 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                                     </FormBlock>
                                 )}
 
-                                {isVisible(ApplicationFormField.frilanserErSelvstendigNæringsdrivende) && (
-                                    <>
-                                        <FormBlock>
-                                            <Undertittel className="sectionTitle">
-                                                Selvstendig næringsdrivende
-                                            </Undertittel>
-                                        </FormBlock>
-
+                                {isVisible(ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Selvstendig næringsdrivende</Undertittel>
                                         <FormBlock>
                                             <ApplicationFormComponents.YesOrNoQuestion
-                                                name={ApplicationFormField.frilanserErSelvstendigNæringsdrivende}
-                                                legend="Er du også selvstendig næringsdrivende?"
-                                                validate={validateYesOrNoIsAnswered}
+                                                legend={
+                                                    <span>
+                                                        Har du hatt inntekt som selvstendig næringsdrivende i perioden{' '}
+                                                        <DateRangeView dateRange={availableDateRange} />?
+                                                    </span>
+                                                }
+                                                name={
+                                                    ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
+                                                }
                                             />
                                         </FormBlock>
-                                    </>
-                                )}
-
-                                {isVisible(ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
-                                    <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
-                                            legend={
-                                                <span>
-                                                    Har du hatt inntekt som selvstendig i perioden{' '}
-                                                    <DateRangeView dateRange={availableDateRange} />?
-                                                </span>
-                                            }
-                                            name={ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden}
-                                        />
-                                    </FormBlock>
+                                    </Box>
                                 )}
                                 {isVisible(ApplicationFormField.frilanserInntektSomSelvstendigIPerioden) && (
                                     <FormBlock>

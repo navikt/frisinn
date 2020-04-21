@@ -14,7 +14,6 @@ type FrilanserFormData = Pick<
     | ApplicationFormField.frilanserHarTaptInntektPgaKorona
     | ApplicationFormField.frilanserInntektstapStartetDato
     | ApplicationFormField.frilanserInntektIPerioden
-    | ApplicationFormField.frilanserErSelvstendigNæringsdrivende
     | ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | ApplicationFormField.frilanserInntektSomSelvstendigIPerioden
 >;
@@ -33,7 +32,7 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormF
         visibilityFilter: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
         isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
     },
-    [Field.frilanserErSelvstendigNæringsdrivende]: {
+    [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {
         visibilityFilter: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
         isIncluded: ({
             personligeForetak,
@@ -45,12 +44,6 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormF
             }
             return søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO;
         },
-        isAnswered: ({ frilanserErSelvstendigNæringsdrivende }) =>
-            yesOrNoIsAnswered(frilanserErSelvstendigNæringsdrivende),
-    },
-    [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {
-        isIncluded: ({ frilanserErSelvstendigNæringsdrivende }) =>
-            frilanserErSelvstendigNæringsdrivende === YesOrNo.YES,
         isAnswered: ({ frilanserHarHattInntektSomSelvstendigIPerioden }) =>
             yesOrNoIsAnswered(frilanserHarHattInntektSomSelvstendigIPerioden),
     },
