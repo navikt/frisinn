@@ -12,10 +12,14 @@ import applicationTempStorage from './ApplicationTempStorage';
 import { maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
 import useAccessCheck from '../hooks/useAccessKrav';
 import NoAccessPage from '../pages/no-access-page/NoAccessPage';
+import useApiGet from '../hooks/useApiGet';
+import { ApiEndpoint } from '../api/api';
+import { Ingress } from 'nav-frontend-typografi';
 
 const Application = () => {
     const essentials = useApplicationEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
+    const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
     const tempStorage = useTemporaryStorage();
     const { applicationEssentials } = essentials;
     const initialValues = applicationTempStorage.getValidStorage(tempStorage.storageData)?.formData || {};
@@ -28,14 +32,26 @@ const Application = () => {
         navigateToApplicationFrontpage(history);
     }
 
-    const isLoading = essentials.isLoading || tempStorage.isLoading || maksEnSoknadPerPeriodeCheck.isLoading;
-
-    console.log(maksEnSoknadPerPeriodeCheck.result);
+    const isLoading =
+        essentials.isLoading ||
+        tempStorage.isLoading ||
+        maksEnSoknadPerPeriodeCheck.isLoading ||
+        erTilgjengelig.isLoading;
 
     return (
         <LoadWrapper
             isLoading={isLoading}
             contentRenderer={() => {
+                if (erTilgjengelig.error?.response?.status === 503) {
+                    return (
+                        <NoAccessPage title="Søknaden er ikke tilgjengelig">
+                            <Ingress>
+                                Søknaden er dessverre ikke tilgjengelig akkurat nå. Vennligst prøv igjen på et senere
+                                tidspunkt.
+                            </Ingress>
+                        </NoAccessPage>
+                    );
+                }
                 if (applicationEssentials === undefined) {
                     return <GeneralErrorPage />;
                 }

@@ -30,6 +30,7 @@ export enum ApiEndpoint {
     'kravSelvstendigNæringsdrivende' = 'krav/selvstendig-naeringsdrivende',
     'kravMaksEnSoknadPerPeriode' = 'krav/maks-en-soknad-per-periode',
     'mellomlagring' = 'mellomlagring',
+    'tilgjengelig' = 'tilgjengelig',
 }
 
 const api = {

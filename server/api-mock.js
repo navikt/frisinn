@@ -160,6 +160,18 @@ const startExpressServer = () => {
         }, 1000);
     });
 
+    server.get('/tilgjengelig', (req, res) => {
+        setTimeout(() => {
+            res.send(200);
+        }, 200);
+    });
+
+    server.get('/utilgjengelig', (req, res) => {
+        setTimeout(() => {
+            res.send(503);
+        }, 200);
+    });
+
     server.post('/soknad', (req, res) => {
         const body = req.body;
         console.log('[POST] body', body);

@@ -26,7 +26,7 @@ const NoAccessPage = ({ title, children }: Props) => {
             <Box margin="xxxl">
                 <Guide svg={<AppVeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
                     <Innholdstittel>{title}</Innholdstittel>
-                    <p>{children}</p>
+                    {children}
                 </Guide>
             </Box>
         </Page>

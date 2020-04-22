@@ -1,6 +1,6 @@
 import React from 'react';
 import { Panel } from 'nav-frontend-paneler';
-import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
+import { Undertittel, Normaltekst, Ingress, Systemtittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
@@ -11,12 +11,18 @@ import useCurrentPeriode from '../../hooks/useCurrentPeriode';
 import { relocateToApplication } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
+import useApiGet from '../../hooks/useApiGet';
+import { ApiEndpoint } from '../../api/api';
+import Guide from '../../components/guide/Guide';
+import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 
 const bem = bemUtils('introPage');
 
 const IntroPage: React.StatelessComponent = () => {
-    const { isLoading, currentPeriode } = useCurrentPeriode();
+    const periode = useCurrentPeriode();
+    const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
 
+    const isLoading = periode.isLoading || erTilgjengelig.isLoading;
     return (
         <Page
             className={bem.block}
@@ -27,8 +33,23 @@ const IntroPage: React.StatelessComponent = () => {
             <LoadWrapper
                 isLoading={isLoading}
                 contentRenderer={() => {
-                    if (!currentPeriode) {
+                    if (!periode.currentPeriode) {
                         return null;
+                    }
+                    if (erTilgjengelig.error?.response?.status === 503) {
+                        return (
+                            <Box margin="xxxl">
+                                <Guide svg={<AppVeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
+                                    <Box padBottom="m">
+                                        <Systemtittel>Søknaden er ikke tilgjengelig</Systemtittel>
+                                    </Box>
+                                    <Ingress>
+                                        Søknaden er dessverre ikke tilgjengelig akkurat nå. Vennligst prøv igjen på et
+                                        senere tidspunkt.
+                                    </Ingress>
+                                </Guide>
+                            </Box>
+                        );
                     }
                     return (
                         <>
@@ -50,7 +71,7 @@ const IntroPage: React.StatelessComponent = () => {
                                             Ordningen er lagt opp slik at du søker for én og én periode i etterkant av
                                             perioden. Perioden du kan søke kompensasjon for nå er{' '}
                                             <strong>
-                                                <DateRangeView dateRange={currentPeriode} />
+                                                <DateRangeView dateRange={periode.currentPeriode} />
                                             </strong>
                                             .
                                         </p>
@@ -74,7 +95,7 @@ const IntroPage: React.StatelessComponent = () => {
                                     </Box>
                                     <IntroForm
                                         onValidSubmit={() => relocateToApplication()}
-                                        currentPeriode={currentPeriode}
+                                        currentPeriode={periode.currentPeriode}
                                     />
                                 </Panel>
                             </Box>
