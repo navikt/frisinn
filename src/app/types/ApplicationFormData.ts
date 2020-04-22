@@ -28,6 +28,7 @@ export enum ApplicationFormField {
     selvstendigRevisorTelefon = 'selvstendigRevisorTelefon',
     selvstendigRevisorNAVKanTaKontakt = 'selvstendigRevisorNAVKanTaKontakt',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
+    frilanserErNyetablert = 'frilanserErNyetablert',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserHarYtelseFraNavSomDekkerTapet = 'frilanserHarYtelseFraNavSomDekkerTapet',
     frilanserYtelseFraNavDekkerHeleTapet = 'frilanserYtelseFraNavDekkerHeleTapet',
@@ -65,6 +66,7 @@ export interface ApplicationFormData {
     [ApplicationFormField.selvstendigRevisorTelefon]?: string;
     [ApplicationFormField.selvstendigRevisorNAVKanTaKontakt]?: YesOrNo;
     [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
+    [ApplicationFormField.frilanserErNyetablert]: YesOrNo;
     [ApplicationFormField.frilanserInntektstapStartetDato]: Date;
     [ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet]: YesOrNo;
     [ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet]: YesOrNo;

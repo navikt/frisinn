@@ -25,6 +25,7 @@ export interface SelvstendigNæringsdrivendeApiData {
 
 export interface FrilanserApiData {
     inntektstapStartet: ApiStringDate;
+    erNyetablert: boolean;
     inntektIPerioden: number;
     inntektIPeriodenSomSelvstendigNæringsdrivende?: number;
     info: {

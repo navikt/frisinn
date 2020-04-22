@@ -5,18 +5,29 @@ import { FrilanserApiData } from '../../types/ApplicationApiData';
 import DatoSvar from './DatoSvar';
 import KronerSvar from './KronerSvar';
 import ApiQuestionsSummary from '../../components/api-questions-summary/ApiQuestionsSummary';
+import JaNeiSvar from './JaNeiSvar';
 
 interface Props {
     apiData: FrilanserApiData;
 }
 
 const FrilanserSummary = ({
-    apiData: { inntektIPerioden, inntektstapStartet, inntektIPeriodenSomSelvstendigNæringsdrivende, info, questions },
+    apiData: {
+        inntektIPerioden,
+        inntektstapStartet,
+        inntektIPeriodenSomSelvstendigNæringsdrivende,
+        info,
+        erNyetablert,
+        questions,
+    },
 }: Props) => (
     <>
         <Undertittel className="sectionTitle">Frilanser</Undertittel>
         <SummaryBlock header={'Inntektstapet som frilanser startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
+        </SummaryBlock>
+        <SummaryBlock header={'Startet som frilanser etter 1. septebmer 2019'}>
+            <JaNeiSvar harSvartJa={erNyetablert} />
         </SummaryBlock>
         <SummaryBlock header={`Periode det søkes for som frilanser`}>{info.period}</SummaryBlock>
         <SummaryBlock header={`Inntekt som frilanser i perioden ${info.period}`}>

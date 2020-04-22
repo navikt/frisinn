@@ -276,6 +276,12 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                             </FormBlock>
                         )}
 
+                        {values.erFrilanser === YesOrNo.NO && values.erSelvstendigNæringsdrivende === YesOrNo.NO && (
+                            <FormBlock>
+                                <AlertStripeAdvarsel>Då må velge</AlertStripeAdvarsel>
+                            </FormBlock>
+                        )}
+
                         {canContinueToApplication && (
                             <FormBlock>
                                 <EkspanderbartPanel tittel="Sjekkliste: ting du trenger for å fylle ut søknaden">

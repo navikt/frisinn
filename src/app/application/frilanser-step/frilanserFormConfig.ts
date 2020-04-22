@@ -9,15 +9,16 @@ const Field = ApplicationFormField;
 
 type FrilanserFormData = Pick<
     ApplicationFormData,
-    | ApplicationFormField.erSelvstendigNæringsdrivende
-    | ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | ApplicationFormField.frilanserHarTaptInntektPgaKorona
+    | ApplicationFormField.frilanserErNyetablert
+    | ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet
     | ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet
     | ApplicationFormField.frilanserInntektstapStartetDato
     | ApplicationFormField.frilanserInntektIPerioden
     | ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | ApplicationFormField.frilanserInntektSomSelvstendigIPerioden
+    | ApplicationFormField.erSelvstendigNæringsdrivende
 >;
 
 type FrilanserFormPayload = Partial<FrilanserFormData> & ApplicationEssentials;
@@ -26,7 +27,12 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormF
     [Field.frilanserHarTaptInntektPgaKorona]: {
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
+    [Field.frilanserErNyetablert]: {
+        isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
+        isAnswered: ({ frilanserErNyetablert }) => hasValue(frilanserErNyetablert),
+    },
     [Field.frilanserInntektstapStartetDato]: {
+        visibilityFilter: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
         isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },

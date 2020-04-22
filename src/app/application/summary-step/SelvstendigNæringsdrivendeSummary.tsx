@@ -43,7 +43,7 @@ const SelvstendigNæringsdrivendeSummary = ({
         )}
         {inntekt2020 !== undefined && (
             <SummaryBlock
-                header={`Inntekt som selvstendig næringsdrivende i 2020 til og med ${info.lastDayWithNormalIncome}`}>
+                header={`Inntekt som selvstendig næringsdrivende i 2020 frem til  ${info.lastDayWithNormalIncome}`}>
                 <KronerSvar verdi={inntekt2020} />
             </SummaryBlock>
         )}

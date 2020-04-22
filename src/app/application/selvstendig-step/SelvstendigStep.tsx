@@ -107,7 +107,10 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
                         }}
-                        validate={validateAll([validateRequiredField, validateDateInRange(currentSøknadsperiode)])}
+                        validate={validateAll([
+                            validateRequiredField,
+                            validateDateInRange({ from: MIN_DATE, to: currentSøknadsperiode.to }),
+                        ])}
                     />
                     {isValidDateRange(availableDateRange) && (
                         <Box margin="l" padBottom="xxl">

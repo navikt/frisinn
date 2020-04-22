@@ -80,6 +80,15 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                     </AlertStripeAdvarsel>
                 </FormBlock>
             )}
+            {isVisible(ApplicationFormField.frilanserErNyetablert) && (
+                <FormBlock>
+                    <ApplicationFormComponents.YesOrNoQuestion
+                        name={ApplicationFormField.frilanserErNyetablert}
+                        legend={ensureString(txt.frilanserErNyetablert)}
+                        validate={validateYesOrNoIsAnswered}
+                    />
+                </FormBlock>
+            )}
             {isVisible(ApplicationFormField.frilanserInntektstapStartetDato) && (
                 <FormBlock>
                     <ApplicationFormComponents.DatePicker
@@ -89,7 +98,10 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
                         }}
-                        validate={validateAll([validateRequiredField, validateDateInRange(currentSøknadsperiode)])}
+                        validate={validateAll([
+                            validateRequiredField,
+                            validateDateInRange({ from: MIN_DATE, to: currentSøknadsperiode.to }),
+                        ])}
                     />
                     {isValidDateRange(availableDateRange) && (
                         <Box margin="l" padBottom="xxl">

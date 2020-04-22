@@ -61,7 +61,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        const lastDayWithNormalIncome = moment(selvstendigInntektstapStartetDato).subtract(1, 'day').toDate();
+        // const lastDayWithNormalIncome = moment(selvstendigInntektstapStartetDato).subtract(1, 'day').toDate();
 
         const questions: ApiQuestion[] = [
             {
@@ -108,7 +108,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {
                 period: formatDateRange(selvstendigCalculatedDateRange),
-                lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
+                lastDayWithNormalIncome: '1. mars 2020',
             },
             regnskapsfører:
                 selvstendigHarRegnskapsfører === YesOrNo.YES &&
@@ -131,6 +131,7 @@ export const mapFrilanserFormDataToApiData = (
     { personligeForetak }: ApplicationEssentials,
     {
         frilanserHarTaptInntektPgaKorona,
+        frilanserErNyetablert,
         frilanserInntektIPerioden,
         frilanserHarYtelseFraNavSomDekkerTapet,
         frilanserYtelseFraNavDekkerHeleTapet,
@@ -158,6 +159,7 @@ export const mapFrilanserFormDataToApiData = (
         }
         return {
             inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
+            erNyetablert: frilanserErNyetablert === YesOrNo.YES,
             inntektIPerioden: frilanserInntektIPerioden,
             inntektIPeriodenSomSelvstendigNæringsdrivende:
                 frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES
