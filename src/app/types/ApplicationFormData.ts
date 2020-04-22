@@ -82,3 +82,45 @@ export const initialApplicationValues: Partial<ApplicationFormData> = {
     [ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo.UNANSWERED,
     [ApplicationFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo.UNANSWERED,
 };
+
+export type SelvstendigFormData = Pick<
+    Partial<ApplicationFormData>,
+    | ApplicationFormField.søkerOmTaptInntektSomFrilanser
+    | ApplicationFormField.selvstendigHarTaptInntektPgaKorona
+    | ApplicationFormField.selvstendigInntektstapStartetDato
+    | ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet
+    | ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet
+    | ApplicationFormField.selvstendigInntektIPerioden
+    | ApplicationFormField.selvstendigErFrilanser
+    | ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden
+    | ApplicationFormField.selvstendigInntektSomFrilanserIPerioden
+    | ApplicationFormField.selvstendigInntekt2019
+    | ApplicationFormField.selvstendigInntekt2020
+    | ApplicationFormField.selvstendigHarRegnskapsfører
+    | ApplicationFormField.selvstendigRegnskapsførerNavn
+    | ApplicationFormField.selvstendigRegnskapsførerTelefon
+    | ApplicationFormField.selvstendigHarRevisor
+    | ApplicationFormField.selvstendigRevisorNavn
+    | ApplicationFormField.selvstendigRevisorTelefon
+    | ApplicationFormField.selvstendigRevisorNAVKanTaKontakt
+>;
+
+export const initialSelvstendigValues: SelvstendigFormData = {
+    selvstendigHarTaptInntektPgaKorona: undefined,
+    selvstendigInntektstapStartetDato: undefined,
+    selvstendigHarYtelseFraNavSomDekkerTapet: undefined,
+    selvstendigYtelseFraNavDekkerHeleTapet: undefined,
+    selvstendigInntektIPerioden: undefined,
+    selvstendigInntekt2019: undefined,
+    selvstendigInntekt2020: undefined,
+    selvstendigHarRegnskapsfører: undefined,
+    selvstendigRegnskapsførerNavn: undefined,
+    selvstendigRegnskapsførerTelefon: undefined,
+    selvstendigHarRevisor: undefined,
+    selvstendigRevisorNavn: undefined,
+    selvstendigRevisorTelefon: undefined,
+    selvstendigRevisorNAVKanTaKontakt: undefined,
+    selvstendigErFrilanser: undefined,
+    selvstendigHarHattInntektSomFrilanserIPerioden: undefined,
+    selvstendigInntektSomFrilanserIPerioden: undefined,
+};

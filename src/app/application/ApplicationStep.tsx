@@ -18,12 +18,13 @@ export interface FormikStepProps {
     buttonDisabled?: boolean;
     onValidFormSubmit?: () => void;
     skipValidation?: boolean;
+    stepCleanup?: (values: ApplicationFormData) => ApplicationFormData;
     resetApplication: () => void;
 }
 
 type Props = FormikStepProps & StepProps;
 
-const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, ...restProps }: Props) => {
+const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, stepCleanup, ...restProps }: Props) => {
     const intl = useIntl();
     const { values } = useFormikContext<ApplicationFormData>();
 
@@ -42,6 +43,7 @@ const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, ...
                 includeButtons={false}
                 includeValidationSummary={true}
                 runDelayedFormValidation={false}
+                cleanup={stepCleanup}
                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                 {children}
                 {showSubmitButton && (

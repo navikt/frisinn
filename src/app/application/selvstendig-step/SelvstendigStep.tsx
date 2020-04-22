@@ -14,7 +14,11 @@ import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
-import { ApplicationFormData, ApplicationFormField as Field } from '../../types/ApplicationFormData';
+import {
+    ApplicationFormData,
+    ApplicationFormField as Field,
+    initialSelvstendigValues,
+} from '../../types/ApplicationFormData';
 import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
 import FC from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
@@ -53,12 +57,29 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
         setFieldValue(Field.selvstendigCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
 
+    const cleanupSelvstendigstep = (values: ApplicationFormData): ApplicationFormData => {
+        if (values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO) {
+            const cleanedValues = {
+                ...values,
+                ...initialSelvstendigValues,
+                selvstendigHarTaptInntektPgaKorona: YesOrNo.NO,
+            };
+            return cleanedValues;
+        }
+        return values;
+    };
+
     return (
         <ApplicationStep
             id={StepID.SELVSTENDIG}
             resetApplication={resetApplication}
             onValidFormSubmit={onValidSubmit}
-            showSubmitButton={areAllQuestionsAnswered() && values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES}>
+            stepCleanup={cleanupSelvstendigstep}
+            showSubmitButton={
+                areAllQuestionsAnswered() &&
+                (values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES ||
+                    values.søkerOmTaptInntektSomFrilanser === YesOrNo.YES)
+            }>
             <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
                 {SelvstendigInfo.intro(antallForetak, foretak)}
             </Guide>

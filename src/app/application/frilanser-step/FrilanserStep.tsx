@@ -56,7 +56,11 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
             resetApplication={resetApplication}
-            showSubmitButton={areAllQuestionsAnswered() && values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES}>
+            showSubmitButton={
+                areAllQuestionsAnswered() &&
+                (values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES ||
+                    values.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES)
+            }>
             <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
                 <p>Skal det være noe informasjon som introduserer steget?</p>
             </Guide>

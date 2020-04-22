@@ -1,34 +1,12 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { ApplicationFormField, SelvstendigFormData } from '../../types/ApplicationFormData';
 import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from '../../utils/selvstendigUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
 
 const Field = ApplicationFormField;
-
-type SelvstendigFormData = Pick<
-    Partial<ApplicationFormData>,
-    | ApplicationFormField.søkerOmTaptInntektSomFrilanser
-    | ApplicationFormField.selvstendigHarTaptInntektPgaKorona
-    | ApplicationFormField.selvstendigInntektstapStartetDato
-    | ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet
-    | ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet
-    | ApplicationFormField.selvstendigInntektIPerioden
-    | ApplicationFormField.selvstendigErFrilanser
-    | ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden
-    | ApplicationFormField.selvstendigInntektSomFrilanserIPerioden
-    | ApplicationFormField.selvstendigInntekt2019
-    | ApplicationFormField.selvstendigInntekt2020
-    | ApplicationFormField.selvstendigHarRegnskapsfører
-    | ApplicationFormField.selvstendigRegnskapsførerNavn
-    | ApplicationFormField.selvstendigRegnskapsførerTelefon
-    | ApplicationFormField.selvstendigHarRevisor
-    | ApplicationFormField.selvstendigRevisorNavn
-    | ApplicationFormField.selvstendigRevisorTelefon
-    | ApplicationFormField.selvstendigRevisorNAVKanTaKontakt
->;
 
 export type SelvstendigFormPayload = SelvstendigFormData & ApplicationEssentials;
 
