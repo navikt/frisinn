@@ -9,10 +9,8 @@ import { Undertittel } from 'nav-frontend-typografi';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
-import { AccessCheckResult } from '../../types/AccessCheck';
 import { ApplicationEssentials } from '../../types/ApplicationEssentials';
 import { ApplicationFormData } from '../../types/ApplicationFormData';
-import { ApiKrav, KlientKrav } from '../../types/Krav';
 import EntryForm from './EntryForm';
 import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 import applicationTempStorage from '../../application/ApplicationTempStorage';
@@ -20,12 +18,6 @@ import applicationTempStorage from '../../application/ApplicationTempStorage';
 interface Props {
     applicationEssentials: ApplicationEssentials;
     onStart: () => void;
-}
-
-export interface AccessChecks {
-    [ApiKrav.alder]: AccessCheckResult;
-    [ApiKrav.selvstendig]: AccessCheckResult;
-    [KlientKrav.kontonummer]: AccessCheckResult;
 }
 
 const EntryPage = ({ onStart, applicationEssentials }: Props) => {

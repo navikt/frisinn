@@ -151,11 +151,11 @@ const startExpressServer = () => {
         }, 1000);
     });
 
-    server.get('/krav/frilanser', (req, res) => {
+    server.get('/krav/maks-en-soknad-per-periode', (req, res) => {
         setTimeout(() => {
             res.send({
-                innfrirKrav: false,
-                beskrivelse: 'Er ikke registrert som frilanser',
+                innfrirKrav: true,
+                beskrivelse: 'Søkeren har ikke søkt for periode 2020-03-16/2020-04-30, og kan søke nå',
             });
         }, 1000);
     });

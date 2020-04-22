@@ -34,3 +34,10 @@ export const selvstendigAccessCheck = (): AccessCheck => {
         check: () => apiAccessCheck(ApiKrav.selvstendig),
     };
 };
+
+export const maksEnSoknadPerPeriodeAccessCheck = (): AccessCheck => {
+    return {
+        name: ApiKrav.maksEnSoknadPerPeriodeAccessCheck,
+        check: () => apiAccessCheck(ApiKrav.maksEnSoknadPerPeriodeAccessCheck),
+    };
+};

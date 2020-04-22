@@ -1,14 +1,12 @@
 import React from 'react';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { AccessCheckResult } from '../../types/AccessCheck';
-import { AccessChecks } from './EntryPage';
 
 interface Props {
-    accessChecks: AccessChecks;
+    results: AccessCheckResult[];
 }
 
-const AccessCheckFailed = ({ accessChecks }: Props) => {
-    const results = Object.keys(accessChecks).map((k) => accessChecks[k]);
+const AccessCheckFailed = ({ results }: Props) => {
     const failingChecks: AccessCheckResult[] = results.filter((result) => {
         if (result.passes) {
             return false;
@@ -18,7 +16,7 @@ const AccessCheckFailed = ({ accessChecks }: Props) => {
     return (
         <>
             <AlertStripeAdvarsel>
-                Du kan ikke sende inn denne søknaden fordi:
+                Du kan ikke sende bruke denne søknaden fordi:
                 <ul>
                     {failingChecks.map((r) => (
                         <li key={r.checkName}>{r.info}</li>

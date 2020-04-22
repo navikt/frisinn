@@ -28,6 +28,7 @@ export enum ApiEndpoint {
     'soknad' = 'soknad',
     'kravAlder' = 'krav/alder',
     'kravSelvstendigNæringsdrivende' = 'krav/selvstendig-naeringsdrivende',
+    'kravMaksEnSoknadPerPeriode' = 'krav/maks-en-soknad-per-periode',
     'mellomlagring' = 'mellomlagring',
 }
 

@@ -2,12 +2,14 @@ import { DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/ut
 import { ApiKrav } from '../../types/Krav';
 import api, { ApiEndpoint } from '../api';
 
-const getKravEndPointFromKrav = (krav: ApiKrav) => {
+const getKravEndPointFromKrav = (krav: ApiKrav): ApiEndpoint => {
     switch (krav) {
         case ApiKrav.alder:
             return ApiEndpoint.kravAlder;
         case ApiKrav.selvstendig:
             return ApiEndpoint.kravSelvstendigNæringsdrivende;
+        case ApiKrav.maksEnSoknadPerPeriodeAccessCheck:
+            return ApiEndpoint.kravMaksEnSoknadPerPeriode;
     }
 };
 

@@ -9,12 +9,15 @@ import { navigateToApplicationFrontpage } from '../utils/navigationUtils';
 import ApplicationFormComponents from './ApplicationFormComponents';
 import ApplicationRoutes from './ApplicationRoutes';
 import applicationTempStorage from './ApplicationTempStorage';
+import { maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
+import useAccessCheck from '../hooks/useAccessKrav';
+import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 
 const Application = () => {
     const essentials = useApplicationEssentials();
+    const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const tempStorage = useTemporaryStorage();
     const { applicationEssentials } = essentials;
-    const isLoading = essentials.isLoading || tempStorage.isLoading;
     const initialValues = applicationTempStorage.getValidStorage(tempStorage.storageData)?.formData || {};
     const history = useHistory();
 
@@ -25,12 +28,23 @@ const Application = () => {
         navigateToApplicationFrontpage(history);
     }
 
+    const isLoading = essentials.isLoading || tempStorage.isLoading || maksEnSoknadPerPeriodeCheck.isLoading;
+
+    console.log(maksEnSoknadPerPeriodeCheck.result);
+
     return (
         <LoadWrapper
             isLoading={isLoading}
             contentRenderer={() => {
                 if (applicationEssentials === undefined) {
                     return <GeneralErrorPage />;
+                }
+                if (maksEnSoknadPerPeriodeCheck.result?.passes === false) {
+                    return (
+                        <NoAccessPage title="Du kan ikke sende inn søknad">
+                            {maksEnSoknadPerPeriodeCheck.result.info}
+                        </NoAccessPage>
+                    );
                 }
                 return (
                     <ApplicationFormComponents.FormikWrapper
