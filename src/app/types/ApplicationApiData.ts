@@ -16,6 +16,10 @@ export interface SelvstendigNæringsdrivendeApiData {
         period: string;
         lastDayWithNormalIncome: string;
     };
+    regnskapsfører?: {
+        navn: string;
+        telefon: string;
+    };
     questions?: ApiQuestion[];
 }
 

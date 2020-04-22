@@ -14,9 +14,9 @@ import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { ApplicationFormData, ApplicationFormField as Field } from '../../types/ApplicationFormData';
 import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
-import ApplicationFormComponents from '../ApplicationFormComponents';
+import FC from '../ApplicationFormComponents';
 import ApplicationStep from '../ApplicationStep';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import { StepConfigProps, StepID } from '../stepConfig';
@@ -25,6 +25,7 @@ import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { ensureString } from '../../utils/ensureString';
+import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -49,7 +50,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
     });
 
     useEffect(() => {
-        setFieldValue(ApplicationFormField.selvstendigCalculatedDateRange, availableDateRange);
+        setFieldValue(Field.selvstendigCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
 
     return (
@@ -62,10 +63,10 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                 {SelvstendigInfo.intro(antallForetak, foretak)}
             </Guide>
 
-            {isVisible(ApplicationFormField.selvstendigHarTaptInntektPgaKorona) && (
+            {isVisible(Field.selvstendigHarTaptInntektPgaKorona) && (
                 <FormBlock>
-                    <ApplicationFormComponents.YesOrNoQuestion
-                        name={ApplicationFormField.selvstendigHarTaptInntektPgaKorona}
+                    <FC.YesOrNoQuestion
+                        name={Field.selvstendigHarTaptInntektPgaKorona}
                         legend={ensureString(txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode))}
                         validate={validateYesOrNoIsAnswered}
                     />
@@ -76,10 +77,10 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                 <FormBlock>{SelvstendigInfo.advarselIkkeTapPgaKorona()}</FormBlock>
             )}
 
-            {isVisible(ApplicationFormField.selvstendigInntektstapStartetDato) && (
+            {isVisible(Field.selvstendigInntektstapStartetDato) && (
                 <FormBlock>
-                    <ApplicationFormComponents.DatePicker
-                        name={ApplicationFormField.selvstendigInntektstapStartetDato}
+                    <FC.DatePicker
+                        name={Field.selvstendigInntektstapStartetDato}
                         label={ensureString(txt.selvstendigInntektstapStartetDato)}
                         dateLimitations={{
                             minDato: MIN_DATE,
@@ -111,23 +112,23 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                         return (
                             <>
                                 <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
-                                {isVisible(ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet) && (
+                                {isVisible(Field.selvstendigHarYtelseFraNavSomDekkerTapet) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet}
+                                        <FC.YesOrNoQuestion
+                                            name={Field.selvstendigHarYtelseFraNavSomDekkerTapet}
                                             legend={ensureString(txt.selvstendigHarYtelseFraNavSomDekkerTapet)}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet) && (
+                                {isVisible(Field.selvstendigYtelseFraNavDekkerHeleTapet) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet}
+                                        <FC.YesOrNoQuestion
+                                            name={Field.selvstendigYtelseFraNavDekkerHeleTapet}
                                             legend={ensureString(txt.selvstendigYtelseFraNavDekkerHeleTapet)}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigInntektIPerioden) && (
+                                {isVisible(Field.selvstendigInntektIPerioden) && (
                                     <>
                                         <Box margin="xxl">
                                             <Undertittel className="sectionTitle">
@@ -135,11 +136,11 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                             </Undertittel>
                                         </Box>
                                         <FormBlock>
-                                            <ApplicationFormComponents.Input
+                                            <FC.Input
                                                 label={ensureString(
                                                     txt.selvstendigInntektIPerioden(availableDateRange)
                                                 )}
-                                                name={ApplicationFormField.selvstendigInntektIPerioden}
+                                                name={Field.selvstendigInntektIPerioden}
                                                 type="number"
                                                 bredde="S"
                                                 description={
@@ -153,31 +154,31 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                     </>
                                 )}
 
-                                {isVisible(ApplicationFormField.selvstendigErFrilanser) && (
+                                {isVisible(Field.selvstendigErFrilanser) && (
                                     <Box margin="xxl">
                                         <Undertittel className="sectionTitle">Frilanser</Undertittel>
                                         <FormBlock>
-                                            <ApplicationFormComponents.YesOrNoQuestion
+                                            <FC.YesOrNoQuestion
                                                 legend={ensureString(txt.selvstendigErFrilanser)}
-                                                name={ApplicationFormField.selvstendigErFrilanser}
+                                                name={Field.selvstendigErFrilanser}
                                             />
                                         </FormBlock>
                                     </Box>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden) && (
+                                {isVisible(Field.selvstendigHarHattInntektSomFrilanserIPerioden) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
+                                        <FC.YesOrNoQuestion
                                             legend={ensureString(
                                                 txt.selvstendigHarHattInntektSomFrilanserIPerioden(availableDateRange)
                                             )}
-                                            name={ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
+                                            name={Field.selvstendigHarHattInntektSomFrilanserIPerioden}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigInntektSomFrilanserIPerioden) && (
+                                {isVisible(Field.selvstendigInntektSomFrilanserIPerioden) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.Input
-                                            name={ApplicationFormField.selvstendigInntektSomFrilanserIPerioden}
+                                        <FC.Input
+                                            name={Field.selvstendigInntektSomFrilanserIPerioden}
                                             type="number"
                                             bredde="S"
                                             label={ensureString(
@@ -187,12 +188,12 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigInntekt2019) && (
+                                {isVisible(Field.selvstendigInntekt2019) && (
                                     <Box margin="xxl">
                                         <Undertittel className="sectionTitle">Inntekt i 2019</Undertittel>
                                         <FormBlock>
-                                            <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.selvstendigInntekt2019}
+                                            <FC.Input
+                                                name={Field.selvstendigInntekt2019}
                                                 type="number"
                                                 bredde="S"
                                                 label={ensureString(txt.selvstendigInntekt2019)}
@@ -203,12 +204,12 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                         </FormBlock>
                                     </Box>
                                 )}
-                                {isVisible(ApplicationFormField.selvstendigInntekt2020) && (
+                                {isVisible(Field.selvstendigInntekt2020) && (
                                     <Box margin="xxl">
                                         <Undertittel className="sectionTitle">Inntekt i 2020</Undertittel>
                                         <FormBlock>
-                                            <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.selvstendigInntekt2020}
+                                            <FC.Input
+                                                name={Field.selvstendigInntekt2020}
                                                 type="number"
                                                 bredde="S"
                                                 label={ensureString(
@@ -217,6 +218,92 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                                                 validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                             />
                                         </FormBlock>
+                                    </Box>
+                                )}
+                                {isVisible(Field.selvstendigHarRegnskapsfører) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Regnskapsfører</Undertittel>
+                                        <FormBlock>
+                                            <FC.YesOrNoQuestion
+                                                legend={ensureString(txt.selvstendigHarRegnskapsfører)}
+                                                name={Field.selvstendigHarRegnskapsfører}
+                                            />
+                                        </FormBlock>
+                                    </Box>
+                                )}
+                                {isVisible(Field.selvstendigRegnskapsførerNavn) && (
+                                    <Box margin="l">
+                                        <ResponsivePanel>
+                                            {antallForetak >= 1 && (
+                                                <Box padBottom="l">
+                                                    Dersom du har flere regnskapsførere, kan du oppgi informasjon om din
+                                                    hovedregnskapsfører.
+                                                </Box>
+                                            )}
+                                            <FormBlock margin="none">
+                                                <FC.Input
+                                                    label={ensureString(txt.selvstendigRegnskapsførerNavn)}
+                                                    name={Field.selvstendigRegnskapsførerNavn}
+                                                />
+                                            </FormBlock>
+                                            {isVisible(Field.selvstendigRegnskapsførerTelefon) && (
+                                                <FormBlock>
+                                                    <FC.Input
+                                                        label={ensureString(txt.selvstendigRegnskapsførerTelefon)}
+                                                        name={Field.selvstendigRegnskapsførerTelefon}
+                                                        bredde="M"
+                                                        maxLength={12}
+                                                    />
+                                                </FormBlock>
+                                            )}
+                                        </ResponsivePanel>
+                                    </Box>
+                                )}
+                                {isVisible(Field.selvstendigHarRevisor) && (
+                                    <Box margin="xxl">
+                                        <Undertittel className="sectionTitle">Revisor</Undertittel>
+                                        <FormBlock>
+                                            <FC.YesOrNoQuestion
+                                                legend={ensureString(txt.selvstendigHarRevisor)}
+                                                name={Field.selvstendigHarRevisor}
+                                            />
+                                        </FormBlock>
+                                    </Box>
+                                )}
+                                {isVisible(Field.selvstendigRevisorNavn) && (
+                                    <Box margin="l">
+                                        <ResponsivePanel>
+                                            {antallForetak >= 1 && (
+                                                <Box padBottom="l">
+                                                    Dersom du har flere revisorer, kan du oppgi informasjon om din
+                                                    hoverrevisor.
+                                                </Box>
+                                            )}
+                                            <FormBlock margin="none">
+                                                <FC.Input
+                                                    label={ensureString(txt.selvstendigRevisorNavn)}
+                                                    name={Field.selvstendigRevisorNavn}
+                                                />
+                                            </FormBlock>
+                                            {isVisible(Field.selvstendigRevisorTelefon) && (
+                                                <FormBlock>
+                                                    <FC.Input
+                                                        label={ensureString(txt.selvstendigRevisorTelefon)}
+                                                        name={Field.selvstendigRevisorTelefon}
+                                                        bredde="M"
+                                                        maxLength={12}
+                                                    />
+                                                </FormBlock>
+                                            )}
+                                            {isVisible(Field.selvstendigRevisorNAVKanTaKontakt) && (
+                                                <FormBlock>
+                                                    <FC.YesOrNoQuestion
+                                                        legend={ensureString(txt.selvstendigRevisorNAVKanTaKontakt)}
+                                                        name={Field.selvstendigRevisorNAVKanTaKontakt}
+                                                    />
+                                                </FormBlock>
+                                            )}
+                                        </ResponsivePanel>
                                     </Box>
                                 )}
                             </>

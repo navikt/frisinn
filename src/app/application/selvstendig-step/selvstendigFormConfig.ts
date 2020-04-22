@@ -21,6 +21,13 @@ type SelvstendigFormData = Pick<
     | ApplicationFormField.selvstendigInntektSomFrilanserIPerioden
     | ApplicationFormField.selvstendigInntekt2019
     | ApplicationFormField.selvstendigInntekt2020
+    | ApplicationFormField.selvstendigHarRegnskapsfører
+    | ApplicationFormField.selvstendigRegnskapsførerNavn
+    | ApplicationFormField.selvstendigRegnskapsførerTelefon
+    | ApplicationFormField.selvstendigHarRevisor
+    | ApplicationFormField.selvstendigRevisorNavn
+    | ApplicationFormField.selvstendigRevisorTelefon
+    | ApplicationFormField.selvstendigRevisorNAVKanTaKontakt
 >;
 
 export type SelvstendigFormPayload = SelvstendigFormData & ApplicationEssentials;
@@ -98,6 +105,35 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
         visibilityFilter: showHistoricIncomeQuestion,
         isIncluded: ({ personligeForetak }) => selvstendigSkalOppgiInntekt2020(personligeForetak),
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
+    },
+    [Field.selvstendigHarRegnskapsfører]: {
+        visibilityFilter: ({ selvstendigInntekt2020, selvstendigInntekt2019 }) =>
+            hasValue(selvstendigInntekt2020) || hasValue(selvstendigInntekt2019),
+        isAnswered: ({ selvstendigHarRegnskapsfører }) => yesOrNoIsAnswered(selvstendigHarRegnskapsfører),
+    },
+    [Field.selvstendigRegnskapsførerNavn]: {
+        isIncluded: ({ selvstendigHarRegnskapsfører }) => selvstendigHarRegnskapsfører === YesOrNo.YES,
+        isAnswered: ({ selvstendigRegnskapsførerNavn }) => hasValue(selvstendigRegnskapsførerNavn),
+    },
+    [Field.selvstendigRegnskapsførerTelefon]: {
+        isIncluded: ({ selvstendigHarRegnskapsfører }) => selvstendigHarRegnskapsfører === YesOrNo.YES,
+        isAnswered: ({ selvstendigRegnskapsførerTelefon }) => hasValue(selvstendigRegnskapsførerTelefon),
+    },
+    [Field.selvstendigHarRevisor]: {
+        isIncluded: ({ selvstendigHarRegnskapsfører }) => selvstendigHarRegnskapsfører === YesOrNo.NO,
+        isAnswered: ({ selvstendigHarRevisor }) => yesOrNoIsAnswered(selvstendigHarRevisor),
+    },
+    [Field.selvstendigRevisorNavn]: {
+        isIncluded: ({ selvstendigHarRevisor }) => selvstendigHarRevisor === YesOrNo.YES,
+        isAnswered: ({ selvstendigRevisorNavn }) => hasValue(selvstendigRevisorNavn),
+    },
+    [Field.selvstendigRevisorTelefon]: {
+        isIncluded: ({ selvstendigHarRevisor }) => selvstendigHarRevisor === YesOrNo.YES,
+        isAnswered: ({ selvstendigRevisorTelefon }) => hasValue(selvstendigRevisorTelefon),
+    },
+    [Field.selvstendigRevisorNAVKanTaKontakt]: {
+        isIncluded: ({ selvstendigHarRevisor }) => selvstendigHarRevisor === YesOrNo.YES,
+        isAnswered: ({ selvstendigRevisorNAVKanTaKontakt }) => yesOrNoIsAnswered(selvstendigRevisorNAVKanTaKontakt),
     },
 };
 

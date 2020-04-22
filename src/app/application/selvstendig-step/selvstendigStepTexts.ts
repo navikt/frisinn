@@ -13,6 +13,13 @@ export interface SelvstendigStepFormText {
     [ApplicationFormField.selvstendigErFrilanser]: string;
     [ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden]: (periode: DateRange) => string;
     [ApplicationFormField.selvstendigInntektSomFrilanserIPerioden]: (periode: DateRange) => string;
+    [ApplicationFormField.selvstendigHarRegnskapsfører]: string;
+    [ApplicationFormField.selvstendigRegnskapsførerNavn]: string;
+    [ApplicationFormField.selvstendigRegnskapsførerTelefon]: string;
+    [ApplicationFormField.selvstendigHarRevisor]: string;
+    [ApplicationFormField.selvstendigRevisorNavn]: string;
+    [ApplicationFormField.selvstendigRevisorTelefon]: string;
+    [ApplicationFormField.selvstendigRevisorNAVKanTaKontakt]: string;
 }
 
 export const selvstendigStepTexts: SelvstendigStepFormText = {
@@ -32,4 +39,11 @@ export const selvstendigStepTexts: SelvstendigStepFormText = {
         `Har du hatt inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
     selvstendigInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
         `Hva hadde du i inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
+    selvstendigHarRegnskapsfører: 'Har du regnskapsfører?',
+    selvstendigRegnskapsførerNavn: 'Oppgi navn på regnskapsfører',
+    selvstendigRegnskapsførerTelefon: 'Oppgi telefonnummeret til regnskapsfører',
+    selvstendigHarRevisor: 'Har du revisor?',
+    selvstendigRevisorNavn: 'Oppgi navn på revisor',
+    selvstendigRevisorTelefon: 'Oppgi telefonnummeret til revisor',
+    selvstendigRevisorNAVKanTaKontakt: 'Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?',
 };

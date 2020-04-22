@@ -43,6 +43,13 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigHarHattInntektSomFrilanserIPerioden,
         selvstendigInntektSomFrilanserIPerioden,
         selvstendigCalculatedDateRange,
+        selvstendigHarRegnskapsfører,
+        selvstendigRegnskapsførerNavn,
+        selvstendigRegnskapsførerTelefon,
+        selvstendigHarRevisor,
+        selvstendigRevisorNavn,
+        selvstendigRevisorTelefon,
+        selvstendigRevisorNAVKanTaKontakt,
     }: ApplicationFormData
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     if (
@@ -68,6 +75,30 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 answer: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
             });
         }
+        if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
+            questions.push({
+                question: selvstendigStepTexts.selvstendigHarRevisor,
+                answer: formatYesOrNoAnswer(selvstendigHarRevisor),
+            });
+            if (selvstendigRevisorNavn) {
+                questions.push({
+                    question: selvstendigStepTexts.selvstendigRevisorNavn,
+                    answer: selvstendigRevisorNavn,
+                });
+            }
+            if (selvstendigRevisorTelefon) {
+                questions.push({
+                    question: selvstendigStepTexts.selvstendigRevisorTelefon,
+                    answer: selvstendigRevisorTelefon,
+                });
+            }
+            if (selvstendigRevisorNAVKanTaKontakt) {
+                questions.push({
+                    question: selvstendigStepTexts.selvstendigRevisorNAVKanTaKontakt,
+                    answer: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
+                });
+            }
+        }
 
         const apiData: SelvstendigNæringsdrivendeApiData = {
             inntektstapStartet: formatDateToApiFormat(selvstendigInntektstapStartetDato),
@@ -79,6 +110,15 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 period: formatDateRange(selvstendigCalculatedDateRange),
                 lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
+            regnskapsfører:
+                selvstendigHarRegnskapsfører === YesOrNo.YES &&
+                selvstendigRegnskapsførerNavn &&
+                selvstendigRegnskapsførerTelefon
+                    ? {
+                          navn: selvstendigRegnskapsførerNavn,
+                          telefon: selvstendigRegnskapsførerTelefon,
+                      }
+                    : undefined,
             questions,
         };
 

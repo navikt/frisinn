@@ -17,6 +17,7 @@ const SelvstendigNæringsdrivendeSummary = ({
         inntekt2019,
         inntekt2020,
         inntektIPeriodenSomFrilanser,
+        regnskapsfører,
         info,
         questions,
     },
@@ -44,6 +45,11 @@ const SelvstendigNæringsdrivendeSummary = ({
             <SummaryBlock
                 header={`Inntekt som selvstendig næringsdrivende i 2020 til og med ${info.lastDayWithNormalIncome}`}>
                 <KronerSvar verdi={inntekt2020} />
+            </SummaryBlock>
+        )}
+        {regnskapsfører && (
+            <SummaryBlock header={`Regnskapsfører`}>
+                Navn: {regnskapsfører.navn}. Telefon: {regnskapsfører.telefon}
             </SummaryBlock>
         )}
         <ApiQuestionsSummary questions={questions} />

@@ -20,6 +20,13 @@ export enum ApplicationFormField {
     selvstendigInntekt2019 = 'selvstendigInntekt2019',
     selvstendigInntekt2020 = 'selvstendigInntekt2020',
     selvstendigCalculatedDateRange = 'selvstendigCalculatedDateRange',
+    selvstendigHarRegnskapsfører = 'selvstendigHarRegnskapsfører',
+    selvstendigRegnskapsførerNavn = 'selvstendigRegnskapsførerNavn',
+    selvstendigRegnskapsførerTelefon = 'selvstendigRegnskapsførerTelefon',
+    selvstendigHarRevisor = 'selvstendigHarRevisor',
+    selvstendigRevisorNavn = 'selvstendigRevisorNavn',
+    selvstendigRevisorTelefon = 'selvstendigRevisorTelefon',
+    selvstendigRevisorNAVKanTaKontakt = 'selvstendigRevisorNAVKanTaKontakt',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserHarYtelseFraNavSomDekkerTapet = 'frilanserHarYtelseFraNavSomDekkerTapet',
@@ -50,6 +57,13 @@ export interface ApplicationFormData {
     [ApplicationFormField.selvstendigInntekt2019]?: number;
     [ApplicationFormField.selvstendigInntekt2020]?: number;
     [ApplicationFormField.selvstendigCalculatedDateRange]?: DateRange;
+    [ApplicationFormField.selvstendigHarRegnskapsfører]: YesOrNo;
+    [ApplicationFormField.selvstendigRegnskapsførerNavn]?: string;
+    [ApplicationFormField.selvstendigRegnskapsførerTelefon]?: string;
+    [ApplicationFormField.selvstendigHarRevisor]?: YesOrNo;
+    [ApplicationFormField.selvstendigRevisorNavn]?: string;
+    [ApplicationFormField.selvstendigRevisorTelefon]?: string;
+    [ApplicationFormField.selvstendigRevisorNAVKanTaKontakt]?: YesOrNo;
     [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [ApplicationFormField.frilanserInntektstapStartetDato]: Date;
     [ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet]: YesOrNo;
