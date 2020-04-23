@@ -85,6 +85,33 @@ const hvaErStartdatoForInntektstap = () => (
     </ExpandableInfo>
 );
 
+const ikkeValgtSelvstendigEllerFrilanser = () => (
+    <>Du må velge om du er selvstendig næringsdrivende og/eller frilanser.</>
+);
+
+const selvstendigIkkeOkOgErIkkeFrilanser = () => (
+    <>
+        Du kan ikke søke som selvstendig næringsdrivende og du oppgir du ikke er frilanser. Da kan du ikke bruke denne
+        søknaden nå.
+    </>
+);
+
+const harAlleredeSøkt = () => (
+    <>
+        Du kan kun få dekket inntektstapet en gang. Du kan velge å{' '}
+        <ul>
+            <li>Ikke søke på denne ytelsen</li>
+            <li>Trekke tilbake den andre søknaden og søke på denne ytelsen</li>
+        </ul>
+    </>
+);
+
+const fårDekketTapetForklaring = () => (
+    <ExpandableInfo title="Hva vil dette si?">
+        Omnis aut, incidunt perferendis iure perspiciatis quibusdam beatae neque libero culpa quos.
+    </ExpandableInfo>
+);
+
 const IntroFormInfo = {
     ikkeGyldigAlder,
     selvstendigIkkeTapPgaKorona,
@@ -96,5 +123,9 @@ const IntroFormInfo = {
     hvaRegnesSomInntektstap,
     hvaErStartdatoForInntektstap,
     frilanserNAVsDefinisjon,
+    ikkeValgtSelvstendigEllerFrilanser,
+    selvstendigIkkeOkOgErIkkeFrilanser,
+    harAlleredeSøkt,
+    fårDekketTapetForklaring,
 };
 export default IntroFormInfo;
