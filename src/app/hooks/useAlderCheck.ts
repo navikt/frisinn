@@ -4,7 +4,7 @@ import { sjekkKrav, KravApiResponse } from '../api/krav';
 import { ApiKrav } from '../types/Krav';
 import { DateRange } from '../utils/dateUtils';
 
-function useAlderCheck(dateRange: DateRange) {
+function useAlderCheck(dateRange?: DateRange) {
     const [result, setResult] = useState<KravApiResponse | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
@@ -22,7 +22,11 @@ function useAlderCheck(dateRange: DateRange) {
     }
 
     useEffect(() => {
-        checkAlder();
+        if (dateRange) {
+            checkAlder();
+        } else {
+            setResult(undefined);
+        }
     }, [dateRange]);
 
     return { result, isLoading, error };

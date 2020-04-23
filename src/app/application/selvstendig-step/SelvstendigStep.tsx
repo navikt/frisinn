@@ -51,7 +51,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
         isLoading: availableDateRangeIsLoading,
     } = useAvailableSøknadsperiode(selvstendigInntektstapStartetDato, currentSøknadsperiode);
 
-    const { result: alderCheckResult, isLoading: alderCheckIsLoading } = useAlderCheck(currentSøknadsperiode);
+    const { result: alderCheckResult, isLoading: alderCheckIsLoading } = useAlderCheck(
+        isValidDateRange(availableDateRange) ? availableDateRange : undefined
+    );
 
     const isLoading = availableDateRangeIsLoading || alderCheckIsLoading;
 
@@ -126,7 +128,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                     {isValidDateRange(availableDateRange) &&
                         alderCheckIsLoading === false &&
                         alderCheckResult?.innfrirKrav === true && (
-                            <Box margin="xl">
+                            <Box margin="l" padBottom="xxl">
                                 <AvailableDateRangeInfo
                                     inntektstapStartetDato={selvstendigInntektstapStartetDato}
                                     availableDateRange={availableDateRange}

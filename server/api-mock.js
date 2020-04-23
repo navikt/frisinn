@@ -135,9 +135,9 @@ const startExpressServer = () => {
     server.get('/krav/alder', (req, res) => {
         setTimeout(() => {
             res.send({
-                innfrirKrav: false,
+                innfrirKrav: true,
                 beskrivelse:
-                    'Søker er 12 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
+                    'Søker er 26 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
             });
         }, 1000);
     });
