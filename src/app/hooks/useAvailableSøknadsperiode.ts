@@ -7,15 +7,15 @@ import { usePrevious } from './usePrevious';
 
 export type NO_AVAILABLE_DATERANGE = 'NO_AVAILABLE_DATERANGE';
 
-export const isValidDateRange = (dateRange: DateRange | NO_AVAILABLE_DATERANGE | undefined): dateRange is DateRange => {
+export type AvailableDateRange = DateRange | NO_AVAILABLE_DATERANGE | undefined;
+
+export const isValidDateRange = (dateRange: AvailableDateRange): dateRange is DateRange => {
     return dateRange !== 'NO_AVAILABLE_DATERANGE' && dateRange !== undefined;
 };
 
 function useAvailableSøknadsperiode(selectedDate: Date, currentSøknadsperiode: DateRange) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [availableDateRange, setAvailableDateRange] = useState<DateRange | NO_AVAILABLE_DATERANGE | undefined>(
-        undefined
-    );
+    const [availableDateRange, setAvailableDateRange] = useState<AvailableDateRange>(undefined);
     const [isLimitedDateRange, setIsLimitedDateRange] = useState<boolean>(false);
 
     const prevSelectedDate = usePrevious<Date | undefined>(selectedDate);

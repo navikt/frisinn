@@ -28,6 +28,12 @@ const advarselForSentInntektstap = () => (
 const advarselIkkeTapPgaKorona = () => (
     <AlertStripeAdvarsel>Du kan ikke søke om kompensasjon for tap som ikke er forårsaket av Korona</AlertStripeAdvarsel>
 );
+const advarselAlderSjekkFeiler = () => (
+    <AlertStripeAdvarsel>
+        <Element>Du kan ikke søke som selvstendig næringsdrivende for denne perioden</Element>
+        <p>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
+    </AlertStripeAdvarsel>
+);
 
 const infoInntektForetak = () => (
     <>
@@ -52,6 +58,7 @@ const SelvstendigInfo = {
     infoInntektForetak,
     advarselForSentInntektstap,
     advarselIkkeTapPgaKorona,
+    advarselAlderSjekkFeiler,
 };
 
 export default SelvstendigInfo;

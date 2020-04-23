@@ -30,6 +30,8 @@ import { selvstendigStepTexts } from './selvstendigStepTexts';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { ensureString } from '../../utils/ensureString';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
+import useAlderCheck from '../../hooks/useAlderCheck';
+import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -43,14 +45,20 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
     const { selvstendigInntektstapStartetDato } = values;
     const { currentSøknadsperiode } = applicationEssentials;
 
-    const { availableDateRange, isLimitedDateRange, isLoading } = useAvailableSøknadsperiode(
-        selvstendigInntektstapStartetDato,
-        currentSøknadsperiode
-    );
+    const {
+        availableDateRange,
+        isLimitedDateRange,
+        isLoading: availableDateRangeIsLoading,
+    } = useAvailableSøknadsperiode(selvstendigInntektstapStartetDato, currentSøknadsperiode);
+
+    const { result: alderCheckResult, isLoading: alderCheckIsLoading } = useAlderCheck(currentSøknadsperiode);
+
+    const isLoading = availableDateRangeIsLoading || alderCheckIsLoading;
 
     const { isVisible, areAllQuestionsAnswered } = SelvstendigFormQuestions.getVisbility({
         ...values,
         ...applicationEssentials,
+        availableDateRange,
     });
 
     useEffect(() => {
@@ -77,7 +85,8 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
             stepCleanup={cleanupSelvstendigstep}
             showSubmitButton={
                 areAllQuestionsAnswered() &&
-                (values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES ||
+                !isLoading &&
+                ((values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && alderCheckResult?.innfrirKrav) ||
                     values.søkerOmTaptInntektSomFrilanser === YesOrNo.YES)
             }>
             <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
@@ -95,7 +104,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
             )}
 
             {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                <FormBlock>{SelvstendigInfo.advarselIkkeTapPgaKorona()}</FormBlock>
+                <FormBlock>
+                    <AlertStripeAdvarsel>{SelvstendigInfo.advarselIkkeTapPgaKorona()}</AlertStripeAdvarsel>
+                </FormBlock>
             )}
 
             {isVisible(Field.selvstendigInntektstapStartetDato) && (
@@ -113,7 +124,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                         ])}
                     />
                     {isValidDateRange(availableDateRange) && (
-                        <Box margin="l" padBottom="xxl">
+                        <Box margin="xl">
                             <AvailableDateRangeInfo
                                 inntektstapStartetDato={selvstendigInntektstapStartetDato}
                                 availableDateRange={availableDateRange}
@@ -132,6 +143,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                         }
                         if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
                             return <FormBlock>{SelvstendigInfo.advarselForSentInntektstap()}</FormBlock>;
+                        }
+                        if (alderCheckResult?.innfrirKrav === false) {
+                            return <FormBlock>{SelvstendigInfo.advarselAlderSjekkFeiler()}</FormBlock>;
                         }
                         return (
                             <>

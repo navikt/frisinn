@@ -103,10 +103,10 @@ const startExpressServer = () => {
         res.send(401);
     });
 
-    server.get('/soker', (req, res) => {
+    server.get('/login', (req, res) => {
         setTimeout(() => {
-            res.send(søkerMock);
-        }, 250);
+            res.send(404);
+        }, 3000);
     });
 
     server.get('/soker', (req, res) => {
@@ -135,9 +135,9 @@ const startExpressServer = () => {
     server.get('/krav/alder', (req, res) => {
         setTimeout(() => {
             res.send({
-                innfrirKrav: true,
+                innfrirKrav: false,
                 beskrivelse:
-                    'Søker er 26 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
+                    'Søker er 12 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
             });
         }, 1000);
     });

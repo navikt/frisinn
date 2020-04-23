@@ -30,6 +30,7 @@ const emptyPayload: SelvstendigFormPayload = {
     selvstendigErFrilanser: YesOrNo.UNANSWERED,
     selvstendigHarHattInntektSomFrilanserIPerioden: YesOrNo.UNANSWERED,
     ...appEssentials,
+    availableDateRange: undefined,
 };
 
 describe('selvstendigFormConfig', () => {

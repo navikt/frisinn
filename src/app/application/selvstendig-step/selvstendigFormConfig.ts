@@ -5,10 +5,12 @@ import { ApplicationFormField, SelvstendigFormData } from '../../types/Applicati
 import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from '../../utils/selvstendigUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
+import { AvailableDateRange, isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 
 const Field = ApplicationFormField;
 
-export type SelvstendigFormPayload = SelvstendigFormData & ApplicationEssentials;
+export type SelvstendigFormPayload = SelvstendigFormData &
+    ApplicationEssentials & { availableDateRange: AvailableDateRange };
 
 const showHistoricIncomeQuestion = ({
     søkerOmTaptInntektSomFrilanser,
@@ -41,6 +43,7 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
+        isIncluded: ({ availableDateRange }) => isValidDateRange(availableDateRange),
         visibilityFilter: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
         isAnswered: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
             hasValue(selvstendigHarYtelseFraNavSomDekkerTapet),
