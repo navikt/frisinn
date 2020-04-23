@@ -10,27 +10,16 @@ import Lenke from 'nav-frontend-lenker';
 import { Undertittel, Element } from 'nav-frontend-typografi';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
-import { DateRange, getSisteGyldigeDagForInntektstapIPeriode, apiStringDateToDate } from '../../../utils/dateUtils';
+import { DateRange, getSisteGyldigeDagForInntektstapIPeriode } from '../../../utils/dateUtils';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import introFormUtils from './introFormUtils';
 import { hasValue } from '../../../validation/fieldValidations';
 import DateView from '../../../components/date-view/DateView';
 import moment from 'moment';
+import StopMessage from '../StopMessage';
+import Info from './IntroFormInfo';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
-
-const initialValues: Partial<IntroFormData> = {
-    fødselsdato: undefined,
-    erSelvstendigNæringsdrivende: YesOrNo.UNANSWERED,
-    selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
-    selvstendigInntektstapStartetFørFrist: YesOrNo.UNANSWERED,
-    selvstendigFårDekketTapet: YesOrNo.UNANSWERED,
-    erFrilanser: YesOrNo.UNANSWERED,
-    frilanserHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
-    frilanserFårDekketTapet: YesOrNo.UNANSWERED,
-    harAlleredeSøkt: YesOrNo.UNANSWERED,
-    vilFortsetteTilSøknad: YesOrNo.UNANSWERED,
-};
 
 interface Props {
     currentPeriode: DateRange;
@@ -42,7 +31,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
     return (
         <FormComponent.FormikWrapper
             onSubmit={onValidSubmit}
-            initialValues={initialValues}
+            initialValues={{}}
             renderForm={({ values }) => {
                 const { isVisible, areAllQuestionsAnswered } = IntroFormQuestions.getVisbility({
                     ...values,
@@ -81,12 +70,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                             </>
                         )}
                         {hasValue(values.fødselsdato) && !alderIsOk && (
-                            <FormBlock>
-                                <AlertStripeAdvarsel>
-                                    Du må ha vært mellom fra 18 og 67 år i perioden{' '}
-                                    <DateRangeView dateRange={currentPeriode} />
-                                </AlertStripeAdvarsel>
-                            </FormBlock>
+                            <StopMessage>
+                                <Info.ikkeGyldigAlder periode={currentPeriode} />
+                            </StopMessage>
                         )}
                         {isVisible(IntroFormField.erSelvstendigNæringsdrivende) && (
                             <>
@@ -125,14 +111,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     />
                                 </FormBlock>
                                 {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                                    <FormBlock>
-                                        <AlertStripeAdvarsel>
-                                            <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
-                                            Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av
-                                            koronasituasjonen for å kunne søke om kompensasjon som selvstendig
-                                            næringsdrivende.
-                                        </AlertStripeAdvarsel>
-                                    </FormBlock>
+                                    <StopMessage>
+                                        <Info.selvstendigIkkeTapPgaKorona />
+                                    </StopMessage>
                                 )}
                             </>
                         )}
@@ -158,14 +139,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     />
                                 </FormBlock>
                                 {values.selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
-                                    <FormBlock>
-                                        <AlertStripeAdvarsel>
-                                            <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
-                                            Inntektstapet ditt startet for sent i perioden du kan søke for nå. Det er
-                                            mindre enn 16 dager igjen av perioden, og de 16 første dagene etter
-                                            inntektstapet kan du ikke søke kompensasjon for.
-                                        </AlertStripeAdvarsel>
-                                    </FormBlock>
+                                    <StopMessage>
+                                        <Info.selvstendigForSentInntektstap />
+                                    </StopMessage>
                                 )}
                             </>
                         )}
@@ -186,13 +162,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     />
                                 </FormBlock>
                                 {values.selvstendigFårDekketTapet === YesOrNo.YES && (
-                                    <FormBlock>
-                                        <AlertStripeAdvarsel>
-                                            <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
-                                            Dersom du allerede får dekket tapet, kan du ikke søke om kompensasjon som
-                                            selvstendig næringsdrivende.
-                                        </AlertStripeAdvarsel>
-                                    </FormBlock>
+                                    <StopMessage>
+                                        <Info.selvstendigFårDekketTapet />
+                                    </StopMessage>
                                 )}
                                 {values.selvstendigFårDekketTapet === YesOrNo.NO && (
                                     <FormBlock>
@@ -242,13 +214,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     />
                                 </FormBlock>
                                 {values.frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
-                                    <FormBlock>
-                                        <AlertStripeAdvarsel>
-                                            <Element>Du kan ikke søke som frilanser</Element>
-                                            Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av
-                                            koronasituasjonen for å kunne søke om kompensasjon som frilanser.
-                                        </AlertStripeAdvarsel>
-                                    </FormBlock>
+                                    <StopMessage>
+                                        <Info.frilanserIkkeTapPgaKorona />
+                                    </StopMessage>
                                 )}
                             </>
                         )}
@@ -274,14 +242,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     />
                                 </FormBlock>
                                 {values.frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
-                                    <FormBlock>
-                                        <AlertStripeAdvarsel>
-                                            <Element>Du kan ikke søke som frilanser</Element>
-                                            Inntektstapet ditt startet for sent i perioden du kan søke for nå. Det er
-                                            mindre enn 16 dager igjen av perioden, og de 16 første dagene etter
-                                            inntektstapet kan du ikke søke kompensasjon for.
-                                        </AlertStripeAdvarsel>
-                                    </FormBlock>
+                                    <StopMessage>
+                                        <Info.frilanserForSentInntektstap />
+                                    </StopMessage>
                                 )}
                             </>
                         )}
@@ -294,13 +257,9 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                     />
                                 </FormBlock>
                                 {values.frilanserFårDekketTapet === YesOrNo.YES && (
-                                    <FormBlock>
-                                        <AlertStripeAdvarsel>
-                                            <Element>Du kan ikke søke som frilanser</Element>
-                                            Dersom du allerede får dekket tapet, kan du ikke søke om kompensasjon som
-                                            frilanser.
-                                        </AlertStripeAdvarsel>
-                                    </FormBlock>
+                                    <StopMessage>
+                                        <Info.frilanserFårDekketTapet />
+                                    </StopMessage>
                                 )}
                                 {values.frilanserFårDekketTapet === YesOrNo.NO && (
                                     <FormBlock>
