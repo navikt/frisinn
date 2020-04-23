@@ -61,8 +61,6 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        // const lastDayWithNormalIncome = moment(selvstendigInntektstapStartetDato).subtract(1, 'day').toDate();
-
         const questions: ApiQuestion[] = [
             {
                 question: selvstendigStepTexts.selvstendigHarYtelseFraNavSomDekkerTapet,
