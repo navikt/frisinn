@@ -2,6 +2,8 @@ import React from 'react';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import { DateRange } from '../../../utils/dateUtils';
 import { Element } from 'nav-frontend-typografi';
+import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
+import Lenke from 'nav-frontend-lenker';
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
@@ -55,6 +57,34 @@ const frilanserFårDekketTapet = () => (
     </>
 );
 
+const frilanserNAVsDefinisjon = () => (
+    <ExpandableInfo title="Hva er NAVs definisjon på frilanser?" closeTitle={'Skjul info'}>
+        Det vil si en ikke ansatt lønnsmottaker. Du kan sjekke om oppdragene dine er registert som frilansoppdrag, på{' '}
+        <Lenke href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/" target="_blank">
+            skatteetaten sine nettsider
+        </Lenke>{' '}
+        (åpnes i nytt vindu).
+    </ExpandableInfo>
+);
+
+const hvaRegnesSomInntektstap = ({ soknadsperiode }: { soknadsperiode: DateRange }) => (
+    <ExpandableInfo title="Hva regnes som inntektstap?">
+        Inntektstap er det reelle tapet du har hatt i perioden{' '}
+        <strong>
+            <DateRangeView dateRange={soknadsperiode} />
+        </strong>
+        , ikke fremtige tap; det søker du om neste måned.
+    </ExpandableInfo>
+);
+
+const hvaErStartdatoForInntektstap = () => (
+    <ExpandableInfo title="Hva er startdato for inntektstap?">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis laudantium sapiente illum perferendis distinctio,
+        praesentium, culpa repellendus nulla corporis commodi explicabo! Quidem quibusdam vitae repellendus voluptate
+        similique corrupti atque! Debitis!
+    </ExpandableInfo>
+);
+
 const IntroFormInfo = {
     ikkeGyldigAlder,
     selvstendigIkkeTapPgaKorona,
@@ -63,5 +93,8 @@ const IntroFormInfo = {
     frilanserIkkeTapPgaKorona,
     frilanserForSentInntektstap,
     frilanserFårDekketTapet,
+    hvaRegnesSomInntektstap,
+    hvaErStartdatoForInntektstap,
+    frilanserNAVsDefinisjon,
 };
 export default IntroFormInfo;

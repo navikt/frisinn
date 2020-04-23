@@ -6,9 +6,7 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { AlertStripeInfo, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
-import Lenke from 'nav-frontend-lenker';
 import { Undertittel, Element } from 'nav-frontend-typografi';
-import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import { DateRange, getSisteGyldigeDagForInntektstapIPeriode } from '../../../utils/dateUtils';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
@@ -19,6 +17,7 @@ import moment from 'moment';
 import StopMessage from '../StopMessage';
 import Info from './IntroFormInfo';
 import IntroFormQuestion from '../IntroFormQuestion';
+import IntroFormInfo from './IntroFormInfo';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -38,19 +37,31 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                     soknadsperiode,
                 });
 
-                const FormQuestion = IntroFormQuestion(values, soknadsperiode);
+                const {
+                    fødselsdato,
+                    harAlleredeSøkt,
+                    vilFortsetteTilSøknad,
+                    erFrilanser,
+                    erSelvstendigNæringsdrivende,
+                    selvstendigFårDekketTapet,
+                    selvstendigHarTaptInntektPgaKorona,
+                    selvstendigInntektstapStartetFørFrist,
+                    frilanserFårDekketTapet,
+                    frilanserInntektstapStartetFørFrist,
+                    frilanserHarTaptInntektPgaKorona,
+                } = values;
 
-                const alderIsOk = introFormUtils.birthdateIsValid(values.fødselsdato, soknadsperiode);
+                const alderIsOk = introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode);
                 const selvstendigIsOk = introFormUtils.canApplyAsSelvstendig(values);
                 const frilanserIsOk = introFormUtils.canApplyAsFrilanser(values);
-
-                const harAlleredeSøktIsOk =
-                    values.harAlleredeSøkt === YesOrNo.NO || values.vilFortsetteTilSøknad === YesOrNo.YES;
+                const harAlleredeSøktIsOk = harAlleredeSøkt === YesOrNo.NO || vilFortsetteTilSøknad === YesOrNo.YES;
 
                 const sisteGyldigeDagForInntektstap: Date = getSisteGyldigeDagForInntektstapIPeriode(soknadsperiode);
 
                 const canContinueToSoknad =
                     areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk && harAlleredeSøktIsOk;
+
+                const FormQuestion = IntroFormQuestion(values, soknadsperiode);
 
                 return (
                     <FormComponent.Form
@@ -66,7 +77,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 dayPickerProps={{ initialMonth: new Date(1995, 0, 1) }}
                                 dateLimitations={{ maksDato: moment.utc().subtract(17, 'years').toDate() }}
                             />
-                            {hasValue(values.fødselsdato) && !alderIsOk && (
+                            {hasValue(fødselsdato) && !alderIsOk && (
                                 <StopMessage>
                                     <Info.ikkeGyldigAlder periode={soknadsperiode} />
                                 </StopMessage>
@@ -90,17 +101,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 legend={
                                     'Har du tapt inntekt som selvstendig næringsdrivende i perioden på grunn av koronasituasjonen?'
                                 }
-                                description={
-                                    <ExpandableInfo title="Hva regnes som inntektstap?">
-                                        Inntektstap er det reelle tapet du har hatt i perioden{' '}
-                                        <strong>
-                                            <DateRangeView dateRange={soknadsperiode} />
-                                        </strong>
-                                        , ikke fremtige tap; det søker du om neste måned.
-                                    </ExpandableInfo>
-                                }
+                                description={<IntroFormInfo.hvaRegnesSomInntektstap soknadsperiode={soknadsperiode} />}
                             />
-                            {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
+                            {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
                                 <StopMessage>
                                     <Info.selvstendigIkkeTapPgaKorona />
                                 </StopMessage>
@@ -115,16 +118,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         <DateView date={sisteGyldigeDagForInntektstap} />?
                                     </span>
                                 }
-                                description={
-                                    <ExpandableInfo title="Hva er startdato for inntektstap?">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis laudantium
-                                        sapiente illum perferendis distinctio, praesentium, culpa repellendus nulla
-                                        corporis commodi explicabo! Quidem quibusdam vitae repellendus voluptate
-                                        similique corrupti atque! Debitis!
-                                    </ExpandableInfo>
-                                }
+                                description={<IntroFormInfo.hvaErStartdatoForInntektstap />}
                             />
-                            {values.selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
+                            {selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
                                 <StopMessage>
                                     <Info.selvstendigForSentInntektstap />
                                 </StopMessage>
@@ -141,13 +137,13 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     </ExpandableInfo>
                                 }
                             />
-                            {values.selvstendigFårDekketTapet === YesOrNo.YES && (
+                            {selvstendigFårDekketTapet === YesOrNo.YES && (
                                 <StopMessage>
                                     <Info.selvstendigFårDekketTapet />
                                 </StopMessage>
                             )}
                         </FormQuestion>
-                        {values.selvstendigFårDekketTapet === YesOrNo.NO && (
+                        {selvstendigFårDekketTapet === YesOrNo.NO && (
                             <Box margin="l">
                                 <AlertStripeSuksess>
                                     <Element>Du kan søke som selvstendig næringsdrivende</Element>
@@ -163,20 +159,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                             <FormComponent.YesOrNoQuestion
                                 name={IntroFormField.erFrilanser}
                                 legend={'Er du frilanser pr. NAVs definisjon?'}
-                                description={
-                                    <ExpandableInfo
-                                        title="Hva er NAVs definisjon på frilanser?"
-                                        closeTitle={'Skjul info'}>
-                                        Det vil si en ikke ansatt lønnsmottaker. Du kan sjekke om oppdragene dine er
-                                        registert som frilansoppdrag, på{' '}
-                                        <Lenke
-                                            href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/"
-                                            target="_blank">
-                                            skatteetaten sine nettsider
-                                        </Lenke>{' '}
-                                        (åpnes i nytt vindu).
-                                    </ExpandableInfo>
-                                }
+                                description={<IntroFormInfo.frilanserNAVsDefinisjon />}
                             />
                         </FormQuestion>
                         <FormQuestion question={IntroFormField.frilanserHarTaptInntektPgaKorona}>
@@ -184,7 +167,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 name={IntroFormField.frilanserHarTaptInntektPgaKorona}
                                 legend={'Har du tapt inntekt som frilanser i perioden på grunn av koronasituasjonen?'}
                             />
-                            {values.frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
+                            {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
                                 <StopMessage>
                                     <Info.frilanserIkkeTapPgaKorona />
                                 </StopMessage>
@@ -199,16 +182,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         <DateView date={sisteGyldigeDagForInntektstap} />?
                                     </span>
                                 }
-                                description={
-                                    <ExpandableInfo title="Hva er startdato for inntektstap?">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis laudantium
-                                        sapiente illum perferendis distinctio, praesentium, culpa repellendus nulla
-                                        corporis commodi explicabo! Quidem quibusdam vitae repellendus voluptate
-                                        similique corrupti atque! Debitis!
-                                    </ExpandableInfo>
-                                }
+                                description={<IntroFormInfo.hvaErStartdatoForInntektstap />}
                             />
-                            {values.frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
+                            {frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
                                 <StopMessage>
                                     <Info.frilanserForSentInntektstap />
                                 </StopMessage>
@@ -219,12 +195,12 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 name={IntroFormField.frilanserFårDekketTapet}
                                 legend={'Får du allerede dekket inntektstapet som frilanser fra NAV?'}
                             />
-                            {values.frilanserFårDekketTapet === YesOrNo.YES && (
+                            {frilanserFårDekketTapet === YesOrNo.YES && (
                                 <StopMessage>
                                     <Info.frilanserFårDekketTapet />
                                 </StopMessage>
                             )}
-                            {values.frilanserFårDekketTapet === YesOrNo.NO && (
+                            {frilanserFårDekketTapet === YesOrNo.NO && (
                                 <Box margin="l">
                                     <AlertStripeSuksess>
                                         <Element>Du kan søke som frilanser</Element>
@@ -244,7 +220,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     'Har du allerede søkt (og/eller venter på svar) fra NAV for det samme inntektstapet du ønsker å søke om i denne søknaden??'
                                 }
                             />
-                            {values.harAlleredeSøkt === YesOrNo.YES && (
+                            {harAlleredeSøkt === YesOrNo.YES && (
                                 <FormBlock>
                                     <AlertStripeInfo>
                                         Du kan kun få dekket inntektstapet en gang. Du kan velge å{' '}
@@ -262,7 +238,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 legend={'Vil du likevel gå videre til søknaden?'}
                             />
                         </FormQuestion>
-                        {values.erFrilanser === YesOrNo.NO && values.erSelvstendigNæringsdrivende === YesOrNo.NO && (
+                        {erFrilanser === YesOrNo.NO && erSelvstendigNæringsdrivende === YesOrNo.NO && (
                             <StopMessage>
                                 Du må velge om du er selvstendig næringsdrivende og/eller frilanser.
                             </StopMessage>
