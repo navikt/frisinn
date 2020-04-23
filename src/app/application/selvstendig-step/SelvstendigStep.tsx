@@ -123,15 +123,17 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                             validateDateInRange({ from: MIN_DATE, to: currentSøknadsperiode.to }),
                         ])}
                     />
-                    {isValidDateRange(availableDateRange) && (
-                        <Box margin="xl">
-                            <AvailableDateRangeInfo
-                                inntektstapStartetDato={selvstendigInntektstapStartetDato}
-                                availableDateRange={availableDateRange}
-                                isLimitedDateRange={isLimitedDateRange}
-                            />
-                        </Box>
-                    )}
+                    {isValidDateRange(availableDateRange) &&
+                        alderCheckIsLoading === false &&
+                        alderCheckResult?.innfrirKrav === true && (
+                            <Box margin="xl">
+                                <AvailableDateRangeInfo
+                                    inntektstapStartetDato={selvstendigInntektstapStartetDato}
+                                    availableDateRange={availableDateRange}
+                                    isLimitedDateRange={isLimitedDateRange}
+                                />
+                            </Box>
+                        )}
                 </FormBlock>
             )}
             {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (

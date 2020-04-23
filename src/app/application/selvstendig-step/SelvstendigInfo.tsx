@@ -31,7 +31,7 @@ const advarselIkkeTapPgaKorona = () => (
 const advarselAlderSjekkFeiler = () => (
     <AlertStripeAdvarsel>
         <Element>Du kan ikke søke som selvstendig næringsdrivende for denne perioden</Element>
-        <p>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
+        <p style={{ marginTop: '.5rem' }}>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
     </AlertStripeAdvarsel>
 );
 
