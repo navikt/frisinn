@@ -20,6 +20,8 @@ import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysn
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
+import EntryFormQuestion from './EntryFormQuestion';
+import StopMessage from '../../components/StopMessage';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -44,7 +46,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
     } = values;
 
-    const { isVisible, areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({ ...values, isSelvstendig });
+    const { areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({ ...values, isSelvstendig });
 
     const hasChosenSoknad =
         søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
@@ -66,6 +68,8 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         hasChosenSoknad &&
         infoStates.ønskerIkkeSøkeBareSomFrilanser !== true;
 
+    const EntryQuestion = EntryFormQuestion(values, isSelvstendig);
+
     return (
         <FormComponents.Form
             onValidSubmit={onStart}
@@ -79,36 +83,28 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
             </FormBlock>
 
             {kontonummerErRiktig === YesOrNo.NO && (
-                <FormBlock>
-                    <AlertStripeAdvarsel>
-                        <EndreKontonummer />
-                    </AlertStripeAdvarsel>
-                </FormBlock>
+                <StopMessage>
+                    <EndreKontonummer />
+                </StopMessage>
             )}
-            {isVisible(SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende) && (
-                <FormBlock>
-                    <FormComponents.YesOrNoQuestion
-                        legend={`Ønsker du å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
-                        name={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
-                    />
-                </FormBlock>
-            )}
-            {isVisible(SoknadFormField.søkerOmTaptInntektSomFrilanser) && (
-                <FormBlock>
-                    <FormComponents.YesOrNoQuestion
-                        legend="Ønsker du å søke kompensasjon for tapt inntekt som frilanser?"
-                        name={SoknadFormField.søkerOmTaptInntektSomFrilanser}
-                    />
-                </FormBlock>
-            )}
-            {isVisible(SoknadFormField.erSelvstendigNæringsdrivende) && (
-                <FormBlock>
-                    <SoknadFormComponents.YesOrNoQuestion
-                        legend="Er du selvstendig næringsdrivende?"
-                        name={SoknadFormField.erSelvstendigNæringsdrivende}
-                    />
-                </FormBlock>
-            )}
+            <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}>
+                <FormComponents.YesOrNoQuestion
+                    legend={`Ønsker du å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
+                    name={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
+                />
+            </EntryQuestion>
+            <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomFrilanser}>
+                <FormComponents.YesOrNoQuestion
+                    legend="Ønsker du å søke kompensasjon for tapt inntekt som frilanser?"
+                    name={SoknadFormField.søkerOmTaptInntektSomFrilanser}
+                />
+            </EntryQuestion>
+            <EntryQuestion question={SoknadFormField.erSelvstendigNæringsdrivende}>
+                <SoknadFormComponents.YesOrNoQuestion
+                    legend="Er du selvstendig næringsdrivende?"
+                    name={SoknadFormField.erSelvstendigNæringsdrivende}
+                />
+            </EntryQuestion>
             {infoStates.isSelvstendigButNoForetakFound && (
                 <FormBlock>
                     <Guide kompakt={true} svg={<VeilederSVG mood="uncertain" />} fargetema="advarsel">
@@ -120,23 +116,17 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                     </Guide>
                 </FormBlock>
             )}
-            {isVisible(SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad) && (
-                <>
+            <EntryQuestion question={SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad}>
+                <SoknadFormComponents.YesOrNoQuestion
+                    legend="Ønsker du å fortsette med å kun søke som frilanser?"
+                    name={SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad}
+                />
+                {infoStates.ønskerIkkeSøkeBareSomFrilanser && (
                     <FormBlock>
-                        <SoknadFormComponents.YesOrNoQuestion
-                            legend="Ønsker du å fortsette med å kun søke som frilanser?"
-                            name={SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad}
-                        />
+                        <AlertStripeAdvarsel>Info om hva bruker skal gjøre, eller bare si stopp?</AlertStripeAdvarsel>
                     </FormBlock>
-                    {infoStates.ønskerIkkeSøkeBareSomFrilanser && (
-                        <FormBlock>
-                            <AlertStripeAdvarsel>
-                                Info om hva bruker skal gjøre, eller bare si stopp?
-                            </AlertStripeAdvarsel>
-                        </FormBlock>
-                    )}
-                </>
-            )}
+                )}
+            </EntryQuestion>
 
             {infoStates.hasNotChosenSoknad && !infoStates.isSelvstendigButNoForetakFound && (
                 <>

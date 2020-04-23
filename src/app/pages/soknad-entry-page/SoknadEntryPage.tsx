@@ -3,20 +3,18 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
-import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
-import { SoknadFormData } from '../../types/SoknadFormData';
 import SoknadEntryForm from './SoknadEntryForm';
-import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
-import soknadTempStorage from '../../soknad/SoknadTempStorage';
+import { ResetSoknadFunction } from '../../soknad/Soknad';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
+    resetSoknad: ResetSoknadFunction;
     onStart: () => void;
 }
 
@@ -26,15 +24,10 @@ const SoknadEntryPage = ({
         person: { kontonummer },
         personligeForetak,
     },
+    resetSoknad,
 }: Props) => {
-    const { resetForm } = useFormikContext<SoknadFormData>();
-
     useEffect(() => {
-        resetForm();
-        // Todo - denne logikken virker ikke med reell mellomlagring, da bruker skal bli sendt til riktig steg
-        if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            soknadTempStorage.purge();
-        }
+        resetSoknad(false);
     }, []);
 
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;

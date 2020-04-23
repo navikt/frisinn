@@ -1,17 +1,17 @@
 import React from 'react';
-import { IntroFormField, IntroFormData, IntroFormQuestions } from './intro-form/introFormConfig';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { DateRange } from '../../utils/dateUtils';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
 
 interface Props {
-    question: IntroFormField;
+    question: SoknadFormField;
     children: React.ReactNode;
 }
 
-const IntroFormQuestion = (values: IntroFormData, soknadsperiode: DateRange) => {
-    const { isVisible } = IntroFormQuestions.getVisbility({
+const EntryFormQuestion = (values: SoknadFormData, isSelvstendig: boolean) => {
+    const { isVisible } = SoknadEntryFormQuestions.getVisbility({
         ...values,
-        soknadsperiode,
+        isSelvstendig,
     });
 
     return function QuestionWrapper({ question, children }: Props) {
@@ -22,4 +22,4 @@ const IntroFormQuestion = (values: IntroFormData, soknadsperiode: DateRange) => 
     };
 };
 
-export default IntroFormQuestion;
+export default EntryFormQuestion;

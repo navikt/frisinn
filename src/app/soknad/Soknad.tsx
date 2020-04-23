@@ -16,20 +16,28 @@ import useApiGet from '../hooks/useApiGet';
 import { ApiEndpoint } from '../api/api';
 import { Ingress } from 'nav-frontend-typografi';
 
+export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
+
 const Soknad = () => {
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
     const tempStorage = useTemporaryStorage();
     const { soknadEssentials } = essentials;
-    const initialValues = soknadTempStorage.getValidStorage(tempStorage.storageData)?.formData || {};
+    const initialValues = isFeatureEnabled(Feature.PERSISTENCE)
+        ? soknadTempStorage.getValidStorage(tempStorage.storageData)?.formData || {}
+        : {};
     const history = useHistory();
 
-    async function resetSoknad() {
-        if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            await tempStorage.purge();
+    async function resetSoknad(redirectToFrontpage = true) {
+        if (tempStorage && tempStorage.storageData?.formData) {
+            if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                await tempStorage.purge();
+            }
         }
-        navigateToSoknadFrontpage(history);
+        if (redirectToFrontpage) {
+            navigateToSoknadFrontpage(history);
+        }
     }
 
     const isLoading =

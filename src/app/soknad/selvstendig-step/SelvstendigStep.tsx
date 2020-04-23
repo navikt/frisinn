@@ -26,7 +26,6 @@ import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { ensureString } from '../../utils/ensureString';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
 import useAlderCheck from '../../hooks/useAlderCheck';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -101,9 +100,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
             )}
 
             {values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                <FormBlock>
-                    <AlertStripeAdvarsel>{SelvstendigInfo.advarselIkkeTapPgaKorona()}</AlertStripeAdvarsel>
-                </FormBlock>
+                <FormBlock>{SelvstendigInfo.advarselIkkeTapPgaKorona()}</FormBlock>
             )}
 
             {isVisible(Field.selvstendigInntektstapStartetDato) && (

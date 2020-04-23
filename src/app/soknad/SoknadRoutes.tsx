@@ -92,7 +92,13 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
             <Route
                 exact={true}
                 path={GlobalRoutes.SOKNAD}
-                render={() => <SoknadEntryPage onStart={onStartSoknad} soknadEssentials={soknadEssentials} />}
+                render={() => (
+                    <SoknadEntryPage
+                        onStart={onStartSoknad}
+                        soknadEssentials={soknadEssentials}
+                        resetSoknad={resetSoknad}
+                    />
+                )}
             />
             {soknadSteps.map((step) => {
                 return <Route key={step} path={getSoknadRoute(step)} render={() => renderSoknadStep(step)} />;
