@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiQuestion } from '../../types/ApplicationApiData';
+import { ApiQuestion } from '../../types/SoknadApiData';
 import SummaryBlock from '../summary-block/SummaryBlock';
 
 interface Props {

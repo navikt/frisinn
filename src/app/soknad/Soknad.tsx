@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
-import useApplicationEssentials from '../hooks/useApplicationEssentials';
+import useSoknadEssentials from '../hooks/useSoknadEssentials';
 import useTemporaryStorage from '../hooks/useTempStorage';
 import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
-import { navigateToApplicationFrontpage } from '../utils/navigationUtils';
-import ApplicationFormComponents from './ApplicationFormComponents';
-import ApplicationRoutes from './ApplicationRoutes';
-import applicationTempStorage from './ApplicationTempStorage';
+import { navigateToSoknadFrontpage } from '../utils/navigationUtils';
+import SoknadFormComponents from './SoknadFormComponents';
+import SoknadRoutes from './SoknadRoutes';
+import soknadTempStorage from './SoknadTempStorage';
 import { maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
 import useAccessCheck from '../hooks/useAccessKrav';
 import NoAccessPage from '../pages/no-access-page/NoAccessPage';
@@ -16,20 +16,20 @@ import useApiGet from '../hooks/useApiGet';
 import { ApiEndpoint } from '../api/api';
 import { Ingress } from 'nav-frontend-typografi';
 
-const Application = () => {
-    const essentials = useApplicationEssentials();
+const Soknad = () => {
+    const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
     const tempStorage = useTemporaryStorage();
-    const { applicationEssentials } = essentials;
-    const initialValues = applicationTempStorage.getValidStorage(tempStorage.storageData)?.formData || {};
+    const { soknadEssentials } = essentials;
+    const initialValues = soknadTempStorage.getValidStorage(tempStorage.storageData)?.formData || {};
     const history = useHistory();
 
-    async function resetApplication() {
+    async function resetSoknad() {
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await tempStorage.purge();
         }
-        navigateToApplicationFrontpage(history);
+        navigateToSoknadFrontpage(history);
     }
 
     const isLoading =
@@ -52,7 +52,7 @@ const Application = () => {
                         </NoAccessPage>
                     );
                 }
-                if (applicationEssentials === undefined) {
+                if (soknadEssentials === undefined) {
                     return <GeneralErrorPage />;
                 }
                 if (maksEnSoknadPerPeriodeCheck.result?.passes === false) {
@@ -63,16 +63,11 @@ const Application = () => {
                     );
                 }
                 return (
-                    <ApplicationFormComponents.FormikWrapper
+                    <SoknadFormComponents.FormikWrapper
                         initialValues={initialValues}
                         onSubmit={() => null}
                         renderForm={() => {
-                            return (
-                                <ApplicationRoutes
-                                    applicationEssentials={applicationEssentials}
-                                    resetApplication={resetApplication}
-                                />
-                            );
+                            return <SoknadRoutes soknadEssentials={soknadEssentials} resetSoknad={resetSoknad} />;
                         }}
                     />
                 );
@@ -81,4 +76,4 @@ const Application = () => {
     );
 };
 
-export default Application;
+export default Soknad;

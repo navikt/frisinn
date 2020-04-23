@@ -1,13 +1,13 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 
-const Q = ApplicationFormField;
+const Q = SoknadFormField;
 
-type EntryFormPayload = ApplicationFormData & { isSelvstendig: boolean };
+type EntryFormPayload = SoknadFormData & { isSelvstendig: boolean };
 
-const EntryFormConfig: QuestionConfig<EntryFormPayload, ApplicationFormField> = {
+const EntryFormConfig: QuestionConfig<EntryFormPayload, SoknadFormField> = {
     [Q.kontonummerErRiktig]: {
         isAnswered: ({ kontonummerErRiktig }) => yesOrNoIsAnswered(kontonummerErRiktig),
     },
@@ -36,4 +36,4 @@ const EntryFormConfig: QuestionConfig<EntryFormPayload, ApplicationFormField> = 
     },
 };
 
-export const EntryFormQuestions = Questions<EntryFormPayload, ApplicationFormField>(EntryFormConfig);
+export const EntryFormQuestions = Questions<EntryFormPayload, SoknadFormField>(EntryFormConfig);

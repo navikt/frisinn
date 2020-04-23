@@ -4,7 +4,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
-import './applicationErrorPage.less';
+import './soknadErrorPage.less';
 
 const ApplicationErrorPage: React.FunctionComponent = ({ children }: { children?: React.ReactNode }) => {
     return (

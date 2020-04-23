@@ -6,9 +6,9 @@ import FormBlock from 'common/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from 'common/utils/commonFieldErrorRenderer';
 import StepFooter from '../components/step-footer/StepFooter';
 import Step, { StepProps } from '../components/step/Step';
-import { ApplicationFormData } from '../types/ApplicationFormData';
+import { SoknadFormData } from '../types/SoknadFormData';
 import { getStepTexts } from '../utils/stepUtils';
-import ApplicationFormComponents from './ApplicationFormComponents';
+import SoknadFormComponents from './SoknadFormComponents';
 import { getStepConfig } from './stepConfig';
 
 export interface FormikStepProps {
@@ -18,27 +18,27 @@ export interface FormikStepProps {
     buttonDisabled?: boolean;
     onValidFormSubmit?: () => void;
     skipValidation?: boolean;
-    stepCleanup?: (values: ApplicationFormData) => ApplicationFormData;
-    resetApplication: () => void;
+    stepCleanup?: (values: SoknadFormData) => SoknadFormData;
+    resetSoknad: () => void;
 }
 
 type Props = FormikStepProps & StepProps;
 
-const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, stepCleanup, ...restProps }: Props) => {
+const SoknadStep: React.FunctionComponent<Props> = ({ resetSoknad, stepCleanup, ...restProps }: Props) => {
     const intl = useIntl();
-    const { values } = useFormikContext<ApplicationFormData>();
+    const { values } = useFormikContext<SoknadFormData>();
 
     const stepConfig = getStepConfig(values);
     const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = restProps;
     const texts = getStepTexts(intl, id, stepConfig);
 
     const handleAvbrytOgSlettSøknad = () => {
-        resetApplication();
+        resetSoknad();
     };
 
     return (
         <Step stepConfig={stepConfig} {...restProps}>
-            <ApplicationFormComponents.Form
+            <SoknadFormComponents.Form
                 onValidSubmit={onValidFormSubmit}
                 includeButtons={false}
                 includeValidationSummary={true}
@@ -58,10 +58,10 @@ const ApplicationStep: React.FunctionComponent<Props> = ({ resetApplication, ste
                         </Knapp>
                     </FormBlock>
                 )}
-            </ApplicationFormComponents.Form>
+            </SoknadFormComponents.Form>
             <StepFooter onAvbrytOgSlett={handleAvbrytOgSlettSøknad} />
         </Step>
     );
 };
 
-export default ApplicationStep;
+export default SoknadStep;

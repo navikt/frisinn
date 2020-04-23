@@ -6,44 +6,40 @@ import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-p
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
-import { sendApplication } from '../../api/soknad';
+import { sendSoknad } from '../../api/soknad';
 import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 import Guide from '../../components/guide/Guide';
-import { ApplicationApiData } from '../../types/ApplicationApiData';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadApiData } from '../../types/SoknadApiData';
+import { SoknadEssentials } from '../../types/SoknadEssentials';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import * as apiUtils from '../../utils/apiUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { navigateToErrorPage, relocateToLoginPage } from '../../utils/navigationUtils';
 import { validateBekrefterOpplysninger } from '../../validation/fieldValidations';
-import ApplicationFormComponents from '../ApplicationFormComponents';
-import ApplicationStep from '../ApplicationStep';
+import SoknadFormComponents from '../SoknadFormComponents';
+import SoknadStep from '../SoknadStep';
 import { StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 
 interface Props {
-    applicationEssentials: ApplicationEssentials;
-    resetApplication: () => void;
-    onApplicationSent: () => void;
+    soknadEssentials: SoknadEssentials;
+    resetSoknad: () => void;
+    onSoknadSent: () => void;
 }
 
-const OppsummeringStep: React.StatelessComponent<Props> = ({
-    resetApplication,
-    onApplicationSent,
-    applicationEssentials,
-}: Props) => {
+const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSoknadSent, soknadEssentials }: Props) => {
     const intl = useIntl();
-    const formik = useFormikContext<ApplicationFormData>();
+    const formik = useFormikContext<SoknadFormData>();
     const history = useHistory();
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
-    async function send(data: ApplicationApiData) {
+    async function send(data: SoknadApiData) {
         setSendingInProgress(true);
         try {
-            await sendApplication(data);
-            onApplicationSent();
+            await sendSoknad(data);
+            onSoknadSent();
         } catch (error) {
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
                 relocateToLoginPage();
@@ -53,12 +49,12 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
         }
     }
 
-    const apiValues = mapFormDataToApiData(applicationEssentials, formik.values, intl.locale as Locale);
+    const apiValues = mapFormDataToApiData(soknadEssentials, formik.values, intl.locale as Locale);
 
     return (
-        <ApplicationStep
+        <SoknadStep
             id={StepID.SUMMARY}
-            resetApplication={resetApplication}
+            resetSoknad={resetSoknad}
             onValidFormSubmit={() => {
                 if (apiValues) {
                     setTimeout(() => {
@@ -91,9 +87,9 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                         </Guide>
                     </Box>
                     <Box margin="l">
-                        <ApplicationFormComponents.ConfirmationCheckbox
+                        <SoknadFormComponents.ConfirmationCheckbox
                             label={intlHelper(intl, 'step.oppsummering.bekrefterOpplysninger')}
-                            name={ApplicationFormField.harBekreftetOpplysninger}
+                            name={SoknadFormField.harBekreftetOpplysninger}
                             validate={validateBekrefterOpplysninger}
                         />
                     </Box>
@@ -104,7 +100,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                     <CounsellorPanel>Det oppstod en feil med informasjonen i søknaden din</CounsellorPanel>
                 </>
             )}
-        </ApplicationStep>
+        </SoknadStep>
     );
 };
 

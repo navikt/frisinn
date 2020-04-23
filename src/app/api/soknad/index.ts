@@ -1,4 +1,4 @@
-import { ApplicationApiData } from '../../types/ApplicationApiData';
+import { SoknadApiData } from '../../types/SoknadApiData';
 import api, { ApiEndpoint } from '../api';
 
-export const sendApplication = (data: ApplicationApiData) => api.post(ApiEndpoint.soknad, data);
+export const sendSoknad = (data: SoknadApiData) => api.post(ApiEndpoint.soknad, data);

@@ -15,11 +15,11 @@ import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { apiStringDateToDate } from '../../utils/dateUtils';
 import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
-import ApplicationFormComponents from '../ApplicationFormComponents';
-import ApplicationStep from '../ApplicationStep';
+import SoknadFormComponents from '../SoknadFormComponents';
+import SoknadStep from '../SoknadStep';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
@@ -33,11 +33,11 @@ const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const txt = frilanserStepTexts;
 
-const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit }: StepConfigProps) => {
-    const { values, setFieldValue } = useFormikContext<ApplicationFormData>();
+const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubmit }: StepConfigProps) => {
+    const { values, setFieldValue } = useFormikContext<SoknadFormData>();
 
     const { frilanserInntektstapStartetDato } = values;
-    const { currentSøknadsperiode } = applicationEssentials;
+    const { currentSøknadsperiode } = soknadEssentials;
 
     const {
         availableDateRange,
@@ -51,18 +51,18 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
     const isLoading = availableDateRangeIsLoading || alderCheckIsLoading;
     const { isVisible, areAllQuestionsAnswered } = FrilanserFormQuestions.getVisbility({
         ...values,
-        ...applicationEssentials,
+        ...soknadEssentials,
     });
 
     useEffect(() => {
-        setFieldValue(ApplicationFormField.frilanserCalculatedDateRange, availableDateRange);
+        setFieldValue(SoknadFormField.frilanserCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
 
     return (
-        <ApplicationStep
+        <SoknadStep
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
-            resetApplication={resetApplication}
+            resetSoknad={resetSoknad}
             showSubmitButton={
                 areAllQuestionsAnswered() &&
                 (values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES ||
@@ -71,10 +71,10 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
             <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
                 <p>Skal det være noe informasjon som introduserer steget?</p>
             </Guide>
-            {isVisible(ApplicationFormField.frilanserHarTaptInntektPgaKorona) && (
+            {isVisible(SoknadFormField.frilanserHarTaptInntektPgaKorona) && (
                 <FormBlock>
-                    <ApplicationFormComponents.YesOrNoQuestion
-                        name={ApplicationFormField.frilanserHarTaptInntektPgaKorona}
+                    <SoknadFormComponents.YesOrNoQuestion
+                        name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                         legend={ensureString(txt.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode))}
                         validate={validateYesOrNoIsAnswered}
                     />
@@ -87,19 +87,19 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                     </AlertStripeAdvarsel>
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.frilanserErNyetablert) && (
+            {isVisible(SoknadFormField.frilanserErNyetablert) && (
                 <FormBlock>
-                    <ApplicationFormComponents.YesOrNoQuestion
-                        name={ApplicationFormField.frilanserErNyetablert}
+                    <SoknadFormComponents.YesOrNoQuestion
+                        name={SoknadFormField.frilanserErNyetablert}
                         legend={ensureString(txt.frilanserErNyetablert)}
                         validate={validateYesOrNoIsAnswered}
                     />
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.frilanserInntektstapStartetDato) && (
+            {isVisible(SoknadFormField.frilanserInntektstapStartetDato) && (
                 <FormBlock>
-                    <ApplicationFormComponents.DatePicker
-                        name={ApplicationFormField.frilanserInntektstapStartetDato}
+                    <SoknadFormComponents.DatePicker
+                        name={SoknadFormField.frilanserInntektstapStartetDato}
                         label={ensureString(txt.frilanserInntektstapStartetDato)}
                         dateLimitations={{
                             minDato: MIN_DATE,
@@ -147,23 +147,23 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                         return (
                             <>
                                 <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
-                                {isVisible(ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet) && (
+                                {isVisible(SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet}
+                                        <SoknadFormComponents.YesOrNoQuestion
+                                            name={SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet}
                                             legend={ensureString(txt.frilanserHarYtelseFraNavSomDekkerTapet)}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet) && (
+                                {isVisible(SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.YesOrNoQuestion
-                                            name={ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet}
+                                        <SoknadFormComponents.YesOrNoQuestion
+                                            name={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}
                                             legend={ensureString(txt.frilanserYtelseFraNavDekkerHeleTapet)}
                                         />
                                     </FormBlock>
                                 )}
-                                {isVisible(ApplicationFormField.frilanserInntektIPerioden) && (
+                                {isVisible(SoknadFormField.frilanserInntektIPerioden) && (
                                     <>
                                         <Box margin="xxl">
                                             <Undertittel className="sectionTitle">
@@ -171,8 +171,8 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                                             </Undertittel>
                                         </Box>
                                         <FormBlock>
-                                            <ApplicationFormComponents.Input
-                                                name={ApplicationFormField.frilanserInntektIPerioden}
+                                            <SoknadFormComponents.Input
+                                                name={SoknadFormField.frilanserInntektIPerioden}
                                                 type="number"
                                                 bredde="S"
                                                 description={
@@ -212,27 +212,25 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                                     </>
                                 )}
 
-                                {isVisible(ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
+                                {isVisible(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
                                     <Box margin="xxl">
                                         <Undertittel className="sectionTitle">Selvstendig næringsdrivende</Undertittel>
                                         <FormBlock>
-                                            <ApplicationFormComponents.YesOrNoQuestion
+                                            <SoknadFormComponents.YesOrNoQuestion
                                                 legend={ensureString(
                                                     txt.frilanserHarHattInntektSomSelvstendigIPerioden(
                                                         availableDateRange
                                                     )
                                                 )}
-                                                name={
-                                                    ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
-                                                }
+                                                name={SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}
                                             />
                                         </FormBlock>
                                     </Box>
                                 )}
-                                {isVisible(ApplicationFormField.frilanserInntektSomSelvstendigIPerioden) && (
+                                {isVisible(SoknadFormField.frilanserInntektSomSelvstendigIPerioden) && (
                                     <FormBlock>
-                                        <ApplicationFormComponents.Input
-                                            name={ApplicationFormField.frilanserInntektSomSelvstendigIPerioden}
+                                        <SoknadFormComponents.Input
+                                            name={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}
                                             type="number"
                                             bredde="S"
                                             label={ensureString(txt.frilanserInntektSomSelvstendigIPerioden)}
@@ -245,7 +243,7 @@ const FrilanserStep = ({ applicationEssentials, resetApplication, onValidSubmit 
                     }}
                 />
             )}
-        </ApplicationStep>
+        </SoknadStep>
     );
 };
 

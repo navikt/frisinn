@@ -1,16 +1,16 @@
 import { formatDateRange } from '../../components/date-range-view/DateRangeView';
-import { ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadFormField } from '../../types/SoknadFormData';
 import { DateRange } from '../../utils/dateUtils';
 
 export interface FrilanserStepFormText {
-    [ApplicationFormField.frilanserHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
-    [ApplicationFormField.frilanserErNyetablert]: string;
-    [ApplicationFormField.frilanserInntektstapStartetDato]: string;
-    [ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
-    [ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet]: string;
-    [ApplicationFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
-    [ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
-    [ApplicationFormField.frilanserInntektSomSelvstendigIPerioden]: string;
+    [SoknadFormField.frilanserHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
+    [SoknadFormField.frilanserErNyetablert]: string;
+    [SoknadFormField.frilanserInntektstapStartetDato]: string;
+    [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
+    [SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet]: string;
+    [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]: string;
 }
 
 export const frilanserStepTexts: FrilanserStepFormText = {

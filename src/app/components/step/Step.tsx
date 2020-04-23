@@ -10,7 +10,7 @@ import StepBanner from 'common/components/step-banner/StepBanner';
 import bemHelper from 'common/utils/bemUtils';
 import intlHelper from 'common/utils/intlUtils';
 import { getStepTexts } from 'app/utils/stepUtils';
-import { StepConfigInterface, StepConfigItemTexts, StepID } from '../../application/stepConfig';
+import { StepConfigInterface, StepConfigItemTexts, StepID } from '../../soknad/stepConfig';
 import StepIndicator from './step-indicator/StepIndicator';
 import './step.less';
 

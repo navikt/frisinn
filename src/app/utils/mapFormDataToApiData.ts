@@ -4,16 +4,16 @@ import moment from 'moment';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
 import {
-    ApplicationApiData,
+    SoknadApiData,
     FrilanserApiData,
     SelvstendigNæringsdrivendeApiData,
     ApiQuestion,
-} from '../types/ApplicationApiData';
-import { ApplicationEssentials } from '../types/ApplicationEssentials';
-import { ApplicationFormData } from '../types/ApplicationFormData';
+} from '../types/SoknadApiData';
+import { SoknadEssentials } from '../types/SoknadEssentials';
+import { SoknadFormData } from '../types/SoknadFormData';
 import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from './selvstendigUtils';
-import { selvstendigStepTexts } from '../application/selvstendig-step/selvstendigStepTexts';
-import { frilanserStepTexts } from '../application/frilanser-step/frilanserStepTexts';
+import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
+import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -29,7 +29,7 @@ const formatYesOrNoAnswer = (answer: YesOrNo): string => {
 };
 
 const mapSelvstendigNæringsdrivendeFormDataToApiData = (
-    { personligeForetak }: ApplicationEssentials,
+    { personligeForetak }: SoknadEssentials,
     {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         selvstendigHarTaptInntektPgaKorona,
@@ -50,7 +50,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigRevisorNavn,
         selvstendigRevisorTelefon,
         selvstendigRevisorNAVKanTaKontakt,
-    }: ApplicationFormData
+    }: SoknadFormData
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     if (
         selvstendigCalculatedDateRange &&
@@ -126,7 +126,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 };
 
 export const mapFrilanserFormDataToApiData = (
-    { personligeForetak }: ApplicationEssentials,
+    { personligeForetak }: SoknadEssentials,
     {
         frilanserHarTaptInntektPgaKorona,
         frilanserErNyetablert,
@@ -137,7 +137,7 @@ export const mapFrilanserFormDataToApiData = (
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
         frilanserCalculatedDateRange,
-    }: ApplicationFormData
+    }: SoknadFormData
 ): FrilanserApiData | undefined => {
     if (frilanserHarTaptInntektPgaKorona === YesOrNo.YES && frilanserCalculatedDateRange) {
         const lastDayWithNormalIncome = moment(frilanserInntektstapStartetDato).subtract(1, 'day').toDate();
@@ -174,13 +174,13 @@ export const mapFrilanserFormDataToApiData = (
 };
 
 export const mapFormDataToApiData = (
-    appEssentials: ApplicationEssentials,
-    formData: ApplicationFormData,
+    appEssentials: SoknadEssentials,
+    formData: SoknadFormData,
     språk: Locale
-): ApplicationApiData | undefined => {
+): SoknadApiData | undefined => {
     const { harBekreftetOpplysninger, harForståttRettigheterOgPlikter } = formData;
 
-    const apiData: ApplicationApiData = {
+    const apiData: SoknadApiData = {
         språk: (språk as any) === 'en' ? 'nn' : språk,
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,

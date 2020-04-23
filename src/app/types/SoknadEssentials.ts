@@ -20,7 +20,7 @@ export interface PersonligeForetak {
     tidligsteRegistreringsdato: Date;
 }
 
-export interface ApplicationEssentials {
+export interface SoknadEssentials {
     person: Person;
     currentSøknadsperiode: DateRange;
     personligeForetak?: PersonligeForetak;

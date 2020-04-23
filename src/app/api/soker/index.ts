@@ -1,4 +1,4 @@
-import { Person } from '../../types/ApplicationEssentials';
+import { Person } from '../../types/SoknadEssentials';
 import api, { ApiEndpoint } from '../api';
 
 export async function getSoker(): Promise<Person> {

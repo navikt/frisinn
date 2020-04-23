@@ -1,16 +1,16 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { ApplicationFormField, SelvstendigFormData } from '../../types/ApplicationFormData';
+import { SoknadEssentials } from '../../types/SoknadEssentials';
+import { SoknadFormField, SelvstendigFormData } from '../../types/SoknadFormData';
 import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from '../../utils/selvstendigUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
 import { AvailableDateRange, isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 
-const Field = ApplicationFormField;
+const Field = SoknadFormField;
 
 export type SelvstendigFormPayload = SelvstendigFormData &
-    ApplicationEssentials & { availableDateRange: AvailableDateRange };
+    SoknadEssentials & { availableDateRange: AvailableDateRange };
 
 const showHistoricIncomeQuestion = ({
     søkerOmTaptInntektSomFrilanser,
@@ -34,7 +34,7 @@ const showHistoricIncomeQuestion = ({
     return false;
 };
 
-const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationFormField> = {
+const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, SoknadFormField> = {
     [Field.selvstendigHarTaptInntektPgaKorona]: {
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
     },
@@ -118,4 +118,4 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, ApplicationF
     },
 };
 
-export const SelvstendigFormQuestions = Questions<SelvstendigFormPayload, ApplicationFormField>(SelvstendigFormConfig);
+export const SelvstendigFormQuestions = Questions<SelvstendigFormPayload, SoknadFormField>(SelvstendigFormConfig);

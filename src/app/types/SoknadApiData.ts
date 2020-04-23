@@ -35,7 +35,7 @@ export interface FrilanserApiData {
     questions?: ApiQuestion[];
 }
 
-export interface ApplicationApiData {
+export interface SoknadApiData {
     språk: Locale;
     harForståttRettigheterOgPlikter: boolean;
     harBekreftetOpplysninger: boolean;

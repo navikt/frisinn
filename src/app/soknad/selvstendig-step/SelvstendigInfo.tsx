@@ -4,7 +4,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
-import { Foretak } from '../../types/ApplicationEssentials';
+import { Foretak } from '../../types/SoknadEssentials';
 
 const intro = (antallForetak: number, foretak: Foretak[]) => (
     <>

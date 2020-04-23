@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import applicationTempStorage, { TemporaryStorageData } from '../application/ApplicationTempStorage';
+import soknadTempStorage, { TemporaryStorageData } from '../soknad/SoknadTempStorage';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 function useTemporaryStorage() {
@@ -9,8 +9,8 @@ function useTemporaryStorage() {
     async function fetchStorage() {
         setIsLoading(true);
         try {
-            const storageData = await applicationTempStorage.rehydrate();
-            setStorageData(storageData ? applicationTempStorage.getValidStorage(storageData.data) : undefined);
+            const storageData = await soknadTempStorage.rehydrate();
+            setStorageData(storageData ? soknadTempStorage.getValidStorage(storageData.data) : undefined);
         } catch (error) {
             setStorageData(undefined);
         } finally {
@@ -29,7 +29,7 @@ function useTemporaryStorage() {
     async function purge() {
         setIsLoading(true);
         try {
-            await applicationTempStorage.purge();
+            await soknadTempStorage.purge();
         } finally {
             setStorageData(undefined);
             setIsLoading(false);

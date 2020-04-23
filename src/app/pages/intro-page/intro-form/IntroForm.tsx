@@ -53,13 +53,13 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                 const harAlleredeSøktIsOk =
                     values.harAlleredeSøkt === YesOrNo.NO || values.vilFortsetteTilSøknad === YesOrNo.YES;
 
-                const canContinueToApplication =
+                const canContinueToSoknad =
                     areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk && harAlleredeSøktIsOk;
 
                 return (
                     <FormComponent.Form
                         includeValidationSummary={true}
-                        includeButtons={canContinueToApplication}
+                        includeButtons={canContinueToSoknad}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
                         submitButtonLabel="Gå videre til søknaden">
                         {isVisible(IntroFormField.fødselsdato) && (
@@ -282,7 +282,7 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                             </FormBlock>
                         )}
 
-                        {canContinueToApplication && (
+                        {canContinueToSoknad && (
                             <FormBlock>
                                 <EkspanderbartPanel tittel="Sjekkliste: ting du trenger for å fylle ut søknaden">
                                     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab iste nemo quas sequi

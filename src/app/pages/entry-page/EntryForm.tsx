@@ -10,16 +10,16 @@ import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
-import FormComponents from '../../application/ApplicationFormComponents';
+import FormComponents from '../../soknad/SoknadFormComponents';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { EntryFormQuestions } from './entryFormConfig';
-import ApplicationFormComponents from '../../application/ApplicationFormComponents';
+import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -35,7 +35,7 @@ interface Props {
 const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
-    const { values } = useFormikContext<ApplicationFormData>();
+    const { values } = useFormikContext<SoknadFormData>();
     const intl = useIntl();
 
     const {
@@ -46,14 +46,14 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
 
     const { isVisible, areAllQuestionsAnswered } = EntryFormQuestions.getVisbility({ ...values, isSelvstendig });
 
-    const hasChosenApplication =
+    const hasChosenSoknad =
         søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES;
 
     const infoStates = {
         isSelvstendigButNoForetakFound: values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendig,
-        hasNotChosenApplication:
-            hasChosenApplication === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
+        hasNotChosenSoknad:
+            hasChosenSoknad === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
         ønskerIkkeSøkeBareSomFrilanser:
             values.erSelvstendigNæringsdrivende === YesOrNo.YES &&
             !isSelvstendig &&
@@ -63,7 +63,7 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
     const canContinue =
         areAllQuestionsAnswered() &&
         kontonummerErRiktig === YesOrNo.YES &&
-        hasChosenApplication &&
+        hasChosenSoknad &&
         infoStates.ønskerIkkeSøkeBareSomFrilanser !== true;
 
     return (
@@ -74,7 +74,7 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
             <FormBlock>
                 <FormComponents.YesOrNoQuestion
                     legend={`Vi har registrert kontonummeret ${kontonummer} på deg. Er dette riktig kontonummer?`}
-                    name={ApplicationFormField.kontonummerErRiktig}
+                    name={SoknadFormField.kontonummerErRiktig}
                 />
             </FormBlock>
 
@@ -85,27 +85,27 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                     </AlertStripeAdvarsel>
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende) && (
+            {isVisible(SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende) && (
                 <FormBlock>
                     <FormComponents.YesOrNoQuestion
                         legend={`Ønsker du å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
-                        name={ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
+                        name={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
                     />
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.søkerOmTaptInntektSomFrilanser) && (
+            {isVisible(SoknadFormField.søkerOmTaptInntektSomFrilanser) && (
                 <FormBlock>
                     <FormComponents.YesOrNoQuestion
                         legend="Ønsker du å søke kompensasjon for tapt inntekt som frilanser?"
-                        name={ApplicationFormField.søkerOmTaptInntektSomFrilanser}
+                        name={SoknadFormField.søkerOmTaptInntektSomFrilanser}
                     />
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.erSelvstendigNæringsdrivende) && (
+            {isVisible(SoknadFormField.erSelvstendigNæringsdrivende) && (
                 <FormBlock>
-                    <ApplicationFormComponents.YesOrNoQuestion
+                    <SoknadFormComponents.YesOrNoQuestion
                         legend="Er du selvstendig næringsdrivende?"
-                        name={ApplicationFormField.erSelvstendigNæringsdrivende}
+                        name={SoknadFormField.erSelvstendigNæringsdrivende}
                     />
                 </FormBlock>
             )}
@@ -120,12 +120,12 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                     </Guide>
                 </FormBlock>
             )}
-            {isVisible(ApplicationFormField.ønskerÅFortsetteKunFrilanserSøknad) && (
+            {isVisible(SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad) && (
                 <>
                     <FormBlock>
-                        <ApplicationFormComponents.YesOrNoQuestion
+                        <SoknadFormComponents.YesOrNoQuestion
                             legend="Ønsker du å fortsette med å kun søke som frilanser?"
-                            name={ApplicationFormField.ønskerÅFortsetteKunFrilanserSøknad}
+                            name={SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad}
                         />
                     </FormBlock>
                     {infoStates.ønskerIkkeSøkeBareSomFrilanser && (
@@ -138,7 +138,7 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                 </>
             )}
 
-            {infoStates.hasNotChosenApplication && !infoStates.isSelvstendigButNoForetakFound && (
+            {infoStates.hasNotChosenSoknad && !infoStates.isSelvstendigButNoForetakFound && (
                 <>
                     <FormBlock>
                         <AlertStripeAdvarsel>
@@ -153,7 +153,7 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                 <FormBlock>
                     <FormComponents.ConfirmationCheckbox
                         label={intlHelper(intl, 'samtykke.tekst')}
-                        name={ApplicationFormField.harForståttRettigheterOgPlikter}
+                        name={SoknadFormField.harForståttRettigheterOgPlikter}
                         validate={validateSamtykke}>
                         <FormattedMessage
                             id="samtykke.harForståttLabel"

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Undertittel } from 'nav-frontend-typografi';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
-import { SelvstendigNæringsdrivendeApiData } from '../../types/ApplicationApiData';
+import { SelvstendigNæringsdrivendeApiData } from '../../types/SoknadApiData';
 import DatoSvar from './DatoSvar';
 import KronerSvar from './KronerSvar';
 import ApiQuestionsSummary from '../../components/api-questions-summary/ApiQuestionsSummary';

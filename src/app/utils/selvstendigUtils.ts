@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { PersonligeForetak } from '../types/ApplicationEssentials';
+import { PersonligeForetak } from '../types/SoknadEssentials';
 
 export const selvstendigSkalOppgiInntekt2019 = (registrerteForetakInfo: PersonligeForetak | undefined): boolean => {
     if (!registrerteForetakInfo) {

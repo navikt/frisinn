@@ -1,25 +1,25 @@
 import { formatDateRange } from '../../components/date-range-view/DateRangeView';
-import { ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadFormField } from '../../types/SoknadFormData';
 import { DateRange } from '../../utils/dateUtils';
 
 export interface SelvstendigStepFormText {
-    [ApplicationFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
-    [ApplicationFormField.selvstendigInntektstapStartetDato]: string;
-    [ApplicationFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
-    [ApplicationFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
-    [ApplicationFormField.selvstendigYtelseFraNavDekkerHeleTapet]: string;
-    [ApplicationFormField.selvstendigInntekt2019]: string;
-    [ApplicationFormField.selvstendigInntekt2020]: (sisteDageMedInntekt: Date) => string;
-    [ApplicationFormField.selvstendigErFrilanser]: string;
-    [ApplicationFormField.selvstendigHarHattInntektSomFrilanserIPerioden]: (periode: DateRange) => string;
-    [ApplicationFormField.selvstendigInntektSomFrilanserIPerioden]: (periode: DateRange) => string;
-    [ApplicationFormField.selvstendigHarRegnskapsfører]: string;
-    [ApplicationFormField.selvstendigRegnskapsførerNavn]: string;
-    [ApplicationFormField.selvstendigRegnskapsførerTelefon]: string;
-    [ApplicationFormField.selvstendigHarRevisor]: string;
-    [ApplicationFormField.selvstendigRevisorNavn]: string;
-    [ApplicationFormField.selvstendigRevisorTelefon]: string;
-    [ApplicationFormField.selvstendigRevisorNAVKanTaKontakt]: string;
+    [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
+    [SoknadFormField.selvstendigInntektstapStartetDato]: string;
+    [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
+    [SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet]: string;
+    [SoknadFormField.selvstendigInntekt2019]: string;
+    [SoknadFormField.selvstendigInntekt2020]: (sisteDageMedInntekt: Date) => string;
+    [SoknadFormField.selvstendigErFrilanser]: string;
+    [SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.selvstendigInntektSomFrilanserIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.selvstendigHarRegnskapsfører]: string;
+    [SoknadFormField.selvstendigRegnskapsførerNavn]: string;
+    [SoknadFormField.selvstendigRegnskapsførerTelefon]: string;
+    [SoknadFormField.selvstendigHarRevisor]: string;
+    [SoknadFormField.selvstendigRevisorNavn]: string;
+    [SoknadFormField.selvstendigRevisorTelefon]: string;
+    [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]: string;
 }
 
 export const selvstendigStepTexts: SelvstendigStepFormText = {

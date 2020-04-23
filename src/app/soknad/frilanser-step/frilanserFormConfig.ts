@@ -1,29 +1,29 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { ApplicationFormData, ApplicationFormField } from '../../types/ApplicationFormData';
+import { SoknadEssentials } from '../../types/SoknadEssentials';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
 
-const Field = ApplicationFormField;
+const Field = SoknadFormField;
 
 type FrilanserFormData = Pick<
-    ApplicationFormData,
-    | ApplicationFormField.frilanserHarTaptInntektPgaKorona
-    | ApplicationFormField.frilanserErNyetablert
-    | ApplicationFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
-    | ApplicationFormField.frilanserHarYtelseFraNavSomDekkerTapet
-    | ApplicationFormField.frilanserYtelseFraNavDekkerHeleTapet
-    | ApplicationFormField.frilanserInntektstapStartetDato
-    | ApplicationFormField.frilanserInntektIPerioden
-    | ApplicationFormField.frilanserHarHattInntektSomSelvstendigIPerioden
-    | ApplicationFormField.frilanserInntektSomSelvstendigIPerioden
-    | ApplicationFormField.erSelvstendigNæringsdrivende
+    SoknadFormData,
+    | SoknadFormField.frilanserHarTaptInntektPgaKorona
+    | SoknadFormField.frilanserErNyetablert
+    | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
+    | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
+    | SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet
+    | SoknadFormField.frilanserInntektstapStartetDato
+    | SoknadFormField.frilanserInntektIPerioden
+    | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
+    | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
+    | SoknadFormField.erSelvstendigNæringsdrivende
 >;
 
-type FrilanserFormPayload = Partial<FrilanserFormData> & ApplicationEssentials;
+type FrilanserFormPayload = Partial<FrilanserFormData> & SoknadEssentials;
 
-const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormField> = {
+const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField> = {
     [Field.frilanserHarTaptInntektPgaKorona]: {
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
@@ -73,4 +73,4 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, ApplicationFormF
     },
 };
 
-export const FrilanserFormQuestions = Questions<FrilanserFormPayload, ApplicationFormField>(FrilanserFormConfig);
+export const FrilanserFormQuestions = Questions<FrilanserFormPayload, SoknadFormField>(FrilanserFormConfig);

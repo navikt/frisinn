@@ -9,29 +9,31 @@ import { Undertittel } from 'nav-frontend-typografi';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
-import { ApplicationEssentials } from '../../types/ApplicationEssentials';
-import { ApplicationFormData } from '../../types/ApplicationFormData';
+import { SoknadEssentials } from '../../types/SoknadEssentials';
+import { SoknadFormData } from '../../types/SoknadFormData';
 import EntryForm from './EntryForm';
 import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
-import applicationTempStorage from '../../application/ApplicationTempStorage';
+import soknadTempStorage from '../../soknad/SoknadTempStorage';
 
 interface Props {
-    applicationEssentials: ApplicationEssentials;
+    soknadEssentials: SoknadEssentials;
     onStart: () => void;
 }
 
-const EntryPage = ({ onStart, applicationEssentials }: Props) => {
-    const { resetForm } = useFormikContext<ApplicationFormData>();
-    const {
+const EntryPage = ({
+    onStart,
+    soknadEssentials: {
         person: { kontonummer },
         personligeForetak,
-    } = applicationEssentials;
+    },
+}: Props) => {
+    const { resetForm } = useFormikContext<SoknadFormData>();
 
     useEffect(() => {
         resetForm();
         // Todo - denne logikken virker ikke med reell mellomlagring, da bruker skal bli sendt til riktig steg
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            applicationTempStorage.purge();
+            soknadTempStorage.purge();
         }
     }, []);
 

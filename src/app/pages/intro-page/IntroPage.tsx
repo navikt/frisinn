@@ -8,7 +8,7 @@ import bemUtils from 'common/utils/bemUtils';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useCurrentPeriode from '../../hooks/useCurrentPeriode';
-import { relocateToApplication } from '../../utils/navigationUtils';
+import { relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
 import useApiGet from '../../hooks/useApiGet';
@@ -94,7 +94,7 @@ const IntroPage: React.StatelessComponent = () => {
                                         </p>
                                     </Box>
                                     <IntroForm
-                                        onValidSubmit={() => relocateToApplication()}
+                                        onValidSubmit={() => relocateToSoknad()}
                                         currentPeriode={periode.currentPeriode}
                                     />
                                 </Panel>

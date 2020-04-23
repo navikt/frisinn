@@ -1,6 +1,6 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { ApplicationEssentials, Person } from '../../../types/ApplicationEssentials';
-import { ApplicationFormField, initialApplicationValues } from '../../../types/ApplicationFormData';
+import { SoknadEssentials, Person } from '../../../types/SoknadEssentials';
+import { SoknadFormField, initialSoknadFormData } from '../../../types/SoknadFormData';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { SelvstendigFormPayload, SelvstendigFormQuestions } from '../selvstendigFormConfig';
 
@@ -13,7 +13,7 @@ const person: Person = {
     kjønn: 'm',
 };
 
-const appEssentials: ApplicationEssentials = {
+const appEssentials: SoknadEssentials = {
     currentSøknadsperiode: {
         from: apiStringDateToDate('2020-04-01'),
         to: apiStringDateToDate('2020-04-30'),
@@ -25,7 +25,7 @@ const appEssentials: ApplicationEssentials = {
     },
 };
 const emptyPayload: SelvstendigFormPayload = {
-    ...initialApplicationValues,
+    ...initialSoknadFormData,
     selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
     selvstendigErFrilanser: YesOrNo.UNANSWERED,
     selvstendigHarHattInntektSomFrilanserIPerioden: YesOrNo.UNANSWERED,
@@ -43,6 +43,6 @@ describe('selvstendigFormConfig', () => {
     });
     it('Søker både selvstendig og frilanser', () => {
         const { isVisible } = SelvstendigFormQuestions.getVisbility(values);
-        expect(isVisible(ApplicationFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+        expect(isVisible(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
     });
 });

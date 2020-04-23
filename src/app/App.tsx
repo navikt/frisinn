@@ -5,7 +5,7 @@ import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/
 import moment from 'moment';
 import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
-import Application from './application/Application';
+import Soknad from './soknad/Soknad';
 import ApplicationWrapper from './components/application-wrapper/ApplicationWrapper';
 import GlobalRoutes from './config/routeConfig';
 import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
@@ -33,7 +33,7 @@ const App: React.FunctionComponent = () => {
             <>
                 <Switch>
                     <Route path={GlobalRoutes.SYSTEM_UNAVAILABLE} component={SystemUnavailablePage} />
-                    <Route path={GlobalRoutes.APPLICATION} component={Application} />
+                    <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
                     <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
                     <Route path="/" component={IntroPage} exact={true} />
                     <Route component={NotFoundPage} />

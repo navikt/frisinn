@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { ApplicationEssentials } from '../types/ApplicationEssentials';
-import { ApplicationFormData } from '../types/ApplicationFormData';
-import { getApplicationRoute } from '../utils/routeUtils';
+import { SoknadEssentials } from '../types/SoknadEssentials';
+import { SoknadFormData } from '../types/SoknadFormData';
+import { getSoknadRoute } from '../utils/routeUtils';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',
@@ -33,7 +33,7 @@ const getStepConfigItemTextKeys = (stepId: StepID): StepConfigItemTexts => {
     };
 };
 
-const getAvailableStep = (values?: ApplicationFormData): StepID[] => {
+const getAvailableStep = (values?: SoknadFormData): StepID[] => {
     const steps: StepID[] = [];
     if (values?.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
         steps.push(StepID.SELVSTENDIG);
@@ -45,7 +45,7 @@ const getAvailableStep = (values?: ApplicationFormData): StepID[] => {
     return steps;
 };
 
-export const getStepConfig = (values: ApplicationFormData): StepConfigInterface => {
+export const getStepConfig = (values: SoknadFormData): StepConfigInterface => {
     const steps = getAvailableStep(values);
     const numSteps = steps.length;
     const config: StepConfigInterface = {};
@@ -54,7 +54,7 @@ export const getStepConfig = (values: ApplicationFormData): StepConfigInterface 
         config[step] = {
             ...getStepConfigItemTextKeys(step),
             index: idx,
-            backLinkHref: idx > 0 ? getApplicationRoute(steps[idx - 1]) : undefined,
+            backLinkHref: idx > 0 ? getSoknadRoute(steps[idx - 1]) : undefined,
             nextStep: idx < numSteps - 1 ? steps[idx + 1] : undefined,
         };
         idx++;
@@ -63,7 +63,7 @@ export const getStepConfig = (values: ApplicationFormData): StepConfigInterface 
 };
 
 export interface StepConfigProps {
-    applicationEssentials: ApplicationEssentials;
-    resetApplication: () => void;
+    soknadEssentials: SoknadEssentials;
+    resetSoknad: () => void;
     onValidSubmit: () => void;
 }

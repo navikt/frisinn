@@ -3,10 +3,10 @@ import { AxiosError } from 'axios';
 import { getSøknadsperiode } from '../api/perioder';
 import { getPersonligeForetak } from '../api/personlige-foretak';
 import { getSoker } from '../api/soker';
-import { ApplicationEssentials } from '../types/ApplicationEssentials';
+import { SoknadEssentials } from '../types/SoknadEssentials';
 
-function useApplicationEssentials() {
-    const [applicationEssentials, setApplicationEssentials] = useState<ApplicationEssentials | undefined>();
+function useSoknadEssentials() {
+    const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError | undefined>();
 
@@ -17,7 +17,7 @@ function useApplicationEssentials() {
             const person = await getSoker();
             const currentSøknadsperiode = await getSøknadsperiode();
             const personligeForetak = await getPersonligeForetak();
-            setApplicationEssentials({
+            setSoknadEssentials({
                 person,
                 currentSøknadsperiode,
                 personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
@@ -33,7 +33,7 @@ function useApplicationEssentials() {
         fetchData();
     }, []);
 
-    return { applicationEssentials, isLoading, error };
+    return { soknadEssentials, isLoading, error };
 }
 
-export default useApplicationEssentials;
+export default useSoknadEssentials;

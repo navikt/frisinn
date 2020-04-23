@@ -14,14 +14,10 @@ import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
-import {
-    ApplicationFormData,
-    ApplicationFormField as Field,
-    initialSelvstendigValues,
-} from '../../types/ApplicationFormData';
+import { SoknadFormData, SoknadFormField as Field, initialSelvstendigValues } from '../../types/SoknadFormData';
 import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
-import FC from '../ApplicationFormComponents';
-import ApplicationStep from '../ApplicationStep';
+import FC from '../SoknadFormComponents';
+import SoknadStep from '../SoknadStep';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
@@ -37,13 +33,13 @@ const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const txt = selvstendigStepTexts;
 
-const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssentials }: StepConfigProps) => {
-    const { values, setFieldValue } = useFormikContext<ApplicationFormData>();
+const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
+    const { values, setFieldValue } = useFormikContext<SoknadFormData>();
 
-    const foretak = applicationEssentials.personligeForetak?.foretak || [];
+    const foretak = soknadEssentials.personligeForetak?.foretak || [];
     const antallForetak = foretak.length;
     const { selvstendigInntektstapStartetDato } = values;
-    const { currentSøknadsperiode } = applicationEssentials;
+    const { currentSøknadsperiode } = soknadEssentials;
 
     const {
         availableDateRange,
@@ -59,7 +55,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
 
     const { isVisible, areAllQuestionsAnswered } = SelvstendigFormQuestions.getVisbility({
         ...values,
-        ...applicationEssentials,
+        ...soknadEssentials,
         availableDateRange,
     });
 
@@ -67,7 +63,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
         setFieldValue(Field.selvstendigCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
 
-    const cleanupSelvstendigstep = (values: ApplicationFormData): ApplicationFormData => {
+    const cleanupSelvstendigstep = (values: SoknadFormData): SoknadFormData => {
         if (values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO) {
             const cleanedValues = {
                 ...values,
@@ -80,9 +76,9 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
     };
 
     return (
-        <ApplicationStep
+        <SoknadStep
             id={StepID.SELVSTENDIG}
-            resetApplication={resetApplication}
+            resetSoknad={resetSoknad}
             onValidFormSubmit={onValidSubmit}
             stepCleanup={cleanupSelvstendigstep}
             showSubmitButton={
@@ -353,7 +349,7 @@ const SelvstendigStep = ({ resetApplication, onValidSubmit, applicationEssential
                     }}
                 />
             )}
-        </ApplicationStep>
+        </SoknadStep>
     );
 };
 

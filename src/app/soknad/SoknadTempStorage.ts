@@ -2,7 +2,7 @@ import persistence, { PersistenceInterface } from '@navikt/sif-common-core/lib/u
 import { AxiosResponse } from 'axios';
 import { ApiEndpoint } from '../api/api';
 import axiosConfig from '../config/axiosConfig';
-import { ApplicationFormData } from '../types/ApplicationFormData';
+import { SoknadFormData } from '../types/SoknadFormData';
 import { StepID } from './stepConfig';
 
 export interface TemporaryStorageData {
@@ -10,13 +10,13 @@ export interface TemporaryStorageData {
         lastStepID: StepID;
         version: string;
     };
-    formData: ApplicationFormData;
+    formData: SoknadFormData;
 }
 
 export const STORAGE_VERSION = '1';
 
-interface ApplicationTemporartStorage extends Omit<PersistenceInterface<TemporaryStorageData>, 'persist'> {
-    persist: (formData: ApplicationFormData, lastStepID: StepID) => Promise<AxiosResponse>;
+interface SoknadTemporartStorage extends Omit<PersistenceInterface<TemporaryStorageData>, 'persist'> {
+    persist: (formData: SoknadFormData, lastStepID: StepID) => Promise<AxiosResponse>;
     getValidStorage: (storage?: TemporaryStorageData) => TemporaryStorageData | undefined;
 }
 
@@ -32,8 +32,8 @@ export const getValidTemporaryStorage = (data?: TemporaryStorageData): Temporary
     return undefined;
 };
 
-const applicationTempStorage: ApplicationTemporartStorage = {
-    persist: (formData: ApplicationFormData, lastStepID: StepID) => {
+const soknadTempStorage: SoknadTemporartStorage = {
+    persist: (formData: SoknadFormData, lastStepID: StepID) => {
         return persistSetup.persist({ formData, metadata: { lastStepID, version: STORAGE_VERSION } });
     },
     purge: persistSetup.purge,
@@ -41,4 +41,4 @@ const applicationTempStorage: ApplicationTemporartStorage = {
     getValidStorage: getValidTemporaryStorage,
 };
 
-export default applicationTempStorage;
+export default soknadTempStorage;
