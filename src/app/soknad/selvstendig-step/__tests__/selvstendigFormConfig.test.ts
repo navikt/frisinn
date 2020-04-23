@@ -4,6 +4,9 @@ import { SoknadFormField, initialSoknadFormData } from '../../../types/SoknadFor
 import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { SelvstendigFormPayload, SelvstendigFormQuestions } from '../selvstendigFormConfig';
 
+jest.mock('../../../utils/envUtils.ts', () => ({
+    getEnvironmentVariable: () => 'whoa',
+}));
 const person: Person = {
     fornavn: 'Test',
     mellomnavn: undefined,
