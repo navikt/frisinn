@@ -101,9 +101,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         legend={
                                             'Har du tapt inntekt som selvstendig næringsdrivende i perioden på grunn av koronasituasjonen?'
                                         }
-                                        description={
-                                            <IntroFormInfo.hvaRegnesSomInntektstap soknadsperiode={soknadsperiode} />
-                                        }
+                                        description={<Info.hvaRegnesSomInntektstap soknadsperiode={soknadsperiode} />}
                                     />
                                     {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
                                         <StopMessage>
@@ -120,7 +118,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                                 <DateView date={sisteGyldigeDagForInntektstap} />?
                                             </span>
                                         }
-                                        description={<IntroFormInfo.hvaErStartdatoForInntektstap />}
+                                        description={<Info.hvaErStartdatoForInntektstap />}
                                     />
                                     {selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
                                         <StopMessage>
@@ -153,7 +151,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormComponent.YesOrNoQuestion
                                         name={IntroFormField.erFrilanser}
                                         legend={'Er du frilanser pr. NAVs definisjon?'}
-                                        description={<IntroFormInfo.frilanserNAVsDefinisjon />}
+                                        description={<Info.frilanserNAVsDefinisjon />}
                                     />
                                 </FormQuestion>
                                 <FormQuestion question={IntroFormField.frilanserHarTaptInntektPgaKorona}>
@@ -178,7 +176,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                                 <DateView date={sisteGyldigeDagForInntektstap} />?
                                             </span>
                                         }
-                                        description={<IntroFormInfo.hvaErStartdatoForInntektstap />}
+                                        description={<Info.hvaErStartdatoForInntektstap />}
                                     />
                                     {frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
                                         <StopMessage>
