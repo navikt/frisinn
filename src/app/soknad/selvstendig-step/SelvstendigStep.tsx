@@ -3,7 +3,6 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
-    validateRequiredField,
     validateRequiredNumber,
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
@@ -15,7 +14,7 @@ import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import { SoknadFormData, SoknadFormField as Field, initialSelvstendigValues } from '../../types/SoknadFormData';
-import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
+import { MAX_INNTEKT, validateAll } from '../../validation/fieldValidations';
 import FC from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
@@ -116,10 +115,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
                         }}
-                        validate={validateAll([
-                            validateRequiredField,
-                            validateDateInRange({ from: MIN_DATE, to: currentSøknadsperiode.to }),
-                        ])}
                     />
                     {isValidDateRange(availableDateRange) &&
                         alderCheckIsLoading === false &&

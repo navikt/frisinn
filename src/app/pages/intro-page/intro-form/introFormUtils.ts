@@ -15,10 +15,12 @@ const canApplyAsSelvstendig = ({
     erSelvstendigNæringsdrivende,
     selvstendigHarTaptInntektPgaKorona,
     selvstendigFårDekketTapet,
+    selvstendigInntektstapStartetFørFrist,
 }: IntroFormData): boolean => {
     return (
         erSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
+        selvstendigInntektstapStartetFørFrist === YesOrNo.YES &&
         selvstendigFårDekketTapet === YesOrNo.NO
     );
 };

@@ -10,10 +10,12 @@ import Lenke from 'nav-frontend-lenker';
 import { Undertittel, Element } from 'nav-frontend-typografi';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
-import { DateRange } from '../../../utils/dateUtils';
+import { DateRange, getSisteGyldigeDagForInntektstapIPeriode, apiStringDateToDate } from '../../../utils/dateUtils';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import introFormUtils from './introFormUtils';
 import { hasValue } from '../../../validation/fieldValidations';
+import DateView from '../../../components/date-view/DateView';
+import moment from 'moment';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -21,6 +23,7 @@ const initialValues: Partial<IntroFormData> = {
     fødselsdato: undefined,
     erSelvstendigNæringsdrivende: YesOrNo.UNANSWERED,
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
+    selvstendigInntektstapStartetFørFrist: YesOrNo.UNANSWERED,
     selvstendigFårDekketTapet: YesOrNo.UNANSWERED,
     erFrilanser: YesOrNo.UNANSWERED,
     frilanserHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
@@ -53,6 +56,8 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                 const harAlleredeSøktIsOk =
                     values.harAlleredeSøkt === YesOrNo.NO || values.vilFortsetteTilSøknad === YesOrNo.YES;
 
+                const sisteGyldigeDagForInntektstap: Date = getSisteGyldigeDagForInntektstapIPeriode(currentPeriode);
+
                 const canContinueToSoknad =
                     areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk && harAlleredeSøktIsOk;
 
@@ -69,7 +74,8 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                         showYearSelector={true}
                                         name={IntroFormField.fødselsdato}
                                         label="Når er du født?"
-                                        dayPickerProps={{ initialMonth: new Date(2000, 0, 1) }}
+                                        dayPickerProps={{ initialMonth: new Date(1995, 0, 1) }}
+                                        dateLimitations={{ maksDato: moment.utc().subtract(17, 'years').toDate() }}
                                     />
                                 </FormBlock>
                             </>
@@ -125,6 +131,39 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                             Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av
                                             koronasituasjonen for å kunne søke om kompensasjon som selvstendig
                                             næringsdrivende.
+                                        </AlertStripeAdvarsel>
+                                    </FormBlock>
+                                )}
+                            </>
+                        )}
+                        {isVisible(IntroFormField.selvstendigInntektstapStartetFørFrist) && (
+                            <>
+                                <FormBlock>
+                                    <FormComponent.YesOrNoQuestion
+                                        name={IntroFormField.selvstendigInntektstapStartetFørFrist}
+                                        legend={
+                                            <span>
+                                                Startet inntektstapet ditt før{' '}
+                                                <DateView date={sisteGyldigeDagForInntektstap} />?
+                                            </span>
+                                        }
+                                        description={
+                                            <ExpandableInfo title="Hva er startdato for inntektstap?">
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis
+                                                laudantium sapiente illum perferendis distinctio, praesentium, culpa
+                                                repellendus nulla corporis commodi explicabo! Quidem quibusdam vitae
+                                                repellendus voluptate similique corrupti atque! Debitis!
+                                            </ExpandableInfo>
+                                        }
+                                    />
+                                </FormBlock>
+                                {values.selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
+                                    <FormBlock>
+                                        <AlertStripeAdvarsel>
+                                            <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
+                                            Inntektstapet ditt startet for sent i perioden du kan søke for nå. Det er
+                                            mindre enn 16 dager igjen av perioden, og de 16 første dagene etter
+                                            inntektstapet kan du ikke søke kompensasjon for.
                                         </AlertStripeAdvarsel>
                                     </FormBlock>
                                 )}
@@ -208,6 +247,39 @@ const IntroForm = ({ onValidSubmit, currentPeriode }: Props) => {
                                             <Element>Du kan ikke søke som frilanser</Element>
                                             Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av
                                             koronasituasjonen for å kunne søke om kompensasjon som frilanser.
+                                        </AlertStripeAdvarsel>
+                                    </FormBlock>
+                                )}
+                            </>
+                        )}
+                        {isVisible(IntroFormField.frilanserInntektstapStartetFørFrist) && (
+                            <>
+                                <FormBlock>
+                                    <FormComponent.YesOrNoQuestion
+                                        name={IntroFormField.frilanserInntektstapStartetFørFrist}
+                                        legend={
+                                            <span>
+                                                Startet inntektstapet ditt før{' '}
+                                                <DateView date={sisteGyldigeDagForInntektstap} />?
+                                            </span>
+                                        }
+                                        description={
+                                            <ExpandableInfo title="Hva er startdato for inntektstap?">
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis
+                                                laudantium sapiente illum perferendis distinctio, praesentium, culpa
+                                                repellendus nulla corporis commodi explicabo! Quidem quibusdam vitae
+                                                repellendus voluptate similique corrupti atque! Debitis!
+                                            </ExpandableInfo>
+                                        }
+                                    />
+                                </FormBlock>
+                                {values.frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
+                                    <FormBlock>
+                                        <AlertStripeAdvarsel>
+                                            <Element>Du kan ikke søke som frilanser</Element>
+                                            Inntektstapet ditt startet for sent i perioden du kan søke for nå. Det er
+                                            mindre enn 16 dager igjen av perioden, og de 16 første dagene etter
+                                            inntektstapet kan du ikke søke kompensasjon for.
                                         </AlertStripeAdvarsel>
                                     </FormBlock>
                                 )}

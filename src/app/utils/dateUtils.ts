@@ -18,3 +18,7 @@ export const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
 };
 
 export const getPreviousDate = (date: Date): Date => moment(date).subtract(1, 'day').toDate();
+
+export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): Date => {
+    return moment(dateRange.to).endOf('day').subtract(15, 'days').toDate();
+};

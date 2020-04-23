@@ -9,9 +9,11 @@ export enum IntroFormField {
     'fødselsdato' = 'fødselsdato',
     'erSelvstendigNæringsdrivende' = 'erSelvstendigNæringsdrivende',
     'selvstendigHarTaptInntektPgaKorona' = 'selvstendigHarTaptInntektPgaKorona',
+    'selvstendigInntektstapStartetFørFrist' = 'selvstendigInntektstapStartetFørFrist',
     'selvstendigFårDekketTapet' = 'selvstendigFårDekketTapet',
     'erFrilanser' = 'erFrilanser',
     'frilanserHarTaptInntektPgaKorona' = 'frilanserHarTaptInntektPgaKorona',
+    'frilanserInntektstapStartetFørFrist' = 'frilanserInntektstapStartetFørFrist',
     'frilanserFårDekketTapet' = 'frilanserFårDekketTapet',
     'harAlleredeSøkt' = 'harAlleredeSøkt',
     'vilFortsetteTilSøknad' = 'vilFortsetteTilSøknad',
@@ -21,9 +23,11 @@ export interface IntroFormData {
     [IntroFormField.fødselsdato]: Date;
     [IntroFormField.erSelvstendigNæringsdrivende]: YesOrNo;
     [IntroFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
+    [IntroFormField.selvstendigInntektstapStartetFørFrist]: YesOrNo;
     [IntroFormField.selvstendigFårDekketTapet]: YesOrNo;
     [IntroFormField.erFrilanser]: YesOrNo;
     [IntroFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
+    [IntroFormField.frilanserInntektstapStartetFørFrist]: YesOrNo;
     [IntroFormField.frilanserFårDekketTapet]: YesOrNo;
     [IntroFormField.harAlleredeSøkt]: YesOrNo;
     [IntroFormField.vilFortsetteTilSøknad]: YesOrNo;
@@ -42,18 +46,25 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
     [Q.selvstendigHarTaptInntektPgaKorona]: {
-        parentQuestion: Q.erSelvstendigNæringsdrivende,
         isIncluded: ({ erSelvstendigNæringsdrivende }) => erSelvstendigNæringsdrivende === YesOrNo.YES,
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
     },
-    [Q.selvstendigFårDekketTapet]: {
-        parentQuestion: Q.erSelvstendigNæringsdrivende,
+    [Q.selvstendigInntektstapStartetFørFrist]: {
+        parentQuestion: Q.selvstendigHarTaptInntektPgaKorona,
         isIncluded: ({ erSelvstendigNæringsdrivende, selvstendigHarTaptInntektPgaKorona }) =>
             erSelvstendigNæringsdrivende === YesOrNo.YES && selvstendigHarTaptInntektPgaKorona === YesOrNo.YES,
+        isAnswered: ({ selvstendigInntektstapStartetFørFrist }) =>
+            yesOrNoIsAnswered(selvstendigInntektstapStartetFørFrist),
+    },
+    [Q.selvstendigFårDekketTapet]: {
+        parentQuestion: Q.selvstendigInntektstapStartetFørFrist,
+        isIncluded: ({ erSelvstendigNæringsdrivende, selvstendigInntektstapStartetFørFrist }) =>
+            erSelvstendigNæringsdrivende === YesOrNo.YES && selvstendigInntektstapStartetFørFrist === YesOrNo.YES,
         isAnswered: ({ selvstendigFårDekketTapet }) => yesOrNoIsAnswered(selvstendigFårDekketTapet),
     },
     [Q.erFrilanser]: {
-        visibilityFilter: (payload) => introFormUtils.selvstendigIsAnswered(payload),
+        visibilityFilter: (payload) =>
+            introFormUtils.selvstendigIsAnswered(payload) || yesOrNoIsAnswered(payload.erFrilanser),
         isIncluded: ({ fødselsdato, currentPeriode }) => introFormUtils.birthdateIsValid(fødselsdato, currentPeriode),
         isAnswered: ({ erFrilanser }) => yesOrNoIsAnswered(erFrilanser),
     },
@@ -62,11 +73,14 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
         isIncluded: ({ erFrilanser }) => erFrilanser === YesOrNo.YES,
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
+    [Q.frilanserInntektstapStartetFørFrist]: {
+        parentQuestion: Q.frilanserHarTaptInntektPgaKorona,
+        isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
+        isAnswered: ({ frilanserInntektstapStartetFørFrist }) => yesOrNoIsAnswered(frilanserInntektstapStartetFørFrist),
+    },
     [Q.frilanserFårDekketTapet]: {
-        parentQuestion: Q.erFrilanser,
-        isIncluded: ({ erFrilanser, frilanserHarTaptInntektPgaKorona }) =>
-            erFrilanser === YesOrNo.YES && frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
-        visibilityFilter: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
+        parentQuestion: Q.frilanserInntektstapStartetFørFrist,
+        isIncluded: ({ frilanserInntektstapStartetFørFrist }) => frilanserInntektstapStartetFørFrist === YesOrNo.YES,
         isAnswered: ({ frilanserFårDekketTapet }) => yesOrNoIsAnswered(frilanserFårDekketTapet),
     },
     [Q.harAlleredeSøkt]: {
