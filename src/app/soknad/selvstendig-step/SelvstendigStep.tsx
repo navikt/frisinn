@@ -9,7 +9,7 @@ import {
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import { Undertittel } from 'nav-frontend-typografi';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
@@ -86,7 +86,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                 ((values.selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && alderCheckResult?.innfrirKrav) ||
                     values.søkerOmTaptInntektSomFrilanser === YesOrNo.YES)
             }>
-            <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
+            <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                 {SelvstendigInfo.intro(antallForetak, foretak)}
             </Guide>
 

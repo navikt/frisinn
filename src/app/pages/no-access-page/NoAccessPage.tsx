@@ -6,7 +6,7 @@ import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepB
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useIntl } from 'react-intl';
 import Guide from '../../components/guide/Guide';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 
 interface Props {
     title: string;
@@ -24,7 +24,7 @@ const NoAccessPage = ({ title, children }: Props) => {
                 </>
             )}>
             <Box margin="xxxl">
-                <Guide svg={<AppVeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
+                <Guide svg={<VeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
                     <Innholdstittel>{title}</Innholdstittel>
                     {children}
                 </Guide>

@@ -5,7 +5,7 @@ import Veilederpanel from 'nav-frontend-veilederpanel';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import intlHelper from 'common/utils/intlUtils';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import './generalErrorPage.less';
 
 const GeneralErrorPage: React.FunctionComponent = ({ children }: { children?: React.ReactNode }) => {
@@ -13,11 +13,7 @@ const GeneralErrorPage: React.FunctionComponent = ({ children }: { children?: Re
     return (
         <Page title={intlHelper(intl, 'page.generalErrorPage.sidetittel')}>
             <div className={'generalErrorPage'}>
-                <Veilederpanel
-                    type="plakat"
-                    kompakt={true}
-                    fargetema="normal"
-                    svg={<AppVeilederSVG mood="uncertain" />}>
+                <Veilederpanel type="plakat" kompakt={true} fargetema="normal" svg={<VeilederSVG mood="uncertain" />}>
                     <Systemtittel tag="h2">
                         <FormattedMessage id="page.generalErrorPage.tittel" />
                     </Systemtittel>

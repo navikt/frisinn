@@ -6,7 +6,7 @@ import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepB
 import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
@@ -46,7 +46,7 @@ const SoknadEntryPage = ({
                 <StepBanner text="Inntektskompensasjon for selvstendig næringsdrivende og frilansere" />
             )}>
             <Box margin="xxxl">
-                <Guide kompakt={true} type="plakat" svg={<AppVeilederSVG mood="happy" />}>
+                <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
                     <Box margin="l">
                         <Undertittel>Kompensasjon for inntektsstap i april 2020</Undertittel>
                     </Box>

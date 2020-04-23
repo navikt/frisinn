@@ -10,7 +10,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Element, Undertittel } from 'nav-frontend-typografi';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
@@ -68,7 +68,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                 (values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES ||
                     values.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES)
             }>
-            <Guide kompakt={true} type="normal" svg={<AppVeilederSVG />}>
+            <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                 <p>Skal det være noe informasjon som introduserer steget?</p>
             </Guide>
             {isVisible(SoknadFormField.frilanserHarTaptInntektPgaKorona) && (

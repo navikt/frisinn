@@ -11,7 +11,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
 import FormComponents from '../../soknad/SoknadFormComponents';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
@@ -111,7 +111,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
             )}
             {infoStates.isSelvstendigButNoForetakFound && (
                 <FormBlock>
-                    <Guide kompakt={true} svg={<AppVeilederSVG mood="uncertain" />} fargetema="advarsel">
+                    <Guide kompakt={true} svg={<VeilederSVG mood="uncertain" />} fargetema="advarsel">
                         Vi kunne ikke finne noen foretak registrert på deg.
                         <p>
                             Her må det komme mer informasjon om hva bruker skal gjøre dersom bruker mener at dette er

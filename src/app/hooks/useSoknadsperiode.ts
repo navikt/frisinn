@@ -3,17 +3,17 @@ import { AxiosError } from 'axios';
 import { getSøknadsperiode } from '../api/perioder';
 import { DateRange } from '../utils/dateUtils';
 
-function useCurrentPeriode() {
-    const [currentPeriode, setCurrentPeriode] = useState<DateRange | undefined>();
+function useSoknadsperiode() {
+    const [soknadsperiode, setCurrentPeriode] = useState<DateRange | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError | undefined>();
 
-    const fetchData = async () => {
+    const fetch = async () => {
         setError(undefined);
+        setIsLoading(true);
         try {
-            setIsLoading(true);
-            const currentSøknadsperiode = await getSøknadsperiode();
-            setCurrentPeriode(currentSøknadsperiode);
+            const periode = await getSøknadsperiode();
+            setCurrentPeriode(periode);
         } catch (error) {
             setError(error);
         } finally {
@@ -22,10 +22,10 @@ function useCurrentPeriode() {
     };
 
     useEffect(() => {
-        fetchData();
+        fetch();
     }, []);
 
-    return { currentPeriode, isLoading, error };
+    return { soknadsperiode, isLoading, error };
 }
 
-export default useCurrentPeriode;
+export default useSoknadsperiode;

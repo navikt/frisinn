@@ -35,14 +35,14 @@ export interface IntroFormData {
 
 const Q = IntroFormField;
 
-type IntroFormQuestionsPayload = IntroFormData & { currentPeriode: DateRange };
+type IntroFormQuestionsPayload = IntroFormData & { soknadsperiode: DateRange };
 
 const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField> = {
     [Q.fødselsdato]: {
         isAnswered: ({ fødselsdato }) => hasValue(fødselsdato),
     },
     [Q.erSelvstendigNæringsdrivende]: {
-        isIncluded: ({ fødselsdato, currentPeriode }) => introFormUtils.birthdateIsValid(fødselsdato, currentPeriode),
+        isIncluded: ({ fødselsdato, soknadsperiode }) => introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode),
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
     [Q.selvstendigHarTaptInntektPgaKorona]: {
@@ -65,7 +65,7 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
     [Q.erFrilanser]: {
         visibilityFilter: (payload) =>
             introFormUtils.selvstendigIsAnswered(payload) || yesOrNoIsAnswered(payload.erFrilanser),
-        isIncluded: ({ fødselsdato, currentPeriode }) => introFormUtils.birthdateIsValid(fødselsdato, currentPeriode),
+        isIncluded: ({ fødselsdato, soknadsperiode }) => introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode),
         isAnswered: ({ erFrilanser }) => yesOrNoIsAnswered(erFrilanser),
     },
     [Q.frilanserHarTaptInntektPgaKorona]: {

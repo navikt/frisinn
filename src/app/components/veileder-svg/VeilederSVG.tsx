@@ -6,7 +6,7 @@ interface Props {
     mood?: VeilederMood;
 }
 
-function AppVeilederSVG({ mood = 'happy' }: Props) {
+function VeilederSVG({ mood = 'happy' }: Props) {
     return (
         <svg width={49} height={85} viewBox="0 0 49 85">
             <title>{'Group 2'}</title>
@@ -51,4 +51,4 @@ function AppVeilederSVG({ mood = 'happy' }: Props) {
     );
 }
 
-export default AppVeilederSVG;
+export default VeilederSVG;

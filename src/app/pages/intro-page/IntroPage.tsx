@@ -7,39 +7,40 @@ import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
-import useCurrentPeriode from '../../hooks/useCurrentPeriode';
+import useSoknadsperiode from '../../hooks/useSoknadsperiode';
 import { relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
 import useApiGet from '../../hooks/useApiGet';
 import { ApiEndpoint } from '../../api/api';
 import Guide from '../../components/guide/Guide';
-import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 
 const bem = bemUtils('introPage');
 
 const IntroPage: React.StatelessComponent = () => {
-    const periode = useCurrentPeriode();
-    const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
+    const soknadsperiode = useSoknadsperiode();
+    const soknadErTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
 
-    const isLoading = periode.isLoading || erTilgjengelig.isLoading;
+    const isLoading = soknadsperiode.isLoading || soknadErTilgjengelig.isLoading;
+
     return (
         <Page
             className={bem.block}
-            title="Introside"
+            title="Inntektskompensasjon for selvstendig næringsdrivende (ENK) og frilansere"
             topContentRenderer={() => (
                 <StepBanner text="Inntektskompensasjon for selvstendig næringsdrivende (ENK) og frilansere" />
             )}>
             <LoadWrapper
                 isLoading={isLoading}
                 contentRenderer={() => {
-                    if (!periode.currentPeriode) {
+                    if (!soknadsperiode.soknadsperiode) {
                         return null;
                     }
-                    if (erTilgjengelig.error?.response?.status === 503) {
+                    if (soknadErTilgjengelig.error?.response?.status === 503) {
                         return (
                             <Box margin="xxxl">
-                                <Guide svg={<AppVeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
+                                <Guide svg={<VeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
                                     <Box padBottom="m">
                                         <Systemtittel>Søknaden er ikke tilgjengelig</Systemtittel>
                                     </Box>
@@ -71,7 +72,7 @@ const IntroPage: React.StatelessComponent = () => {
                                             Ordningen er lagt opp slik at du søker for én og én periode i etterkant av
                                             perioden. Perioden du kan søke kompensasjon for nå er{' '}
                                             <strong>
-                                                <DateRangeView dateRange={periode.currentPeriode} />
+                                                <DateRangeView dateRange={soknadsperiode.soknadsperiode} />
                                             </strong>
                                             .
                                         </p>
@@ -80,22 +81,20 @@ const IntroPage: React.StatelessComponent = () => {
                             </Box>
                             <Box margin="xl">
                                 <Panel>
-                                    <Box padBottom="l">
-                                        <Undertittel className="sectionTitle">Sjekk om du kan søke</Undertittel>
-                                        <p>
-                                            Svar på spørsmålene nedenfor for å se om du har rett på denne kompansasjonen
-                                            Hvis du har det, vil du kunne gå videre til søknaden, hvor du må logge deg
-                                            inn med elektronisk ID.
-                                        </p>
-                                        <p>
-                                            Om du har kombinasjonsinntekt som både selvstending næringsdrivende (ENK,
-                                            DA/ANS) og frilans krysser du av at du er begge. Inne i søknaden vil du bli
-                                            bedt om å oppgi inntektene separat.
-                                        </p>
-                                    </Box>
+                                    <Undertittel className="sectionTitle">Sjekk om du kan søke</Undertittel>
+                                    <p>
+                                        Svar på spørsmålene nedenfor for å se om du har rett på denne kompansasjonen
+                                        Hvis du har det, vil du kunne gå videre til søknaden, hvor du må logge deg inn
+                                        med elektronisk ID.
+                                    </p>
+                                    <p>
+                                        Om du har kombinasjonsinntekt som både selvstending næringsdrivende (ENK,
+                                        DA/ANS) og frilans krysser du av at du er begge. Inne i søknaden vil du bli bedt
+                                        om å oppgi inntektene separat.
+                                    </p>
                                     <IntroForm
                                         onValidSubmit={() => relocateToSoknad()}
-                                        currentPeriode={periode.currentPeriode}
+                                        soknadsperiode={soknadsperiode.soknadsperiode}
                                     />
                                 </Panel>
                             </Box>
