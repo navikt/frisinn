@@ -6,7 +6,7 @@ import Page from 'common/components/page/Page';
 import AppVeilederSVG from '../../components/app-veileder-svg/AppVeilederSVG';
 import './soknadErrorPage.less';
 
-const ApplicationErrorPage: React.FunctionComponent = ({ children }: { children?: React.ReactNode }) => {
+const SoknadErrorPage: React.FunctionComponent = ({ children }: { children?: React.ReactNode }) => {
     return (
         <Page title="Det oppstod en feil under visning av siden">
             <div className={'applicationErrorPage'}>
@@ -27,4 +27,4 @@ const ApplicationErrorPage: React.FunctionComponent = ({ children }: { children?
     );
 };
 
-export default ApplicationErrorPage;
+export default SoknadErrorPage;

@@ -5,9 +5,9 @@ import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 
 const Q = SoknadFormField;
 
-type EntryFormPayload = SoknadFormData & { isSelvstendig: boolean };
+type SoknadEntryFormPayload = SoknadFormData & { isSelvstendig: boolean };
 
-const EntryFormConfig: QuestionConfig<EntryFormPayload, SoknadFormField> = {
+const SoknadEntryFormConfig: QuestionConfig<SoknadEntryFormPayload, SoknadFormField> = {
     [Q.kontonummerErRiktig]: {
         isAnswered: ({ kontonummerErRiktig }) => yesOrNoIsAnswered(kontonummerErRiktig),
     },
@@ -36,4 +36,4 @@ const EntryFormConfig: QuestionConfig<EntryFormPayload, SoknadFormField> = {
     },
 };
 
-export const EntryFormQuestions = Questions<EntryFormPayload, SoknadFormField>(EntryFormConfig);
+export const SoknadEntryFormQuestions = Questions<SoknadEntryFormPayload, SoknadFormField>(SoknadEntryFormConfig);

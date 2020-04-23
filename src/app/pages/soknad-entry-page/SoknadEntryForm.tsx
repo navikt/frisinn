@@ -18,7 +18,7 @@ import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
-import { EntryFormQuestions } from './entryFormConfig';
+import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 
 interface DialogState {
@@ -32,7 +32,7 @@ interface Props {
     onStart: () => void;
 }
 
-const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
+const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const { values } = useFormikContext<SoknadFormData>();
@@ -44,7 +44,7 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
     } = values;
 
-    const { isVisible, areAllQuestionsAnswered } = EntryFormQuestions.getVisbility({ ...values, isSelvstendig });
+    const { isVisible, areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({ ...values, isSelvstendig });
 
     const hasChosenSoknad =
         søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
@@ -196,4 +196,4 @@ const EntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
     );
 };
 
-export default EntryForm;
+export default SoknadEntryForm;

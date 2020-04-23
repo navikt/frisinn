@@ -11,7 +11,7 @@ import Guide from '../../components/guide/Guide';
 import EndreKontonummer from '../../information/EndreKontonummer';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData } from '../../types/SoknadFormData';
-import EntryForm from './EntryForm';
+import SoknadEntryForm from './SoknadEntryForm';
 import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 import soknadTempStorage from '../../soknad/SoknadTempStorage';
 
@@ -20,7 +20,7 @@ interface Props {
     onStart: () => void;
 }
 
-const EntryPage = ({
+const SoknadEntryPage = ({
     onStart,
     soknadEssentials: {
         person: { kontonummer },
@@ -64,7 +64,7 @@ const EntryPage = ({
                 )}
                 {harKontonummer && (
                     <FormBlock>
-                        <EntryForm
+                        <SoknadEntryForm
                             onStart={onStart}
                             kontonummer={kontonummer}
                             isSelvstendig={personligeForetak !== undefined}
@@ -76,4 +76,4 @@ const EntryPage = ({
     );
 };
 
-export default EntryPage;
+export default SoknadEntryPage;

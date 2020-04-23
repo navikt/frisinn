@@ -5,7 +5,7 @@ import { useFormikContext } from 'formik';
 import GlobalRoutes from '../config/routeConfig';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
 import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
-import EntryPage from '../pages/entry-page/EntryPage';
+import SoknadEntryPage from '../pages/soknad-entry-page/SoknadEntryPage';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
@@ -92,7 +92,7 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
             <Route
                 exact={true}
                 path={GlobalRoutes.SOKNAD}
-                render={() => <EntryPage onStart={onStartSoknad} soknadEssentials={soknadEssentials} />}
+                render={() => <SoknadEntryPage onStart={onStartSoknad} soknadEssentials={soknadEssentials} />}
             />
             {soknadSteps.map((step) => {
                 return <Route key={step} path={getSoknadRoute(step)} render={() => renderSoknadStep(step)} />;
