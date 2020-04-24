@@ -19,12 +19,12 @@ import { SoknadFormData, SoknadFormField as Field } from '../../types/SoknadForm
 import { ensureString } from '../../utils/ensureString';
 import { MAX_INNTEKT, validateAll } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
-import FC from '../SoknadFormComponents';
+import FormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { SelvstendigFormQuestions } from './selvstendigFormConfig';
 import SelvstendigInfo from './SelvstendigInfo';
-import SelvstendigFormQuestion from './SelvstendigQuestion';
+import SelvstendigQuestion from './SelvstendigFormQuestion';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
@@ -69,8 +69,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         alderCheckResult?.innfrirKrav === true &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES;
 
-    const FormQuestion = SelvstendigFormQuestion;
-
     useEffect(() => {
         setFieldValue(Field.selvstendigCalculatedDateRange, availableDateRange);
     }, [availableDateRange]);
@@ -80,7 +78,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
             id={StepID.SELVSTENDIG}
             resetSoknad={resetSoknad}
             onValidFormSubmit={onValidSubmit}
-            stepCleanup={(values) => cleanupSelvstendigStep(values, visibility, hasValidSelvstendigFormData)}
+            stepCleanup={(values) => cleanupSelvstendigStep(values, hasValidSelvstendigFormData)}
             showSubmitButton={
                 !isLoading && (hasValidSelvstendigFormData || søkerOmTaptInntektSomFrilanser === YesOrNo.YES)
             }>
@@ -88,20 +86,20 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <SelvstendigInfo.intro antallForetak={antallForetak} foretak={foretak} />
                 </Guide>
-                <FormQuestion question={Field.selvstendigHarTaptInntektPgaKorona}>
-                    <FC.YesOrNoQuestion
+                <SelvstendigQuestion question={Field.selvstendigHarTaptInntektPgaKorona}>
+                    <FormComponents.YesOrNoQuestion
                         name={Field.selvstendigHarTaptInntektPgaKorona}
                         legend={ensureString(txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode))}
                         validate={validateYesOrNoIsAnswered}
                     />
-                </FormQuestion>
+                </SelvstendigQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
                     <StopMessage>
                         <SelvstendigInfo.advarselIkkeTapPgaKorona />
                     </StopMessage>
                 )}
-                <FormQuestion question={Field.selvstendigInntektstapStartetDato}>
-                    <FC.DatePicker
+                <SelvstendigQuestion question={Field.selvstendigInntektstapStartetDato}>
+                    <FormComponents.DatePicker
                         name={Field.selvstendigInntektstapStartetDato}
                         label={ensureString(txt.selvstendigInntektstapStartetDato)}
                         dateLimitations={{
@@ -120,7 +118,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                 />
                             </Box>
                         )}
-                </FormQuestion>
+                </SelvstendigQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
                     <LoadWrapper
                         isLoading={isLoading}
@@ -145,23 +143,23 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             return (
                                 <>
                                     <FormSection title="Ytelser fra NAV">
-                                        <FormQuestion question={Field.selvstendigHarYtelseFraNavSomDekkerTapet}>
-                                            <FC.YesOrNoQuestion
+                                        <SelvstendigQuestion question={Field.selvstendigHarYtelseFraNavSomDekkerTapet}>
+                                            <FormComponents.YesOrNoQuestion
                                                 name={Field.selvstendigHarYtelseFraNavSomDekkerTapet}
                                                 legend={ensureString(txt.selvstendigHarYtelseFraNavSomDekkerTapet)}
                                             />
-                                        </FormQuestion>
-                                        <FormQuestion question={Field.selvstendigYtelseFraNavDekkerHeleTapet}>
-                                            <FC.YesOrNoQuestion
+                                        </SelvstendigQuestion>
+                                        <SelvstendigQuestion question={Field.selvstendigYtelseFraNavDekkerHeleTapet}>
+                                            <FormComponents.YesOrNoQuestion
                                                 name={Field.selvstendigYtelseFraNavDekkerHeleTapet}
                                                 legend={ensureString(txt.selvstendigYtelseFraNavDekkerHeleTapet)}
                                             />
-                                        </FormQuestion>
+                                        </SelvstendigQuestion>
                                     </FormSection>
                                     {isVisible(Field.selvstendigInntektIPerioden) && (
                                         <FormSection title="Inntekt i perioden du søker for">
-                                            <FormQuestion question={Field.selvstendigInntektIPerioden}>
-                                                <FC.Input
+                                            <SelvstendigQuestion question={Field.selvstendigInntektIPerioden}>
+                                                <FormComponents.Input
                                                     name={Field.selvstendigInntektIPerioden}
                                                     label={ensureString(
                                                         txt.selvstendigInntektIPerioden(availableDateRange)
@@ -171,20 +169,20 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                     description={<SelvstendigInfo.infoInntektForetak />}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
-                                            </FormQuestion>
+                                            </SelvstendigQuestion>
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigErFrilanser) && (
                                         <FormSection title="Frilanser">
-                                            <FormQuestion question={Field.selvstendigErFrilanser}>
-                                                <FC.YesOrNoQuestion
+                                            <SelvstendigQuestion question={Field.selvstendigErFrilanser}>
+                                                <FormComponents.YesOrNoQuestion
                                                     name={Field.selvstendigErFrilanser}
                                                     legend={ensureString(txt.selvstendigErFrilanser)}
                                                 />
-                                            </FormQuestion>
-                                            <FormQuestion
+                                            </SelvstendigQuestion>
+                                            <SelvstendigQuestion
                                                 question={Field.selvstendigHarHattInntektSomFrilanserIPerioden}>
-                                                <FC.YesOrNoQuestion
+                                                <FormComponents.YesOrNoQuestion
                                                     name={Field.selvstendigHarHattInntektSomFrilanserIPerioden}
                                                     legend={ensureString(
                                                         txt.selvstendigHarHattInntektSomFrilanserIPerioden(
@@ -192,9 +190,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                         )
                                                     )}
                                                 />
-                                            </FormQuestion>
-                                            <FormQuestion question={Field.selvstendigInntektSomFrilanserIPerioden}>
-                                                <FC.Input
+                                            </SelvstendigQuestion>
+                                            <SelvstendigQuestion
+                                                question={Field.selvstendigInntektSomFrilanserIPerioden}>
+                                                <FormComponents.Input
                                                     name={Field.selvstendigInntektSomFrilanserIPerioden}
                                                     type="number"
                                                     bredde="S"
@@ -203,13 +202,13 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                     )}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
-                                            </FormQuestion>
+                                            </SelvstendigQuestion>
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigInntekt2019) && (
                                         <FormSection title="Inntekt i 2019">
-                                            <FormQuestion question={Field.selvstendigInntekt2019}>
-                                                <FC.Input
+                                            <SelvstendigQuestion question={Field.selvstendigInntekt2019}>
+                                                <FormComponents.Input
                                                     name={Field.selvstendigInntekt2019}
                                                     type="number"
                                                     bredde="S"
@@ -218,13 +217,13 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                         validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
                                                     ])}
                                                 />
-                                            </FormQuestion>
+                                            </SelvstendigQuestion>
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigInntekt2020) && (
                                         <FormSection title="Inntekt i 2020">
-                                            <FormQuestion question={Field.selvstendigInntekt2020}>
-                                                <FC.Input
+                                            <SelvstendigQuestion question={Field.selvstendigInntekt2020}>
+                                                <FormComponents.Input
                                                     name={Field.selvstendigInntekt2020}
                                                     type="number"
                                                     bredde="S"
@@ -233,17 +232,17 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                     )}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
-                                            </FormQuestion>
+                                            </SelvstendigQuestion>
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigHarRegnskapsfører) && (
                                         <FormSection title="Regnskapsfører">
-                                            <FormQuestion question={Field.selvstendigHarRegnskapsfører}>
-                                                <FC.YesOrNoQuestion
+                                            <SelvstendigQuestion question={Field.selvstendigHarRegnskapsfører}>
+                                                <FormComponents.YesOrNoQuestion
                                                     name={Field.selvstendigHarRegnskapsfører}
                                                     legend={ensureString(txt.selvstendigHarRegnskapsfører)}
                                                 />
-                                            </FormQuestion>
+                                            </SelvstendigQuestion>
                                             {isVisible(Field.selvstendigRegnskapsførerNavn) && (
                                                 <Box margin="l">
                                                     <ResponsivePanel>
@@ -253,14 +252,16 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                 informasjon om din hovedregnskapsfører.
                                                             </Box>
                                                         )}
-                                                        <FormQuestion question={Field.selvstendigRegnskapsførerNavn}>
-                                                            <FC.Input
+                                                        <SelvstendigQuestion
+                                                            question={Field.selvstendigRegnskapsførerNavn}>
+                                                            <FormComponents.Input
                                                                 name={Field.selvstendigRegnskapsførerNavn}
                                                                 label={ensureString(txt.selvstendigRegnskapsførerNavn)}
                                                             />
-                                                        </FormQuestion>
-                                                        <FormQuestion question={Field.selvstendigRegnskapsførerTelefon}>
-                                                            <FC.Input
+                                                        </SelvstendigQuestion>
+                                                        <SelvstendigQuestion
+                                                            question={Field.selvstendigRegnskapsførerTelefon}>
+                                                            <FormComponents.Input
                                                                 name={Field.selvstendigRegnskapsførerTelefon}
                                                                 label={ensureString(
                                                                     txt.selvstendigRegnskapsførerTelefon
@@ -268,7 +269,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                 bredde="M"
                                                                 maxLength={12}
                                                             />
-                                                        </FormQuestion>
+                                                        </SelvstendigQuestion>
                                                     </ResponsivePanel>
                                                 </Box>
                                             )}
@@ -276,12 +277,12 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                     )}
                                     {isVisible(Field.selvstendigHarRevisor) && (
                                         <FormSection title="Revisor">
-                                            <FormQuestion question={Field.selvstendigHarRevisor}>
-                                                <FC.YesOrNoQuestion
+                                            <SelvstendigQuestion question={Field.selvstendigHarRevisor}>
+                                                <FormComponents.YesOrNoQuestion
                                                     name={Field.selvstendigHarRevisor}
                                                     legend={ensureString(txt.selvstendigHarRevisor)}
                                                 />
-                                            </FormQuestion>
+                                            </SelvstendigQuestion>
                                             {isVisible(Field.selvstendigRevisorNavn) && (
                                                 <Box margin="l">
                                                     <ResponsivePanel>
@@ -291,29 +292,29 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                 om din hoverrevisor.
                                                             </Box>
                                                         )}
-                                                        <FormQuestion question={Field.selvstendigRevisorNavn}>
-                                                            <FC.Input
+                                                        <SelvstendigQuestion question={Field.selvstendigRevisorNavn}>
+                                                            <FormComponents.Input
                                                                 name={Field.selvstendigRevisorNavn}
                                                                 label={ensureString(txt.selvstendigRevisorNavn)}
                                                             />
-                                                        </FormQuestion>
-                                                        <FormQuestion question={Field.selvstendigRevisorTelefon}>
-                                                            <FC.Input
+                                                        </SelvstendigQuestion>
+                                                        <SelvstendigQuestion question={Field.selvstendigRevisorTelefon}>
+                                                            <FormComponents.Input
                                                                 label={ensureString(txt.selvstendigRevisorTelefon)}
                                                                 name={Field.selvstendigRevisorTelefon}
                                                                 bredde="M"
                                                                 maxLength={12}
                                                             />
-                                                        </FormQuestion>
-                                                        <FormQuestion
+                                                        </SelvstendigQuestion>
+                                                        <SelvstendigQuestion
                                                             question={Field.selvstendigRevisorNAVKanTaKontakt}>
-                                                            <FC.YesOrNoQuestion
+                                                            <FormComponents.YesOrNoQuestion
                                                                 name={Field.selvstendigRevisorNAVKanTaKontakt}
                                                                 legend={ensureString(
                                                                     txt.selvstendigRevisorNAVKanTaKontakt
                                                                 )}
                                                             />
-                                                        </FormQuestion>
+                                                        </SelvstendigQuestion>
                                                     </ResponsivePanel>
                                                 </Box>
                                             )}

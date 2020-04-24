@@ -1,10 +1,8 @@
-import { SoknadFormData, initialSelvstendigValues, SoknadFormField } from '../../types/SoknadFormData';
+import { SoknadFormData, initialSelvstendigValues } from '../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 
 export const cleanupSelvstendigStep = (
     values: SoknadFormData,
-    visibility: QuestionVisibility<SoknadFormField>,
     hasValidSelvstendigFormData: boolean
 ): SoknadFormData => {
     if (hasValidSelvstendigFormData === false || values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO) {
@@ -15,5 +13,23 @@ export const cleanupSelvstendigStep = (
         };
         return cleanedValues;
     }
-    return values;
+    const cleanedValues: SoknadFormData = {
+        ...values,
+    };
+    if (values.selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.NO) {
+        cleanedValues.selvstendigInntektSomFrilanserIPerioden = undefined;
+    }
+    if (cleanedValues.selvstendigHarRegnskapsfører === YesOrNo.NO) {
+        cleanedValues.selvstendigRegnskapsførerNavn = undefined;
+        cleanedValues.selvstendigRegnskapsførerTelefon = undefined;
+    }
+    if (cleanedValues.selvstendigHarRegnskapsfører === YesOrNo.YES) {
+        cleanedValues.selvstendigHarRevisor === undefined;
+    }
+    if (cleanedValues.selvstendigHarRevisor === YesOrNo.NO) {
+        cleanedValues.selvstendigRevisorNavn = undefined;
+        cleanedValues.selvstendigRevisorTelefon = undefined;
+        cleanedValues.selvstendigRevisorNAVKanTaKontakt = undefined;
+    }
+    return cleanedValues;
 };
