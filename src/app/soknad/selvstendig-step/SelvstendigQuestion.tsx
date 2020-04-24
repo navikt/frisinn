@@ -1,17 +1,17 @@
 import React from 'react';
+import { SoknadFormField } from '../../types/SoknadFormData';
 import VisibilityBlock from '../../context/VisibilityBlock';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { IntroFormField } from './intro-form/introFormConfig';
 
 interface Props {
-    question: IntroFormField;
+    question: SoknadFormField;
     children: React.ReactNode;
 }
 
-const IntroFormQuestion = ({ question, children }: Props) => (
-    <VisibilityBlock<IntroFormField> fieldName={question}>
+const SelvstendigFormQuestion = ({ question, children }: Props) => (
+    <VisibilityBlock<SoknadFormField> fieldName={question}>
         <FormBlock>{children}</FormBlock>
     </VisibilityBlock>
 );
 
-export default IntroFormQuestion;
+export default SelvstendigFormQuestion;
