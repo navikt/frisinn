@@ -80,13 +80,12 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
             includeButtons={false}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
-                <FormBlock>
+                <EntryQuestion question={SoknadFormField.kontonummerErRiktig}>
                     <FormComponents.YesOrNoQuestion
-                        legend={`Vi har registrert kontonummeret ${kontonummer} på deg. Er dette riktig kontonummer?`}
                         name={SoknadFormField.kontonummerErRiktig}
+                        legend={`Vi har registrert kontonummeret ${kontonummer} på deg. Er dette riktig kontonummer?`}
                     />
-                </FormBlock>
-
+                </EntryQuestion>
                 {kontonummerErRiktig === YesOrNo.NO && (
                     <StopMessage>
                         <EndreKontonummer />
