@@ -26,8 +26,6 @@ import { FrilanserFormQuestions } from './frilanserFormConfig';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { frilanserStepTexts } from './frilanserStepTexts';
 import { ensureString } from '../../utils/ensureString';
-import useAlderCheck from '../../hooks/useAlderCheck';
-import FrilanserInfo from './FrilanserInfo';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -45,10 +43,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
         isLoading: availableDateRangeIsLoading,
     } = useAvailableSøknadsperiode(frilanserInntektstapStartetDato, currentSøknadsperiode);
 
-    const { result: alderCheckResult, isLoading: alderCheckIsLoading } = useAlderCheck(
-        isValidDateRange(availableDateRange) ? availableDateRange : undefined
-    );
-    const isLoading = availableDateRangeIsLoading || alderCheckIsLoading;
+    const isLoading = availableDateRangeIsLoading;
     const { isVisible, areAllQuestionsAnswered } = FrilanserFormQuestions.getVisbility({
         ...values,
         ...soknadEssentials,
@@ -110,17 +105,15 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                             validateDateInRange({ from: MIN_DATE, to: currentSøknadsperiode.to }),
                         ])}
                     />
-                    {isValidDateRange(availableDateRange) &&
-                        alderCheckIsLoading === false &&
-                        alderCheckResult?.innfrirKrav === true && (
-                            <Box margin="l" padBottom="xxl">
-                                <AvailableDateRangeInfo
-                                    inntektstapStartetDato={frilanserInntektstapStartetDato}
-                                    availableDateRange={availableDateRange}
-                                    isLimitedDateRange={isLimitedDateRange}
-                                />
-                            </Box>
-                        )}
+                    {isValidDateRange(availableDateRange) && (
+                        <Box margin="l" padBottom="xxl">
+                            <AvailableDateRangeInfo
+                                inntektstapStartetDato={frilanserInntektstapStartetDato}
+                                availableDateRange={availableDateRange}
+                                isLimitedDateRange={isLimitedDateRange}
+                            />
+                        </Box>
+                    )}
                 </FormBlock>
             )}
             {values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES && (
@@ -140,10 +133,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                                 </FormBlock>
                             );
                         }
-                        if (alderCheckResult?.innfrirKrav === false) {
-                            return <FormBlock>{FrilanserInfo.advarselAlderSjekkFeiler()}</FormBlock>;
-                        }
-
                         return (
                             <>
                                 <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>

@@ -15,6 +15,7 @@ import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 import useApiGet from '../hooks/useApiGet';
 import { ApiEndpoint } from '../api/api';
 import { Ingress } from 'nav-frontend-typografi';
+import useAlderCheck from '../hooks/useAlderCheck';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -22,6 +23,7 @@ const Soknad = () => {
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
+    const alderCheck = useAlderCheck();
     const tempStorage = useTemporaryStorage();
     const { soknadEssentials } = essentials;
     const initialValues = isFeatureEnabled(Feature.PERSISTENCE)
@@ -42,6 +44,7 @@ const Soknad = () => {
 
     const isLoading =
         essentials.isLoading ||
+        alderCheck.isLoading ||
         tempStorage.isLoading ||
         maksEnSoknadPerPeriodeCheck.isLoading ||
         erTilgjengelig.isLoading;
@@ -62,6 +65,13 @@ const Soknad = () => {
                 }
                 if (soknadEssentials === undefined) {
                     return <GeneralErrorPage />;
+                }
+                if (alderCheck.result?.innfrirKrav === false) {
+                    return (
+                        <NoAccessPage title="Du kan ikke bruke denne søknaden">
+                            <Ingress>{alderCheck.result.beskrivelse}</Ingress>
+                        </NoAccessPage>
+                    );
                 }
                 if (maksEnSoknadPerPeriodeCheck.result?.passes === false) {
                     return (

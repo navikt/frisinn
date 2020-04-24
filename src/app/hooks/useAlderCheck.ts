@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { sjekkKrav, KravApiResponse } from '../api/krav';
 import { ApiKrav } from '../types/Krav';
-import { DateRange } from '../utils/dateUtils';
 
-function useAlderCheck(dateRange?: DateRange) {
+function useAlderCheck() {
     const [result, setResult] = useState<KravApiResponse | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
@@ -12,7 +11,7 @@ function useAlderCheck(dateRange?: DateRange) {
     async function checkAlder() {
         setIsLoading(true);
         try {
-            const result = await sjekkKrav(ApiKrav.alder, dateRange);
+            const result = await sjekkKrav(ApiKrav.alder);
             setResult(result.data);
         } catch (error) {
             setError(error);
@@ -22,12 +21,8 @@ function useAlderCheck(dateRange?: DateRange) {
     }
 
     useEffect(() => {
-        if (dateRange) {
-            checkAlder();
-        } else {
-            setResult(undefined);
-        }
-    }, [dateRange]);
+        checkAlder();
+    }, []);
 
     return { result, isLoading, error };
 }

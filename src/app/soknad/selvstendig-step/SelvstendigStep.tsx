@@ -12,7 +12,6 @@ import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import StopMessage from '../../components/StopMessage';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
-import useAlderCheck from '../../hooks/useAlderCheck';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField as Field } from '../../types/SoknadFormData';
@@ -50,11 +49,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         isLoading: availableDateRangeIsLoading,
     } = useAvailableSøknadsperiode(selvstendigInntektstapStartetDato, currentSøknadsperiode);
 
-    const { result: alderCheckResult, isLoading: alderCheckIsLoading } = useAlderCheck(
-        isValidDateRange(availableDateRange) ? availableDateRange : undefined
-    );
-
-    const isLoading = availableDateRangeIsLoading || alderCheckIsLoading;
+    const isLoading = availableDateRangeIsLoading;
 
     const visibility = SelvstendigFormQuestions.getVisbility({
         ...values,
@@ -66,7 +61,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const hasValidSelvstendigFormData: boolean =
         areAllQuestionsAnswered() &&
         isValidDateRange(availableDateRange) &&
-        alderCheckResult?.innfrirKrav === true &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES;
 
     useEffect(() => {
@@ -107,17 +101,15 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             maksDato: currentSøknadsperiode.to,
                         }}
                     />
-                    {isValidDateRange(availableDateRange) &&
-                        alderCheckIsLoading === false &&
-                        alderCheckResult?.innfrirKrav === true && (
-                            <Box margin="l" padBottom="xxl">
-                                <AvailableDateRangeInfo
-                                    inntektstapStartetDato={selvstendigInntektstapStartetDato}
-                                    availableDateRange={availableDateRange}
-                                    isLimitedDateRange={isLimitedDateRange}
-                                />
-                            </Box>
-                        )}
+                    {isValidDateRange(availableDateRange) && (
+                        <Box margin="l" padBottom="xxl">
+                            <AvailableDateRangeInfo
+                                inntektstapStartetDato={selvstendigInntektstapStartetDato}
+                                availableDateRange={availableDateRange}
+                                isLimitedDateRange={isLimitedDateRange}
+                            />
+                        </Box>
+                    )}
                 </SelvstendigQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
                     <LoadWrapper
@@ -130,13 +122,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                 return (
                                     <StopMessage>
                                         <SelvstendigInfo.advarselForSentInntektstap />
-                                    </StopMessage>
-                                );
-                            }
-                            if (alderCheckResult?.innfrirKrav === false) {
-                                return (
-                                    <StopMessage>
-                                        <SelvstendigInfo.advarselAlderSjekkFeiler />
                                     </StopMessage>
                                 );
                             }
