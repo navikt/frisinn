@@ -8,12 +8,10 @@ import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateToSoknadFrontpage } from '../utils/navigationUtils';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
-import soknadTempStorage from './SoknadTempStorage';
 import { maksEnSoknadPerPeriodeAccessCheck, alderAccessCheck } from '../utils/apiAccessCheck';
 import useAccessCheck from '../hooks/useAccessKrav';
 import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 import { Ingress } from 'nav-frontend-typografi';
-// import useAlderCheck from '../hooks/useAlderCheck';
 import useTilgjengelig from '../hooks/useTilgjengelig';
 import { usePrevious } from '../hooks/usePrevious';
 
@@ -24,12 +22,7 @@ const Soknad = () => {
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const alderCheck = useAccessCheck(alderAccessCheck());
-    // const alderCheck = useAlderCheck();
     const tempStorage = useTemporaryStorage();
-    const { soknadEssentials } = essentials;
-    const initialValues = isFeatureEnabled(Feature.PERSISTENCE)
-        ? soknadTempStorage.getValidStorage(tempStorage.storageData)?.formData || {}
-        : {};
     const history = useHistory();
 
     async function resetSoknad(redirectToFrontpage = true) {
@@ -42,17 +35,9 @@ const Soknad = () => {
             navigateToSoknadFrontpage(history);
         }
     }
+    const { soknadEssentials } = essentials;
     const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
     const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
-
-    useEffect(() => {
-        if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
-            essentials.fetch();
-            alderCheck.check();
-            maksEnSoknadPerPeriodeCheck.check();
-        }
-    }, [{ isTilgjengelig }]);
-
     const isLoading =
         !soknadEssentials ||
         essentials.isLoading ||
@@ -61,10 +46,14 @@ const Soknad = () => {
         maksEnSoknadPerPeriodeCheck.isLoading ||
         tilgjengeligIsLoading;
 
-    const hasError: boolean =
-        essentials.error !== undefined ||
-        alderCheck.error !== undefined ||
-        maksEnSoknadPerPeriodeCheck.error !== undefined;
+    useEffect(() => {
+        if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
+            tempStorage.fetch();
+            essentials.fetch();
+            alderCheck.check();
+            maksEnSoknadPerPeriodeCheck.check();
+        }
+    }, [{ isTilgjengelig }]);
 
     return (
         <LoadWrapper
@@ -79,9 +68,6 @@ const Soknad = () => {
                             </Ingress>
                         </NoAccessPage>
                     );
-                }
-                if (hasError || !soknadEssentials) {
-                    return <GeneralErrorPage />;
                 }
                 if (alderCheck.result?.passes === false) {
                     return (
@@ -100,7 +86,7 @@ const Soknad = () => {
                 if (soknadEssentials) {
                     return (
                         <SoknadFormComponents.FormikWrapper
-                            initialValues={initialValues}
+                            initialValues={tempStorage.storageData?.formData || {}}
                             onSubmit={() => null}
                             renderForm={() => {
                                 return <SoknadRoutes soknadEssentials={soknadEssentials} resetSoknad={resetSoknad} />;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import GlobalRoutes from '../config/routeConfig';
+import GlobalRoutes, { getRouteUrl } from '../config/routeConfig';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
 import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
 import SoknadEntryPage from '../pages/soknad-entry-page/SoknadEntryPage';
@@ -16,6 +16,7 @@ import FrilanserStep from './frilanser-step/FrilanserStep';
 import SelvstendigStep from './selvstendig-step/SelvstendigStep';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
+import Lenke from 'nav-frontend-lenker';
 
 interface Props {
     resetSoknad: () => void;
@@ -106,7 +107,13 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
             <Route path={GlobalRoutes.SOKNAD_SENT} render={() => <ConfirmationPage />} />
             <Route path={GlobalRoutes.SOKNAD_ERROR} render={() => <SoknadErrorPage />} />
             <Route path="*">
-                <div>No matching routes</div>
+                <SoknadErrorPage>
+                    <p>
+                        Noe gikk feil under visningen av denne siden. Kanskje du har lastet siden på nytt? Dette er noe
+                        vi ikke støtter enda, så du må fylle ut søknaden uten å laste siden på nytt.
+                    </p>
+                    <Lenke href={getRouteUrl(GlobalRoutes.SOKNAD)}>Gå tilbake til startsiden for søknaden</Lenke>
+                </SoknadErrorPage>
             </Route>
         </Switch>
     );
