@@ -33,6 +33,10 @@ const advarselAlderSjekkFeiler = () => (
     </>
 );
 
+const ytelseDekkerHeleTapet = () => (
+    <>Når du har en annen NAV ytelse som dekker hele tapet, kan du ikke søke på denne ytelsen</>
+);
+
 const infoInntektForetak = () => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
         <Box margin="l">
@@ -57,6 +61,7 @@ const SelvstendigInfo = {
     advarselForSentInntektstap,
     advarselIkkeTapPgaKorona,
     advarselAlderSjekkFeiler,
+    ytelseDekkerHeleTapet,
 };
 
 export default SelvstendigInfo;

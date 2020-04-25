@@ -55,6 +55,8 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, SoknadFormFi
     },
 
     [Field.selvstendigInntektIPerioden]: {
+        isIncluded: ({ selvstendigYtelseFraNavDekkerHeleTapet }) =>
+            selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES,
         visibilityFilter: ({ selvstendigHarYtelseFraNavSomDekkerTapet, selvstendigYtelseFraNavDekkerHeleTapet }) =>
             selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
             yesOrNoIsAnswered(selvstendigYtelseFraNavDekkerHeleTapet),

@@ -12,6 +12,7 @@ import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import StopMessage from '../../components/StopMessage';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
+import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField as Field } from '../../types/SoknadFormData';
@@ -21,12 +22,11 @@ import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import FormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
-import { SelvstendigFormQuestions } from './selvstendigFormConfig';
-import SelvstendigInfo from './SelvstendigInfo';
-import SelvstendigQuestion from './SelvstendigFormQuestion';
-import { selvstendigStepTexts } from './selvstendigStepTexts';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
+import { SelvstendigFormQuestions } from './selvstendigFormConfig';
+import SelvstendigQuestion from './SelvstendigFormQuestion';
+import SelvstendigInfo from './SelvstendigInfo';
+import { selvstendigStepTexts } from './selvstendigStepTexts';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -38,6 +38,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         selvstendigInntektstapStartetDato,
         selvstendigHarTaptInntektPgaKorona,
         søkerOmTaptInntektSomFrilanser,
+        selvstendigYtelseFraNavDekkerHeleTapet,
     } = values;
     const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
     const { foretak = [] } = personligeForetak || {};
@@ -61,7 +62,8 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const hasValidSelvstendigFormData: boolean =
         areAllQuestionsAnswered() &&
         isValidDateRange(availableDateRange) &&
-        selvstendigHarTaptInntektPgaKorona === YesOrNo.YES;
+        selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
+        selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {
         setFieldValue(Field.selvstendigCalculatedDateRange, availableDateRange);
@@ -140,6 +142,11 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                 legend={ensureString(txt.selvstendigYtelseFraNavDekkerHeleTapet)}
                                             />
                                         </SelvstendigQuestion>
+                                        {selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES && (
+                                            <StopMessage>
+                                                <SelvstendigInfo.ytelseDekkerHeleTapet />
+                                            </StopMessage>
+                                        )}
                                     </FormSection>
                                     {isVisible(Field.selvstendigInntektIPerioden) && (
                                         <FormSection title="Inntekt i perioden du søker for">
