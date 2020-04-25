@@ -106,6 +106,16 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigRevisorTelefon
     | SoknadFormField.selvstendigRevisorNAVKanTaKontakt
 >;
+export type FrilanserFormData = Pick<
+    Partial<SoknadFormData>,
+    | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
+    | SoknadFormField.frilanserHarTaptInntektPgaKorona
+    | SoknadFormField.frilanserErNyetablert
+    | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
+    | SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet
+    | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
+    | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
+>;
 
 export const initialSelvstendigValues: SelvstendigFormData = {
     selvstendigHarTaptInntektPgaKorona: undefined,
@@ -125,4 +135,13 @@ export const initialSelvstendigValues: SelvstendigFormData = {
     selvstendigErFrilanser: undefined,
     selvstendigHarHattInntektSomFrilanserIPerioden: undefined,
     selvstendigInntektSomFrilanserIPerioden: undefined,
+};
+
+export const initialFrilanserValues: FrilanserFormData = {
+    frilanserHarTaptInntektPgaKorona: undefined,
+    frilanserErNyetablert: undefined,
+    frilanserHarYtelseFraNavSomDekkerTapet: undefined,
+    frilanserYtelseFraNavDekkerHeleTapet: undefined,
+    frilanserHarHattInntektSomSelvstendigIPerioden: undefined,
+    frilanserInntektSomSelvstendigIPerioden: undefined,
 };

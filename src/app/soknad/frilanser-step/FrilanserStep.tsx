@@ -2,30 +2,33 @@ import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import {
-    validateRequiredField,
     validateRequiredNumber,
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
-import { Element, Undertittel } from 'nav-frontend-typografi';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { apiStringDateToDate } from '../../utils/dateUtils';
-import { MAX_INNTEKT, validateAll, validateDateInRange } from '../../validation/fieldValidations';
+import { ensureString } from '../../utils/ensureString';
+import { MAX_INNTEKT } from '../../validation/fieldValidations';
+import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
-import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
-import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { frilanserStepTexts } from './frilanserStepTexts';
-import { ensureString } from '../../utils/ensureString';
+import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
+import FrilanserFormQuestion from './FrilanserFormQuestion';
+import FrilanserInfo from './FrilanserInfo';
+import StopMessage from '../../components/StopMessage';
+import FormSection from '../../pages/intro-page/FormSection';
+import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -34,7 +37,12 @@ const txt = frilanserStepTexts;
 const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
 
-    const { frilanserInntektstapStartetDato } = values;
+    const {
+        frilanserInntektstapStartetDato,
+        frilanserHarTaptInntektPgaKorona,
+        frilanserYtelseFraNavDekkerHeleTapet,
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+    } = values;
     const { currentSøknadsperiode } = soknadEssentials;
 
     const {
@@ -44,10 +52,17 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
     } = useAvailableSøknadsperiode(frilanserInntektstapStartetDato, currentSøknadsperiode);
 
     const isLoading = availableDateRangeIsLoading;
-    const { isVisible, areAllQuestionsAnswered } = FrilanserFormQuestions.getVisbility({
+    const visibility = FrilanserFormQuestions.getVisbility({
         ...values,
         ...soknadEssentials,
     });
+    const { isVisible, areAllQuestionsAnswered } = visibility;
+
+    const hasValidFrilanserFormData: boolean =
+        areAllQuestionsAnswered() &&
+        isValidDateRange(availableDateRange) &&
+        frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
+        frilanserYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {
         setFieldValue(SoknadFormField.frilanserCalculatedDateRange, availableDateRange);
@@ -58,41 +73,36 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
+            stepCleanup={(values) => cleanupFrilanserStep(values, hasValidFrilanserFormData)}
             showSubmitButton={
-                areAllQuestionsAnswered() &&
-                (values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES ||
-                    values.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES)
+                !isLoading &&
+                (hasValidFrilanserFormData || søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES)
             }>
-            <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
-                <p>Skal det være noe informasjon som introduserer steget?</p>
-            </Guide>
-            {isVisible(SoknadFormField.frilanserHarTaptInntektPgaKorona) && (
-                <FormBlock>
+            <QuestionVisibilityContext.Provider value={{ visibility }}>
+                <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
+                    <p>Skal det være noe informasjon som introduserer steget?</p>
+                </Guide>
+                <FrilanserFormQuestion question={SoknadFormField.frilanserHarTaptInntektPgaKorona}>
                     <SoknadFormComponents.YesOrNoQuestion
                         name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                         legend={ensureString(txt.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode))}
                         validate={validateYesOrNoIsAnswered}
                     />
-                </FormBlock>
-            )}
-            {values.frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
-                <FormBlock>
-                    <AlertStripeAdvarsel>
-                        Du kan ikke søke om kompensasjon for tap som ikke er forårsaket av Korona
-                    </AlertStripeAdvarsel>
-                </FormBlock>
-            )}
-            {isVisible(SoknadFormField.frilanserErNyetablert) && (
-                <FormBlock>
+                </FrilanserFormQuestion>
+                {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
+                    <StopMessage>
+                        <FrilanserInfo.advarselIkkeTapPgaKorona />
+                    </StopMessage>
+                )}
+                <FrilanserFormQuestion question={SoknadFormField.frilanserErNyetablert}>
                     <SoknadFormComponents.YesOrNoQuestion
                         name={SoknadFormField.frilanserErNyetablert}
                         legend={ensureString(txt.frilanserErNyetablert)}
                         validate={validateYesOrNoIsAnswered}
                     />
-                </FormBlock>
-            )}
-            {isVisible(SoknadFormField.frilanserInntektstapStartetDato) && (
-                <FormBlock>
+                </FrilanserFormQuestion>
+
+                <FrilanserFormQuestion question={SoknadFormField.frilanserInntektstapStartetDato}>
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}
                         label={ensureString(txt.frilanserInntektstapStartetDato)}
@@ -100,10 +110,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
                         }}
-                        validate={validateAll([
-                            validateRequiredField,
-                            validateDateInRange({ from: MIN_DATE, to: currentSøknadsperiode.to }),
-                        ])}
                     />
                     {isValidDateRange(availableDateRange) && (
                         <Box margin="l" padBottom="xxl">
@@ -114,124 +120,109 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                             />
                         </Box>
                     )}
-                </FormBlock>
-            )}
-            {values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES && (
-                <LoadWrapper
-                    isLoading={isLoading}
-                    contentRenderer={() => {
-                        if (availableDateRange === undefined) {
-                            return null;
-                        }
-                        if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
-                            return (
-                                <FormBlock>
-                                    <AlertStripeAdvarsel>
-                                        Du kan ikke søke for denne perioden fordi du får dekket først fra og med den 17.
-                                        dagen etter inntektsstapet startet.{' '}
-                                    </AlertStripeAdvarsel>
-                                </FormBlock>
-                            );
-                        }
-                        return (
-                            <>
-                                <Undertittel className="sectionTitle">Ytelser fra NAV</Undertittel>
-                                {isVisible(SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet) && (
-                                    <FormBlock>
-                                        <SoknadFormComponents.YesOrNoQuestion
-                                            name={SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet}
-                                            legend={ensureString(txt.frilanserHarYtelseFraNavSomDekkerTapet)}
-                                        />
-                                    </FormBlock>
-                                )}
-                                {isVisible(SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet) && (
-                                    <FormBlock>
-                                        <SoknadFormComponents.YesOrNoQuestion
-                                            name={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}
-                                            legend={ensureString(txt.frilanserYtelseFraNavDekkerHeleTapet)}
-                                        />
-                                    </FormBlock>
-                                )}
-                                {isVisible(SoknadFormField.frilanserInntektIPerioden) && (
-                                    <>
-                                        <Box margin="xxl">
-                                            <Undertittel className="sectionTitle">
-                                                Frilanserinntekt i perioden du søker for
-                                            </Undertittel>
-                                        </Box>
-                                        <FormBlock>
-                                            <SoknadFormComponents.Input
-                                                name={SoknadFormField.frilanserInntektIPerioden}
-                                                type="number"
-                                                bredde="S"
-                                                description={
-                                                    <ExpandableInfo title="Hvordan beregner du inntekt?">
-                                                        <Box margin="l">
-                                                            <Element>Inntekter som skal tas med:</Element>
-                                                            <ul>
-                                                                <li>Inntektene du har på ditt arbeid som frilanser</li>
-                                                                <li>
-                                                                    Inntekter som er utbetalinger fra NAV som frilanser
-                                                                </li>
-                                                            </ul>
-                                                            <Element>Inntekter som IKKE skal tas med:</Element>
-                                                            <ul>
-                                                                <li>Eventuell uføretrygd</li>
-                                                                <li>Eventuell alderspensjon</li>
-                                                                <li>
-                                                                    Eventuell inntekt som selvstendig næringsdrivende
-                                                                </li>
-                                                            </ul>
-                                                        </Box>
-                                                    </ExpandableInfo>
-                                                }
-                                                label={
-                                                    <span>
-                                                        Hvilken inntekt har du hatt som frilanser i perioden{' '}
-                                                        <DateRangeView
-                                                            extendedFormat={true}
-                                                            dateRange={availableDateRange}
-                                                        />
-                                                        ?
-                                                    </span>
-                                                }
-                                                validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
-                                            />
-                                        </FormBlock>
-                                    </>
-                                )}
+                </FrilanserFormQuestion>
 
-                                {isVisible(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
-                                    <Box margin="xxl">
-                                        <Undertittel className="sectionTitle">Selvstendig næringsdrivende</Undertittel>
-                                        <FormBlock>
-                                            <SoknadFormComponents.YesOrNoQuestion
-                                                legend={ensureString(
-                                                    txt.frilanserHarHattInntektSomSelvstendigIPerioden(
-                                                        availableDateRange
-                                                    )
-                                                )}
-                                                name={SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}
-                                            />
-                                        </FormBlock>
-                                    </Box>
-                                )}
-                                {isVisible(SoknadFormField.frilanserInntektSomSelvstendigIPerioden) && (
+                {values.frilanserHarTaptInntektPgaKorona === YesOrNo.YES && (
+                    <LoadWrapper
+                        isLoading={isLoading}
+                        contentRenderer={() => {
+                            if (availableDateRange === undefined) {
+                                return null;
+                            }
+                            if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
+                                return (
                                     <FormBlock>
-                                        <SoknadFormComponents.Input
-                                            name={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}
-                                            type="number"
-                                            bredde="S"
-                                            label={ensureString(txt.frilanserInntektSomSelvstendigIPerioden)}
-                                            validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
-                                        />
+                                        <AlertStripeAdvarsel>
+                                            Du kan ikke søke for denne perioden fordi du får dekket først fra og med den
+                                            17. dagen etter inntektsstapet startet.{' '}
+                                        </AlertStripeAdvarsel>
                                     </FormBlock>
-                                )}
-                            </>
-                        );
-                    }}
-                />
-            )}
+                                );
+                            }
+                            return (
+                                <>
+                                    <FormSection title="Ytelser fra NAV">
+                                        <FrilanserFormQuestion
+                                            question={SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet}>
+                                            <SoknadFormComponents.YesOrNoQuestion
+                                                name={SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet}
+                                                legend={ensureString(txt.frilanserHarYtelseFraNavSomDekkerTapet)}
+                                            />
+                                        </FrilanserFormQuestion>
+
+                                        <FrilanserFormQuestion
+                                            question={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}>
+                                            <SoknadFormComponents.YesOrNoQuestion
+                                                name={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}
+                                                legend={ensureString(txt.frilanserYtelseFraNavDekkerHeleTapet)}
+                                            />
+                                        </FrilanserFormQuestion>
+                                        {frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES && (
+                                            <StopMessage>
+                                                <FrilanserInfo.ytelseDekkerHeleTapet />
+                                            </StopMessage>
+                                        )}
+                                    </FormSection>
+
+                                    {isVisible(SoknadFormField.frilanserInntektIPerioden) && (
+                                        <FormSection title="Frilanserinntekt i perioden du søker for">
+                                            <FrilanserFormQuestion question={SoknadFormField.frilanserInntektIPerioden}>
+                                                <SoknadFormComponents.Input
+                                                    name={SoknadFormField.frilanserInntektIPerioden}
+                                                    type="number"
+                                                    bredde="S"
+                                                    description={<FrilanserInfo.hvordanBeregneInntekt />}
+                                                    label={
+                                                        <span>
+                                                            Hvilken inntekt har du hatt som frilanser i perioden{' '}
+                                                            <DateRangeView
+                                                                extendedFormat={true}
+                                                                dateRange={availableDateRange}
+                                                            />
+                                                            ?
+                                                        </span>
+                                                    }
+                                                    validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                                />
+                                            </FrilanserFormQuestion>
+                                        </FormSection>
+                                    )}
+
+                                    {isVisible(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
+                                        <FormSection title="Selvstendig næringsdrivende">
+                                            <FrilanserFormQuestion
+                                                question={
+                                                    SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
+                                                }>
+                                                <SoknadFormComponents.YesOrNoQuestion
+                                                    name={
+                                                        SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
+                                                    }
+                                                    legend={ensureString(
+                                                        txt.frilanserHarHattInntektSomSelvstendigIPerioden(
+                                                            availableDateRange
+                                                        )
+                                                    )}
+                                                />
+                                            </FrilanserFormQuestion>
+                                            <FrilanserFormQuestion
+                                                question={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}>
+                                                <SoknadFormComponents.Input
+                                                    name={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}
+                                                    type="number"
+                                                    bredde="S"
+                                                    label={ensureString(txt.frilanserInntektSomSelvstendigIPerioden)}
+                                                    validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                                />
+                                            </FrilanserFormQuestion>
+                                        </FormSection>
+                                    )}
+                                </>
+                            );
+                        }}
+                    />
+                )}
+            </QuestionVisibilityContext.Provider>
         </SoknadStep>
     );
 };
