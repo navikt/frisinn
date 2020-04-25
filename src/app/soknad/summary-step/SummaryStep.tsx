@@ -21,6 +21,7 @@ import SoknadStep from '../SoknadStep';
 import { StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
+import StopMessage from '../../components/StopMessage';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -50,6 +51,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
     }
 
     const apiValues = mapFormDataToApiData(soknadEssentials, formik.values, intl.locale as Locale);
+    const hasValidApiData = apiValues?.selvstendigNæringsdrivende !== undefined || apiValues?.frilanser !== undefined;
 
     return (
         <SoknadStep
@@ -62,10 +64,11 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                     });
                 }
             }}
+            showSubmitButton={hasValidApiData}
             useValidationErrorSummary={false}
             buttonDisabled={sendingInProgress || apiValues === undefined}
             showButtonSpinner={sendingInProgress}>
-            {apiValues && (
+            {apiValues && hasValidApiData && (
                 <>
                     <Box margin="xxxl">
                         <Guide
@@ -93,6 +96,14 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                             validate={validateBekrefterOpplysninger}
                         />
                     </Box>
+                </>
+            )}
+            {apiValues && hasValidApiData === false && (
+                <>
+                    <StopMessage>
+                        Basert på hva du har svart i søknaden, har du ikke grunnlag til å søke på denne ytelsen. Gå
+                        tilbake til de tidligere stegene og se over informasjonen du har fått der.
+                    </StopMessage>
                 </>
             )}
             {apiValues === undefined && (
