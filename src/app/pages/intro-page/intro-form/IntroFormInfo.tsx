@@ -13,53 +13,56 @@ const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
 
 const selvstendigIkkeTapPgaKorona = () => (
     <>
-        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
-        Du må ha hatt inntektstap som selvstendig næringsdrivende på grunn av koronasituasjonen for å kunne søke om
-        kompensasjon som selvstendig næringsdrivende.
+        <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
+        For å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du helt eller delvis ha tapt
+        inntekt som følge av koronautbruddet.
     </>
 );
 
 const selvstendigForSentInntektstap = () => (
     <>
-        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
-        Inntektstapet ditt startet for sent i perioden du kan søke for nå. Det er mindre enn 16 dager igjen av perioden,
-        og de 16 første dagene etter inntektstapet kan du ikke søke kompensasjon for.
+        <Element>Du må vente med å søke kompensasjon for tapt inntekt som selvstendig næringsdrivende </Element>
+        Du må selv dekke de første 16 dagene med inntektstap. Ordningen er lagt opp til at du må søke etterskuddsvis
+        måned for måned. Hvis du har inntektstap i mai 2020 kan du først sende søknad i begynnelsen av juni.
     </>
 );
 
 const selvstendigFårDekketTapet = () => (
     <>
-        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
-        Dersom du allerede får dekket tapet, kan du ikke søke om kompensasjon som selvstendig næringsdrivende.
+        <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
+        Når du allerede har dekket tapt inntekt som selvstendig næringsdrivende, kan du ikke søke kompensasjon for den
+        samme inntekten som er dekket.
     </>
 );
 
 const frilanserIkkeTapPgaKorona = () => (
     <>
-        <Element>Du kan ikke søke som frilanser</Element>
-        Du må ha hatt inntektstap som frilanser på grunn av koronasituasjonen for å kunne søke om kompensasjon som
-        frilanser.
+        <Element>Du kan ikke søke om kompensasjon for tapt inntekt som frilanser</Element>
+        For å søke om kompensasjon for tapt inntekt som frilanser, må du helt eller delvis ha tapt inntekt som følge av
+        koronautbruddet.
     </>
 );
 
 const frilanserForSentInntektstap = () => (
     <>
-        <Element>Du kan ikke søke som frilanser</Element>
-        Inntektstapet ditt startet for sent i perioden du kan søke for nå. Det er mindre enn 16 dager igjen av perioden,
-        og de 16 første dagene etter inntektstapet kan du ikke søke kompensasjon for.
+        <Element>Du må vente med å søke kompensasjon for tapt inntekt som frilanser</Element>
+        Du må selv dekke de første 16 dagene med inntektstap. Ordningen er lagt opp til at du må søke etterskuddsvis
+        måned for måned. Hvis du har inntektstap i mai 2020 kan du først sende søknad i begynnelsen av juni.
     </>
 );
 
 const frilanserFårDekketTapet = () => (
     <>
-        <Element>Du kan ikke søke som frilanser</Element>
-        Dersom du allerede får dekket tapet, kan du ikke søke om kompensasjon som frilanser.
+        <Element>Du kan ikke søke om kompensasjon for tapt inntekt som frilanser</Element>
+        Når du allerede har dekket tapt inntekt som frilanser, kan du ikke søke kompensasjon for den samme inntekten som
+        er dekket.
     </>
 );
 
 const frilanserNAVsDefinisjon = () => (
-    <ExpandableInfo title="Hva er NAVs definisjon på frilanser?" closeTitle={'Skjul info'}>
-        Det vil si en ikke ansatt lønnsmottaker. Du kan sjekke om oppdragene dine er registert som frilansoppdrag, på{' '}
+    <ExpandableInfo title="Hva er en frilanser?">
+        Du er frilanser når du mottar lønn for enkeltstående oppdrag uten å være fast eller midlertidig ansatt hos den
+        du utfører oppdraget for. Du må sjekke om oppdragene dine er registrert som frilansoppdrag, på{' '}
         <Lenke href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/" target="_blank">
             skatteetaten sine nettsider
         </Lenke>{' '}
@@ -67,26 +70,31 @@ const frilanserNAVsDefinisjon = () => (
     </ExpandableInfo>
 );
 
-const hvaRegnesSomInntektstap = ({ soknadsperiode }: { soknadsperiode: DateRange }) => (
+const ikkeFrilanserOgIkkeRettSomSelvstendig = () => (
+    <>
+        Du opplyser at du ikke er frilanser, du kan heller ikke søke om kompensasjon for tapt inntekt som selvstendig
+        næringsdrivende. Det betyr at du ikke kan ha rett på kompensasjon etter denne ordningen.{' '}
+    </>
+);
+
+const hvaRegnesSomInntektstap = () => (
     <ExpandableInfo title="Hva regnes som inntektstap?">
-        Inntektstap er det reelle tapet du har hatt i perioden{' '}
-        <strong>
-            <DateRangeView dateRange={soknadsperiode} />
-        </strong>
-        , ikke fremtige tap; det søker du om neste måned.
+        Inntekt som du normalt ville tatt ut, men som du ikke har kunnet som følge av koronautbruddet.
     </ExpandableInfo>
 );
 
 const hvaErStartdatoForInntektstap = () => (
-    <ExpandableInfo title="Hva er startdato for inntektstap?">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis laudantium sapiente illum perferendis distinctio,
-        praesentium, culpa repellendus nulla corporis commodi explicabo! Quidem quibusdam vitae repellendus voluptate
-        similique corrupti atque! Debitis!
+    <ExpandableInfo title="Fra hvilken dato gjelder inntektstap som følge av koronautbruddet?">
+        Inntektstap som følge av koronautbruddet har virkning fra 16. mars 2020. Du må selv finne datoen for når ditt
+        inntektstap startet (ikke når du mistet oppdrag).
     </ExpandableInfo>
 );
 
 const ikkeValgtSelvstendigEllerFrilanser = () => (
-    <>Du må velge om du er selvstendig næringsdrivende og/eller frilanser.</>
+    <>
+        Du opplyser at du ikke er frilanser, og ikke selvstendig næringsdrivende. Det betyr at du ikke kan ha rett på
+        kompensasjon etter denne ordningen.
+    </>
 );
 
 const selvstendigIkkeOkOgErIkkeFrilanser = () => (
@@ -98,17 +106,58 @@ const selvstendigIkkeOkOgErIkkeFrilanser = () => (
 
 const harAlleredeSøkt = () => (
     <>
-        Du kan kun få dekket inntektstapet en gang. Du kan velge å{' '}
+        Når du har søkt om andre utbetalinger fra NAV for det samme inntektstapet, kan du velge å
         <ul>
-            <li>Ikke søke på denne ytelsen</li>
-            <li>Trekke tilbake den andre søknaden og søke på denne ytelsen</li>
+            <li>ikke gå videre med denne søknaden, eller å </li>
+
+            <li>trekke den andre søknaden du har hos NAV, og gå videre til å søke om denne kompensasjonen </li>
         </ul>
+        Du kan kun få dekket det samme inntektstapet én gang.
     </>
 );
 
-const fårDekketTapetForklaring = () => (
+const fårDekketTapetSomSelvstendigForklaring = () => (
     <ExpandableInfo title="Hva vil dette si?">
-        Omnis aut, incidunt perferendis iure perspiciatis quibusdam beatae neque libero culpa quos.
+        <p>
+            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
+            ikke søke om kompensasjon. Utbetalingene fra NAV kan være én av disse:
+        </p>
+        <ul className="infoList">
+            <li>Omsorgspenger</li>
+            <li>Sykepenger</li>
+            <li>Foreldrepenger</li>
+            <li>Svangerskapspenger</li>
+            <li>Pleiepenger</li>
+            <li>Opplæringspenger</li>
+            <li>Arbeidsavklaringspenger</li>
+        </ul>
+        <p>
+            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
+            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
+        </p>
+    </ExpandableInfo>
+);
+
+const fårDekketTapetSomFrilanserForklaring = () => (
+    <ExpandableInfo title="Hva vil dette si?">
+        <p>
+            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke om
+            kompensasjon. Utbetalingene fra NAV kan være én av disse:
+        </p>
+        <ul className="infoList">
+            <li>Dagpenger</li>
+            <li>Omsorgspenger</li>
+            <li>Sykepenger</li>
+            <li>Foreldrepenger</li>
+            <li>Svangerskapspenger</li>
+            <li>Pleiepenger</li>
+            <li>Opplæringspenger</li>
+            <li>Arbeidsavklaringspenger</li>
+        </ul>
+        <p>
+            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
+            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
+        </p>
     </ExpandableInfo>
 );
 
@@ -126,6 +175,8 @@ const IntroFormInfo = {
     ikkeValgtSelvstendigEllerFrilanser,
     selvstendigIkkeOkOgErIkkeFrilanser,
     harAlleredeSøkt,
-    fårDekketTapetForklaring,
+    fårDekketTapetSomSelvstendigForklaring,
+    fårDekketTapetSomFrilanserForklaring,
+    ikkeFrilanserOgIkkeRettSomSelvstendig,
 };
 export default IntroFormInfo;

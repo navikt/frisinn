@@ -62,19 +62,24 @@ const IntroPage: React.StatelessComponent = () => {
                                     </Undertittel>
                                     <Normaltekst tag="div">
                                         <p>
-                                            Dersom du mistet hele eller deler av inntekten din på grunn av
-                                            korona-pandemien, kan du søke om kompensasjon for dette. De første 16 dagene
-                                            etter at du startet å miste inntekt, må du dekke selv, mens dagene etter kan
-                                            du få kompensasjon for.
-                                            <br /> Dette er en midlertidig ordning.
+                                            Dette er en <strong>ny og midlertidig ordning</strong> som er opprettet som
+                                            en følge av koronasituasjonen. Den er for deg som er selvstendig
+                                            næringsdrivende og/eller frilanser som helt eller delvis har tapt inntekt på
+                                            grunn av koronautbruddet.
                                         </p>
                                         <p>
-                                            Ordningen er lagt opp slik at du søker for én og én periode i etterkant av
-                                            perioden. Perioden du kan søke kompensasjon for nå er{' '}
-                                            <strong>
-                                                <DateRangeView dateRange={soknadsperiode.soknadsperiode} />
-                                            </strong>
-                                            .
+                                            Er du selvstendig næringsdrivende må du enten ha et enkeltpersonforetak
+                                            (EK), et ansvarlig selskap (ANS), eller et ansvarlig selskap med delt ansvar
+                                            (DA). Selskapet må være registrert før 1. mars 2020.
+                                        </p>
+                                        <p>
+                                            Ordningen trådte i kraft fra 16. Mars 2020. De første 16 dagene av
+                                            inntektstapet må du dekke selv.
+                                        </p>
+                                        <p>
+                                            Perioden du kan søke om nå, er{' '}
+                                            <DateRangeView dateRange={soknadsperiode.soknadsperiode} />. Kompensasjon
+                                            for inntektstap i mai, kan du søke om i begynnelsen av juni.
                                         </p>
                                     </Normaltekst>
                                 </InformationPoster>
@@ -82,15 +87,18 @@ const IntroPage: React.StatelessComponent = () => {
                             <Box margin="xl">
                                 <Panel>
                                     <Undertittel className="sectionTitle">Sjekk om du kan søke</Undertittel>
+                                    <p>For å kunne søke kompensasjon for tapt inntekt gjennom denne ordningen, må du</p>
+                                    <ul className="infoList">
+                                        <li>være fylt 18 år</li>
+                                        <li>ikke ha fylt 67 år</li>
+                                        <li>ha tapt inntekt som følge av koronasituasjonen</li>
+                                        <li>
+                                            ikke motta annen utbetaling fra NAV som kompenserer det samme inntektstapet
+                                        </li>
+                                    </ul>
                                     <p>
-                                        Svar på spørsmålene nedenfor for å se om du har rett på denne kompansasjonen
-                                        Hvis du har det, vil du kunne gå videre til søknaden, hvor du må logge deg inn
-                                        med elektronisk ID.
-                                    </p>
-                                    <p>
-                                        Om du har kombinasjonsinntekt som både selvstending næringsdrivende (ENK,
-                                        DA/ANS) og frilans krysser du av at du er begge. Inne i søknaden vil du bli bedt
-                                        om å oppgi inntektene separat.
+                                        Vi vil nå stille deg noen spørsmål som avgjør om du kan søke, og om du kan ha
+                                        rett på denne kompensasjonen.
                                     </p>
                                     <IntroForm
                                         onValidSubmit={() => relocateToSoknad()}

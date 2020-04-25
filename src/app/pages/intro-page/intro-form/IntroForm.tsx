@@ -17,6 +17,7 @@ import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormCo
 import Info from './IntroFormInfo';
 import introFormUtils from './introFormUtils';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
+import IntroFormInfo from './IntroFormInfo';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -90,9 +91,8 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.erSelvstendigNæringsdrivende}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.erSelvstendigNæringsdrivende}
-                                            legend={'Er du selvstendig næringsdrivende med ENK, DA/ANS?'}
-                                            description={
-                                                'Foretaket må ha vært registert i Brønnøysundregisteret før 1. mars 2020.'
+                                            legend={
+                                                'Er du registrert som selvstendig næringsdrivende før 1. mars 2020?'
                                             }
                                         />
                                     </FormQuestion>
@@ -100,11 +100,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigHarTaptInntektPgaKorona}
                                             legend={
-                                                'Har du tapt inntekt som selvstendig næringsdrivende i perioden på grunn av koronasituasjonen?'
+                                                'Har du tapt inntekt som selvstendig næringsdrivende som følge av koronautbruddet? '
                                             }
-                                            description={
-                                                <Info.hvaRegnesSomInntektstap soknadsperiode={soknadsperiode} />
-                                            }
+                                            description={<Info.hvaRegnesSomInntektstap />}
                                         />
                                         {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
                                             <StopMessage>
@@ -133,9 +131,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigFårDekketTapet}
                                             legend={
-                                                'Får du allerede dekket inntektstapet som selvstendig næringsdrivende fra NAV?'
+                                                'Har du allerede en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende? '
                                             }
-                                            description={<Info.fårDekketTapetForklaring />}
+                                            description={<Info.fårDekketTapetSomSelvstendigForklaring />}
                                         />
                                         {selvstendigFårDekketTapet === YesOrNo.YES && (
                                             <StopMessage>
@@ -144,7 +142,10 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         )}
                                     </FormQuestion>
                                     {selvstendigFårDekketTapet === YesOrNo.NO && (
-                                        <SuksessMessage>Du kan søke som selvstendig næringsdrivende</SuksessMessage>
+                                        <SuksessMessage>
+                                            Du kan søke om kompensasjon for tapt inntekt som selvstendig
+                                            næringsdrivende.
+                                        </SuksessMessage>
                                     )}
                                 </FormSection>
                             )}
@@ -153,10 +154,15 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.erFrilanser}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.erFrilanser}
-                                            legend={'Er du frilanser pr. NAVs definisjon?'}
+                                            legend={'Er du frilanser?'}
                                             description={<Info.frilanserNAVsDefinisjon />}
                                         />
                                     </FormQuestion>
+                                    {erSelvstendigNæringsdrivende === YesOrNo.NO && erFrilanser === YesOrNo.NO && (
+                                        <StopMessage>
+                                            <IntroFormInfo.ikkeFrilanserOgIkkeRettSomSelvstendig />
+                                        </StopMessage>
+                                    )}
                                     <FormQuestion question={IntroFormField.frilanserHarTaptInntektPgaKorona}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilanserHarTaptInntektPgaKorona}
@@ -190,7 +196,10 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.frilanserFårDekketTapet}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilanserFårDekketTapet}
-                                            legend={'Får du allerede dekket inntektstapet som frilanser fra NAV?'}
+                                            legend={
+                                                'Har du allerede en utbetaling fra NAV som dekker inntektstapet ditt som frilanser?'
+                                            }
+                                            description={<Info.fårDekketTapetSomFrilanserForklaring />}
                                         />
                                         {frilanserFårDekketTapet === YesOrNo.YES && (
                                             <StopMessage>
@@ -198,20 +207,20 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                             </StopMessage>
                                         )}
                                         {frilanserFårDekketTapet === YesOrNo.NO && (
-                                            <SuksessMessage>Du kan søke som frilanser</SuksessMessage>
+                                            <SuksessMessage>
+                                                Du kan søke om kompensasjon for tapt inntekt som frilanser.
+                                            </SuksessMessage>
                                         )}
                                     </FormQuestion>
                                 </FormSection>
                             )}
 
                             {isVisible(IntroFormField.harAlleredeSøkt) && (
-                                <FormSection title="Har du allerede søkt?">
+                                <FormSection title="Har du søkt om andre utbetalinger fra NAV?">
                                     <FormQuestion question={IntroFormField.harAlleredeSøkt}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.harAlleredeSøkt}
-                                            legend={
-                                                'Har du allerede søkt (og/eller venter på svar) fra NAV for det samme inntektstapet du ønsker å søke om i denne søknaden??'
-                                            }
+                                            legend="Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon for i denne søknaden?"
                                         />
                                         {harAlleredeSøkt === YesOrNo.YES && (
                                             <InfoMessage>
@@ -222,16 +231,12 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.vilFortsetteTilSøknad}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.vilFortsetteTilSøknad}
-                                            legend={'Vil du likevel gå videre til søknaden?'}
+                                            legend={
+                                                'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?'
+                                            }
                                         />
                                     </FormQuestion>
                                 </FormSection>
-                            )}
-
-                            {erFrilanser === YesOrNo.NO && erSelvstendigNæringsdrivende === YesOrNo.NO && (
-                                <StopMessage>
-                                    <Info.ikkeValgtSelvstendigEllerFrilanser />
-                                </StopMessage>
                             )}
                             {erFrilanser === YesOrNo.NO &&
                                 erSelvstendigNæringsdrivende === YesOrNo.YES &&

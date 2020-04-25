@@ -9,7 +9,7 @@ interface Props {
 
 const FormSection = ({ children, title }: Props) => (
     <div>
-        <Box padBottom="xxl">
+        <Box margin="xxl">
             {title && <Undertittel className="sectionTitle">{title}</Undertittel>}
             {children}
         </Box>

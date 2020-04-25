@@ -41,21 +41,25 @@ const frilanserIsAnswered = ({
     erFrilanser,
     frilanserHarTaptInntektPgaKorona,
     frilanserFårDekketTapet,
+    frilanserInntektstapStartetFørFrist,
 }: IntroFormData): boolean => {
     return (
         erFrilanser === YesOrNo.NO ||
         frilanserHarTaptInntektPgaKorona === YesOrNo.NO ||
-        yesOrNoIsAnswered(frilanserFårDekketTapet)
+        frilanserFårDekketTapet === YesOrNo.NO ||
+        yesOrNoIsAnswered(frilanserInntektstapStartetFørFrist)
     );
 };
 const selvstendigIsAnswered = ({
     erSelvstendigNæringsdrivende,
     selvstendigHarTaptInntektPgaKorona,
     selvstendigFårDekketTapet,
+    selvstendigInntektstapStartetFørFrist,
 }: IntroFormData): boolean => {
     return (
         erSelvstendigNæringsdrivende === YesOrNo.NO ||
         selvstendigHarTaptInntektPgaKorona === YesOrNo.NO ||
+        selvstendigInntektstapStartetFørFrist === YesOrNo.NO ||
         yesOrNoIsAnswered(selvstendigFårDekketTapet)
     );
 };
