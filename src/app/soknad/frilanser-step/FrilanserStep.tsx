@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import {
-    validateRequiredNumber,
-    validateYesOrNoIsAnswered,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
@@ -34,7 +31,7 @@ const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const txt = frilanserStepTexts;
 
-const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubmit }: StepConfigProps) => {
+const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
 
     const {
@@ -86,7 +83,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                     <SoknadFormComponents.YesOrNoQuestion
                         name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                         legend={ensureString(txt.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode))}
-                        validate={validateYesOrNoIsAnswered}
                     />
                 </FrilanserFormQuestion>
                 {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
@@ -98,7 +94,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad: resetSoknad, onValidSubm
                     <SoknadFormComponents.YesOrNoQuestion
                         name={SoknadFormField.frilanserErNyetablert}
                         legend={ensureString(txt.frilanserErNyetablert)}
-                        validate={validateYesOrNoIsAnswered}
                     />
                 </FrilanserFormQuestion>
 
