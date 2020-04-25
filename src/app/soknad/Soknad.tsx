@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
 import useSoknadEssentials from '../hooks/useSoknadEssentials';
@@ -9,21 +9,22 @@ import { navigateToSoknadFrontpage } from '../utils/navigationUtils';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import soknadTempStorage from './SoknadTempStorage';
-import { maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
+import { maksEnSoknadPerPeriodeAccessCheck, alderAccessCheck } from '../utils/apiAccessCheck';
 import useAccessCheck from '../hooks/useAccessKrav';
 import NoAccessPage from '../pages/no-access-page/NoAccessPage';
-import useApiGet from '../hooks/useApiGet';
-import { ApiEndpoint } from '../api/api';
 import { Ingress } from 'nav-frontend-typografi';
-import useAlderCheck from '../hooks/useAlderCheck';
+// import useAlderCheck from '../hooks/useAlderCheck';
+import useTilgjengelig from '../hooks/useTilgjengelig';
+import { usePrevious } from '../hooks/usePrevious';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
 const Soknad = () => {
+    const tilgjengelig = useTilgjengelig();
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
-    const erTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
-    const alderCheck = useAlderCheck();
+    const alderCheck = useAccessCheck(alderAccessCheck());
+    // const alderCheck = useAlderCheck();
     const tempStorage = useTemporaryStorage();
     const { soknadEssentials } = essentials;
     const initialValues = isFeatureEnabled(Feature.PERSISTENCE)
@@ -41,19 +42,35 @@ const Soknad = () => {
             navigateToSoknadFrontpage(history);
         }
     }
+    const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
+    const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
+
+    useEffect(() => {
+        if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
+            essentials.fetch();
+            alderCheck.check();
+            maksEnSoknadPerPeriodeCheck.check();
+        }
+    }, [{ isTilgjengelig }]);
 
     const isLoading =
+        !soknadEssentials ||
         essentials.isLoading ||
         alderCheck.isLoading ||
         tempStorage.isLoading ||
         maksEnSoknadPerPeriodeCheck.isLoading ||
-        erTilgjengelig.isLoading;
+        tilgjengeligIsLoading;
+
+    const hasError: boolean =
+        essentials.error !== undefined ||
+        alderCheck.error !== undefined ||
+        maksEnSoknadPerPeriodeCheck.error !== undefined;
 
     return (
         <LoadWrapper
             isLoading={isLoading}
             contentRenderer={() => {
-                if (erTilgjengelig.error?.response?.status === 503) {
+                if (tilgjengelig.isTilgjengelig === false) {
                     return (
                         <NoAccessPage title="Søknaden er ikke tilgjengelig">
                             <Ingress>
@@ -63,13 +80,13 @@ const Soknad = () => {
                         </NoAccessPage>
                     );
                 }
-                if (soknadEssentials === undefined) {
+                if (hasError || !soknadEssentials) {
                     return <GeneralErrorPage />;
                 }
-                if (alderCheck.result?.innfrirKrav === false) {
+                if (alderCheck.result?.passes === false) {
                     return (
                         <NoAccessPage title="Du kan ikke bruke denne søknaden">
-                            <Ingress>{alderCheck.result.beskrivelse}</Ingress>
+                            <Ingress>{alderCheck.result.info}</Ingress>
                         </NoAccessPage>
                     );
                 }
@@ -80,15 +97,18 @@ const Soknad = () => {
                         </NoAccessPage>
                     );
                 }
-                return (
-                    <SoknadFormComponents.FormikWrapper
-                        initialValues={initialValues}
-                        onSubmit={() => null}
-                        renderForm={() => {
-                            return <SoknadRoutes soknadEssentials={soknadEssentials} resetSoknad={resetSoknad} />;
-                        }}
-                    />
-                );
+                if (soknadEssentials) {
+                    return (
+                        <SoknadFormComponents.FormikWrapper
+                            initialValues={initialValues}
+                            onSubmit={() => null}
+                            renderForm={() => {
+                                return <SoknadRoutes soknadEssentials={soknadEssentials} resetSoknad={resetSoknad} />;
+                            }}
+                        />
+                    );
+                }
+                return <GeneralErrorPage />;
             }}
         />
     );

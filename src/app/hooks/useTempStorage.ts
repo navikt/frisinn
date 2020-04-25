@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import soknadTempStorage, { TemporaryStorageData } from '../soknad/SoknadTempStorage';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 function useTemporaryStorage() {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [storageData, setStorageData] = useState<TemporaryStorageData | undefined>();
 
     async function fetchStorage() {
@@ -18,13 +18,13 @@ function useTemporaryStorage() {
         }
     }
 
-    useEffect(() => {
+    const fetch = () => {
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             fetchStorage();
         } else {
             setIsLoading(false);
         }
-    }, []);
+    };
 
     async function purge() {
         setIsLoading(true);
@@ -36,7 +36,7 @@ function useTemporaryStorage() {
         }
     }
 
-    return { storageData, isLoading, purge };
+    return { storageData, isLoading, purge, fetch };
 }
 
 export default useTemporaryStorage;

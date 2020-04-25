@@ -21,17 +21,10 @@ export async function apiAccessCheck(krav: ApiKrav, dateRange?: DateRange): Prom
     }
 }
 
-export const alderAccessCheck = (dateRange: DateRange): AccessCheck => {
+export const alderAccessCheck = (): AccessCheck => {
     return {
         name: ApiKrav.alder,
-        check: () => apiAccessCheck(ApiKrav.alder, dateRange),
-    };
-};
-
-export const selvstendigAccessCheck = (): AccessCheck => {
-    return {
-        name: ApiKrav.selvstendig,
-        check: () => apiAccessCheck(ApiKrav.selvstendig),
+        check: () => apiAccessCheck(ApiKrav.alder),
     };
 };
 

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { AccessCheckResult, AccessCheck } from '../types/AccessCheck';
 
 function useAccessCheck(accessCheck: AccessCheck) {
     const [result, setAccessCheckResult] = useState<AccessCheckResult | undefined>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
 
-    const fetchData = async () => {
+    const check = async () => {
         setError(undefined);
         try {
             setIsLoading(true);
@@ -20,11 +20,7 @@ function useAccessCheck(accessCheck: AccessCheck) {
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    return { result, isLoading, error };
+    return { result, isLoading, error, check };
 }
 
 export default useAccessCheck;

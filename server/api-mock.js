@@ -100,13 +100,13 @@ const startExpressServer = () => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.get('/soker-not-logged-in', (req, res) => {
-        res.send(401);
+        res.sendStatus(401);
     });
 
     server.get('/login', (req, res) => {
         setTimeout(() => {
-            res.send(404);
-        }, 3000);
+            res.sendStatus(404);
+        }, 5000);
     });
 
     server.get('/soker', (req, res) => {
@@ -162,13 +162,13 @@ const startExpressServer = () => {
 
     server.get('/tilgjengelig', (req, res) => {
         setTimeout(() => {
-            res.send(200);
+            res.sendStatus(200);
         }, 200);
     });
 
     server.get('/utilgjengelig', (req, res) => {
         setTimeout(() => {
-            res.send(503);
+            res.sendStatus(503);
         }, 200);
     });
 

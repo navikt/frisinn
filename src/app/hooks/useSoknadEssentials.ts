@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { getSøknadsperiode } from '../api/perioder';
 import { getPersonligeForetak } from '../api/personlige-foretak';
 import { getSoker } from '../api/soker';
 import { SoknadEssentials } from '../types/SoknadEssentials';
+import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
+    const [notLoggedIn, setNotLoggedIn] = useState<boolean | undefined>();
 
-    const fetchData = async () => {
+    const fetch = async () => {
+        setNotLoggedIn(undefined);
         setError(undefined);
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             const person = await getSoker();
             const currentSøknadsperiode = await getSøknadsperiode();
             const personligeForetak = await getPersonligeForetak();
@@ -23,17 +26,16 @@ function useSoknadEssentials() {
                 personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
             });
         } catch (error) {
+            if (isForbidden(error) || isUnauthorized(error)) {
+                setNotLoggedIn(true);
+            }
             setError(error);
         } finally {
             setIsLoading(false);
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    return { soknadEssentials, isLoading, error };
+    return { soknadEssentials, isLoading, notLoggedIn, error, fetch };
 }
 
 export default useSoknadEssentials;

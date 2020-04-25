@@ -1,5 +1,5 @@
 import React from 'react';
-import { Innholdstittel } from 'nav-frontend-typografi';
+import { Systemtittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
@@ -25,8 +25,8 @@ const NoAccessPage = ({ title, children }: Props) => {
             )}>
             <Box margin="xxxl">
                 <Guide svg={<VeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
-                    <Innholdstittel>{title}</Innholdstittel>
-                    {children}
+                    <Systemtittel>{title}</Systemtittel>
+                    <Box margin="m">{children}</Box>
                 </Guide>
             </Box>
         </Page>
