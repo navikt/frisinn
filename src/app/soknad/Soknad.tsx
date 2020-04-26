@@ -35,11 +35,11 @@ const Soknad = () => {
             navigateToSoknadFrontpage(history);
         }
     }
-    const { soknadEssentials } = essentials;
+    const { soknadEssentials, isDone: essentialsIsDone } = essentials;
     const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
     const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
     const isLoading =
-        !soknadEssentials ||
+        (!soknadEssentials && essentialsIsDone === false) ||
         essentials.isLoading ||
         alderCheck.isLoading ||
         tempStorage.isLoading ||

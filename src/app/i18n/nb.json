@@ -75,5 +75,5 @@
 
     "page.generalErrorPage.sidetittel": "Feil",
     "page.generalErrorPage.tittel": "Noe gikk galt...",
-    "page.generalErrorPage.tekst": "Beklager, her har det dessverre skjedd en feil."
+    "page.generalErrorPage.tekst": "Beklager, her har det dessverre skjedd en feil. Vennligst prøv igjen. Dersom feilen fortsetter, prøv igjen litt senere."
 }

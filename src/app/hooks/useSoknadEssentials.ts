@@ -8,6 +8,7 @@ import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
+    const [isDone, setIsDone] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
     const [notLoggedIn, setNotLoggedIn] = useState<boolean | undefined>();
@@ -31,11 +32,12 @@ function useSoknadEssentials() {
             }
             setError(error);
         } finally {
+            setIsDone(true);
             setIsLoading(false);
         }
     };
 
-    return { soknadEssentials, isLoading, notLoggedIn, error, fetch };
+    return { soknadEssentials, isLoading, isDone, notLoggedIn, error, fetch };
 }
 
 export default useSoknadEssentials;
