@@ -45,8 +45,8 @@ describe('selvstendigFormConfig', () => {
             søkerOmTaptInntektSomFrilanser: YesOrNo.YES,
         } as SelvstendigFormPayload;
     });
-    it('Søker både selvstendig og frilanser', () => {
+    it('Har hatt inntekt skal være synlig', () => {
         const { isVisible } = SelvstendigFormQuestions.getVisbility(values);
-        expect(isVisible(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+        expect(isVisible(SoknadFormField.selvstendigHarHattInntektFraForetak)).toBeTruthy();
     });
 });
