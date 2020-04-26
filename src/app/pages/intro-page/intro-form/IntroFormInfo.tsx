@@ -77,9 +77,25 @@ const ikkeFrilanserOgIkkeRettSomSelvstendig = () => (
     </>
 );
 
+const selvstendigIkkeTattUtLønn = () => (
+    <>
+        <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
+        For å kunne søke på denne ytelsen må du ha hatt inntekt fra foretaket. Dersom du har foretak som er registrert i
+        2019 eller tidligere, må du ha hatt inntekt i 2019. Dersom foretaket ditt er registrert i 2020, må du ha hatt
+        inntekt fra det i 2020.
+    </>
+);
+
 const hvaRegnesSomInntektstap = () => (
     <ExpandableInfo title="Hva regnes som inntektstap?">
         Inntekt som du normalt ville tatt ut, men som du ikke har kunnet som følge av koronautbruddet.
+    </ExpandableInfo>
+);
+const selvstendigLønn = () => (
+    <ExpandableInfo title="Les mer om krav til inntekt i 2019/2020">
+        For å kunne søke på denne ytelsen må du ha hatt inntekt fra foretaket. Dersom du har foretak som er registrert i
+        2019 eller tidligere, må du ha hatt inntekt i 2019. Dersom foretaket ditt er registrert i 2020, må du ha hatt
+        inntekt fra det i 2020.
     </ExpandableInfo>
 );
 
@@ -163,8 +179,10 @@ const fårDekketTapetSomFrilanserForklaring = () => (
 
 const IntroFormInfo = {
     ikkeGyldigAlder,
+    selvstendigIkkeTattUtLønn,
     selvstendigIkkeTapPgaKorona,
     selvstendigForSentInntektstap,
+    selvstendigLønn,
     selvstendigFårDekketTapet,
     frilanserIkkeTapPgaKorona,
     frilanserForSentInntektstap,

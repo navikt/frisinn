@@ -8,6 +8,7 @@ import { DateRange } from '../../../utils/dateUtils';
 export enum IntroFormField {
     'fødselsdato' = 'fødselsdato',
     'erSelvstendigNæringsdrivende' = 'erSelvstendigNæringsdrivende',
+    'selvstendigHarTattUtLønn' = 'selvstendigHarTattUtLønn',
     'selvstendigHarTaptInntektPgaKorona' = 'selvstendigHarTaptInntektPgaKorona',
     'selvstendigInntektstapStartetFørFrist' = 'selvstendigInntektstapStartetFørFrist',
     'selvstendigFårDekketTapet' = 'selvstendigFårDekketTapet',
@@ -22,6 +23,7 @@ export enum IntroFormField {
 export interface IntroFormData {
     [IntroFormField.fødselsdato]: Date;
     [IntroFormField.erSelvstendigNæringsdrivende]: YesOrNo;
+    [IntroFormField.selvstendigHarTattUtLønn]: YesOrNo;
     [IntroFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [IntroFormField.selvstendigInntektstapStartetFørFrist]: YesOrNo;
     [IntroFormField.selvstendigFårDekketTapet]: YesOrNo;
@@ -45,8 +47,13 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
         isIncluded: ({ fødselsdato, soknadsperiode }) => introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode),
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
-    [Q.selvstendigHarTaptInntektPgaKorona]: {
+    [Q.selvstendigHarTattUtLønn]: {
         isIncluded: ({ erSelvstendigNæringsdrivende }) => erSelvstendigNæringsdrivende === YesOrNo.YES,
+        isAnswered: ({ selvstendigHarTattUtLønn }) => yesOrNoIsAnswered(selvstendigHarTattUtLønn),
+    },
+    [Q.selvstendigHarTaptInntektPgaKorona]: {
+        parentQuestion: Q.selvstendigHarTattUtLønn,
+        isIncluded: ({ selvstendigHarTattUtLønn }) => selvstendigHarTattUtLønn === YesOrNo.YES,
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
     },
     [Q.selvstendigInntektstapStartetFørFrist]: {

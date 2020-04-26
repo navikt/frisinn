@@ -52,12 +52,14 @@ const frilanserIsAnswered = ({
 };
 const selvstendigIsAnswered = ({
     erSelvstendigNæringsdrivende,
+    selvstendigHarTattUtLønn,
     selvstendigHarTaptInntektPgaKorona,
     selvstendigFårDekketTapet,
     selvstendigInntektstapStartetFørFrist,
 }: IntroFormData): boolean => {
     return (
         erSelvstendigNæringsdrivende === YesOrNo.NO ||
+        selvstendigHarTattUtLønn === YesOrNo.NO ||
         selvstendigHarTaptInntektPgaKorona === YesOrNo.NO ||
         selvstendigInntektstapStartetFørFrist === YesOrNo.NO ||
         yesOrNoIsAnswered(selvstendigFårDekketTapet)

@@ -46,6 +46,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                     erSelvstendigNæringsdrivende,
                     selvstendigFårDekketTapet,
                     selvstendigHarTaptInntektPgaKorona,
+                    selvstendigHarTattUtLønn,
                     selvstendigInntektstapStartetFørFrist,
                     frilanserFårDekketTapet,
                     frilanserInntektstapStartetFørFrist,
@@ -95,6 +96,18 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                                 'Er du registrert som selvstendig næringsdrivende før 1. mars 2020?'
                                             }
                                         />
+                                    </FormQuestion>
+                                    <FormQuestion question={IntroFormField.selvstendigHarTattUtLønn}>
+                                        <FormComponent.YesOrNoQuestion
+                                            name={IntroFormField.selvstendigHarTattUtLønn}
+                                            legend={'Har du tatt hatt inntekt fra dine foretak i 2019 og 2020?'}
+                                            description={<Info.selvstendigLønn />}
+                                        />
+                                        {selvstendigHarTattUtLønn === YesOrNo.NO && (
+                                            <StopMessage>
+                                                <Info.selvstendigIkkeTattUtLønn />
+                                            </StopMessage>
+                                        )}
                                     </FormQuestion>
                                     <FormQuestion question={IntroFormField.selvstendigHarTaptInntektPgaKorona}>
                                         <FormComponent.YesOrNoQuestion
