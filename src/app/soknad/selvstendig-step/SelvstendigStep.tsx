@@ -20,15 +20,26 @@ import FormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import { SelvstendigFormQuestions } from './selvstendigFormConfig';
+import { SelvstendigFormQuestions, SelvstendigFormPayload } from './selvstendigFormConfig';
 import SelvstendigQuestion from './SelvstendigFormQuestion';
 import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import { selvstendigSkalOppgiInntekt2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
+// import selvstendigRegler from './selvstendigRegler';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const txt = selvstendigStepTexts;
+
+// const kjørRegler = (payload: SelvstendigFormPayload) => {
+//     return selvstendigRegler.map((regel) => {
+//         const resultat = regel.test(payload);
+//         return {
+//             key: regel.key,
+//             passerer: resultat.passerer,
+//         };
+//     });
+// };
 
 const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
@@ -53,14 +64,17 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
 
     const isLoading = availableDateRangeIsLoading;
 
-    const visibility = SelvstendigFormQuestions.getVisbility({
+    const inntektÅrstall = selvstendigSkalOppgiInntekt2019(personligeForetak) ? 2019 : 2020;
+    const payload: SelvstendigFormPayload = {
         ...values,
         ...soknadEssentials,
         availableDateRange,
-    });
-    const { isVisible, areAllQuestionsAnswered } = visibility;
+        inntektÅrstall,
+    };
+    const visibility = SelvstendigFormQuestions.getVisbility(payload);
 
-    const inntektÅrstall = selvstendigSkalOppgiInntekt2019(personligeForetak) ? 2019 : 2020;
+    const { isVisible, areAllQuestionsAnswered } = visibility;
+    // console.log(kjørRegler(payload));
 
     const hasValidSelvstendigFormData: boolean =
         areAllQuestionsAnswered() &&
@@ -109,11 +123,12 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                         legend={ensureString(txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode))}
                     />
                 </SelvstendigQuestion>
-                {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                    <StopMessage>
-                        <SelvstendigInfo.advarselIkkeTapPgaKorona />
-                    </StopMessage>
-                )}
+                {selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
+                    selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
+                        <StopMessage>
+                            <SelvstendigInfo.advarselIkkeTapPgaKorona />
+                        </StopMessage>
+                    )}
                 <SelvstendigQuestion question={Field.selvstendigInntektstapStartetDato}>
                     <FormComponents.DatePicker
                         name={Field.selvstendigInntektstapStartetDato}
@@ -149,25 +164,30 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             }
                             return (
                                 <>
-                                    <FormSection title="Ytelser fra NAV">
-                                        <SelvstendigQuestion question={Field.selvstendigHarYtelseFraNavSomDekkerTapet}>
-                                            <FormComponents.YesOrNoQuestion
-                                                name={Field.selvstendigHarYtelseFraNavSomDekkerTapet}
-                                                legend={ensureString(txt.selvstendigHarYtelseFraNavSomDekkerTapet)}
-                                            />
-                                        </SelvstendigQuestion>
-                                        <SelvstendigQuestion question={Field.selvstendigYtelseFraNavDekkerHeleTapet}>
-                                            <FormComponents.YesOrNoQuestion
-                                                name={Field.selvstendigYtelseFraNavDekkerHeleTapet}
-                                                legend={ensureString(txt.selvstendigYtelseFraNavDekkerHeleTapet)}
-                                            />
-                                        </SelvstendigQuestion>
-                                        {selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES && (
-                                            <StopMessage>
-                                                <SelvstendigInfo.ytelseDekkerHeleTapet />
-                                            </StopMessage>
-                                        )}
-                                    </FormSection>
+                                    {isVisible(Field.selvstendigHarYtelseFraNavSomDekkerTapet) && (
+                                        <FormSection title="Ytelser fra NAV">
+                                            <SelvstendigQuestion
+                                                question={Field.selvstendigHarYtelseFraNavSomDekkerTapet}>
+                                                <FormComponents.YesOrNoQuestion
+                                                    name={Field.selvstendigHarYtelseFraNavSomDekkerTapet}
+                                                    legend={ensureString(txt.selvstendigHarYtelseFraNavSomDekkerTapet)}
+                                                />
+                                            </SelvstendigQuestion>
+                                            <SelvstendigQuestion
+                                                question={Field.selvstendigYtelseFraNavDekkerHeleTapet}>
+                                                <FormComponents.YesOrNoQuestion
+                                                    name={Field.selvstendigYtelseFraNavDekkerHeleTapet}
+                                                    legend={ensureString(txt.selvstendigYtelseFraNavDekkerHeleTapet)}
+                                                />
+                                            </SelvstendigQuestion>
+                                            {values.selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
+                                                selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES && (
+                                                    <StopMessage>
+                                                        <SelvstendigInfo.ytelseDekkerHeleTapet />
+                                                    </StopMessage>
+                                                )}
+                                        </FormSection>
+                                    )}
                                     {isVisible(Field.selvstendigInntektIPerioden) && (
                                         <FormSection title="Inntekt i perioden du søker for">
                                             <SelvstendigQuestion question={Field.selvstendigInntektIPerioden}>
