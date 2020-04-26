@@ -9,6 +9,7 @@ export enum SoknadFormField {
     ønskerÅFortsetteKunFrilanserSøknad = 'ønskerÅFortsetteKunFrilanserSøknad',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
+    selvstendigHarHattInntektFraForetak = 'selvstendigHarHattInntektFraForetak',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
     selvstendigHarYtelseFraNavSomDekkerTapet = 'selvstendigHarYtelseFraNavSomDekkerTapet',
@@ -47,6 +48,7 @@ export interface SoknadFormData {
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
     [SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad]?: YesOrNo;
+    [SoknadFormField.selvstendigHarHattInntektFraForetak]: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: YesOrNo;
@@ -86,8 +88,9 @@ export const initialSoknadFormData: Partial<SoknadFormData> = {
 };
 
 export type SelvstendigFormData = Pick<
-    Partial<SoknadFormData>,
+    SoknadFormData,
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
+    | SoknadFormField.selvstendigHarHattInntektFraForetak
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato
     | SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet
@@ -106,8 +109,9 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigRevisorTelefon
     | SoknadFormField.selvstendigRevisorNAVKanTaKontakt
 >;
+
 export type FrilanserFormData = Pick<
-    Partial<SoknadFormData>,
+    SoknadFormData,
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
     | SoknadFormField.frilanserErNyetablert
@@ -117,7 +121,8 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
 >;
 
-export const initialSelvstendigValues: SelvstendigFormData = {
+export const initialSelvstendigValues: Partial<SelvstendigFormData> = {
+    selvstendigHarHattInntektFraForetak: undefined,
     selvstendigHarTaptInntektPgaKorona: undefined,
     selvstendigInntektstapStartetDato: undefined,
     selvstendigHarYtelseFraNavSomDekkerTapet: undefined,
@@ -137,7 +142,7 @@ export const initialSelvstendigValues: SelvstendigFormData = {
     selvstendigInntektSomFrilanserIPerioden: undefined,
 };
 
-export const initialFrilanserValues: FrilanserFormData = {
+export const initialFrilanserValues: Partial<FrilanserFormData> = {
     frilanserHarTaptInntektPgaKorona: undefined,
     frilanserErNyetablert: undefined,
     frilanserHarYtelseFraNavSomDekkerTapet: undefined,

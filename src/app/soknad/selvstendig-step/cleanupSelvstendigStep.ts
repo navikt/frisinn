@@ -1,11 +1,16 @@
 import { SoknadFormData, initialSelvstendigValues } from '../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
-export const cleanupSelvstendigStep = (
-    values: SoknadFormData,
-    hasValidSelvstendigFormData: boolean
-): SoknadFormData => {
-    if (hasValidSelvstendigFormData === false || values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO) {
+export const cleanupSelvstendigStep = (values: SoknadFormData): SoknadFormData => {
+    if (values.selvstendigHarHattInntektFraForetak === YesOrNo.NO) {
+        const cleanedValues = {
+            ...values,
+            ...initialSelvstendigValues,
+            selvstendigHarHattInntektFraForetak: YesOrNo.NO,
+        };
+        return cleanedValues;
+    }
+    if (values.selvstendigHarTaptInntektPgaKorona === YesOrNo.NO) {
         const cleanedValues = {
             ...values,
             ...initialSelvstendigValues,

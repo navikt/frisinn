@@ -4,6 +4,7 @@ import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
+import { pluralize } from '../../utils/pluralize';
 
 const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => (
     <>
@@ -55,6 +56,24 @@ const infoInntektForetak = () => (
     </ExpandableInfo>
 );
 
+const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall: årstall }: { inntektÅrstall: number }) => (
+    <>
+        <Element>Du kan ikke søke som selvstendig næringsdrivende for denne perioden</Element>
+        <>Du må ha hatt inntekt i {årstall} for å kunne søke på denne ytelsen.</>
+    </>
+);
+
+const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[]; inntektÅrstall: number }) => (
+    <>
+        <ExpandableInfo title={`Hvorfor inntekt i ${inntektÅrstall}?`}>
+            Dette er basert på hvilket år {pluralize(foretak.length, 'foretaket ditt', 'ditt eldste for')} ble
+            registrert. For å kunne søke på denne ytelsen må du ha hatt inntekt fra foretaket. Dersom du har foretak som
+            er registrert i 2019 eller tidligere, må du ha hatt inntekt i 2019. Dersom foretaket ditt er registrert i
+            2020, må du ha hatt inntekt fra det i 2020.
+        </ExpandableInfo>
+    </>
+);
+
 const SelvstendigInfo = {
     intro,
     infoInntektForetak,
@@ -62,6 +81,8 @@ const SelvstendigInfo = {
     advarselIkkeTapPgaKorona,
     advarselAlderSjekkFeiler,
     ytelseDekkerHeleTapet,
+    advarselIkkeHattInntektFraForetak,
+    infoInntektÅrstall,
 };
 
 export default SelvstendigInfo;

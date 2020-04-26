@@ -3,6 +3,7 @@ import { SoknadFormField } from '../../types/SoknadFormData';
 import { DateRange } from '../../utils/dateUtils';
 
 export interface SelvstendigStepFormText {
+    [SoknadFormField.selvstendigHarHattInntektFraForetak]: (årstall: number) => string;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
@@ -23,6 +24,8 @@ export interface SelvstendigStepFormText {
 }
 
 export const selvstendigStepTexts: SelvstendigStepFormText = {
+    selvstendigHarHattInntektFraForetak: (årstall: number) =>
+        `Har du hatt inntekt som selvstendig næringsdrivende i ${årstall}?`,
     selvstendigHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som selvstendig næringsdrivende på grunn av koronatiltak i perioden ${formatDateRange(
             dateRange

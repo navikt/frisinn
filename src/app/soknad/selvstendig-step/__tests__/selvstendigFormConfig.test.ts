@@ -27,9 +27,10 @@ const appEssentials: SoknadEssentials = {
         tidligsteRegistreringsdato: apiStringDateToDate('2001-04-30'),
     },
 };
-const emptyPayload: SelvstendigFormPayload = {
+const emptyPayload: Partial<SelvstendigFormPayload> = {
     ...initialSoknadFormData,
-    selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
+    selvstendigHarHattInntektFraForetak: YesOrNo.UNANSWERED,
+    selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     selvstendigErFrilanser: YesOrNo.UNANSWERED,
     selvstendigHarHattInntektSomFrilanserIPerioden: YesOrNo.UNANSWERED,
     ...appEssentials,

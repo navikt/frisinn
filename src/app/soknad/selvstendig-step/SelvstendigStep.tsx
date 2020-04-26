@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    validateRequiredNumber,
-    validateYesOrNoIsAnswered,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
@@ -27,6 +24,7 @@ import { SelvstendigFormQuestions } from './selvstendigFormConfig';
 import SelvstendigQuestion from './SelvstendigFormQuestion';
 import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
+import { selvstendigSkalOppgiInntekt2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -36,9 +34,12 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
     const {
         selvstendigInntektstapStartetDato,
+        selvstendigHarHattInntektFraForetak,
         selvstendigHarTaptInntektPgaKorona,
         søkerOmTaptInntektSomFrilanser,
         selvstendigYtelseFraNavDekkerHeleTapet,
+        selvstendigInntekt2019,
+        selvstendigInntekt2020,
     } = values;
     const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
     const { foretak = [] } = personligeForetak || {};
@@ -59,10 +60,14 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     });
     const { isVisible, areAllQuestionsAnswered } = visibility;
 
+    const inntektÅrstall = selvstendigSkalOppgiInntekt2019(personligeForetak) ? 2019 : 2020;
+
     const hasValidSelvstendigFormData: boolean =
         areAllQuestionsAnswered() &&
         isValidDateRange(availableDateRange) &&
+        selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
+        hasValidHistoriskInntekt(values, inntektÅrstall) &&
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {
@@ -74,19 +79,34 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
             id={StepID.SELVSTENDIG}
             resetSoknad={resetSoknad}
             onValidFormSubmit={onValidSubmit}
-            stepCleanup={(values) => cleanupSelvstendigStep(values, hasValidSelvstendigFormData)}
+            stepCleanup={(values) => cleanupSelvstendigStep(values)}
             showSubmitButton={
-                !isLoading && (hasValidSelvstendigFormData || søkerOmTaptInntektSomFrilanser === YesOrNo.YES)
+                !isLoading &&
+                (hasValidSelvstendigFormData ||
+                    (areAllQuestionsAnswered() && søkerOmTaptInntektSomFrilanser === YesOrNo.YES))
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <SelvstendigInfo.intro antallForetak={antallForetak} foretak={foretak} />
                 </Guide>
+                <SelvstendigQuestion question={Field.selvstendigHarHattInntektFraForetak}>
+                    <FormComponents.YesOrNoQuestion
+                        name={Field.selvstendigHarHattInntektFraForetak}
+                        legend={ensureString(txt.selvstendigHarHattInntektFraForetak(inntektÅrstall))}
+                        description={
+                            <SelvstendigInfo.infoInntektÅrstall foretak={foretak} inntektÅrstall={inntektÅrstall} />
+                        }
+                    />
+                </SelvstendigQuestion>
+                {selvstendigHarHattInntektFraForetak === YesOrNo.NO && (
+                    <StopMessage>
+                        <SelvstendigInfo.advarselIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />
+                    </StopMessage>
+                )}
                 <SelvstendigQuestion question={Field.selvstendigHarTaptInntektPgaKorona}>
                     <FormComponents.YesOrNoQuestion
                         name={Field.selvstendigHarTaptInntektPgaKorona}
                         legend={ensureString(txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode))}
-                        validate={validateYesOrNoIsAnswered}
                     />
                 </SelvstendigQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
@@ -210,6 +230,11 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                     ])}
                                                 />
                                             </SelvstendigQuestion>
+                                            {selvstendigInntekt2019 === 0 && (
+                                                <StopMessage>
+                                                    Du må ha hatt inntekt i 2019 for å kunne søke på denne ytelsen
+                                                </StopMessage>
+                                            )}
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigInntekt2020) && (
@@ -225,6 +250,11 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
                                             </SelvstendigQuestion>
+                                            {selvstendigInntekt2020 === 0 && (
+                                                <StopMessage>
+                                                    Du må ha hatt inntekt i 2020 for å kunne søke på denne ytelsen
+                                                </StopMessage>
+                                            )}
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigHarRegnskapsfører) && (
