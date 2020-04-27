@@ -25,19 +25,17 @@ const advarselAlderSjekkFeiler = () => (
 
 const hvordanBeregneInntekt = () => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
-        <Box margin="l">
-            <Element>Inntekter som skal tas med:</Element>
-            <ul>
-                <li>Inntektene du har på ditt arbeid som frilanser</li>
-                <li>Inntekter som er utbetalinger fra NAV som frilanser</li>
-            </ul>
-            <Element>Inntekter som IKKE skal tas med:</Element>
-            <ul>
-                <li>Eventuell uføretrygd</li>
-                <li>Eventuell alderspensjon</li>
-                <li>Eventuell inntekt som selvstendig næringsdrivende</li>
-            </ul>
-        </Box>
+        <Element>Inntekter som skal tas med:</Element>
+        <ul>
+            <li>Inntektene du har på ditt arbeid som frilanser</li>
+            <li>Inntekter som er utbetalinger fra NAV som frilanser</li>
+        </ul>
+        <Element>Inntekter som IKKE skal tas med:</Element>
+        <ul>
+            <li>Eventuell uføretrygd</li>
+            <li>Eventuell alderspensjon</li>
+            <li>Eventuell inntekt som selvstendig næringsdrivende</li>
+        </ul>
     </ExpandableInfo>
 );
 const infoInntektForetak = () => (

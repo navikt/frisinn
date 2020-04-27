@@ -63,7 +63,7 @@ const ytelseDekkerHeleTapet = () => (
 
 const infoInntektForetak = () => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
-        <p>Hvis du har flere selskap, skal du legge inn samlet beløp </p>
+        Hvis du har flere selskap, skal du legge inn samlet beløp
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul>
