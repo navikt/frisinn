@@ -40,7 +40,9 @@ export enum SoknadFormField {
     bekrefterSelvstendigInntektIPerioden = 'bekrefterSelvstendigInntektIPerioden',
     bekrefterSelvstendigInntektI2019 = 'bekrefterSelvstendigInntektI2019',
     bekrefterSelvstendigInntektI2020 = 'bekrefterSelvstendigInntektI2020',
+    bekrefterSelvstendigFrilanserInntektIPerioden = 'bekrefterSelvstendigFrilanserInntektIPerioden',
     bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
+    bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
     bekrefterSjekkAvFrilanserinntektIRegister = 'bekrefterSjekkAvFrilanserinntektIRegister',
     frilanserCalculatedDateRange = 'frilanserCalculatedDateRange',
 }
@@ -85,7 +87,9 @@ export interface SoknadFormData {
     [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2019]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2020]?: YesOrNo;
+    [SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterFrilansinntektIPerioden]?: YesOrNo;
+    [SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterSjekkAvFrilanserinntektIRegister]?: YesOrNo;
 }
 

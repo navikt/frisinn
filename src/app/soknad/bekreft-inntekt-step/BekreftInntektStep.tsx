@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import Lenke from 'nav-frontend-lenker';
 import { Panel } from 'nav-frontend-paneler';
 import { Element } from 'nav-frontend-typografi';
 import { Locale } from 'common/types/Locale';
@@ -15,14 +14,21 @@ import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
+import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
+import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
+import Lenke from 'nav-frontend-lenker';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
-    const { selvstendigCalculatedDateRange } = values;
+    const { selvstendigCalculatedDateRange, frilanserCalculatedDateRange } = values;
 
-    const { selvstendigNæringsdrivende, frilanser } =
-        mapFormDataToApiData(soknadEssentials, values, locale as Locale) || {};
+    const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
+
+    if (!apiValues) {
+        return <SoknadErrorPage>Det oppstod en feil under visningen av siden</SoknadErrorPage>;
+    }
+    const { selvstendigNæringsdrivende, frilanser } = apiValues;
 
     const veiledning = (
         <ExpandableInfo title="Veiledning">
@@ -86,6 +92,11 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         });
     }, []);
 
+    const { isVisible } = BekreftInntektFormQuestions.getVisbility({
+        ...values,
+        apiValues,
+    });
+
     return (
         <SoknadStep
             id={StepID.BEKREFT_INNTEKT}
@@ -98,116 +109,159 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                         Det er viktig at du kontrollerer at du har gitt oss korrekt informasjon. Dersom tallene ikke
                         stemmer må du endre de for å få de riktige. Det er ditt ansvar at opplysningene er riktige og
                         fullstendige. Inntekten du oppgir skal/ vil være den samme du rapporterer til skatt som
-                        skattepliktig inntekt i skattemeldingen (selvangivelsen). Alle inntekter og bilag må kunne
-                        bokføres etter bokføringsloven § X.
+                        skattepliktig inntekt i skattemeldingen (selvangivelsen).
                     </p>
-                    <ExpandableInfo title="Les mer om bokføringsloven" filledBackground={false}>
-                        <p>
-                            <strong>
-                                Alle som leverer næringsoppgave og/eller mva-melding til myndighetene er
-                                bokføringspliktig.
-                            </strong>
-                        </p>
-                        <p>
-                            Bokføring handler om at alle bilag skal registreres, og det skal gjøres på en måte slik at
-                            det ikke kan endres senere.
-                        </p>
-                        <p>
-                            Dokumentasjon for bokførte opplysninger som skal oppbevares i fem år etter regnskapsårets
-                            slutt, jf. bokføringsloven § 13 annet ledd, jf. første ledd nr. 3. Bokførte opplysninger
-                            skal være resultat av faktisk inntrufne hendelser eller regnskapsmessige vurderinger og skal
-                            gjelde den bokføringspliktige virksomheten.
-                        </p>
-                        <p>
-                            <Lenke href="https://lovdata.no/dokument/NL/lov/2004-11-19-73" target="_blank">
-                                Les mer hos lovdata.no
-                            </Lenke>{' '}
-                            (åpnes i eget vindu)
-                        </p>
-                    </ExpandableInfo>
                 </Panel>
             </Box>
             {selvstendigNæringsdrivende && selvstendigCalculatedDateRange && (
                 <FormSection title="Inntekt som selvstendig næringsdrivende">
-                    <BekreftSumRad
-                        values={values}
-                        editStepID={StepID.SELVSTENDIG}
-                        field={SoknadFormField.bekrefterSelvstendigInntektIPerioden}
-                        tittel={
-                            <>
-                                Inntekt fra selskap i perioden{' '}
-                                <DateRangeView dateRange={selvstendigCalculatedDateRange} />
-                            </>
-                        }
-                        sum={selvstendigNæringsdrivende.inntektIPerioden}
-                        info={veiledning}
-                    />
-                    {bekrefterSelvstendigInntektIPerioden === YesOrNo.YES && (
-                        <>
-                            {selvstendigNæringsdrivende.inntekt2019 !== undefined && (
-                                <BekreftSumRad
-                                    values={values}
-                                    editStepID={StepID.SELVSTENDIG}
-                                    field={SoknadFormField.bekrefterSelvstendigInntektI2019}
-                                    tittel={<>Inntekt du har tatt ut fra dine selskaper i 2019</>}
-                                    sum={selvstendigNæringsdrivende.inntekt2019}
-                                    info={
-                                        <ExpandableInfo title="Veiledning">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo
-                                            provident sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium
-                                            architecto consequatur pariatur nobis labore nulla similique sit
-                                            accusantium!
-                                        </ExpandableInfo>
-                                    }
-                                />
-                            )}
-                            {selvstendigNæringsdrivende.inntekt2020 !== undefined && (
-                                <BekreftSumRad
-                                    values={values}
-                                    editStepID={StepID.SELVSTENDIG}
-                                    field={SoknadFormField.bekrefterSelvstendigInntektI2020}
-                                    tittel={<>Inntekt du har tatt ut fra dine selskaper i 2019</>}
-                                    sum={selvstendigNæringsdrivende.inntekt2020}
-                                    info={
-                                        <ExpandableInfo title="Veiledning">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo
-                                            provident sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium
-                                            architecto consequatur pariatur nobis labore nulla similique sit
-                                            accusantium!
-                                        </ExpandableInfo>
-                                    }
-                                />
-                            )}
-                            {spørOmInntektSomFrilanserForSelvstendig &&
-                                selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser && (
-                                    <>
-                                        <BekreftSumRad
-                                            values={values}
-                                            editStepID={StepID.SELVSTENDIG}
-                                            field={SoknadFormField.bekrefterFrilansinntektIPerioden}
-                                            tittel={
-                                                <>
-                                                    Inntekt som frilanser i perioden{' '}
-                                                    <DateRangeView dateRange={selvstendigCalculatedDateRange} />
-                                                </>
-                                            }
-                                            sum={selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser}
-                                            info={
-                                                <ExpandableInfo title="Veiledning">
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius
-                                                    explicabo provident sapiente, repudiandae itaque numquam maxime ad
-                                                    fugiat a laudantium architecto consequatur pariatur nobis labore
-                                                    nulla similique sit accusantium!
-                                                </ExpandableInfo>
-                                            }
-                                        />
-                                    </>
-                                )}
-                        </>
+                    {isVisible(SoknadFormField.bekrefterSelvstendigInntektIPerioden) && (
+                        <BekreftSumRad
+                            values={values}
+                            editStepID={StepID.SELVSTENDIG}
+                            field={SoknadFormField.bekrefterSelvstendigInntektIPerioden}
+                            tittel={
+                                <>
+                                    Inntekt fra selskap i perioden{' '}
+                                    <DateRangeView dateRange={selvstendigCalculatedDateRange} />
+                                </>
+                            }
+                            sum={selvstendigNæringsdrivende.inntektIPerioden}
+                            info={veiledning}
+                        />
+                    )}
+                    {isVisible(SoknadFormField.bekrefterSelvstendigInntektI2019) &&
+                        selvstendigNæringsdrivende.inntekt2019 && (
+                            <BekreftSumRad
+                                values={values}
+                                editStepID={StepID.SELVSTENDIG}
+                                field={SoknadFormField.bekrefterSelvstendigInntektI2019}
+                                tittel={<>Inntekt du har tatt ut fra dine selskaper i 2019</>}
+                                sum={selvstendigNæringsdrivende.inntekt2019}
+                                info={
+                                    <ExpandableInfo title="Veiledning">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo
+                                        provident sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium
+                                        architecto consequatur pariatur nobis labore nulla similique sit accusantium!
+                                    </ExpandableInfo>
+                                }
+                            />
+                        )}
+                    {isVisible(SoknadFormField.bekrefterSelvstendigInntektI2020) &&
+                        selvstendigNæringsdrivende.inntekt2020 && (
+                            <BekreftSumRad
+                                values={values}
+                                editStepID={StepID.SELVSTENDIG}
+                                field={SoknadFormField.bekrefterSelvstendigInntektI2020}
+                                tittel={<>Inntekt du har tatt ut fra dine selskaper i 2019</>}
+                                sum={selvstendigNæringsdrivende.inntekt2020}
+                                info={
+                                    <ExpandableInfo title="Veiledning">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo
+                                        provident sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium
+                                        architecto consequatur pariatur nobis labore nulla similique sit accusantium!
+                                    </ExpandableInfo>
+                                }
+                            />
+                        )}
+                    {isVisible(SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden) && (
+                        <BekreftSumRad
+                            values={values}
+                            editStepID={StepID.SELVSTENDIG}
+                            field={SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden}
+                            tittel={
+                                <>
+                                    Inntekt som frilanser i perioden{' '}
+                                    <DateRangeView dateRange={selvstendigCalculatedDateRange} />
+                                </>
+                            }
+                            sum={selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser}
+                            info={
+                                <ExpandableInfo title="Veiledning">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo
+                                    provident sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium
+                                    architecto consequatur pariatur nobis labore nulla similique sit accusantium!
+                                </ExpandableInfo>
+                            }
+                        />
                     )}
                 </FormSection>
             )}
-            {frilanser && <>Bekreft frilanserinfo</>}
+            {frilanser && frilanserCalculatedDateRange && isVisible(SoknadFormField.bekrefterFrilansinntektIPerioden) && (
+                <FormSection title="Inntekt som frilanser">
+                    <BekreftSumRad
+                        values={values}
+                        editStepID={StepID.FRILANSER}
+                        field={SoknadFormField.bekrefterFrilansinntektIPerioden}
+                        tittel={
+                            <>
+                                Inntekt som frilanser i perioden{' '}
+                                <DateRangeView dateRange={frilanserCalculatedDateRange} />
+                            </>
+                        }
+                        sum={frilanser.inntektIPerioden}
+                        info={
+                            <ExpandableInfo title="Veiledning">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo provident
+                                sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium architecto
+                                consequatur pariatur nobis labore nulla similique sit accusantium!
+                            </ExpandableInfo>
+                        }
+                    />
+                    {isVisible(SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden) && (
+                        <BekreftSumRad
+                            values={values}
+                            editStepID={StepID.FRILANSER}
+                            field={SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden}
+                            tittel={
+                                <>
+                                    Inntekt som frilanser i perioden{' '}
+                                    <DateRangeView dateRange={frilanserCalculatedDateRange} />
+                                </>
+                            }
+                            sum={frilanser.inntektIPeriodenSomSelvstendigNæringsdrivende}
+                            info={
+                                <ExpandableInfo title="Veiledning">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eius explicabo
+                                    provident sapiente, repudiandae itaque numquam maxime ad fugiat a laudantium
+                                    architecto consequatur pariatur nobis labore nulla similique sit accusantium!
+                                </ExpandableInfo>
+                            }
+                        />
+                    )}
+                    {isVisible(SoknadFormField.bekrefterSjekkAvFrilanserinntektIRegister) && (
+                        <BekreftSumRad
+                            values={values}
+                            editStepID={StepID.FRILANSER}
+                            field={SoknadFormField.bekrefterSjekkAvFrilanserinntektIRegister}
+                            tittel={<>Inntekten NAV har registrert på meg for 2019 er korrekt</>}
+                            info={
+                                <ExpandableInfo title="Hvordan kan du kontrollere dette?">
+                                    <p>
+                                        Vi kan dessverre ikke vise inntekten du har registrert som frilanser i denne
+                                        søknadsdialogen, men du kan finne og kontrollere dette hos{' '}
+                                        <Lenke
+                                            href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/"
+                                            target="_blank">
+                                            skatteetaten sine nettsider
+                                        </Lenke>{' '}
+                                        (åpnes i nytt vindu) .
+                                    </p>
+                                    <p>
+                                        Dersom opplysningene ikke stemmer, må du ta dette med dem som har rapportert
+                                        inntekten. NAV kan ikke påvirke eller endre denne informasjonen.
+                                    </p>
+                                    <p>
+                                        Vi anbefaler ikke å sende søknad med feilaktige /u korrekte opplysninger, da du
+                                        vil få feilaktig bergeningsgrunnlag. Det er ditt ansvar å sende korrekte
+                                        opplysninger til NAV.
+                                    </p>
+                                </ExpandableInfo>
+                            }
+                        />
+                    )}
+                </FormSection>
+            )}
         </SoknadStep>
     );
 };

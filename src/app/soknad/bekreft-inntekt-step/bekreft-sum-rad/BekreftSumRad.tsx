@@ -15,7 +15,7 @@ interface Props {
     values: SoknadFormData;
     field: SoknadFormField;
     tittel: React.ReactNode;
-    sum: number;
+    sum?: number;
     info?: React.ReactNode;
     editStepID: StepID;
 }
@@ -29,9 +29,7 @@ const BekreftSumRad = ({ field, tittel, sum, info, values, editStepID }: Props) 
             legend={
                 <div className={bem.element('tittelOgSum')}>
                     <div className={bem.element('tittel')}>{tittel}</div>
-                    <strong className={bem.element('sum')}>
-                        <KronerSvar verdi={sum} />
-                    </strong>
+                    <strong className={bem.element('sum')}>{sum !== undefined && <KronerSvar verdi={sum} />}</strong>
                 </div>
             }
             labels={{
