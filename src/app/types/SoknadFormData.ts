@@ -37,6 +37,11 @@ export enum SoknadFormField {
     frilanserErSelvstendigNæringsdrivende = 'frilanserErSelvstendigNæringsdrivende',
     frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
     frilanserInntektSomSelvstendigIPerioden = 'frilanserInntektSomSelvstendigIPerioden',
+    bekrefterSelvstendigInntektIPerioden = 'bekrefterSelvstendigInntektIPerioden',
+    bekrefterSelvstendigInntektI2019 = 'bekrefterSelvstendigInntektI2019',
+    bekrefterSelvstendigInntektI2020 = 'bekrefterSelvstendigInntektI2020',
+    bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
+    bekrefterSjekkAvFrilanserinntektIRegister = 'bekrefterSjekkAvFrilanserinntektIRegister',
     frilanserCalculatedDateRange = 'frilanserCalculatedDateRange',
 }
 
@@ -77,6 +82,11 @@ export interface SoknadFormData {
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
     [SoknadFormField.frilanserCalculatedDateRange]?: DateRange;
+    [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
+    [SoknadFormField.bekrefterSelvstendigInntektI2019]?: YesOrNo;
+    [SoknadFormField.bekrefterSelvstendigInntektI2020]?: YesOrNo;
+    [SoknadFormField.bekrefterFrilansinntektIPerioden]?: YesOrNo;
+    [SoknadFormField.bekrefterSjekkAvFrilanserinntektIRegister]?: YesOrNo;
 }
 
 export const initialSoknadFormData: Partial<SoknadFormData> = {

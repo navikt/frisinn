@@ -4,7 +4,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import GlobalRoutes, { getRouteUrl } from '../config/routeConfig';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
-import ConfirmationPage from '../pages/confirmation-page/ConfirmationPage';
+import ReceiptPage from '../pages/receipt-page/ReceiptPage';
 import SoknadEntryPage from '../pages/soknad-entry-page/SoknadEntryPage';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
@@ -17,6 +17,7 @@ import SelvstendigStep from './selvstendig-step/SelvstendigStep';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
 import Lenke from 'nav-frontend-lenker';
+import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
 
 interface Props {
     resetSoknad: () => void;
@@ -62,6 +63,14 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
                         onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
                     />
                 );
+            case StepID.BEKREFT_INNTEKT:
+                return (
+                    <BekreftInfoStep
+                        resetSoknad={resetSoknad}
+                        soknadEssentials={soknadEssentials}
+                        onValidSubmit={() => navigateToNextStepFrom(StepID.BEKREFT_INNTEKT)}
+                    />
+                );
             case StepID.SUMMARY:
                 return (
                     <SummaryStep
@@ -104,7 +113,7 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
             {soknadSteps.map((step) => {
                 return <Route key={step} path={getSoknadRoute(step)} render={() => renderSoknadStep(step)} />;
             })}
-            <Route path={GlobalRoutes.SOKNAD_SENT} render={() => <ConfirmationPage />} />
+            <Route path={GlobalRoutes.SOKNAD_SENT} render={() => <ReceiptPage />} />
             <Route path={GlobalRoutes.SOKNAD_ERROR} render={() => <SoknadErrorPage />} />
             <Route path="*">
                 <SoknadErrorPage>

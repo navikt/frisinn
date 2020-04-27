@@ -78,9 +78,9 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const hasValidSelvstendigFormData: boolean =
         areAllQuestionsAnswered() &&
         isValidDateRange(availableDateRange) &&
+        hasValidHistoriskInntekt(values, inntektÅrstall) &&
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
-        hasValidHistoriskInntekt(values, inntektÅrstall) &&
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {

@@ -174,7 +174,7 @@ export const mapFrilanserFormDataToApiData = (
 };
 
 export const mapFormDataToApiData = (
-    appEssentials: SoknadEssentials,
+    soknadEssentials: SoknadEssentials,
     formData: SoknadFormData,
     språk: Locale
 ): SoknadApiData | undefined => {
@@ -184,8 +184,8 @@ export const mapFormDataToApiData = (
         språk: (språk as any) === 'en' ? 'nn' : språk,
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,
-        selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(appEssentials, formData),
-        frilanser: mapFrilanserFormDataToApiData(appEssentials, formData),
+        selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(soknadEssentials, formData),
+        frilanser: mapFrilanserFormDataToApiData(soknadEssentials, formData),
     };
 
     return apiData;

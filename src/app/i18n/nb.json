@@ -57,6 +57,10 @@
     "step.frilanser.stepTitle": "Frilanser",
     "step.frilanser.nextButtonLabel": "Fortsett",
 
+    "step.bekreftInntekt.pageTitle": "Bekreft inntekter",
+    "step.bekreftInntekt.stepTitle": "Sjekk at inntektene stemmer før du går videre",
+    "step.bekreftInntekt.nextButtonLabel": "Fortsett",
+
     "step.oppsummering.pageTitle": "Oppsummering",
     "step.oppsummering.stepTitle": "Oppsummering",
     "step.oppsummering.nextButtonLabel": "Send inn søknad",
@@ -66,12 +70,12 @@
     "fieldvalidation.samtykkeErPåkrevd": "Du må bekrefte at du har lest og forstått dine plikter",
     "fieldvalidation.bekrefterOpplysningerPåkrevd": "Du må bekrefte opplysningene",
 
-    "page.confirmation.sidetittel": "Vi har mottatt søknaden din",
-    "page.confirmation.tittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",
-    "page.confirmation.undertittel": "Hva skjer videre nå?",
-    "page.confirmation.hvaSkjer1": "Søknaden din vil bli behandlet innen noen få dager",
-    "page.confirmation.hvaSkjer2": "Når søknaden er ferdig behandlet, får du et svarbrev fra oss",
-    "page.confirmation.hvaSkjer3": "Dersom søknaden blir innvilget, vil pengene komme på konto ...",
+    "page.receipt.sidetittel": "Vi har mottatt søknaden din",
+    "page.receipt.tittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",
+    "page.receipt.undertittel": "Hva skjer videre nå?",
+    "page.receipt.hvaSkjer1": "Søknaden din vil bli behandlet innen noen få dager",
+    "page.receipt.hvaSkjer2": "Når søknaden er ferdig behandlet, får du et svarbrev fra oss",
+    "page.receipt.hvaSkjer3": "Dersom søknaden blir innvilget, vil pengene komme på konto ...",
 
     "page.generalErrorPage.sidetittel": "Feil",
     "page.generalErrorPage.tittel": "Noe gikk galt...",

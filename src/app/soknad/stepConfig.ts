@@ -6,6 +6,7 @@ import { getSoknadRoute } from '../utils/routeUtils';
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',
     'FRILANSER' = 'frilanser',
+    'BEKREFT_INNTEKT' = 'bekreftInntekt',
     'SUMMARY' = 'oppsummering',
 }
 
@@ -41,6 +42,7 @@ const getAvailableStep = (values?: SoknadFormData): StepID[] => {
     if (values?.søkerOmTaptInntektSomFrilanser === YesOrNo.YES) {
         steps.push(StepID.FRILANSER);
     }
+    steps.push(StepID.BEKREFT_INNTEKT);
     steps.push(StepID.SUMMARY);
     return steps;
 };
