@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { guid } from 'nav-frontend-js-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import CollapsableContainer from './CollapsableContainer';
@@ -11,11 +12,12 @@ interface Props {
     title?: string;
     closeTitle?: string;
     initialOpen?: boolean;
+    filledBackground?: boolean;
 }
 
 const bem = bemUtils('expandableInfo');
 
-const ExpandableInfo = ({ children, initialOpen, closeTitle, title }: Props) => {
+const ExpandableInfo = ({ children, initialOpen, closeTitle, title, filledBackground = true }: Props) => {
     const [isOpen, setIsOpen] = useState<boolean>(initialOpen || false);
     const [contentId] = useState(guid());
 
@@ -28,7 +30,7 @@ const ExpandableInfo = ({ children, initialOpen, closeTitle, title }: Props) => 
             </div>
             <div className={bem.element('content')} id={contentId}>
                 <CollapsableContainer isOpen={isOpen} animated={true}>
-                    {children}
+                    {filledBackground ? <AlertStripeInfo>{children}</AlertStripeInfo> : children}
                 </CollapsableContainer>
             </div>
         </div>
