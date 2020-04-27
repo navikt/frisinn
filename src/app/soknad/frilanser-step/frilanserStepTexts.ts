@@ -9,20 +9,22 @@ export interface FrilanserStepFormText {
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
     [SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet]: string;
     [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
-    [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]: string;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]: string;
 }
 
 export const frilanserStepTexts: FrilanserStepFormText = {
     frilanserHarTaptInntektPgaKorona: (dateRange: DateRange) =>
-        `Har du tapt inntekt som frilanser på grunn av koronatiltak i perioden ${formatDateRange(dateRange)}?`,
-    frilanserErNyetablert: 'Startet du som frilanser, og hadde inntekt første gang, etter 1. september 2019?',
+        `Har du tapt inntekt (ikke tapt oppdrag) som frilanser som følge av koronautbruddet i perioden ${formatDateRange(
+            dateRange
+        )}?`,
+    frilanserErNyetablert: 'Startet du som frilanser etter 1. september 2019?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
-    frilanserHarYtelseFraNavSomDekkerTapet: 'Har du ytelser fra NAV som dekker hele eller deler av inntektstapet?',
-    frilanserYtelseFraNavDekkerHeleTapet: 'Dekker disse ytelsene hele inntektstapet?',
+    frilanserHarYtelseFraNavSomDekkerTapet:
+        'Har du allerede en utbetaling fra NAV som dekker hele eller deler av inntektstapet ditt som frilanser?',
+    frilanserYtelseFraNavDekkerHeleTapet: 'Dekker utbetalingen du får fra NAV hele inntektstapet ditt?',
     frilanserInntektIPerioden: (dateRange: DateRange) =>
-        `Hvilken inntekt hadde du i perioden ${formatDateRange(dateRange)}?`,
-    frilanserHarHattInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>
-        `Har du hatt inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(dateRange)}?`,
-    frilanserInntektSomSelvstendigIPerioden: `Hva hadde du i inntekt som selvstendig næringsdrivende i denne perioden?`,
+        `Hvor mye hadde du i inntekt i perioden ${formatDateRange(dateRange)}?`,
+    frilanserHarHattInntektSomSelvstendigIPerioden: `Har du tatt ut noe inntekt som selvstendig næringsdrivende i perioden du søker for?`,
+    frilanserInntektSomSelvstendigIPerioden: 'Hvor mye hadde du i inntekt?',
 };

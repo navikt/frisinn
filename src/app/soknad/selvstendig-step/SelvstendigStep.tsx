@@ -56,11 +56,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const { foretak = [] } = personligeForetak || {};
     const antallForetak = foretak.length;
 
-    const {
-        availableDateRange,
-        isLimitedDateRange,
-        isLoading: availableDateRangeIsLoading,
-    } = useAvailableSøknadsperiode(selvstendigInntektstapStartetDato, currentSøknadsperiode);
+    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
+        selvstendigInntektstapStartetDato,
+        currentSøknadsperiode
+    );
 
     const isLoading = availableDateRangeIsLoading;
 
@@ -143,7 +142,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             <AvailableDateRangeInfo
                                 inntektstapStartetDato={selvstendigInntektstapStartetDato}
                                 availableDateRange={availableDateRange}
-                                isLimitedDateRange={isLimitedDateRange}
                             />
                         </Box>
                     )}

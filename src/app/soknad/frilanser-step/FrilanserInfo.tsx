@@ -10,7 +10,12 @@ const advarselForSentInntektstap = () => (
     </>
 );
 
-const advarselIkkeTapPgaKorona = () => <>Du kan ikke søke om kompensasjon for tap som ikke er forårsaket av Korona</>;
+const advarselIkkeTapPgaKorona = () => (
+    <>
+        For å søke om kompensasjon for tapt inntekt som frilanser, må du helt eller delvis ha tapt inntekt som følge av
+        koronautbruddet.
+    </>
+);
 const advarselAlderSjekkFeiler = () => (
     <>
         <Element>Du kan ikke søke som frilanser for denne perioden</Element>
@@ -37,6 +42,34 @@ const hvordanBeregneInntekt = () => (
 );
 const infoInntektForetak = () => (
     <>
+        <Element>Inntekter som skal tas med:</Element>
+        <ul>
+            <li>Inntekter du får for oppdrag som frilanser</li>
+            <li>
+                <p>Utbetalinger fra NAV som kompenserer inntekten din som frilanser.</p>
+                <ul>
+                    Hvilke utbetalinger fra NAV gjelder dette?
+                    <li>Dagpenger</li>
+                    <li>Omsorgspenger</li>
+                    <li>Sykepenger</li>
+                    <li>Foreldrepenger</li>
+                    <li>Svangerskapspenger</li>
+                    <li>Pleiepenger</li>
+                    <li>Opplæringspenger</li>
+                    <li>Arbeidsavklaringspenger</li>
+                </ul>
+            </li>
+        </ul>
+
+        <Element>Inntekter som ikke skal tas med:</Element>
+        <ul>
+            <li>Inntekter som selvstendig næringsdrivende</li>
+            <li>Inntekter som arbeidstaker</li>
+            <li>Alderspensjon</li>
+            <li>Uføretrygd </li>
+            <li>Sosial stønad</li>
+        </ul>
+
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul>
@@ -54,7 +87,31 @@ const infoInntektForetak = () => (
 );
 
 const ytelseDekkerHeleTapet = () => (
-    <>Når du har en annen NAV ytelse som dekker hele tapet, kan du ikke søke på denne ytelsen</>
+    <>
+        For å søke om kompensasjon for tapt inntekt som frilanser, kan ikke inntektstapet allerede være dekket. Det vil
+        si at du ikke kan søke om kompensasjon for tapt inntekt som frilanser.
+    </>
+);
+
+const andreUtbetalingerFraNAV = () => (
+    <>
+        <ExpandableInfo title="Hva vil dette si?">
+            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke om
+            kompensasjon. Utbetalingene fra NAV kan være én av disse:
+            <ul>
+                <li>Dagpenger</li>
+                <li>Omsorgspenger</li>
+                <li>Sykepenger</li>
+                <li>Foreldrepenger</li>
+                <li>Svangerskapspenger</li>
+                <li>Pleiepenger</li>
+                <li>Opplæringspenger</li>
+                <li>Arbeidsavklaringspenger</li>
+            </ul>
+            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
+            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
+        </ExpandableInfo>
+    </>
 );
 
 const FrilanserInfo = {
@@ -64,6 +121,7 @@ const FrilanserInfo = {
     advarselAlderSjekkFeiler,
     hvordanBeregneInntekt,
     ytelseDekkerHeleTapet,
+    andreUtbetalingerFraNAV,
 };
 
 export default FrilanserInfo;

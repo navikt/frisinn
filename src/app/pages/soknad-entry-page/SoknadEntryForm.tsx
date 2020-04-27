@@ -93,13 +93,13 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                 )}
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}>
                     <FormComponents.YesOrNoQuestion
-                        legend={`Ønsker du å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
+                        legend={`Skal du søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
                         name={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
                     />
                 </EntryQuestion>
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomFrilanser}>
                     <FormComponents.YesOrNoQuestion
-                        legend="Ønsker du å søke kompensasjon for tapt inntekt som frilanser?"
+                        legend="Skal du søke om kompensasjon for tapt inntekt som frilanser?"
                         name={SoknadFormField.søkerOmTaptInntektSomFrilanser}
                     />
                 </EntryQuestion>

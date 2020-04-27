@@ -41,11 +41,25 @@ const SoknadEntryPage = ({
             <Box margin="xxxl">
                 <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
                     <Box margin="l">
-                        <Undertittel>Kompensasjon for inntektsstap i april 2020</Undertittel>
+                        <Undertittel>
+                            Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet
+                        </Undertittel>
                     </Box>
                     <Box margin="m">
-                        Du kan ha rett på dette dersom du har tapt inntekt som selvstendig næringsdrivende eller
-                        frilanser denne perioden.
+                        <p>
+                            Denne søknaden gjelder for deg som helt eller delvis tapt inntekt som selvstendig
+                            næringsdrivende og/eller frilanser som følge av koronautbruddet. Kompensasjonen du kan få
+                            regnes ut fra tidligere inntekter som du har tatt ut i lønn.
+                        </p>
+                        <p>
+                            Du kan søke om inntektstap som gjelder fra tidligst 16. Mars. De første 16 dagene av
+                            inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 1. april
+                            2020.
+                        </p>
+                        <p>
+                            Du må søke etterskuddsvis måned for måned. Inntektstap som gjelder for mai, kan du tidligst
+                            sende inn søknad om fra begynnelsen av juni.
+                        </p>
                     </Box>
                 </Guide>
                 {!harKontonummer && (
