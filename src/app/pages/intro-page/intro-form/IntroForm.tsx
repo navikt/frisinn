@@ -100,8 +100,8 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.selvstendigHarTattUtLønn}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigHarTattUtLønn}
-                                            legend={'Har du tatt hatt inntekt fra dine foretak i 2019 og 2020?'}
-                                            description={<Info.selvstendigLønn />}
+                                            legend={`Har du tatt ut inntekt fra selskapet/selskapene i 2019 og 2020?`}
+                                            description={<Info.selvstendigHvaMenesMedInntekt />}
                                         />
                                         {selvstendigHarTattUtLønn === YesOrNo.NO && (
                                             <StopMessage>

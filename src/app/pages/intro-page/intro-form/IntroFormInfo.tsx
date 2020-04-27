@@ -91,11 +91,11 @@ const hvaRegnesSomInntektstap = () => (
         Inntekt som du normalt ville tatt ut, men som du ikke har kunnet som følge av koronautbruddet.
     </ExpandableInfo>
 );
-const selvstendigLønn = () => (
-    <ExpandableInfo title="Les mer om krav til inntekt i 2019/2020">
-        For å kunne søke på denne ytelsen må du ha hatt inntekt fra foretaket. Dersom du har foretak som er registrert i
-        2019 eller tidligere, må du ha hatt inntekt i 2019. Dersom foretaket ditt er registrert i 2020, må du ha hatt
-        inntekt fra det i 2020.
+const selvstendigHvaMenesMedInntekt = () => (
+    <ExpandableInfo title="Hva menes med dette?">
+        For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
+        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet er registrert i 2020, må
+        du ha tatt ut inntekt i løpet av 2020.
     </ExpandableInfo>
 );
 
@@ -182,7 +182,7 @@ const IntroFormInfo = {
     selvstendigIkkeTattUtLønn,
     selvstendigIkkeTapPgaKorona,
     selvstendigForSentInntektstap,
-    selvstendigLønn,
+    selvstendigHvaMenesMedInntekt,
     selvstendigFårDekketTapet,
     frilanserIkkeTapPgaKorona,
     frilanserForSentInntektstap,
