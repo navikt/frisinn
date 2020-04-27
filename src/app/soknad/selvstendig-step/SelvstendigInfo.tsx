@@ -5,27 +5,47 @@ import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
 import { pluralize } from '../../utils/pluralize';
+import DateView from '../../components/date-view/DateView';
+import moment from 'moment';
 
-const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => (
+const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => {
+    if (antallForetak === 1) {
+        return (
+            <>
+                <p>Det er 1 selskap registrert på deg i Brønnøysundregistret.</p>
+                <ForetakList foretak={foretak} />
+            </>
+        );
+    }
+    return (
+        <>
+            <p>
+                Det er {antallForetak} selskap registrert på deg i Brønnøysundregisteret. Du skal oppgi inntektene for
+                alle selskapene, selv om du kanskje bare har tapt inntekt i det ene selskapet.
+            </p>
+            <ExpandableInfo closeTitle={'Skjul liste'} title={'Vis selskap som er registrert'}>
+                <ForetakList foretak={foretak} />
+            </ExpandableInfo>
+        </>
+    );
+};
+
+const advarselForSentInntektstap = ({ nesteMaaned }: { nesteMaaned: Date }) => (
     <>
-        <p>
-            Vi har funnet {antallForetak} foretak registrert på deg som du kan søke om tapt inntekt for. Informasjonen
-            du oppgir på denne siden skal gjelde for alle foretakene dine samlet.
-        </p>
-        <ExpandableInfo closeTitle={'Skjul liste'} title={'Vis foretak vi har registrert'}>
-            <ForetakList foretak={foretak} />
-        </ExpandableInfo>
+        <Element>Du må vente med å søke</Element>
+        Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene av
+        inntektstapet ditt. Hvis du har inntektstap i <DateView date={nesteMaaned} format="monthAndYear" /> kan du
+        tidligst sende søknad i begynnelsen av{' '}
+        <DateView date={moment(nesteMaaned).add(1, 'month').toDate()} format="monthAndYear" />.
     </>
 );
 
-const advarselForSentInntektstap = () => (
+const advarselIkkeTapPgaKorona = () => (
     <>
-        Du kan ikke søke for denne perioden fordi du får dekket først fra og med den 17. dagen etter inntektsstapet
-        startet.
+        For å søke om kompensasjon for tapt inntekt, må du helt eller delvis ha tapt inntekt som selvstendig
+        næringsdrivende som følge av koronautbruddet.
     </>
 );
-
-const advarselIkkeTapPgaKorona = () => <>Du kan ikke søke om kompensasjon for tap som ikke er forårsaket av Korona</>;
 
 const advarselAlderSjekkFeiler = () => (
     <>
@@ -35,15 +55,19 @@ const advarselAlderSjekkFeiler = () => (
 );
 
 const ytelseDekkerHeleTapet = () => (
-    <>Når du har en annen NAV ytelse som dekker hele tapet, kan du ikke søke på denne ytelsen</>
+    <>
+        For å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, kan ikke inntektstapet allerede
+        være dekket. Det vil si at du ikke kan søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende.
+    </>
 );
 
 const infoInntektForetak = () => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
+        <p>Hvis du har flere selskap, skal du legge inn samlet beløp </p>
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul>
-                <li>Inntektene du har på dine foretak. Dette er omsetning - utgifter</li>
+                <li>Inntektene du har tatt ut som lønn fra selskap</li>
                 <li>Inntekter som er utbetalinger fra NAV som selvstendig næringsdrivende</li>
             </ul>
             <Element>Inntekter som IKKE skal tas med:</Element>
@@ -74,6 +98,28 @@ const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[];
     </>
 );
 
+const andreUtbetalingerFraNAV = () => (
+    <>
+        <ExpandableInfo title="Hva vil dette si?">
+            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
+            ikke søke om kompensasjon. Utbetalingene fra NAV kan være én av disse:
+            <ul>
+                <li>Omsorgspenger</li>
+                <li>Sykepenger</li>
+                <li>Foreldrepenger</li>
+                <li>Svangerskapspenger</li>
+                <li>Pleiepenger</li>
+                <li>Opplæringspenger</li>
+                <li>Arbeidsavklaringspenger</li>
+            </ul>
+            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
+            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
+        </ExpandableInfo>
+    </>
+);
+
+const infoInntektFlereSelskaper = () => <>Du skal legge inn samlet beløp fra alle dine selskaper</>;
+
 const SelvstendigInfo = {
     intro,
     infoInntektForetak,
@@ -83,6 +129,8 @@ const SelvstendigInfo = {
     ytelseDekkerHeleTapet,
     advarselIkkeHattInntektFraForetak,
     infoInntektÅrstall,
+    andreUtbetalingerFraNAV,
+    infoInntektFlereSelskaper,
 };
 
 export default SelvstendigInfo;
