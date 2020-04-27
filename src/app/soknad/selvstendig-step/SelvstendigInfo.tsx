@@ -67,7 +67,7 @@ const infoInntektForetak = () => (
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul>
-                <li>Inntektene du har tatt ut som lønn fra selskap</li>
+                <li>Inntektene du har tatt ut av selskap</li>
                 <li>Inntekter som er utbetalinger fra NAV som selvstendig næringsdrivende</li>
             </ul>
             <Element>Inntekter som IKKE skal tas med:</Element>
