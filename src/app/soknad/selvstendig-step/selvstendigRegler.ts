@@ -11,8 +11,6 @@ enum SelvstendigNæringdsrivendeRegler {
 export type SelvstendigRegel = Regel<SelvstendigNæringdsrivendeRegler, SelvstendigFormPayload>;
 export type SelvstendigRegelStatus = RegelStatus<SelvstendigNæringdsrivendeRegler, SelvstendigFormPayload>;
 
-// const getRegelIntlKey = (key: SelvstendigNæringdsrivendeRegler) => `regel.${key}`;
-
 const harHattTapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormPayload): RegelTestresultat => {
     const passerer = selvstendigHarTaptInntektPgaKorona === YesOrNo.YES;
     return {
@@ -51,5 +49,18 @@ const selvstendigRegler: Regel<SelvstendigNæringdsrivendeRegler, SelvstendigFor
         test: harHattHistoriskInntekt,
     },
 ];
+
+export const SelvstendigChecks = {
+    [SelvstendigNæringdsrivendeRegler.harHattHistoriskInntekt]: {
+        key: SelvstendigNæringdsrivendeRegler.harHattTapPgaKorona,
+        type: RegelType.FEIL,
+        test: harHattTapPgaKorona,
+    },
+    [SelvstendigNæringdsrivendeRegler.harHattTapPgaKorona]: {
+        key: SelvstendigNæringdsrivendeRegler.harHattHistoriskInntekt,
+        type: RegelType.FEIL,
+        test: harHattHistoriskInntekt,
+    },
+};
 
 export default selvstendigRegler;
