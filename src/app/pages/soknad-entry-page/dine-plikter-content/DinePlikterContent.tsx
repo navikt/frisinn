@@ -11,10 +11,10 @@ const DinePlikterContent: React.FunctionComponent = () => {
     return (
         <>
             <Systemtittel>{getText('tittel')}</Systemtittel>
-            <ul>
+            <ul className="infoList">
                 <li>
                     <Normaltekst>{getText('part1')}</Normaltekst>
-                    <ul>
+                    <ul className="infoList">
                         <li>{getText('part1a')}</li>
                         <li>{getText('part1b')}</li>
                     </ul>

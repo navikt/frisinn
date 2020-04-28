@@ -9,7 +9,6 @@
     "modal.behandlingAvPersonalia.tittel": "Om behandling av personopplysninger",
     "modal.personalopplysninger.tittel": "Slik behandler NAV personopplysningene dine",
     "modal.personalopplysninger.intro.1": "NAV innhenter og mottar opplysninger om deg når du sender inn en melding. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.",
-    "modal.personalopplysninger.intro.2b": "nav.no/omsorgspenger",
     "modal.personalopplysninger.opplysninger.tittel": "Opplysningene vi innhenter",
     "modal.personalopplysninger.opplysninger.part1": "Opplysningene kommer enten fra deg eller fra offentlige registre:",
     "modal.personalopplysninger.opplysninger.1": "arbeidsforholdene dine og inntekten din",
@@ -17,13 +16,17 @@
     "modal.personalopplysninger.opplysninger.4": "tilknytningen din til Norge",
     "modal.personalopplysninger.opplysninger.5": "trygdeordninger du kan ha rett til i andre land",
     "modal.personalopplysninger.opplysninger.part2": "Vi kan også sende opplysninger om deg til trygdemyndigheter i andre land.",
-
+    "modal.personalopplysninger.svar.tittel": "Svar på søknaden",
+    "modal.personalopplysninger.svar.part1": "Du får et brev fra NAV når søknaden din er behandlet. Brevet inneholder",
+    "modal.personalopplysninger.svar.1": "begrunnelse for beslutningen og reglene som er brukt",
+    "modal.personalopplysninger.svar.2": "hvordan du får innsyn i saksbehandlingen",
+    "modal.personalopplysninger.svar.3": "hvordan du kan klage hvis du er uenig",
     "modal.personalopplysninger.personvern.tittel": "Personvern i NAV",
     "modal.personalopplysninger.personvern.part1a": "Vil du vite mer om hvordan NAV behandler personopplysninger? Se",
     "modal.personalopplysninger.personvern.part1b": "nav.no/personvern",
 
     "modal.minePlikter.tittel": "Mine plikter",
-    "modal.minePlikter.part1": "Jeg forstår at det kan få konsekvenser for retten min til omsorgspenger hvis jeg",
+    "modal.minePlikter.part1": "Jeg forstår at det kan få konsekvenser for retten min til denne kompensasjonen hvis jeg",
     "modal.minePlikter.part1a": "gir uriktig informasjon eller",
     "modal.minePlikter.part1b": "holder tilbake opplysninger",
     "modal.minePlikter.part2a": "Jeg har lest og forstått det som står på",
@@ -67,8 +70,11 @@
 
     "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til omsorgspenger.",
 
+    "fieldvalidation.påkrevd": "Feltet er påkrevd",
     "fieldvalidation.samtykkeErPåkrevd": "Du må bekrefte at du har lest og forstått dine plikter",
     "fieldvalidation.bekrefterOpplysningerPåkrevd": "Du må bekrefte opplysningene",
+    "fieldvalidation.dato_utenfor_gyldig_tidsrom": "Dato er ikke innfor gyldig tidsrom",
+    "fieldvalidation.ugyldig_telefonnummer": "Telefonnummer er ikke gyldig",
 
     "page.receipt.sidetittel": "Vi har mottatt søknaden din",
     "page.receipt.tittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",

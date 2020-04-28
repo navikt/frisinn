@@ -1,5 +1,8 @@
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import {
+    createFieldValidationError,
+    fieldIsRequiredError,
+} from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { FieldValidationResult } from 'common/validation/types';
@@ -9,6 +12,7 @@ export enum AppFieldValidationErrors {
     'samtykkeErPåkrevd' = 'fieldvalidation.samtykkeErPåkrevd',
     'bekrefterOpplysningerPåkrevd' = 'fieldvalidation.bekrefterOpplysningerPåkrevd',
     'dato_utenfor_gyldig_tidsrom' = 'fieldvalidation.dato_utenfor_gyldig_tidsrom',
+    'ugyldig_telefonnummer' = 'fieldvalidation.ugyldig_telefonnummer',
 }
 
 export const MAX_INNTEKT = 9999999;
@@ -69,6 +73,15 @@ const datoErInnenforTidsrom = (dato: Date, range: Partial<DateRange>): boolean =
 export const validateDateInRange = (tidsrom: Partial<DateRange>) => (date: any): FieldValidationResult => {
     if (!datoErInnenforTidsrom(date, tidsrom)) {
         return createFieldValidationError(AppFieldValidationErrors.dato_utenfor_gyldig_tidsrom);
+    }
+    return undefined;
+};
+export const validatePhoneNumber = (value: string): FieldValidationResult => {
+    if (!hasValue(value)) {
+        return fieldIsRequiredError();
+    }
+    if (value.length < 8 || value.length > 12) {
+        return createAppFieldValidationError(AppFieldValidationErrors.ugyldig_telefonnummer);
     }
     return undefined;
 };

@@ -115,10 +115,12 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, SoknadFormFi
     [Field.selvstendigRegnskapsførerNavn]: {
         isIncluded: ({ selvstendigHarRegnskapsfører }) => selvstendigHarRegnskapsfører === YesOrNo.YES,
         isAnswered: ({ selvstendigRegnskapsførerNavn }) => hasValue(selvstendigRegnskapsførerNavn),
+        isOptional: () => true, // enable submit button before these are filled
     },
     [Field.selvstendigRegnskapsførerTelefon]: {
         isIncluded: ({ selvstendigHarRegnskapsfører }) => selvstendigHarRegnskapsfører === YesOrNo.YES,
         isAnswered: ({ selvstendigRegnskapsførerTelefon }) => hasValue(selvstendigRegnskapsførerTelefon),
+        isOptional: () => true, // enable submit button before these are filled
     },
     [Field.selvstendigHarRevisor]: {
         parentQuestion: Field.selvstendigHarRegnskapsfører,
@@ -128,14 +130,17 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, SoknadFormFi
     [Field.selvstendigRevisorNavn]: {
         isIncluded: ({ selvstendigHarRevisor }) => selvstendigHarRevisor === YesOrNo.YES,
         isAnswered: ({ selvstendigRevisorNavn }) => hasValue(selvstendigRevisorNavn),
+        isOptional: () => true, // enable submit button before these are filled
     },
     [Field.selvstendigRevisorTelefon]: {
         isIncluded: ({ selvstendigHarRevisor }) => selvstendigHarRevisor === YesOrNo.YES,
         isAnswered: ({ selvstendigRevisorTelefon }) => hasValue(selvstendigRevisorTelefon),
+        isOptional: () => true, // enable submit button before these are filled
     },
     [Field.selvstendigRevisorNAVKanTaKontakt]: {
         isIncluded: ({ selvstendigHarRevisor }) => selvstendigHarRevisor === YesOrNo.YES,
         isAnswered: ({ selvstendigRevisorNAVKanTaKontakt }) => yesOrNoIsAnswered(selvstendigRevisorNAVKanTaKontakt),
+        isOptional: () => true, // enable submit button before these are filled
     },
 };
 

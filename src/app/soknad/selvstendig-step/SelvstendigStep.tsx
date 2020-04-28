@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import {
+    validateRequiredNumber,
+    validateRequiredField,
+    validateYesOrNoIsAnswered,
+} from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
@@ -13,7 +17,7 @@ import { QuestionVisibilityContext } from '../../context/QuestionVisibilityConte
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField as Field } from '../../types/SoknadFormData';
-import { MAX_INNTEKT, validateAll } from '../../validation/fieldValidations';
+import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import FormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
@@ -25,21 +29,10 @@ import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import { selvstendigSkalOppgiInntekt2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import moment from 'moment';
-// import selvstendigRegler from './selvstendigRegler';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
 const txt = selvstendigStepTexts;
-
-// const kjørRegler = (payload: SelvstendigFormPayload) => {
-//     return selvstendigRegler.map((regel) => {
-//         const resultat = regel.test(payload);
-//         return {
-//             key: regel.key,
-//             passerer: resultat.passerer,
-//         };
-//     });
-// };
 
 const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
@@ -73,7 +66,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const visibility = SelvstendigFormQuestions.getVisbility(payload);
 
     const { isVisible, areAllQuestionsAnswered } = visibility;
-    // console.log(kjørRegler(payload));
 
     const hasValidSelvstendigFormData: boolean =
         areAllQuestionsAnswered() &&
@@ -302,6 +294,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                             <FormComponents.Input
                                                                 name={Field.selvstendigRegnskapsførerNavn}
                                                                 label={txt.selvstendigRegnskapsførerNavn}
+                                                                validate={validateRequiredField}
                                                             />
                                                         </SelvstendigFormQuestion>
                                                         <SelvstendigFormQuestion
@@ -311,6 +304,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                 label={txt.selvstendigRegnskapsførerTelefon}
                                                                 bredde="M"
                                                                 maxLength={12}
+                                                                validate={validatePhoneNumber}
                                                             />
                                                         </SelvstendigFormQuestion>
                                                     </ResponsivePanel>
@@ -340,6 +334,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                             <FormComponents.Input
                                                                 name={Field.selvstendigRevisorNavn}
                                                                 label={txt.selvstendigRevisorNavn}
+                                                                validate={validateRequiredField}
                                                             />
                                                         </SelvstendigFormQuestion>
                                                         <SelvstendigFormQuestion
@@ -349,6 +344,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                 name={Field.selvstendigRevisorTelefon}
                                                                 bredde="M"
                                                                 maxLength={12}
+                                                                validate={validatePhoneNumber}
                                                             />
                                                         </SelvstendigFormQuestion>
                                                         <SelvstendigFormQuestion
@@ -356,6 +352,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                             <FormComponents.YesOrNoQuestion
                                                                 name={Field.selvstendigRevisorNAVKanTaKontakt}
                                                                 legend={txt.selvstendigRevisorNAVKanTaKontakt}
+                                                                validate={validateYesOrNoIsAnswered}
                                                             />
                                                         </SelvstendigFormQuestion>
                                                     </ResponsivePanel>

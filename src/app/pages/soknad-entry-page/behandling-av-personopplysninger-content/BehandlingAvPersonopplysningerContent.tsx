@@ -16,7 +16,6 @@ const BehandlingAvPersonopplysningerContent: React.FunctionComponent = () => {
 
             <Box margin="l">
                 <Normaltekst>{getText('intro.1')}</Normaltekst>
-                <Normaltekst>{getText('intro.2a')} .</Normaltekst>
             </Box>
             <Box margin="xl">
                 <Ingress>{getText('opplysninger.tittel')}</Ingress>
@@ -24,7 +23,6 @@ const BehandlingAvPersonopplysningerContent: React.FunctionComponent = () => {
                 <ul>
                     <li>{getText('opplysninger.1')}</li>
                     <li>{getText('opplysninger.2')}</li>
-                    <li>{getText('opplysninger.3')}</li>
                     <li>{getText('opplysninger.4')}</li>
                     <li>{getText('opplysninger.5')}</li>
                 </ul>
