@@ -10,7 +10,7 @@ import { SoknadFormData } from '../types/SoknadFormData';
 import { getStepTexts } from '../utils/stepUtils';
 import SoknadFormComponents from './SoknadFormComponents';
 import { getStepConfig } from './stepConfig';
-import { Prompt } from 'react-router';
+// import { Prompt } from 'react-router';
 
 export interface FormikStepProps {
     children: React.ReactNode;
@@ -39,7 +39,7 @@ const SoknadStep: React.FunctionComponent<Props> = ({ resetSoknad, stepCleanup, 
 
     return (
         <Step stepConfig={stepConfig} {...restProps}>
-            <Prompt when={true} message="Are you sure you want to leave?" />
+            {/* <Prompt when={true} message="Are you sure you want to leave?" /> */}
             <SoknadFormComponents.Form
                 onValidSubmit={onValidFormSubmit}
                 includeButtons={false}
