@@ -71,6 +71,16 @@ const personligeForetak = {
             navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
             registreringsdato: '2020-01-01',
         },
+        {
+            organisasjonsnummer: '995298775',
+            navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
+            registreringsdato: '2020-01-01',
+        },
+        {
+            organisasjonsnummer: '995298775',
+            navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
+            registreringsdato: '2020-01-01',
+        },
     ],
     tidligsteRegistreringsdato: '2020-01-01',
 };

@@ -36,7 +36,7 @@ const SoknadEntryPage = ({
         <Page
             title="Kan du bruke søknaden?"
             topContentRenderer={() => (
-                <StepBanner text="Inntektskompensasjon for selvstendig næringsdrivende og frilansere" />
+                <StepBanner text="Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere" />
             )}>
             <Box margin="xxxl">
                 <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
@@ -47,7 +47,7 @@ const SoknadEntryPage = ({
                     </Box>
                     <Box margin="m">
                         <p>
-                            Denne søknaden gjelder for deg som helt eller delvis tapt inntekt som selvstendig
+                            Denne søknaden gjelder for deg som helt eller delvis har tapt inntekt som selvstendig
                             næringsdrivende og/eller frilanser som følge av koronautbruddet. Kompensasjonen du kan få
                             regnes ut fra tidligere inntekter som du har tatt ut i lønn.
                         </p>

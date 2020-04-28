@@ -4,7 +4,7 @@ import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
-import { pluralize } from '../../utils/pluralize';
+// import { pluralize } from '../../utils/pluralize';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
 
@@ -20,10 +20,10 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     return (
         <>
             <p>
-                Det er {antallForetak} selskap registrert på deg i Brønnøysundregisteret. Du skal oppgi inntektene for
-                alle selskapene, selv om du kanskje bare har tapt inntekt i det ene selskapet.
+                Det er {antallForetak} selskap registrert på deg i Brønnøysundregisteret. Du skal oppgi inntektene
+                samlet for alle selskapene, selv om du kanskje bare har tapt inntekt i det ene selskapet.
             </p>
-            <ExpandableInfo closeTitle={'Skjul liste'} title={'Vis selskap som er registrert'}>
+            <ExpandableInfo closeTitle={'Skjul liste'} title={'Vis selskap som er registrert'} filledBackground={false}>
                 <ForetakList foretak={foretak} />
             </ExpandableInfo>
         </>
@@ -49,7 +49,6 @@ const advarselIkkeTapPgaKorona = () => (
 
 const advarselAlderSjekkFeiler = () => (
     <>
-        <Element>Du kan ikke søke som selvstendig næringsdrivende for denne perioden</Element>
         <p style={{ marginTop: '.5rem' }}>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
     </>
 );
@@ -82,18 +81,16 @@ const infoInntektForetak = () => (
 
 const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall: årstall }: { inntektÅrstall: number }) => (
     <>
-        <Element>Du kan ikke søke som selvstendig næringsdrivende for denne perioden</Element>
-        <>Du må ha hatt inntekt i {årstall} for å kunne søke på denne ytelsen.</>
+        <>Du må ha hatt inntekt før 1. mars i {årstall} for å kunne søke.</>
     </>
 );
 
 const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[]; inntektÅrstall: number }) => (
     <>
         <ExpandableInfo title={`Hvorfor inntekt i ${inntektÅrstall}?`}>
-            Dette er basert på hvilket år {pluralize(foretak.length, 'foretaket ditt', 'ditt eldste for')} ble
-            registrert. For å kunne søke på denne ytelsen må du ha hatt inntekt fra foretaket. Dersom du har foretak som
-            er registrert i 2019 eller tidligere, må du ha hatt inntekt i 2019. Dersom foretaket ditt er registrert i
-            2020, må du ha hatt inntekt fra det i 2020.
+            For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt
+            fra selskapet. Hvis selskapet er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis
+            selskapet ditt er registrert i 2020, må du ha tatt ut inntekt i 2020.
         </ExpandableInfo>
     </>
 );

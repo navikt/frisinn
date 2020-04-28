@@ -112,10 +112,16 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                 {infoStates.isSelvstendigButNoForetakFound && (
                     <FormBlock>
                         <Guide kompakt={true} svg={<VeilederSVG mood="uncertain" />} fargetema="advarsel">
-                            Vi kunne ikke finne noen foretak registrert på deg.
                             <p>
-                                Her må det komme mer informasjon om hva bruker skal gjøre dersom bruker mener at dette
-                                er feil.
+                                Det er ikke registrert noe selskap på deg som selvstendig næringsdrivende. Hvis du mener
+                                det er feil at det ikke er registrert selskap på deg som selvstendig næringsdrivende, må
+                                du kontakte Brønnøysundregisteret.
+                            </p>
+                            <p>
+                                For å være registrert som selvstendig næringsdrivende må du enten ha et
+                                enkeltpersonforetak (EK), et ansvarlig selskap (ANS), eller et ansvarlig selskap med
+                                delt ansvar (DA). Selskapet må være registrert før 1. mars 2020 for å kunne søke
+                                kompensasjon gjennom denne ordningen.
                             </p>
                         </Guide>
                     </FormBlock>

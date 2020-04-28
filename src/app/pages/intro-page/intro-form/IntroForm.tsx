@@ -179,9 +179,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.frilanserHarTaptInntektPgaKorona}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilanserHarTaptInntektPgaKorona}
-                                            legend={
-                                                'Har du tapt inntekt som frilanser i perioden på grunn av koronasituasjonen?'
-                                            }
+                                            legend={'Har du tapt inntekt som frilanser som følge av koronautbruddet?'}
                                         />
                                         {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
                                             <StopMessage>

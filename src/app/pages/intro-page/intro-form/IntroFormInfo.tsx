@@ -7,7 +7,8 @@ import Lenke from 'nav-frontend-lenker';
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
-        Du må ha vært mellom fra 18 og 67 år i perioden <DateRangeView dateRange={periode} />
+        <Element>Du kan ikke søke om kompensasjon for tapt inntekt</Element>
+        For å søke må du ha vært mellom fra 18 og 67 år i perioden <DateRangeView dateRange={periode} />
     </>
 );
 
@@ -80,9 +81,9 @@ const ikkeFrilanserOgIkkeRettSomSelvstendig = () => (
 const selvstendigIkkeTattUtLønn = () => (
     <>
         <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
-        For å kunne søke på denne ytelsen må du ha hatt inntekt fra foretaket. Dersom du har foretak som er registrert i
-        2019 eller tidligere, må du ha hatt inntekt i 2019. Dersom foretaket ditt er registrert i 2020, må du ha hatt
-        inntekt fra det i 2020.
+        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt fra
+        selskapet. Hvis selskapet er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet
+        ditt er registrert i 2020, må du ha tatt ut inntekt i 2020.
     </>
 );
 
@@ -126,7 +127,10 @@ const harAlleredeSøkt = () => (
         <ul>
             <li>ikke gå videre med denne søknaden, eller å </li>
 
-            <li>trekke den andre søknaden du har hos NAV, og gå videre til å søke om denne kompensasjonen </li>
+            <li>
+                trekke den andre søknaden du har hos NAV, og gå videre til å søke om denne kompensasjonen. I disse
+                tilfellene tar du kontakt med NAV på 55 55 33 33.
+            </li>
         </ul>
         Du kan kun få dekket det samme inntektstapet én gang.
     </>
@@ -134,10 +138,8 @@ const harAlleredeSøkt = () => (
 
 const fårDekketTapetSomSelvstendigForklaring = () => (
     <ExpandableInfo title="Hva vil dette si?">
-        <p>
-            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
-            ikke søke om kompensasjon. Utbetalingene fra NAV kan være én av disse:
-        </p>
+        Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
+        ikke søke om kompensasjon. Utbetalingene fra NAV kan være én av disse:
         <ul className="infoList">
             <li>Omsorgspenger</li>
             <li>Sykepenger</li>
@@ -156,10 +158,8 @@ const fårDekketTapetSomSelvstendigForklaring = () => (
 
 const fårDekketTapetSomFrilanserForklaring = () => (
     <ExpandableInfo title="Hva vil dette si?">
-        <p>
-            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke om
-            kompensasjon. Utbetalingene fra NAV kan være én av disse:
-        </p>
+        Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke om
+        kompensasjon. Utbetalingene fra NAV kan være én av disse:
         <ul className="infoList">
             <li>Dagpenger</li>
             <li>Omsorgspenger</li>

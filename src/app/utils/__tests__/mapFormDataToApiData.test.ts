@@ -95,6 +95,7 @@ describe('mapFormDataToApiData', () => {
                     selvstendigInntekt2020,
                 });
                 expect(apiData).toEqual(undefined);
+            });
         });
         describe('Valid selvstendig næringsdrivende mapping', () => {
             it('includes inntekt income year', () => {

@@ -25,14 +25,14 @@ export interface SelvstendigStepFormText {
 
 export const selvstendigStepTexts: SelvstendigStepFormText = {
     selvstendigHarHattInntektFraForetak: (årstall: number) =>
-        `Har du hatt inntekt som selvstendig næringsdrivende i ${årstall}?`,
+        `Har du hatt inntekt som selvstendig næringsdrivende før 1. mars ${årstall}?`,
     selvstendigHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt (ikke tapt oppdrag) som selvstendig næringsdrivende som følge av koronautbruddet i perioden ${formatDateRange(
             dateRange
         )}?`,
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigHarYtelseFraNavSomDekkerTapet:
-        'Har du allerede en utbetaling fra NAV som dekker hele eller deler av inntektstapet ditt som frilanser?',
+        'Har du allerede en utbetaling fra NAV som dekker hele eller deler av inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigYtelseFraNavDekkerHeleTapet: 'Dekker utbetalingen du får fra NAV hele inntektstapet ditt?',
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken inntekt har du tatt ut i perioden ${formatDateRange(dateRange)}?`,

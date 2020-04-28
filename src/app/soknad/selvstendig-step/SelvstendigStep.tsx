@@ -190,7 +190,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                         </FormSection>
                                     )}
                                     {isVisible(Field.selvstendigInntektIPerioden) && (
-                                        <FormSection title="Inntekter du har tatt ut som lønn av selskap">
+                                        <FormSection title={`Inntekt du har tatt ut i perioden`}>
                                             <SelvstendigFormQuestion question={Field.selvstendigInntektIPerioden}>
                                                 <FormComponents.Input
                                                     name={Field.selvstendigInntektIPerioden}
@@ -253,9 +253,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                 />
                                             </SelvstendigFormQuestion>
                                             {selvstendigInntekt2019 === 0 && (
-                                                <StopMessage>
-                                                    Du må ha hatt inntekt i 2019 for å kunne søke på denne ytelsen
-                                                </StopMessage>
+                                                <StopMessage>Du må ha hatt inntekt i 2019 for å kunne søke</StopMessage>
                                             )}
                                         </FormSection>
                                     )}
