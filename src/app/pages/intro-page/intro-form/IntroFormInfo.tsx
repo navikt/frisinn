@@ -78,7 +78,7 @@ const ikkeFrilanserOgIkkeRettSomSelvstendig = () => (
     </>
 );
 
-const selvstendigIkkeTattUtLønn = () => (
+const selvstendigIkkeTattUtInntekt = () => (
     <>
         <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
         For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt fra
@@ -185,7 +185,7 @@ const vilIkkeTrekkeAnnenSøknadFrilanser = () => (
 
 const IntroFormInfo = {
     ikkeGyldigAlder,
-    selvstendigIkkeTattUtLønn,
+    selvstendigIkkeTattUtInntekt,
     selvstendigIkkeTapPgaKorona,
     selvstendigForSentInntektstap,
     selvstendigHvaMenesMedInntekt,

@@ -108,7 +108,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         />
                                         {selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO && (
                                             <StopMessage>
-                                                <Info.selvstendigIkkeTattUtLønn />
+                                                <Info.selvstendigIkkeTattUtInntekt />
                                             </StopMessage>
                                         )}
                                     </FormQuestion>
