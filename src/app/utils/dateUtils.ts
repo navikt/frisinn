@@ -13,12 +13,6 @@ export const isSameDate = (date1: Date | undefined, date2: Date | undefined): bo
     return moment(date1).isSame(date2, 'day');
 };
 
-export const getNumberOfDaysInDateRange = (dateRange: DateRange): number => {
-    return moment(dateRange.to).diff(dateRange.from, 'days') + 1;
-};
-
-export const getPreviousDate = (date: Date): Date => moment(date).subtract(1, 'day').toDate();
-
 export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): Date => {
     return moment(dateRange.to).endOf('day').subtract(15, 'days').toDate();
 };
