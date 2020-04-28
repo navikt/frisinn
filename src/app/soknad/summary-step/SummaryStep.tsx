@@ -6,9 +6,12 @@ import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-p
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
+import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
 import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 import Guide from '../../components/guide/Guide';
+import StopMessage from '../../components/StopMessage';
+import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
@@ -20,8 +23,8 @@ import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
 import { StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
+import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
-import StopMessage from '../../components/StopMessage';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -52,6 +55,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
 
     const apiValues = mapFormDataToApiData(soknadEssentials, formik.values, intl.locale as Locale);
     const hasValidApiData = apiValues?.selvstendigNæringsdrivende !== undefined || apiValues?.frilanser !== undefined;
+    const { person } = soknadEssentials;
 
     return (
         <SoknadStep
@@ -77,13 +81,25 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                             kompakt={true}
                             fargetema={'info'}
                             fullHeight={true}>
+                            <Box margin="xl">
+                                <SummaryBlock header="Søker">
+                                    <Box>{formatName(person.fornavn, person.etternavn, person.mellomnavn)}</Box>
+                                    {person.fødselsnummer}
+                                </SummaryBlock>
+                                <SummaryBlock header="Søker som selvstendig næringsdrivende">
+                                    <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
+                                </SummaryBlock>
+                                <SummaryBlock header="Søker som frilanser">
+                                    <JaNeiSvar harSvartJa={apiValues.frilanser !== undefined} />
+                                </SummaryBlock>
+                            </Box>
                             {apiValues.selvstendigNæringsdrivende && (
                                 <Box margin="xl">
                                     <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
                                 </Box>
                             )}
                             {apiValues.frilanser && (
-                                <Box margin={apiValues.selvstendigNæringsdrivende ? 'xxl' : undefined}>
+                                <Box margin={'xxl'}>
                                     <FrilanserSummary apiData={apiValues.frilanser} />
                                 </Box>
                             )}

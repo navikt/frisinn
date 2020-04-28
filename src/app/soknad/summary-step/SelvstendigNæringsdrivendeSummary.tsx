@@ -28,7 +28,7 @@ const SelvstendigNæringsdrivendeSummary = ({
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
         <SummaryBlock header={'Periode det søkes for'}>{info.period}</SummaryBlock>
-        <SummaryBlock header={`Inntekt som selvstendig næringsdrivende i perioden ${info.period} `}>
+        <SummaryBlock header={`Inntekt fra selskap i perioden det søkes for`}>
             <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>
         {inntektIPeriodenSomFrilanser !== undefined && (
@@ -37,13 +37,12 @@ const SelvstendigNæringsdrivendeSummary = ({
             </SummaryBlock>
         )}
         {inntekt2019 !== undefined && (
-            <SummaryBlock header="Inntekt som selvstendig næringsdrivende i 2019">
+            <SummaryBlock header="Inntekt fra selskap i 2019">
                 <KronerSvar verdi={inntekt2019} />
             </SummaryBlock>
         )}
         {inntekt2020 !== undefined && (
-            <SummaryBlock
-                header={`Inntekt som selvstendig næringsdrivende i 2020 frem til  ${info.lastDayWithNormalIncome}`}>
+            <SummaryBlock header="Inntekt fra selskap i januar og februar 2020">
                 <KronerSvar verdi={inntekt2020} />
             </SummaryBlock>
         )}

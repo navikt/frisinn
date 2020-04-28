@@ -23,11 +23,11 @@ const FrilanserSummary = ({
 }: Props) => (
     <>
         <Undertittel className="sectionTitle">Frilanser</Undertittel>
+        <SummaryBlock header={'Startet som frilanser etter 1. september 2019'}>
+            <JaNeiSvar harSvartJa={erNyetablert} />
+        </SummaryBlock>
         <SummaryBlock header={'Inntektstapet som frilanser startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
-        </SummaryBlock>
-        <SummaryBlock header={'Startet som frilanser etter 1. septebmer 2019'}>
-            <JaNeiSvar harSvartJa={erNyetablert} />
         </SummaryBlock>
         <SummaryBlock header={`Periode det søkes for som frilanser`}>{info.period}</SummaryBlock>
         <SummaryBlock header={`Inntekt som frilanser i perioden ${info.period}`}>
