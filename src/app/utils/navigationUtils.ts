@@ -7,7 +7,7 @@ const loginUrl = getEnvironmentVariable('LOGIN_URL');
 
 export const relocateToLoginPage = () => window.location.assign(loginUrl);
 export const relocateToNavFrontpage = () => window.location.assign('https://www.nav.no/');
-export const relocateToConfirmationPage = () => window.location.assign(getRouteUrl(routeConfig.SOKNAD_SENT));
+export const relocateToReceiptPage = () => window.location.assign(getRouteUrl(routeConfig.SOKNAD_SENT));
 export const relocateToSoknad = () => window.location.assign(getRouteUrl(routeConfig.SOKNAD));
 
 export const navigateTo = (route: string, history: History) => history.push(route);
