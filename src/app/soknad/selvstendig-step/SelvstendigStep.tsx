@@ -84,7 +84,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {
-        setFieldValue(Field.selvstendigCalculatedDateRange, availableDateRange);
+        setFieldValue(Field.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);
     }, [availableDateRange]);
 
     return (

@@ -22,7 +22,7 @@ import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
-    const { selvstendigCalculatedDateRange, frilanserCalculatedDateRange } = values;
+    const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserCalculatedDateRange } = values;
 
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
@@ -117,7 +117,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     skattepliktig inntekt i skattemeldingen (selvangivelsen).
                 </Guide>
             </Box>
-            {selvstendigNæringsdrivende && selvstendigCalculatedDateRange && (
+            {selvstendigNæringsdrivende && selvstendigBeregnetTilgjengeligSøknadsperiode && (
                 <FormSection title="Inntekt som selvstendig næringsdrivende">
                     {isVisible(SoknadFormField.bekrefterSelvstendigInntektIPerioden) && (
                         <BekreftSumRad
@@ -127,7 +127,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             tittel={
                                 <>
                                     Inntekt fra selskap i perioden{' '}
-                                    <DateRangeView dateRange={selvstendigCalculatedDateRange} />
+                                    <DateRangeView dateRange={selvstendigBeregnetTilgjengeligSøknadsperiode} />
                                 </>
                             }
                             sum={selvstendigNæringsdrivende.inntektIPerioden}
@@ -176,7 +176,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             tittel={
                                 <>
                                     Inntekt som frilanser i perioden{' '}
-                                    <DateRangeView dateRange={selvstendigCalculatedDateRange} />
+                                    <DateRangeView dateRange={selvstendigBeregnetTilgjengeligSøknadsperiode} />
                                 </>
                             }
                             sum={selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser}

@@ -9,8 +9,8 @@ import {
     SelvstendigNæringsdrivendeApiData,
     ApiQuestion,
 } from '../types/SoknadApiData';
-import { SoknadEssentials } from '../types/SoknadEssentials';
-import { SoknadFormData } from '../types/SoknadFormData';
+import { SoknadEssentials, PersonligeForetak } from '../types/SoknadEssentials';
+import { SoknadFormData, SelvstendigFormData } from '../types/SoknadFormData';
 import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from './selvstendigUtils';
 import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
 import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
@@ -28,10 +28,11 @@ const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     }
 };
 
-const mapSelvstendigNæringsdrivendeFormDataToApiData = (
-    { personligeForetak }: SoknadEssentials,
+export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
+    personligeForetak: PersonligeForetak | undefined,
     {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+        selvstendigHarHattInntektFraForetak,
         selvstendigHarTaptInntektPgaKorona,
         selvstendigInntektstapStartetDato,
         selvstendigHarYtelseFraNavSomDekkerTapet,
@@ -42,7 +43,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigErFrilanser,
         selvstendigHarHattInntektSomFrilanserIPerioden,
         selvstendigInntektSomFrilanserIPerioden,
-        selvstendigCalculatedDateRange,
+        selvstendigBeregnetTilgjengeligSøknadsperiode,
         selvstendigHarRegnskapsfører,
         selvstendigRegnskapsførerNavn,
         selvstendigRegnskapsførerTelefon,
@@ -50,13 +51,15 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigRevisorNavn,
         selvstendigRevisorTelefon,
         selvstendigRevisorNAVKanTaKontakt,
-    }: SoknadFormData
+    }: SelvstendigFormData
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     if (
-        selvstendigCalculatedDateRange &&
-        (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
-            selvstendigHarTaptInntektPgaKorona === YesOrNo.YES,
-        selvstendigInntektstapStartetDato && selvstendigInntektIPerioden !== undefined)
+        selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
+        selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
+        selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
+        selvstendigInntektstapStartetDato !== undefined &&
+        selvstendigInntektIPerioden !== undefined
     ) {
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
@@ -105,7 +108,7 @@ const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak) ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {
-                period: formatDateRange(selvstendigCalculatedDateRange),
+                period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
                 lastDayWithNormalIncome: '1. mars 2020',
             },
             regnskapsfører:
@@ -184,7 +187,10 @@ export const mapFormDataToApiData = (
         språk: (språk as any) === 'en' ? 'nn' : språk,
         harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter,
-        selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(soknadEssentials, formData),
+        selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(
+            soknadEssentials.personligeForetak,
+            formData
+        ),
         frilanser: mapFrilanserFormDataToApiData(soknadEssentials, formData),
     };
 

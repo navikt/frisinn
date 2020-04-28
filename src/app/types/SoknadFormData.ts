@@ -20,7 +20,7 @@ export enum SoknadFormField {
     selvstendigInntektSomFrilanserIPerioden = 'selvstendigInntektSomFrilanserIPerioden',
     selvstendigInntekt2019 = 'selvstendigInntekt2019',
     selvstendigInntekt2020 = 'selvstendigInntekt2020',
-    selvstendigCalculatedDateRange = 'selvstendigCalculatedDateRange',
+    selvstendigBeregnetTilgjengeligSøknadsperiode = 'selvstendigBeregnetTilgjengeligSøknadsperiode',
     selvstendigHarRegnskapsfører = 'selvstendigHarRegnskapsfører',
     selvstendigRegnskapsførerNavn = 'selvstendigRegnskapsførerNavn',
     selvstendigRegnskapsførerTelefon = 'selvstendigRegnskapsførerTelefon',
@@ -66,7 +66,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigInntektSomFrilanserIPerioden]?: number;
     [SoknadFormField.selvstendigInntekt2019]?: number;
     [SoknadFormField.selvstendigInntekt2020]?: number;
-    [SoknadFormField.selvstendigCalculatedDateRange]?: DateRange;
+    [SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode]?: DateRange; // Hentes fra api når bruker velger startdato for inntektstap
     [SoknadFormField.selvstendigHarRegnskapsfører]: YesOrNo;
     [SoknadFormField.selvstendigRegnskapsførerNavn]?: string;
     [SoknadFormField.selvstendigRegnskapsførerTelefon]?: string;
@@ -103,6 +103,8 @@ export const initialSoknadFormData: Partial<SoknadFormData> = {
 
 export type SelvstendigFormData = Pick<
     SoknadFormData,
+    | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
+    | SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
     | SoknadFormField.selvstendigHarHattInntektFraForetak
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
