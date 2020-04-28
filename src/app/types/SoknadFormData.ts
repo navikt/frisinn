@@ -129,12 +129,16 @@ export type SelvstendigFormData = Pick<
 export type FrilanserFormData = Pick<
     SoknadFormData,
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
+    | SoknadFormField.søkerOmTaptInntektSomFrilanser
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
     | SoknadFormField.frilanserErNyetablert
+    | SoknadFormField.frilanserInntektIPerioden
+    | SoknadFormField.frilanserInntektstapStartetDato
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
     | SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet
     | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
+    | SoknadFormField.frilanserCalculatedDateRange
 >;
 
 export const initialSelvstendigValues: Partial<SelvstendigFormData> = {

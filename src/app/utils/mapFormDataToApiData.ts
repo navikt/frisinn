@@ -1,6 +1,5 @@
-import { formatDateToApiFormat, prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import moment from 'moment';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
 import {
@@ -10,7 +9,7 @@ import {
     ApiQuestion,
 } from '../types/SoknadApiData';
 import { SoknadEssentials, PersonligeForetak } from '../types/SoknadEssentials';
-import { SoknadFormData, SelvstendigFormData, SoknadFormField } from '../types/SoknadFormData';
+import { SoknadFormData, SelvstendigFormData, SoknadFormField, FrilanserFormData } from '../types/SoknadFormData';
 import {
     selvstendigSkalOppgiInntekt2019,
     selvstendigSkalOppgiInntekt2020,
@@ -123,7 +122,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {
                 period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
-                lastDayWithNormalIncome: '1. mars 2020',
             },
             regnskapsfører:
                 selvstendigHarRegnskapsfører === YesOrNo.YES &&
@@ -143,7 +141,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 };
 
 export const mapFrilanserFormDataToApiData = (
-    { personligeForetak }: SoknadEssentials,
+    personligeForetak: PersonligeForetak | undefined,
     {
         frilanserHarTaptInntektPgaKorona,
         frilanserErNyetablert,
@@ -154,11 +152,16 @@ export const mapFrilanserFormDataToApiData = (
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
         frilanserCalculatedDateRange,
-    }: SoknadFormData
+    }: FrilanserFormData
 ): FrilanserApiData | undefined => {
-    if (frilanserHarTaptInntektPgaKorona === YesOrNo.YES && frilanserCalculatedDateRange) {
-        const lastDayWithNormalIncome = moment(frilanserInntektstapStartetDato).subtract(1, 'day').toDate();
-
+    if (
+        frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
+        frilanserCalculatedDateRange &&
+        !(
+            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
+            frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES
+        )
+    ) {
         const questions: ApiQuestion[] = [];
         if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
             questions.push({
@@ -184,7 +187,6 @@ export const mapFrilanserFormDataToApiData = (
                     : undefined,
             info: {
                 period: formatDateRange(frilanserCalculatedDateRange),
-                lastDayWithNormalIncome: prettifyDateExtended(lastDayWithNormalIncome),
             },
             questions,
         };
@@ -207,7 +209,7 @@ export const mapFormDataToApiData = (
             soknadEssentials.personligeForetak,
             formData
         ),
-        frilanser: mapFrilanserFormDataToApiData(soknadEssentials, formData),
+        frilanser: mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData),
     };
 
     return apiData;

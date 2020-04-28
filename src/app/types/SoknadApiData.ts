@@ -16,7 +16,6 @@ export interface SelvstendigNæringsdrivendeApiData {
     inntektIPeriodenSomFrilanser?: number;
     info: {
         period: string;
-        lastDayWithNormalIncome: string;
     };
     regnskapsfører?: {
         navn: string;
@@ -32,7 +31,6 @@ export interface FrilanserApiData {
     inntektIPeriodenSomSelvstendigNæringsdrivende?: number;
     info: {
         period: string;
-        lastDayWithNormalIncome: string;
     };
     questions?: ApiQuestion[];
 }
