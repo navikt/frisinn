@@ -18,6 +18,7 @@ import Info from './IntroFormInfo';
 import introFormUtils from './introFormUtils';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
 import IntroFormInfo from './IntroFormInfo';
+import PhoneView from '../../../components/phone-view/PhoneView';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -40,28 +41,30 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
 
                 const {
                     fødselsdato,
-                    harAlleredeSøkt,
-                    vilFortsetteTilSøknad,
+                    // vilFortsetteTilSøknad,
                     erFrilanser,
                     erSelvstendigNæringsdrivende,
                     selvstendigFårDekketTapet,
                     selvstendigHarTaptInntektPgaKorona,
-                    selvstendigHarTattUtLønn,
+                    selvstendigHarTattUtInntektFraSelskap,
                     selvstendigInntektstapStartetFørFrist,
+                    selvstendigHarAlleredeSøkt,
                     frilanserFårDekketTapet,
                     frilanserInntektstapStartetFørFrist,
                     frilanserHarTaptInntektPgaKorona,
+                    frilansHarAlleredeSøkt,
+                    frilansVilFortsetteTilSøknad,
+                    selvstendigVilFortsetteTilSøknad,
                 } = values;
 
                 const alderIsOk = introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode);
                 const selvstendigIsOk = introFormUtils.canApplyAsSelvstendig(values);
                 const frilanserIsOk = introFormUtils.canApplyAsFrilanser(values);
-                const harAlleredeSøktIsOk = harAlleredeSøkt === YesOrNo.NO || vilFortsetteTilSøknad === YesOrNo.YES;
 
                 const sisteGyldigeDagForInntektstap: Date = getSisteGyldigeDagForInntektstapIPeriode(soknadsperiode);
 
                 const canContinueToSoknad =
-                    areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk && harAlleredeSøktIsOk;
+                    areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk;
 
                 return (
                     <FormComponent.Form
@@ -97,13 +100,13 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                             }
                                         />
                                     </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigHarTattUtLønn}>
+                                    <FormQuestion question={IntroFormField.selvstendigHarTattUtInntektFraSelskap}>
                                         <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigHarTattUtLønn}
+                                            name={IntroFormField.selvstendigHarTattUtInntektFraSelskap}
                                             legend={`Har du tatt ut inntekt fra selskapet/selskapene i 2019 og 2020?`}
                                             description={<Info.selvstendigHvaMenesMedInntekt />}
                                         />
-                                        {selvstendigHarTattUtLønn === YesOrNo.NO && (
+                                        {selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO && (
                                             <StopMessage>
                                                 <Info.selvstendigIkkeTattUtLønn />
                                             </StopMessage>
@@ -154,12 +157,46 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                             </StopMessage>
                                         )}
                                     </FormQuestion>
-                                    {selvstendigFårDekketTapet === YesOrNo.NO && (
-                                        <SuksessMessage>
+                                    <FormQuestion question={IntroFormField.selvstendigHarAlleredeSøkt}>
+                                        <FormComponent.YesOrNoQuestion
+                                            name={IntroFormField.selvstendigHarAlleredeSøkt}
+                                            legend="Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon for som selvstendig næringsdrivende i denne søknaden?"
+                                        />
+                                        {selvstendigHarAlleredeSøkt === YesOrNo.YES && (
+                                            <InfoMessage margin="l">
+                                                <Info.harAlleredeSøkt />
+                                            </InfoMessage>
+                                        )}
+                                    </FormQuestion>
+                                    <FormQuestion question={IntroFormField.selvstendigVilFortsetteTilSøknad}>
+                                        <FormComponent.YesOrNoQuestion
+                                            name={IntroFormField.selvstendigVilFortsetteTilSøknad}
+                                            legend={
+                                                'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?'
+                                            }
+                                        />
+                                    </FormQuestion>
+
+                                    {(selvstendigVilFortsetteTilSøknad === YesOrNo.YES ||
+                                        selvstendigHarAlleredeSøkt === YesOrNo.NO) && (
+                                        <SuksessMessage margin="l">
                                             Du kan søke om kompensasjon for tapt inntekt som selvstendig
                                             næringsdrivende.
+                                            {selvstendigVilFortsetteTilSøknad === YesOrNo.YES &&
+                                                selvstendigHarAlleredeSøkt === YesOrNo.YES && (
+                                                    <p style={{ marginBottom: 0 }}>
+                                                        For å trekke den andre søknaden din, må du ta kontakt med NAV på
+                                                        telefon <PhoneView>55 55 33 33</PhoneView>.
+                                                    </p>
+                                                )}
                                         </SuksessMessage>
                                     )}
+                                    {selvstendigVilFortsetteTilSøknad === YesOrNo.NO &&
+                                        selvstendigHarAlleredeSøkt === YesOrNo.YES && (
+                                            <StopMessage>
+                                                <IntroFormInfo.vilIkkeTrekkeAnnenSøknadSelvstendig />
+                                            </StopMessage>
+                                        )}
                                 </FormSection>
                             )}
                             {isVisible(IntroFormField.erFrilanser) && (
@@ -217,38 +254,50 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                                 <Info.frilanserFårDekketTapet />
                                             </StopMessage>
                                         )}
-                                        {frilanserFårDekketTapet === YesOrNo.NO && (
-                                            <SuksessMessage>
-                                                Du kan søke om kompensasjon for tapt inntekt som frilanser.
-                                            </SuksessMessage>
-                                        )}
                                     </FormQuestion>
-                                </FormSection>
-                            )}
 
-                            {isVisible(IntroFormField.harAlleredeSøkt) && (
-                                <FormSection title="Har du søkt om andre utbetalinger fra NAV?">
-                                    <FormQuestion question={IntroFormField.harAlleredeSøkt}>
+                                    <FormQuestion question={IntroFormField.frilansHarAlleredeSøkt}>
                                         <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.harAlleredeSøkt}
-                                            legend="Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon for i denne søknaden?"
+                                            name={IntroFormField.frilansHarAlleredeSøkt}
+                                            legend="Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon som frilanser for i denne søknaden?"
                                         />
-                                        {harAlleredeSøkt === YesOrNo.YES && (
-                                            <InfoMessage>
+                                        {frilansHarAlleredeSøkt === YesOrNo.YES && (
+                                            <InfoMessage margin="l">
                                                 <Info.harAlleredeSøkt />
                                             </InfoMessage>
                                         )}
                                     </FormQuestion>
-                                    <FormQuestion question={IntroFormField.vilFortsetteTilSøknad}>
+                                    <FormQuestion question={IntroFormField.frilansVilFortsetteTilSøknad}>
                                         <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.vilFortsetteTilSøknad}
+                                            name={IntroFormField.frilansVilFortsetteTilSøknad}
                                             legend={
                                                 'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?'
                                             }
                                         />
                                     </FormQuestion>
+
+                                    {(frilansVilFortsetteTilSøknad === YesOrNo.YES ||
+                                        frilansHarAlleredeSøkt === YesOrNo.NO) && (
+                                        <SuksessMessage margin="l">
+                                            Du kan søke om kompensasjon for tapt inntekt som frilanser.
+                                            {frilansVilFortsetteTilSøknad === YesOrNo.YES &&
+                                                frilansHarAlleredeSøkt === YesOrNo.YES && (
+                                                    <p style={{ marginBottom: 0 }}>
+                                                        For å trekke den andre søknaden din, må du ta kontakt med NAV på
+                                                        telefon <PhoneView>55 55 33 33</PhoneView>.
+                                                    </p>
+                                                )}
+                                        </SuksessMessage>
+                                    )}
+                                    {frilansVilFortsetteTilSøknad === YesOrNo.NO &&
+                                        frilansHarAlleredeSøkt === YesOrNo.YES && (
+                                            <StopMessage>
+                                                <IntroFormInfo.vilIkkeTrekkeAnnenSøknadFrilanser />
+                                            </StopMessage>
+                                        )}
                                 </FormSection>
                             )}
+
                             {erFrilanser === YesOrNo.NO &&
                                 erSelvstendigNæringsdrivende === YesOrNo.YES &&
                                 !selvstendigIsOk && (

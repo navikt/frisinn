@@ -126,11 +126,7 @@ const harAlleredeSøkt = () => (
         Når du har søkt om andre utbetalinger fra NAV for det samme inntektstapet, kan du velge å
         <ul>
             <li>ikke gå videre med denne søknaden, eller å </li>
-
-            <li>
-                trekke den andre søknaden du har hos NAV, og gå videre til å søke om denne kompensasjonen. I disse
-                tilfellene tar du kontakt med NAV på 55 55 33 33.
-            </li>
+            <li>trekke den andre søknaden du har hos NAV, og gå videre til å søke om denne kompensasjonen</li>
         </ul>
         Du kan kun få dekket det samme inntektstapet én gang.
     </>
@@ -177,6 +173,16 @@ const fårDekketTapetSomFrilanserForklaring = () => (
     </ExpandableInfo>
 );
 
+const vilIkkeTrekkeAnnenSøknadSelvstendig = () => (
+    <>
+        Dersom du ikke trekker denne andre søknaden, kan du ikke søke kompensasjon som selvstendig næringsdrivende. Du
+        kan fortsatt svare på spørsmålene nedenfor for å se om du kan søke som frilanser.
+    </>
+);
+const vilIkkeTrekkeAnnenSøknadFrilanser = () => (
+    <>Dersom du ikke trekker denne andre søknaden, kan du ikke søke kompensasjon som frilanser.</>
+);
+
 const IntroFormInfo = {
     ikkeGyldigAlder,
     selvstendigIkkeTattUtLønn,
@@ -196,5 +202,7 @@ const IntroFormInfo = {
     fårDekketTapetSomSelvstendigForklaring,
     fårDekketTapetSomFrilanserForklaring,
     ikkeFrilanserOgIkkeRettSomSelvstendig,
+    vilIkkeTrekkeAnnenSøknadSelvstendig,
+    vilIkkeTrekkeAnnenSøknadFrilanser,
 };
 export default IntroFormInfo;

@@ -16,12 +16,17 @@ const canApplyAsSelvstendig = ({
     selvstendigHarTaptInntektPgaKorona,
     selvstendigFårDekketTapet,
     selvstendigInntektstapStartetFørFrist,
+    selvstendigHarAlleredeSøkt,
+    selvstendigHarTattUtInntektFraSelskap,
+    selvstendigVilFortsetteTilSøknad,
 }: IntroFormData): boolean => {
     return (
         erSelvstendigNæringsdrivende === YesOrNo.YES &&
+        selvstendigHarTattUtInntektFraSelskap === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigInntektstapStartetFørFrist === YesOrNo.YES &&
-        selvstendigFårDekketTapet === YesOrNo.NO
+        selvstendigFårDekketTapet === YesOrNo.NO &&
+        (selvstendigHarAlleredeSøkt === YesOrNo.NO || selvstendigVilFortsetteTilSøknad === YesOrNo.YES)
     );
 };
 
@@ -52,16 +57,18 @@ const frilanserIsAnswered = ({
 };
 const selvstendigIsAnswered = ({
     erSelvstendigNæringsdrivende,
-    selvstendigHarTattUtLønn,
+    selvstendigHarTattUtInntektFraSelskap,
     selvstendigHarTaptInntektPgaKorona,
     selvstendigFårDekketTapet,
     selvstendigInntektstapStartetFørFrist,
+    selvstendigHarAlleredeSøkt,
 }: IntroFormData): boolean => {
     return (
         erSelvstendigNæringsdrivende === YesOrNo.NO ||
-        selvstendigHarTattUtLønn === YesOrNo.NO ||
+        selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO ||
         selvstendigHarTaptInntektPgaKorona === YesOrNo.NO ||
         selvstendigInntektstapStartetFørFrist === YesOrNo.NO ||
+        selvstendigHarAlleredeSøkt === YesOrNo.NO ||
         yesOrNoIsAnswered(selvstendigFårDekketTapet)
     );
 };
