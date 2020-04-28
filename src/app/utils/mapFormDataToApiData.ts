@@ -11,7 +11,11 @@ import {
 } from '../types/SoknadApiData';
 import { SoknadEssentials, PersonligeForetak } from '../types/SoknadEssentials';
 import { SoknadFormData, SelvstendigFormData } from '../types/SoknadFormData';
-import { selvstendigSkalOppgiInntekt2019, selvstendigSkalOppgiInntekt2020 } from './selvstendigUtils';
+import {
+    selvstendigSkalOppgiInntekt2019,
+    selvstendigSkalOppgiInntekt2020,
+    hasValidHistoriskInntekt,
+} from './selvstendigUtils';
 import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
 import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
 
@@ -54,12 +58,16 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
     }: SelvstendigFormData
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     if (
+        personligeForetak !== undefined &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigInntektstapStartetDato !== undefined &&
-        selvstendigInntektIPerioden !== undefined
+        hasValidHistoriskInntekt(
+            { selvstendigInntekt2019, selvstendigInntekt2020 },
+            personligeForetak.tidligsteRegistreringsdato.getFullYear()
+        )
     ) {
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
