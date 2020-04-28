@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { validateYesOrNoIsAnswered } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import StopMessage from '../../../components/StopMessage';
+import StopMessage from '../../../components/stop-message/StopMessage';
 import { SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
 import { getSoknadRoute } from '../../../utils/routeUtils';
 import SoknadFormComponents from '../../SoknadFormComponents';

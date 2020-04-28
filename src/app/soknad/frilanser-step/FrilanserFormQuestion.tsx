@@ -1,6 +1,6 @@
 import React from 'react';
 import { SoknadFormField } from '../../types/SoknadFormData';
-import VisibilityBlock from '../../context/VisibilityBlock';
+import QuestionVisibilityBlock from '../../components/question-visibility-block/QuestionVisibilityBlock';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
 }
 
 const FrilanserFormQuestion = ({ question, children }: Props) => (
-    <VisibilityBlock<SoknadFormField> fieldName={question}>
+    <QuestionVisibilityBlock<SoknadFormField> fieldName={question}>
         <FormBlock>{children}</FormBlock>
-    </VisibilityBlock>
+    </QuestionVisibilityBlock>
 );
 
 export default FrilanserFormQuestion;

@@ -14,7 +14,6 @@ function useTilgjengelig() {
             setIsTilgjengelig(true);
         } catch (error) {
             setError(error);
-            // .error?.response?.status === 503
             setIsTilgjengelig(false);
         } finally {
             setIsLoading(false);

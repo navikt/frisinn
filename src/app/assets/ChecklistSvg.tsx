@@ -12,7 +12,7 @@ function ChecklistSvg() {
             </defs>
             <g transform="translate(-632 -3779)" fill="none" fillRule="evenodd">
                 <rect stroke="#99BDCD" strokeWidth={3} x={311.5} y={3810.5} width={683} height={406} rx={7} />
-                <circle fill="#99BDCD" cx={654} cy={3809} r={48} />
+                <circle fill="transparent" cx={654} cy={3809} r={48} />
                 <path
                     d="M673.14 3783.932h-38.282c-1.58 0-2.858 1.304-2.858 2.915v49.238a2.931 2.931 0 001.043 2.248 2.813 2.813 0 001.815.667h38.282c1.58 0 2.86-1.306 2.86-2.915v-49.238c0-1.611-1.28-2.915-2.86-2.915"
                     fill="#515658"

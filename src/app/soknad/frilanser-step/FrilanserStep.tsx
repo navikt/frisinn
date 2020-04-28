@@ -20,7 +20,7 @@ import { FrilanserFormQuestions } from './frilanserFormConfig';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import FrilanserFormQuestion from './FrilanserFormQuestion';
 import FrilanserInfo from './FrilanserInfo';
-import StopMessage from '../../components/StopMessage';
+import StopMessage from '../../components/stop-message/StopMessage';
 import FormSection from '../../pages/intro-page/FormSection';
 import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import Lenke from 'nav-frontend-lenker';

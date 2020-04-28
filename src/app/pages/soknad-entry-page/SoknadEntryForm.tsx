@@ -21,7 +21,7 @@ import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import EntryQuestion from './EntryFormQuestion';
-import StopMessage from '../../components/StopMessage';
+import StopMessage from '../../components/stop-message/StopMessage';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 
 interface DialogState {

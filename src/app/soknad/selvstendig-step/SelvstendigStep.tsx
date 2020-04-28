@@ -7,7 +7,7 @@ import { useFormikContext } from 'formik';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
-import StopMessage from '../../components/StopMessage';
+import StopMessage from '../../components/stop-message/StopMessage';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';

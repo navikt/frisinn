@@ -8,9 +8,8 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
 import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
-import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 import Guide from '../../components/guide/Guide';
-import StopMessage from '../../components/StopMessage';
+import StopMessage from '../../components/stop-message/StopMessage';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
@@ -25,6 +24,8 @@ import { StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
+import FormSection from '../../pages/intro-page/FormSection';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -75,35 +76,35 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             {apiValues && hasValidApiData && (
                 <>
                     <Box margin="xxxl">
-                        <Guide
-                            svg={<ChecklistCircleIcon />}
-                            type={'plakat'}
-                            kompakt={true}
-                            fargetema={'info'}
-                            fullHeight={true}>
-                            <Box margin="xl">
-                                <SummaryBlock header="Søker">
-                                    <Box>{formatName(person.fornavn, person.etternavn, person.mellomnavn)}</Box>
-                                    {person.fødselsnummer}
-                                </SummaryBlock>
-                                <SummaryBlock header="Søker som selvstendig næringsdrivende">
-                                    <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
-                                </SummaryBlock>
-                                <SummaryBlock header="Søker som frilanser">
-                                    <JaNeiSvar harSvartJa={apiValues.frilanser !== undefined} />
-                                </SummaryBlock>
-                            </Box>
-                            {apiValues.selvstendigNæringsdrivende && (
-                                <Box margin="xl">
-                                    <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
-                                </Box>
-                            )}
-                            {apiValues.frilanser && (
-                                <Box margin={'xxl'}>
-                                    <FrilanserSummary apiData={apiValues.frilanser} />
-                                </Box>
-                            )}
+                        <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
+                            Les igjennom og se at opplysningenen stemmer. Vi anbefaler også at du tar en skjermdump,
+                            eller bilder av denne siden. Oppsumeringen vil ikke bli synelig i ditt nav før etter ca. 1
+                            uke.
                         </Guide>
+                        <FormSection title="Søker">
+                            <SummaryBlock header="Søker">
+                                <Box>{formatName(person.fornavn, person.etternavn, person.mellomnavn)}</Box>
+                                {person.fødselsnummer}
+                            </SummaryBlock>
+                        </FormSection>
+                        <Box>
+                            <SummaryBlock header="Søker som selvstendig næringsdrivende">
+                                <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
+                            </SummaryBlock>
+                            <SummaryBlock header="Søker som frilanser">
+                                <JaNeiSvar harSvartJa={apiValues.frilanser !== undefined} />
+                            </SummaryBlock>
+                        </Box>
+                        {apiValues.selvstendigNæringsdrivende && (
+                            <Box margin="xl">
+                                <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
+                            </Box>
+                        )}
+                        {apiValues.frilanser && (
+                            <Box margin={'xxl'}>
+                                <FrilanserSummary apiData={apiValues.frilanser} />
+                            </Box>
+                        )}
                     </Box>
                     <Box margin="l">
                         <SoknadFormComponents.ConfirmationCheckbox

@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import { Panel } from 'nav-frontend-paneler';
 import { Element } from 'nav-frontend-typografi';
 import { Locale } from 'common/types/Locale';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
@@ -17,6 +16,8 @@ import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
 import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import Lenke from 'nav-frontend-lenker';
+import Guide from '../../components/guide/Guide';
+import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -103,15 +104,18 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
             showSubmitButton={showSubmitButton}>
-            <Box padBottom="l">
-                <Panel border={true}>
-                    <p>
-                        Det er viktig at du kontrollerer at du har gitt oss korrekt informasjon. Dersom tallene ikke
-                        stemmer må du endre de for å få de riktige. Det er ditt ansvar at opplysningene er riktige og
-                        fullstendige. Inntekten du oppgir skal/ vil være den samme du rapporterer til skatt som
-                        skattepliktig inntekt i skattemeldingen (selvangivelsen).
-                    </p>
-                </Panel>
+            <Box padBottom="l" margin="xxxl">
+                <Guide
+                    svg={<ChecklistCircleIcon />}
+                    type={'plakat'}
+                    kompakt={true}
+                    fargetema={'feilmelding'}
+                    fullHeight={true}>
+                    <strong>Det er viktig at du kontrollerer at du har gitt oss korrekt informasjon</strong>. Dersom
+                    tallene ikke stemmer må du endre de for å få de riktige. Det er ditt ansvar at opplysningene er
+                    riktige og fullstendige. Inntekten du oppgir skal/ vil være den samme du rapporterer til skatt som
+                    skattepliktig inntekt i skattemeldingen (selvangivelsen).
+                </Guide>
             </Box>
             {selvstendigNæringsdrivende && selvstendigCalculatedDateRange && (
                 <FormSection title="Inntekt som selvstendig næringsdrivende">

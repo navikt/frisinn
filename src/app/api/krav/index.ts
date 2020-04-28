@@ -1,5 +1,5 @@
 import { DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { ApiKrav } from '../../types/Krav';
+import { ApiKrav } from '../../types/ApiKrav';
 import api, { ApiEndpoint } from '../api';
 
 const getKravEndPointFromKrav = (krav: ApiKrav): ApiEndpoint => {

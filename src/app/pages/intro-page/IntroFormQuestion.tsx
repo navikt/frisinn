@@ -1,5 +1,5 @@
 import React from 'react';
-import VisibilityBlock from '../../context/VisibilityBlock';
+import QuestionVisibilityBlock from '../../components/question-visibility-block/QuestionVisibilityBlock';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { IntroFormField } from './intro-form/introFormConfig';
 
@@ -9,9 +9,9 @@ interface Props {
 }
 
 const IntroFormQuestion = ({ question, children }: Props) => (
-    <VisibilityBlock<IntroFormField> fieldName={question}>
+    <QuestionVisibilityBlock<IntroFormField> fieldName={question}>
         <FormBlock>{children}</FormBlock>
-    </VisibilityBlock>
+    </QuestionVisibilityBlock>
 );
 
 export default IntroFormQuestion;

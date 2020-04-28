@@ -1,4 +1,4 @@
-import { ApiKrav } from './Krav';
+import { ApiKrav } from './ApiKrav';
 
 export type AccessCheckFunction = () => Promise<AccessCheckResult>;
 
