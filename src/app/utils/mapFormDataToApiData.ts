@@ -10,7 +10,7 @@ import {
     ApiQuestion,
 } from '../types/SoknadApiData';
 import { SoknadEssentials, PersonligeForetak } from '../types/SoknadEssentials';
-import { SoknadFormData, SelvstendigFormData } from '../types/SoknadFormData';
+import { SoknadFormData, SelvstendigFormData, SoknadFormField } from '../types/SoknadFormData';
 import {
     selvstendigSkalOppgiInntekt2019,
     selvstendigSkalOppgiInntekt2020,
@@ -74,35 +74,41 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 
         const questions: ApiQuestion[] = [
             {
+                field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
                 question: selvstendigStepTexts.selvstendigHarYtelseFraNavSomDekkerTapet,
                 answer: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
         if (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
             questions.push({
+                field: SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet,
                 question: selvstendigStepTexts.selvstendigYtelseFraNavDekkerHeleTapet,
                 answer: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
             });
         }
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             questions.push({
+                field: SoknadFormField.selvstendigHarRevisor,
                 question: selvstendigStepTexts.selvstendigHarRevisor,
                 answer: formatYesOrNoAnswer(selvstendigHarRevisor),
             });
             if (selvstendigRevisorNavn) {
                 questions.push({
+                    field: SoknadFormField.selvstendigRevisorNavn,
                     question: selvstendigStepTexts.selvstendigRevisorNavn,
                     answer: selvstendigRevisorNavn,
                 });
             }
             if (selvstendigRevisorTelefon) {
                 questions.push({
+                    field: SoknadFormField.selvstendigRevisorTelefon,
                     question: selvstendigStepTexts.selvstendigRevisorTelefon,
                     answer: selvstendigRevisorTelefon,
                 });
             }
             if (selvstendigRevisorNAVKanTaKontakt) {
                 questions.push({
+                    field: SoknadFormField.selvstendigRevisorNAVKanTaKontakt,
                     question: selvstendigStepTexts.selvstendigRevisorNAVKanTaKontakt,
                     answer: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
@@ -156,11 +162,13 @@ export const mapFrilanserFormDataToApiData = (
         const questions: ApiQuestion[] = [];
         if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
             questions.push({
+                field: SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet,
                 question: frilanserStepTexts.frilanserHarYtelseFraNavSomDekkerTapet,
                 answer: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
             });
             if (frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
                 questions.push({
+                    field: SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet,
                     question: frilanserStepTexts.frilanserYtelseFraNavDekkerHeleTapet,
                     answer: formatYesOrNoAnswer(frilanserYtelseFraNavDekkerHeleTapet),
                 });

@@ -1,7 +1,9 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { Locale } from 'common/types/Locale';
+import { SoknadFormField } from './SoknadFormData';
 
 export interface ApiQuestion {
+    field: SoknadFormField /* Not used by api, only in tests */;
     question: string;
     answer: string;
 }

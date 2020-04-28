@@ -1,8 +1,13 @@
-import { SelvstendigFormData } from '../../types/SoknadFormData';
+import { SelvstendigFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { mapSelvstendigNæringsdrivendeFormDataToApiData } from '../mapFormDataToApiData';
 import { PersonligeForetak } from '../../types/SoknadEssentials';
+import { ApiQuestion } from '../../types/SoknadApiData';
+
+const getQuestionAnswer = (questions: ApiQuestion[] | undefined, key: SoknadFormField): any => {
+    return questions ? questions.find((q) => q.field === key)?.answer : undefined;
+};
 
 const registreringsdato2019 = apiStringDateToDate('2019-01-1');
 const personligeForetak2019: PersonligeForetak = {
@@ -98,12 +103,147 @@ describe('mapFormDataToApiData', () => {
             });
         });
         describe('Valid selvstendig næringsdrivende mapping', () => {
-            it('includes inntekt income year', () => {
+            it('includes all basic data', () => {
+                const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                    ...formData,
+                    selvstendigInntektIPerioden: 10,
+                    selvstendigInntekt2019: 20000,
+                });
+                expect(apiData?.inntektstapStartet).toEqual('2020-04-01');
+                expect(apiData?.inntekt2019).toBe(20000);
+                expect(apiData?.inntektIPerioden).toBe(10);
+                expect(apiData?.inntektIPeriodenSomFrilanser).toBeUndefined();
+                expect(apiData?.regnskapsfører).toBeUndefined();
+            });
+            it('includes selvstendigInntekt2019 when it is defined', () => {
                 const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
                     ...formData,
                     selvstendigInntekt2019: 20000,
                 });
                 expect(apiData?.inntekt2019).toBeDefined();
+            });
+            it('includes selvstendigInntekt2020 when it is defined', () => {
+                const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2020, {
+                    ...formData,
+                    selvstendigInntekt2020: 20000,
+                });
+                expect(apiData?.inntekt2020).toBeDefined();
+            });
+            describe('Utbetalinger fra NAV', () => {
+                it('does not include utebetalinger fra NAV info when selvstendigHarYtelseFraNavSomDekkerTapet === NO', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
+                    });
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
+                    ).toBe('Nei');
+                });
+                it('does not include selvstendigYtelseFraNavDekkerHeleTapet info when selvstendigHarYtelseFraNavSomDekkerTapet === NO', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
+                    });
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
+                    ).toBe('Nei');
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
+                    ).toBeUndefined();
+                });
+                it('does include selvstendigYtelseFraNavDekkerHeleTapet when selvstendigHarYtelseFraNavSomDekkerTapet === YES', () => {
+                    const apiDataNo = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.YES,
+                        selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.NO,
+                    });
+                    const apiDataYes = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.YES,
+                        selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.YES,
+                    });
+                    expect(
+                        getQuestionAnswer(apiDataNo?.questions, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
+                    ).toBe('Nei');
+                    expect(
+                        getQuestionAnswer(apiDataYes?.questions, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
+                    ).toBe('Ja');
+                });
+            });
+            describe('Regnskapsfører', () => {
+                it('Contains no info about regnskapsfører if selvstendigHarRegnskapsfører === NO', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarRegnskapsfører: YesOrNo.NO,
+                    });
+                    expect(apiData?.regnskapsfører).toBeUndefined();
+                });
+                it('Contains all info about regnskapsfører if selvstendigHarRegnskapsfører ===  YES', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarRegnskapsfører: YesOrNo.YES,
+                        selvstendigRegnskapsførerNavn: 'Regnskapsfører',
+                        selvstendigRegnskapsførerTelefon: '123456789',
+                    });
+                    expect(apiData?.regnskapsfører?.navn).toBe('Regnskapsfører');
+                    expect(apiData?.regnskapsfører?.telefon).toBe('123456789');
+                });
+                it('Contains no info about revisor if selvstendigHarRegnskapsfører ===  YES', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarRegnskapsfører: YesOrNo.YES,
+                        selvstendigRegnskapsførerNavn: 'Regnskapsfører',
+                        selvstendigRegnskapsførerTelefon: '123456789',
+                    });
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNavn)
+                    ).toBeUndefined();
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorTelefon)
+                    ).toBeUndefined();
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNAVKanTaKontakt)
+                    ).toBeUndefined();
+                });
+                it('Contains all info about revisor if selvstendigHarRegnskapsfører === NO and selvstendigHarRevisor === YEs', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigHarRegnskapsfører: YesOrNo.NO,
+                        selvstendigHarRevisor: YesOrNo.YES,
+                        selvstendigRevisorNavn: 'Revisor',
+                        selvstendigRevisorTelefon: '123456789',
+                        selvstendigRevisorNAVKanTaKontakt: YesOrNo.YES,
+                    });
+                    expect(getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNavn)).toEqual(
+                        'Revisor'
+                    );
+                    expect(getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorTelefon)).toEqual(
+                        '123456789'
+                    );
+                    expect(
+                        getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNAVKanTaKontakt)
+                    ).toEqual('Ja');
+                });
+            });
+            describe('Selvstendig som ikke søker frilanser', () => {
+                it('includes frilanserInfo when selvstendigErFrilanser === true', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigErFrilanser: YesOrNo.YES,
+                        selvstendigHarHattInntektSomFrilanserIPerioden: YesOrNo.YES,
+                        selvstendigInntektSomFrilanserIPerioden: 10,
+                    });
+                    expect(apiData?.inntektIPeriodenSomFrilanser).toEqual(10);
+                });
+                it('does not include inntektIPeriodenSomFrilanser when selvstendigErFrilanser === false', () => {
+                    const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
+                        ...formData,
+                        selvstendigErFrilanser: YesOrNo.NO,
+                        selvstendigHarHattInntektSomFrilanserIPerioden: YesOrNo.YES,
+                        selvstendigInntektSomFrilanserIPerioden: 10,
+                    });
+                    expect(apiData?.inntektIPeriodenSomFrilanser).toBeUndefined();
+                });
             });
         });
     });
