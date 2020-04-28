@@ -22,11 +22,8 @@ export const hasValidHistoriskInntekt = (
     { selvstendigInntekt2019, selvstendigInntekt2020 }: Partial<SelvstendigFormData>,
     inntektÅrstall: number
 ): boolean => {
-    if (inntektÅrstall === 2019) {
-        return selvstendigInntekt2019 !== undefined && selvstendigInntekt2019 > 0;
-    }
     if (inntektÅrstall === 2020) {
         return selvstendigInntekt2020 !== undefined && selvstendigInntekt2020 > 0;
     }
-    return false;
+    return selvstendigInntekt2019 !== undefined && selvstendigInntekt2019 > 0;
 };

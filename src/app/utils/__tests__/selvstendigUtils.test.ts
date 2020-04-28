@@ -63,6 +63,9 @@ describe('selvstendigUtils', () => {
         it('returns true if year is 2019 and selvstendigInntekt2019 is 1', () => {
             expect(hasValidHistoriskInntekt({ selvstendigInntekt2019: 1 }, 2019)).toBeTruthy();
         });
+        it('returns true if year is 2018 and selvstendigInntekt2019 is 1', () => {
+            expect(hasValidHistoriskInntekt({ selvstendigInntekt2019: 1 }, 2018)).toBeTruthy();
+        });
         it('returns false if year is 2020 and selvstendigInntekt2020 is undefined', () => {
             expect(hasValidHistoriskInntekt({}, 2020)).toBeFalsy();
         });

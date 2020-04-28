@@ -118,8 +118,8 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             {apiValues && hasValidApiData === false && (
                 <>
                     <StopMessage>
-                        Basert på hva du har svart i søknaden, har du ikke grunnlag til å søke på denne kompenasjonen.
-                        Gå tilbake til de tidligere stegene og se over informasjonen du har fått der.
+                        TODO: utviklermelding: apiValues === undefined
+                        <p>Ja, det skal fikses :)</p>
                     </StopMessage>
                 </>
             )}

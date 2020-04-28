@@ -49,12 +49,11 @@ const readFileSync = (path) => {
 const existsSync = (path) => fs.existsSync(path);
 
 const søkerMock = {
-    fornavn: 'Test',
-    mellomnavn: undefined,
-    etternavn: 'Testesen',
-    fødselsnummer: '22075944547',
-    myndig: true,
-    kontonummer: '45431224877',
+    fødselsnummer: '30086421581',
+    fornavn: 'GODSLIG',
+    mellomnavn: null,
+    etternavn: 'KRONJUVEL',
+    kontonummer: '17246746060',
 };
 
 const perioderMock = {
@@ -65,25 +64,10 @@ const perioderMock = {
 };
 
 const personligeForetak = {
-    personligeForetak: [
-        {
-            organisasjonsnummer: '995298775',
-            navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
-            registreringsdato: '2020-01-01',
-        },
-        {
-            organisasjonsnummer: '995298775',
-            navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
-            registreringsdato: '2020-01-01',
-        },
-        {
-            organisasjonsnummer: '995298775',
-            navn: 'ARBEIDS- OG VELFERDSDIREKTORATET AVD SANNERGATA',
-            registreringsdato: '2020-01-01',
-        },
-    ],
-    tidligsteRegistreringsdato: '2020-01-01',
+    personligeForetak: [{ organisasjonsnummer: '922753458', navn: 'KEBAB HOUSE DA', registreringsdato: '2017-01-01' }],
+    tidligsteRegistreringsdato: '2017-01-01',
 };
+
 const ingenPersonligeForetak = {
     personligeForetak: [],
     tidligsteRegistreringsdato: null,
