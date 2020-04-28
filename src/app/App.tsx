@@ -14,6 +14,7 @@ import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavailablePage';
 import 'common/styles/globalStyles.less';
 import './styles/app.less';
+import ReceiptPage from './pages/receipt-page/ReceiptPage';
 
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
@@ -33,6 +34,7 @@ const App: React.FunctionComponent = () => {
             <>
                 <Switch>
                     <Route path={GlobalRoutes.SYSTEM_UNAVAILABLE} component={SystemUnavailablePage} />
+                    <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
                     <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
                     <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
                     <Route path="/" component={IntroPage} exact={true} />

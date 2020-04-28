@@ -4,12 +4,11 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import GlobalRoutes, { getRouteUrl } from '../config/routeConfig';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
-import ReceiptPage from '../pages/receipt-page/ReceiptPage';
 import SoknadEntryPage from '../pages/soknad-entry-page/SoknadEntryPage';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
-import { navigateTo, relocateToConfirmationPage } from '../utils/navigationUtils';
+import { navigateTo, relocateToReceiptPage } from '../utils/navigationUtils';
 import { getSoknadRoute, getNextStepRoute } from '../utils/routeUtils';
 import soknadTempStorage from './SoknadTempStorage';
 import FrilanserStep from './frilanser-step/FrilanserStep';
@@ -77,7 +76,7 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onSoknadSent={() => {
-                            relocateToConfirmationPage();
+                            relocateToReceiptPage();
                         }}
                     />
                 );
@@ -113,7 +112,6 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
             {soknadSteps.map((step) => {
                 return <Route key={step} path={getSoknadRoute(step)} render={() => renderSoknadStep(step)} />;
             })}
-            <Route path={GlobalRoutes.SOKNAD_SENT} render={() => <ReceiptPage />} />
             <Route path={GlobalRoutes.SOKNAD_ERROR} render={() => <SoknadErrorPage />} />
             <Route path="*">
                 <SoknadErrorPage>
