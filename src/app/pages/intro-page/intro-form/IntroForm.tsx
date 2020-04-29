@@ -124,8 +124,14 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         showInfo={selvstendigHarAlleredeSøkt === YesOrNo.YES}
                                         infoMessage={<Info.harAlleredeSøkt />}
                                     />
-                                    <IntroFormQuestion name={IntroFormField.selvstendigVilFortsetteTilSøknad} />
-
+                                    <IntroFormQuestion
+                                        name={IntroFormField.selvstendigVilFortsetteTilSøknad}
+                                        showStop={
+                                            selvstendigVilFortsetteTilSøknad === YesOrNo.NO &&
+                                            selvstendigHarAlleredeSøkt === YesOrNo.YES
+                                        }
+                                        stopMessage={<Info.vilIkkeTrekkeAnnenSøknadSelvstendig />}
+                                    />
                                     {(selvstendigVilFortsetteTilSøknad === YesOrNo.YES ||
                                         selvstendigHarAlleredeSøkt === YesOrNo.NO) && (
                                         <SuksessMessage margin="l">
@@ -137,12 +143,6 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                             />
                                         </SuksessMessage>
                                     )}
-                                    {selvstendigVilFortsetteTilSøknad === YesOrNo.NO &&
-                                        selvstendigHarAlleredeSøkt === YesOrNo.YES && (
-                                            <StopMessage>
-                                                <Info.vilIkkeTrekkeAnnenSøknadSelvstendig />
-                                            </StopMessage>
-                                        )}
                                 </FormSection>
                             )}
                             {isVisible(IntroFormField.erFrilanser) && (
@@ -181,7 +181,14 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         showInfo={frilansHarAlleredeSøkt === YesOrNo.YES}
                                         infoMessage={<Info.harAlleredeSøkt />}
                                     />
-                                    <IntroFormQuestion name={IntroFormField.frilansVilFortsetteTilSøknad} />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.frilansVilFortsetteTilSøknad}
+                                        showStop={
+                                            frilansVilFortsetteTilSøknad === YesOrNo.NO &&
+                                            frilansHarAlleredeSøkt === YesOrNo.YES
+                                        }
+                                        stopMessage={<Info.vilIkkeTrekkeAnnenSøknadFrilanser />}
+                                    />
                                     {(frilansVilFortsetteTilSøknad === YesOrNo.YES ||
                                         frilansHarAlleredeSøkt === YesOrNo.NO) && (
                                         <SuksessMessage margin="l">
@@ -193,12 +200,6 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                             />
                                         </SuksessMessage>
                                     )}
-                                    {frilansVilFortsetteTilSøknad === YesOrNo.NO &&
-                                        frilansHarAlleredeSøkt === YesOrNo.YES && (
-                                            <StopMessage>
-                                                <Info.vilIkkeTrekkeAnnenSøknadFrilanser />
-                                            </StopMessage>
-                                        )}
                                 </FormSection>
                             )}
 
