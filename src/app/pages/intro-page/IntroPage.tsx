@@ -26,10 +26,7 @@ export interface IntroResultProps {
 }
 
 const IntroPage: React.StatelessComponent = () => {
-    const [introResult, setIntroResult] = useState<IntroResultProps | undefined>({
-        canApplyAsFrilanser: true,
-        canApplyAsSelvstending: true,
-    });
+    const [introResult, setIntroResult] = useState<IntroResultProps | undefined>();
 
     const soknadsperiode = useSoknadsperiode();
     const soknadErTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
