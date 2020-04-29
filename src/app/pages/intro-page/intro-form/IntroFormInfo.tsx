@@ -4,6 +4,13 @@ import { DateRange } from '../../../utils/dateUtils';
 import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import Lenke from 'nav-frontend-lenker';
+import PhoneView from '../../../components/phone-view/PhoneView';
+
+const infoOmTrekkingAvSøknad = () => (
+    <p style={{ marginBottom: 0 }}>
+        For å trekke den andre søknaden din, må du ta kontakt med NAV på telefon <PhoneView>55 55 33 33</PhoneView>.
+    </p>
+);
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
@@ -33,6 +40,13 @@ const selvstendigFårDekketTapet = () => (
         <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
         Når du allerede har dekket tapt inntekt som selvstendig næringsdrivende, kan du ikke søke kompensasjon for den
         samme inntekten som er dekket.
+    </>
+);
+
+const selvstendigKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøknad: boolean }) => (
+    <>
+        Du kan søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende.
+        {visInfoOmTrekkeSøknad && infoOmTrekkingAvSøknad()}
     </>
 );
 
@@ -183,6 +197,12 @@ const vilIkkeTrekkeAnnenSøknadFrilanser = () => (
     <>Dersom du ikke trekker denne andre søknaden, kan du ikke søke kompensasjon som frilanser.</>
 );
 
+const frilanserKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøknad: boolean }) => (
+    <>
+        Du kan søke om kompensasjon for tapt inntekt som frilanser.
+        {visInfoOmTrekkeSøknad && infoOmTrekkingAvSøknad()}
+    </>
+);
 const IntroFormInfo = {
     ikkeGyldigAlder,
     selvstendigIkkeTattUtInntekt,
@@ -190,9 +210,11 @@ const IntroFormInfo = {
     selvstendigForSentInntektstap,
     selvstendigHvaMenesMedInntekt,
     selvstendigFårDekketTapet,
+    selvstendigKanSøke,
     frilanserIkkeTapPgaKorona,
     frilanserForSentInntektstap,
     frilanserFårDekketTapet,
+    frilanserKanSøke,
     hvaRegnesSomInntektstap,
     hvaErStartdatoForInntektstap,
     frilanserNAVsDefinisjon,

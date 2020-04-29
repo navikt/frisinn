@@ -3,9 +3,7 @@ import { useIntl } from 'react-intl';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
-import DateView from '../../../components/date-view/DateView';
 import InfoMessage from '../../../components/info-message/InfoMessage';
-import PhoneView from '../../../components/phone-view/PhoneView';
 import StopMessage from '../../../components/stop-message/StopMessage';
 import SuksessMessage from '../../../components/suksess-message/SuksessMessage';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
@@ -16,8 +14,8 @@ import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormCo
 import Info from './IntroFormInfo';
 import FormQuestion from './IntroFormQuestion';
 import introFormUtils from './introFormUtils';
-import IntroFormInfo from './IntroFormInfo';
 import { IntroResultProps } from '../IntroPage';
+import { introFormText } from './introFormTexts';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -81,7 +79,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 <FormQuestion question={IntroFormField.fødselsdato}>
                                     <FormComponent.DatePicker
                                         name={IntroFormField.fødselsdato}
-                                        label="Når er du født?"
+                                        label={introFormText.fødselsdato}
                                         showYearSelector={true}
                                         dayPickerProps={{ initialMonth: new Date(1995, 0, 1) }}
                                         dateLimitations={{ maksDato: moment.utc().subtract(17, 'years').toDate() }}
@@ -99,15 +97,13 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.erSelvstendigNæringsdrivende}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.erSelvstendigNæringsdrivende}
-                                            legend={
-                                                'Er du registrert som selvstendig næringsdrivende før 1. mars 2020?'
-                                            }
+                                            legend={introFormText.erSelvstendigNæringsdrivende}
                                         />
                                     </FormQuestion>
                                     <FormQuestion question={IntroFormField.selvstendigHarTattUtInntektFraSelskap}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigHarTattUtInntektFraSelskap}
-                                            legend={`Har du tatt ut inntekt fra selskapet/selskapene i 2019 og 2020?`}
+                                            legend={introFormText.selvstendigHarTattUtInntektFraSelskap}
                                             description={<Info.selvstendigHvaMenesMedInntekt />}
                                         />
                                         {selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO && (
@@ -119,9 +115,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.selvstendigHarTaptInntektPgaKorona}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigHarTaptInntektPgaKorona}
-                                            legend={
-                                                'Har du tapt inntekt som selvstendig næringsdrivende som følge av koronautbruddet? '
-                                            }
+                                            legend={introFormText.selvstendigHarTaptInntektPgaKorona}
                                             description={<Info.hvaRegnesSomInntektstap />}
                                         />
                                         {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
@@ -133,12 +127,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.selvstendigInntektstapStartetFørFrist}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigInntektstapStartetFørFrist}
-                                            legend={
-                                                <span>
-                                                    Startet inntektstapet ditt som selvstendig næringsdrivende før{' '}
-                                                    <DateView date={sisteGyldigeDagForInntektstap} />?
-                                                </span>
-                                            }
+                                            legend={introFormText.selvstendigInntektstapStartetFørFrist(
+                                                sisteGyldigeDagForInntektstap
+                                            )}
                                             description={<Info.hvaErStartdatoForInntektstap />}
                                         />
                                         {selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
@@ -150,9 +141,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.selvstendigFårDekketTapet}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigFårDekketTapet}
-                                            legend={
-                                                'Har du allerede en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende? '
-                                            }
+                                            legend={introFormText.selvstendigFårDekketTapet}
                                             description={<Info.fårDekketTapetSomSelvstendigForklaring />}
                                         />
                                         {selvstendigFårDekketTapet === YesOrNo.YES && (
@@ -164,7 +153,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.selvstendigHarAlleredeSøkt}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigHarAlleredeSøkt}
-                                            legend="Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon for som selvstendig næringsdrivende i denne søknaden?"
+                                            legend={introFormText.selvstendigHarAlleredeSøkt}
                                         />
                                         {selvstendigHarAlleredeSøkt === YesOrNo.YES && (
                                             <InfoMessage margin="l">
@@ -175,30 +164,25 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.selvstendigVilFortsetteTilSøknad}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.selvstendigVilFortsetteTilSøknad}
-                                            legend={
-                                                'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?'
-                                            }
+                                            legend={introFormText.selvstendigVilFortsetteTilSøknad}
                                         />
                                     </FormQuestion>
 
                                     {(selvstendigVilFortsetteTilSøknad === YesOrNo.YES ||
                                         selvstendigHarAlleredeSøkt === YesOrNo.NO) && (
                                         <SuksessMessage margin="l">
-                                            Du kan søke om kompensasjon for tapt inntekt som selvstendig
-                                            næringsdrivende.
-                                            {selvstendigVilFortsetteTilSøknad === YesOrNo.YES &&
-                                                selvstendigHarAlleredeSøkt === YesOrNo.YES && (
-                                                    <p style={{ marginBottom: 0 }}>
-                                                        For å trekke den andre søknaden din, må du ta kontakt med NAV på
-                                                        telefon <PhoneView>55 55 33 33</PhoneView>.
-                                                    </p>
-                                                )}
+                                            <Info.selvstendigKanSøke
+                                                visInfoOmTrekkeSøknad={
+                                                    selvstendigVilFortsetteTilSøknad === YesOrNo.YES &&
+                                                    selvstendigHarAlleredeSøkt === YesOrNo.YES
+                                                }
+                                            />
                                         </SuksessMessage>
                                     )}
                                     {selvstendigVilFortsetteTilSøknad === YesOrNo.NO &&
                                         selvstendigHarAlleredeSøkt === YesOrNo.YES && (
                                             <StopMessage>
-                                                <IntroFormInfo.vilIkkeTrekkeAnnenSøknadSelvstendig />
+                                                <Info.vilIkkeTrekkeAnnenSøknadSelvstendig />
                                             </StopMessage>
                                         )}
                                 </FormSection>
@@ -208,19 +192,19 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.erFrilanser}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.erFrilanser}
-                                            legend={'Er du frilanser?'}
+                                            legend={introFormText.erFrilanser}
                                             description={<Info.frilanserNAVsDefinisjon />}
                                         />
                                     </FormQuestion>
                                     {erSelvstendigNæringsdrivende === YesOrNo.NO && erFrilanser === YesOrNo.NO && (
                                         <StopMessage>
-                                            <IntroFormInfo.ikkeFrilanserOgIkkeRettSomSelvstendig />
+                                            <Info.ikkeFrilanserOgIkkeRettSomSelvstendig />
                                         </StopMessage>
                                     )}
                                     <FormQuestion question={IntroFormField.frilanserHarTaptInntektPgaKorona}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilanserHarTaptInntektPgaKorona}
-                                            legend={'Har du tapt inntekt som frilanser som følge av koronautbruddet?'}
+                                            legend={introFormText.frilanserHarTaptInntektPgaKorona}
                                         />
                                         {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
                                             <StopMessage>
@@ -231,12 +215,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.frilanserInntektstapStartetFørFrist}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilanserInntektstapStartetFørFrist}
-                                            legend={
-                                                <span>
-                                                    Startet inntektstapet ditt som frilanser før{' '}
-                                                    <DateView date={sisteGyldigeDagForInntektstap} />?
-                                                </span>
-                                            }
+                                            legend={introFormText.frilanserInntektstapStartetFørFrist(
+                                                sisteGyldigeDagForInntektstap
+                                            )}
                                             description={<Info.hvaErStartdatoForInntektstap />}
                                         />
                                         {frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
@@ -248,9 +229,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.frilanserFårDekketTapet}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilanserFårDekketTapet}
-                                            legend={
-                                                'Har du allerede en utbetaling fra NAV som dekker inntektstapet ditt som frilanser?'
-                                            }
+                                            legend={introFormText.frilanserFårDekketTapet}
                                             description={<Info.fårDekketTapetSomFrilanserForklaring />}
                                         />
                                         {frilanserFårDekketTapet === YesOrNo.YES && (
@@ -263,7 +242,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.frilansHarAlleredeSøkt}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilansHarAlleredeSøkt}
-                                            legend="Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon som frilanser for i denne søknaden?"
+                                            legend={introFormText.frilansHarAlleredeSøkt}
                                         />
                                         {frilansHarAlleredeSøkt === YesOrNo.YES && (
                                             <InfoMessage margin="l">
@@ -274,29 +253,25 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     <FormQuestion question={IntroFormField.frilansVilFortsetteTilSøknad}>
                                         <FormComponent.YesOrNoQuestion
                                             name={IntroFormField.frilansVilFortsetteTilSøknad}
-                                            legend={
-                                                'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?'
-                                            }
+                                            legend={introFormText.frilansVilFortsetteTilSøknad}
                                         />
                                     </FormQuestion>
 
                                     {(frilansVilFortsetteTilSøknad === YesOrNo.YES ||
                                         frilansHarAlleredeSøkt === YesOrNo.NO) && (
                                         <SuksessMessage margin="l">
-                                            Du kan søke om kompensasjon for tapt inntekt som frilanser.
-                                            {frilansVilFortsetteTilSøknad === YesOrNo.YES &&
-                                                frilansHarAlleredeSøkt === YesOrNo.YES && (
-                                                    <p style={{ marginBottom: 0 }}>
-                                                        For å trekke den andre søknaden din, må du ta kontakt med NAV på
-                                                        telefon <PhoneView>55 55 33 33</PhoneView>.
-                                                    </p>
-                                                )}
+                                            <Info.frilanserKanSøke
+                                                visInfoOmTrekkeSøknad={
+                                                    selvstendigVilFortsetteTilSøknad === YesOrNo.YES &&
+                                                    selvstendigHarAlleredeSøkt === YesOrNo.YES
+                                                }
+                                            />
                                         </SuksessMessage>
                                     )}
                                     {frilansVilFortsetteTilSøknad === YesOrNo.NO &&
                                         frilansHarAlleredeSøkt === YesOrNo.YES && (
                                             <StopMessage>
-                                                <IntroFormInfo.vilIkkeTrekkeAnnenSøknadFrilanser />
+                                                <Info.vilIkkeTrekkeAnnenSøknadFrilanser />
                                             </StopMessage>
                                         )}
                                 </FormSection>
