@@ -33,6 +33,7 @@
         "@navikt/sif-common-formik": "^7.0.1",
         "@navikt/sif-common-forms": "^4.0.0",
         "@navikt/sif-common-question-config": "0.0.2",
+        "@sentry/browser": "^5.15.5",
         "@testing-library/react": "^9.4.0",
         "@typescript-eslint/eslint-plugin": "^2.26.0",
         "@typescript-eslint/parser": "^2.26.0",
