@@ -27,6 +27,7 @@ spec:
             memory: 128Mi
     ingresses:
         - https://frisinn.nais.oera.no
+        - https://www.nav.no/arbeid/inntektskompensasjon
     replicas:
         min: 1
         max: 1
