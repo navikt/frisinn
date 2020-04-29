@@ -57,17 +57,9 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         isSelvstendigButNoForetakFound: values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendig,
         hasNotChosenSoknad:
             hasChosenSoknad === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
-        ønskerIkkeSøkeBareSomFrilanser:
-            values.erSelvstendigNæringsdrivende === YesOrNo.YES &&
-            !isSelvstendig &&
-            values.ønskerÅFortsetteKunFrilanserSøknad === YesOrNo.NO,
     };
 
-    const canContinue =
-        areAllQuestionsAnswered() &&
-        kontonummerErRiktig === YesOrNo.YES &&
-        hasChosenSoknad &&
-        infoStates.ønskerIkkeSøkeBareSomFrilanser !== true;
+    const canContinue = areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && hasChosenSoknad;
 
     const visibility = SoknadEntryFormQuestions.getVisbility({
         ...values,
@@ -126,20 +118,6 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                         </Guide>
                     </FormBlock>
                 )}
-                <EntryQuestion question={SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad}>
-                    <SoknadFormComponents.YesOrNoQuestion
-                        legend="Ønsker du å fortsette med å kun søke som frilanser?"
-                        name={SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad}
-                    />
-                    {infoStates.ønskerIkkeSøkeBareSomFrilanser && (
-                        <FormBlock>
-                            <AlertStripeAdvarsel>
-                                Info om hva bruker skal gjøre, eller bare si stopp?
-                            </AlertStripeAdvarsel>
-                        </FormBlock>
-                    )}
-                </EntryQuestion>
-
                 {infoStates.hasNotChosenSoknad && !infoStates.isSelvstendigButNoForetakFound && (
                     <>
                         <FormBlock>

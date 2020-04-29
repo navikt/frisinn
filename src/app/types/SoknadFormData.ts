@@ -6,7 +6,6 @@ export enum SoknadFormField {
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
     kontonummerErRiktig = 'kontonummerErRiktig',
     erSelvstendigNæringsdrivende = 'erSelvstendigNæringsdrivende',
-    ønskerÅFortsetteKunFrilanserSøknad = 'ønskerÅFortsetteKunFrilanserSøknad',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
     selvstendigHarHattInntektFraForetak = 'selvstendigHarHattInntektFraForetak',
@@ -43,7 +42,6 @@ export enum SoknadFormField {
     bekrefterSelvstendigFrilanserInntektIPerioden = 'bekrefterSelvstendigFrilanserInntektIPerioden',
     bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
     bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
-    bekrefterSjekkAvFrilanserinntektIRegister = 'bekrefterSjekkAvFrilanserinntektIRegister',
     frilanserCalculatedDateRange = 'frilanserCalculatedDateRange',
 }
 
@@ -54,7 +52,6 @@ export interface SoknadFormData {
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
-    [SoknadFormField.ønskerÅFortsetteKunFrilanserSøknad]?: YesOrNo;
     [SoknadFormField.selvstendigHarHattInntektFraForetak]: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
@@ -90,7 +87,6 @@ export interface SoknadFormData {
     [SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterFrilansinntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden]?: YesOrNo;
-    [SoknadFormField.bekrefterSjekkAvFrilanserinntektIRegister]?: YesOrNo;
 }
 
 export const initialSoknadFormData: Partial<SoknadFormData> = {

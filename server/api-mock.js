@@ -126,6 +126,12 @@ const startExpressServer = () => {
         }, 250);
     });
 
+    server.get('/ingen-personlige-foretak', (req, res) => {
+        setTimeout(() => {
+            res.send(ingenPersonligeForetak);
+        }, 250);
+    });
+
     server.get('/krav/alder', (req, res) => {
         setTimeout(() => {
             res.send({

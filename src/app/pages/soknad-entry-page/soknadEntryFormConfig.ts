@@ -29,11 +29,6 @@ const SoknadEntryFormConfig: QuestionConfig<SoknadEntryFormPayload, SoknadFormFi
             isSelvstendig === false && kontonummerErRiktig === YesOrNo.YES,
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
-    [Q.ønskerÅFortsetteKunFrilanserSøknad]: {
-        visibilityFilter: ({ søkerOmTaptInntektSomFrilanser, erSelvstendigNæringsdrivende }) =>
-            erSelvstendigNæringsdrivende === YesOrNo.YES && søkerOmTaptInntektSomFrilanser === YesOrNo.YES,
-        isAnswered: ({ ønskerÅFortsetteKunFrilanserSøknad }) => yesOrNoIsAnswered(ønskerÅFortsetteKunFrilanserSøknad),
-    },
 };
 
 export const SoknadEntryFormQuestions = Questions<SoknadEntryFormPayload, SoknadFormField>(SoknadEntryFormConfig);
