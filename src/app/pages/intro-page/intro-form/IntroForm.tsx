@@ -1,6 +1,5 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
@@ -18,21 +17,19 @@ import Info from './IntroFormInfo';
 import FormQuestion from './IntroFormQuestion';
 import introFormUtils from './introFormUtils';
 import IntroFormInfo from './IntroFormInfo';
-import Guide from '../../../components/guide/Guide';
-import VeilederSVG from '../../../components/veileder-svg/VeilederSVG';
-import { Undertittel } from 'nav-frontend-typografi';
+import { IntroResultProps } from '../IntroPage';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
 interface Props {
     soknadsperiode: DateRange;
-    onValidSubmit: (values: IntroFormData) => void;
+    onValidSubmit: (values: IntroResultProps) => void;
 }
 const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
     const intl = useIntl();
     return (
         <FormComponent.FormikWrapper
-            onSubmit={onValidSubmit}
+            onSubmit={() => null}
             initialValues={{}}
             renderForm={({ values }) => {
                 const visibility = IntroFormQuestions.getVisbility({
@@ -67,17 +64,18 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                 const canContinueToSoknad =
                     areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk;
 
-                const canApplyAs = [
-                    ...(selvstendigIsOk ? ['selvstendig næringsdrivende'] : []),
-                    ...(frilanserIsOk ? ['frilanser'] : []),
-                ];
-
                 return (
                     <FormComponent.Form
                         includeValidationSummary={true}
                         includeButtons={canContinueToSoknad}
+                        onValidSubmit={() => {
+                            onValidSubmit({
+                                canApplyAsFrilanser: frilanserIsOk,
+                                canApplyAsSelvstending: selvstendigIsOk,
+                            });
+                        }}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}
-                        submitButtonLabel="Gå videre til søknaden">
+                        submitButtonLabel="Gå videre">
                         <QuestionVisibilityContext.Provider value={{ visibility }}>
                             <FormSection>
                                 <FormQuestion question={IntroFormField.fødselsdato}>
@@ -311,21 +309,6 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         <Info.selvstendigIkkeOkOgErIkkeFrilanser />
                                     </StopMessage>
                                 )}
-                            {canContinueToSoknad && (
-                                <>
-                                    <FormBlock margin="xxl">
-                                        <Guide svg={<VeilederSVG mood={'happy'} />} kompakt={true}>
-                                            <Undertittel>Tips nå du søker som {canApplyAs.join(' og ')}</Undertittel>
-                                            <p style={{ marginTop: '.5rem' }}>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat ut, sit
-                                                libero earum quaerat cumque deleniti. Eveniet, quos sed pariatur
-                                                architecto atque quidem nam adipisci maxime, laborum, quis corporis
-                                                enim?
-                                            </p>
-                                        </Guide>
-                                    </FormBlock>
-                                </>
-                            )}
                         </QuestionVisibilityContext.Provider>
                     </FormComponent.Form>
                 );
