@@ -139,28 +139,35 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         };
         return apiData;
     }
-    if (isRunningInDevEnvironment()) {
-        triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
-            formData,
-            personligeForetak,
-        });
-    } else {
-        triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
-            harPersonligeForetak: personligeForetak !== undefined,
-            selvstendigBeregnetTilgjengeligSøknadsperiode,
-            søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-            selvstendigHarHattInntektFraForetak,
-            selvstendigHarTaptInntektPgaKorona,
-            selvstendigInntektstapStartetDato,
-            selvstendigErFrilanser,
-            selvstendigHarHattInntektSomFrilanserIPerioden,
-            hasValidHistoriskInntekt: personligeForetak
-                ? hasValidHistoriskInntekt(
-                      { selvstendigInntekt2019, selvstendigInntekt2020 },
-                      personligeForetak.tidligsteRegistreringsdato.getFullYear()
-                  )
-                : 'ingen foretak info',
-        });
+
+    if (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
+        const payload = isRunningInDevEnvironment()
+            ? {
+                  formData,
+                  personligeForetak,
+              }
+            : {
+                  harPersonligeForetak: personligeForetak !== undefined,
+                  selvstendigBeregnetTilgjengeligSøknadsperiode,
+                  søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+                  selvstendigHarHattInntektFraForetak,
+                  selvstendigHarTaptInntektPgaKorona,
+                  selvstendigInntektstapStartetDato,
+                  selvstendigErFrilanser,
+                  selvstendigHarHattInntektSomFrilanserIPerioden,
+                  hasValidHistoriskInntekt: personligeForetak
+                      ? hasValidHistoriskInntekt(
+                            { selvstendigInntekt2019, selvstendigInntekt2020 },
+                            personligeForetak.tidligsteRegistreringsdato.getFullYear()
+                        )
+                      : 'ingen foretak info',
+              };
+
+        /** Something is amiss - logg */
+        triggerSentryCustomError(
+            SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,
+            payload
+        );
     }
     return undefined;
 };
@@ -179,6 +186,7 @@ export const mapFrilanserFormDataToApiData = (
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
         frilanserCalculatedDateRange,
+        søkerOmTaptInntektSomFrilanser,
     } = formData;
     if (
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
@@ -217,18 +225,23 @@ export const mapFrilanserFormDataToApiData = (
             questions,
         };
     }
-    if (isRunningInDevEnvironment()) {
-        triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
-            formData,
-            personligeForetak,
-        });
-    } else {
-        triggerSentryCustomError(SentryEventName.mapFrilanserFormDataToApiDataReturnsUndefined, {
-            frilanserHarTaptInntektPgaKorona,
-            frilanserCalculatedDateRange,
-            frilanserHarYtelseFraNavSomDekkerTapet,
-            frilanserYtelseFraNavDekkerHeleTapet,
-        });
+    if (søkerOmTaptInntektSomFrilanser === YesOrNo.NO) {
+        /** Something is amiss - log */
+        const payload = isRunningInDevEnvironment()
+            ? {
+                  formData,
+                  personligeForetak,
+              }
+            : {
+                  frilanserHarTaptInntektPgaKorona,
+                  frilanserCalculatedDateRange,
+                  frilanserHarYtelseFraNavSomDekkerTapet,
+                  frilanserYtelseFraNavDekkerHeleTapet,
+              };
+        triggerSentryCustomError(
+            SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,
+            payload
+        );
     }
     return undefined;
 };

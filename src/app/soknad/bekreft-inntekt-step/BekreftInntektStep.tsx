@@ -15,6 +15,8 @@ import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
 import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import Guide from '../../components/guide/Guide';
 import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
+import { triggerSentryCustomError, SentryEventName } from '../../utils/sentryUtils';
+import { isRunningInDevEnvironment } from '../../utils/envUtils';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -66,6 +68,17 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         ...values,
         apiValues,
     });
+
+    const frilanserIsOk = frilanser !== undefined || frilanserCalculatedDateRange !== undefined;
+    const selvstendigIsOk =
+        selvstendigNæringsdrivende !== undefined || selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined;
+
+    useEffect(() => {
+        if (!frilanserIsOk && !selvstendigIsOk) {
+            const payload = isRunningInDevEnvironment() ? values : undefined;
+            triggerSentryCustomError(SentryEventName.invalidSelvstendigAndFrilansApiData, payload);
+        }
+    }, [selvstendigIsOk, frilanserIsOk]);
 
     return (
         <SoknadStep

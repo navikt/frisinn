@@ -7,6 +7,7 @@ export enum SentryEventName {
     'noMatchingSoknadRoute' = 'noMatchingSoknadRoute',
     'sendSoknadFailed' = 'sendSoknadFailed',
     'apiRequestFailed' = 'apiRequestFailed',
+    'invalidSelvstendigAndFrilansApiData' = 'invalidSelvstendigAndFrilansApiData',
 }
 
 interface CustomError extends Error {
