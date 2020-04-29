@@ -40,9 +40,12 @@ export const triggerSentryMessage = (eventName: SentryEventName, payload?: strin
     Sentry.withScope((scope) => {
         scope.setTag('eventName', eventName);
         scope.setLevel(Severity.Info);
+        const extra = { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined };
+        const extraString = extra ? JSON.stringify(payload) : undefined;
+
         const evt: SentryEvent = {
             message: eventName,
-            extra: { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined },
+            extra: extraString ? JSON.parse(extraString) : undefined,
         };
         Sentry.captureEvent(evt);
     });
