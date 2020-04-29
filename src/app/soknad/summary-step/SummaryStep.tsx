@@ -53,7 +53,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                 });
                 setTimeout(() => {
                     onSoknadSent();
-                }, 500);
+                }, 1500);
             } else {
                 onSoknadSent();
             }
