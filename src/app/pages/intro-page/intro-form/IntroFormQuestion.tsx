@@ -1,7 +1,7 @@
 import React from 'react';
-import QuestionVisibilityBlock from '../../components/question-visibility-block/QuestionVisibilityBlock';
+import QuestionVisibilityBlock from '../../../components/question-visibility-block/QuestionVisibilityBlock';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { IntroFormField } from './intro-form/introFormConfig';
+import { IntroFormField } from './introFormConfig';
 
 interface Props {
     question: IntroFormField;

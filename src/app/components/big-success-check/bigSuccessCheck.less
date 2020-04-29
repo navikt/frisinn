@@ -1,0 +1,21 @@
+.bigSuccessCheck {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-items: stretch;
+    &__svg {
+        flex: 1 1 0;
+        margin-right: 1rem;
+    }
+    &__title {
+        flex: 2 2 100%;
+    }
+    &--vertical {
+        flex-direction: column;
+        text-align: center;
+        .bigSuccessCheck__svg {
+            margin-right: 0;
+            margin-bottom: 0.5rem;
+        }
+    }
+}

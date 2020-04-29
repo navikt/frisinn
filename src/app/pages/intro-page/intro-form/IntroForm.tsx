@@ -5,20 +5,24 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import DateView from '../../../components/date-view/DateView';
+import InfoMessage from '../../../components/info-message/InfoMessage';
+import PhoneView from '../../../components/phone-view/PhoneView';
+import StopMessage from '../../../components/stop-message/StopMessage';
+import SuksessMessage from '../../../components/suksess-message/SuksessMessage';
+import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
 import { DateRange, getSisteGyldigeDagForInntektstapIPeriode } from '../../../utils/dateUtils';
 import { hasValue } from '../../../validation/fieldValidations';
 import FormSection from '../FormSection';
-import InfoMessage from '../../../components/info-message/InfoMessage';
-import IntroCheckList from '../IntroCheckList';
-import FormQuestion from '../IntroFormQuestion';
-import StopMessage from '../../../components/stop-message/StopMessage';
-import SuksessMessage from '../../../components/suksess-message/SuksessMessage';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import Info from './IntroFormInfo';
+import FormQuestion from './IntroFormQuestion';
 import introFormUtils from './introFormUtils';
-import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
 import IntroFormInfo from './IntroFormInfo';
-import PhoneView from '../../../components/phone-view/PhoneView';
+import Guide from '../../../components/guide/Guide';
+import VeilederSVG from '../../../components/veileder-svg/VeilederSVG';
+import { Undertittel } from 'nav-frontend-typografi';
+import BigSuccessCheck from '../../../components/big-success-check/BigSuccessCheck';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -41,7 +45,6 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
 
                 const {
                     fødselsdato,
-                    // vilFortsetteTilSøknad,
                     erFrilanser,
                     erSelvstendigNæringsdrivende,
                     selvstendigFårDekketTapet,
@@ -65,6 +68,11 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
 
                 const canContinueToSoknad =
                     areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk;
+
+                const canApplyAs = [
+                    ...(selvstendigIsOk ? ['selvstendig næringsdrivende'] : []),
+                    ...(frilanserIsOk ? ['frilanser'] : []),
+                ];
 
                 return (
                     <FormComponent.Form
@@ -306,9 +314,25 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                     </StopMessage>
                                 )}
                             {canContinueToSoknad && (
-                                <FormBlock>
-                                    <IntroCheckList />
-                                </FormBlock>
+                                <>
+                                    <Box margin="xxl">
+                                        <BigSuccessCheck size={4}>
+                                            <Undertittel>Du kan søke som {canApplyAs.join(' og ')}</Undertittel>
+                                        </BigSuccessCheck>
+                                    </Box>
+
+                                    <FormBlock>
+                                        <Guide svg={<VeilederSVG mood={'happy'} />} kompakt={true}>
+                                            <Undertittel>Nyttig informasjon før du går til søknaden</Undertittel>
+                                            <p style={{ marginTop: '.5rem' }}>
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat ut, sit
+                                                libero earum quaerat cumque deleniti. Eveniet, quos sed pariatur
+                                                architecto atque quidem nam adipisci maxime, laborum, quis corporis
+                                                enim?
+                                            </p>
+                                        </Guide>
+                                    </FormBlock>
+                                </>
                             )}
                         </QuestionVisibilityContext.Provider>
                     </FormComponent.Form>
