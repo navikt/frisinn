@@ -3,6 +3,7 @@ import axiosConfig from '../config/axiosConfig';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 import { getEnvironmentVariable } from '../utils/envUtils';
 import { relocateToLoginPage } from '../utils/navigationUtils';
+import { triggerSentryError, SentryEventName } from '../utils/sentryUtils';
 
 axios.defaults.baseURL = getEnvironmentVariable('API_URL');
 axios.defaults.withCredentials = true;
@@ -16,13 +17,15 @@ axios.interceptors.response.use(
     (error: AxiosError) => {
         if (isForbidden(error) || isUnauthorized(error)) {
             relocateToLoginPage();
+            return;
         }
+        triggerSentryError(SentryEventName.apiRequestFailed, error);
         return Promise.reject(error);
     }
 );
 
 export enum ApiEndpoint {
-    'personligeForetak' = 'personlige-foretak',
+    'personligeForetak' = 'spersonlige-foretak',
     'perioder' = 'perioder',
     'soker' = 'soker',
     'soknad' = 'soknad',

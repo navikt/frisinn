@@ -17,6 +17,7 @@ import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavail
 import Soknad from './soknad/Soknad';
 import 'common/styles/globalStyles.less';
 import './styles/app.less';
+import { getEnvironmentVariable } from './utils/envUtils';
 
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
@@ -26,7 +27,7 @@ moment.locale(localeFromSessionStorage);
 
 Sentry.init({
     dsn: 'https://64c0ee4a1a8b4212b685764604cce997@sentry.gc.nav.no/29',
-    release: (window as any).APP_VERSION,
+    release: getEnvironmentVariable('APP_VERSION'),
     environment: window.location.hostname,
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });

@@ -26,6 +26,7 @@ import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import FormSection from '../../pages/intro-page/FormSection';
+import { triggerSentryError, SentryEventName } from '../../utils/sentryUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -46,6 +47,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             await sendSoknad(data);
             onSoknadSent();
         } catch (error) {
+            triggerSentryError(SentryEventName.sendSoknadFailed, error);
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
                 relocateToLoginPage();
             } else {

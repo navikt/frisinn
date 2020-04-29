@@ -5,6 +5,8 @@ export enum SentryEventName {
     'mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined' = 'mapSelvstendigNæringsdrivendeFormDataToApiData returns undefined',
     'mapFrilanserFormDataToApiDataReturnsUndefined' = 'mapFrilanserFormDataToApiData returns undefined',
     'noMatchingSoknadRoute' = 'noMatchingSoknadRoute',
+    'sendSoknadFailed' = 'sendSoknadFailed',
+    'apiRequestFailed' = 'apiRequestFailed',
 }
 
 interface CustomError extends Error {
@@ -44,9 +46,12 @@ export const triggerSentryCustomError = (eventName: SentryEventName, payload?: s
     });
 };
 
-export const triggerSentryError = (eventName: SentryEventName, error: Error) => {
+export const triggerSentryError = (eventName: SentryEventName, error: Error, tag?: { key: string; value: string }) => {
     Sentry.withScope((scope) => {
         scope.setTag('eventName', eventName);
+        if (tag) {
+            scope.setTag(tag.key, tag.value);
+        }
         Sentry.captureException(error);
     });
 };

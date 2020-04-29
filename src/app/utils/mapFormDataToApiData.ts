@@ -18,6 +18,7 @@ import {
     selvstendigSkalOppgiInntekt2020,
 } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
+import { isRunningInDevEnvironment } from './envUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -138,28 +139,37 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         };
         return apiData;
     }
-    triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
-        harPersonligeForetak: personligeForetak !== undefined,
-        selvstendigBeregnetTilgjengeligSøknadsperiode,
-        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-        selvstendigHarHattInntektFraForetak,
-        selvstendigHarTaptInntektPgaKorona,
-        selvstendigInntektstapStartetDato,
-        selvstendigErFrilanser,
-        selvstendigHarHattInntektSomFrilanserIPerioden,
-        hasValidHistoriskInntekt: personligeForetak
-            ? hasValidHistoriskInntekt(
-                  { selvstendigInntekt2019, selvstendigInntekt2020 },
-                  personligeForetak.tidligsteRegistreringsdato.getFullYear()
-              )
-            : 'ingen foretak info',
-    });
+    if (isRunningInDevEnvironment()) {
+        triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
+            formData,
+            personligeForetak,
+        });
+    } else {
+        triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
+            harPersonligeForetak: personligeForetak !== undefined,
+            selvstendigBeregnetTilgjengeligSøknadsperiode,
+            søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+            selvstendigHarHattInntektFraForetak,
+            selvstendigHarTaptInntektPgaKorona,
+            selvstendigInntektstapStartetDato,
+            selvstendigErFrilanser,
+            selvstendigHarHattInntektSomFrilanserIPerioden,
+            hasValidHistoriskInntekt: personligeForetak
+                ? hasValidHistoriskInntekt(
+                      { selvstendigInntekt2019, selvstendigInntekt2020 },
+                      personligeForetak.tidligsteRegistreringsdato.getFullYear()
+                  )
+                : 'ingen foretak info',
+        });
+    }
     return undefined;
 };
 
 export const mapFrilanserFormDataToApiData = (
     personligeForetak: PersonligeForetak | undefined,
-    {
+    formData: FrilanserFormData
+): FrilanserApiData | undefined => {
+    const {
         frilanserHarTaptInntektPgaKorona,
         frilanserErNyetablert,
         frilanserInntektIPerioden,
@@ -169,8 +179,7 @@ export const mapFrilanserFormDataToApiData = (
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
         frilanserCalculatedDateRange,
-    }: FrilanserFormData
-): FrilanserApiData | undefined => {
+    } = formData;
     if (
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
         frilanserCalculatedDateRange &&
@@ -208,12 +217,19 @@ export const mapFrilanserFormDataToApiData = (
             questions,
         };
     }
-    triggerSentryCustomError(SentryEventName.mapFrilanserFormDataToApiDataReturnsUndefined, {
-        frilanserHarTaptInntektPgaKorona,
-        frilanserCalculatedDateRange,
-        frilanserHarYtelseFraNavSomDekkerTapet,
-        frilanserYtelseFraNavDekkerHeleTapet,
-    });
+    if (isRunningInDevEnvironment()) {
+        triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
+            formData,
+            personligeForetak,
+        });
+    } else {
+        triggerSentryCustomError(SentryEventName.mapFrilanserFormDataToApiDataReturnsUndefined, {
+            frilanserHarTaptInntektPgaKorona,
+            frilanserCalculatedDateRange,
+            frilanserHarYtelseFraNavSomDekkerTapet,
+            frilanserYtelseFraNavDekkerHeleTapet,
+        });
+    }
     return undefined;
 };
 
