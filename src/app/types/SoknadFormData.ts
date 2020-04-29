@@ -19,7 +19,6 @@ export enum SoknadFormField {
     selvstendigInntektSomFrilanserIPerioden = 'selvstendigInntektSomFrilanserIPerioden',
     selvstendigInntekt2019 = 'selvstendigInntekt2019',
     selvstendigInntekt2020 = 'selvstendigInntekt2020',
-    selvstendigBeregnetTilgjengeligSøknadsperiode = 'selvstendigBeregnetTilgjengeligSøknadsperiode',
     selvstendigHarRegnskapsfører = 'selvstendigHarRegnskapsfører',
     selvstendigRegnskapsførerNavn = 'selvstendigRegnskapsførerNavn',
     selvstendigRegnskapsførerTelefon = 'selvstendigRegnskapsførerTelefon',
@@ -27,6 +26,8 @@ export enum SoknadFormField {
     selvstendigRevisorNavn = 'selvstendigRevisorNavn',
     selvstendigRevisorTelefon = 'selvstendigRevisorTelefon',
     selvstendigRevisorNAVKanTaKontakt = 'selvstendigRevisorNAVKanTaKontakt',
+    selvstendigBeregnetTilgjengeligSøknadsperiode = 'selvstendigBeregnetTilgjengeligSøknadsperiode',
+    selvstendigSoknadIsOk = 'selvstendigSoknadIsOk',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
     frilanserErNyetablert = 'frilanserErNyetablert',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
@@ -42,7 +43,8 @@ export enum SoknadFormField {
     bekrefterSelvstendigFrilanserInntektIPerioden = 'bekrefterSelvstendigFrilanserInntektIPerioden',
     bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
     bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
-    frilanserCalculatedDateRange = 'frilanserCalculatedDateRange',
+    frilanserBeregnetTilgjengeligSønadsperiode = 'frilanserBeregnetTilgjengeligSønadsperiode',
+    frilanserSoknadIsOk = 'frilanserSoknadIsOk',
 }
 
 export interface SoknadFormData {
@@ -71,6 +73,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigRevisorNavn]?: string;
     [SoknadFormField.selvstendigRevisorTelefon]?: string;
     [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]?: YesOrNo;
+    [SoknadFormField.selvstendigSoknadIsOk]?: boolean;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.frilanserErNyetablert]: YesOrNo;
     [SoknadFormField.frilanserInntektstapStartetDato]: Date;
@@ -80,7 +83,8 @@ export interface SoknadFormData {
     [SoknadFormField.frilanserErSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
-    [SoknadFormField.frilanserCalculatedDateRange]?: DateRange;
+    [SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode]?: DateRange;
+    [SoknadFormField.frilanserSoknadIsOk]?: boolean;
     [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2019]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2020]?: YesOrNo;
@@ -120,6 +124,7 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigRevisorNavn
     | SoknadFormField.selvstendigRevisorTelefon
     | SoknadFormField.selvstendigRevisorNAVKanTaKontakt
+    | SoknadFormField.selvstendigSoknadIsOk
 >;
 
 export type FrilanserFormData = Pick<
@@ -134,7 +139,8 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet
     | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
-    | SoknadFormField.frilanserCalculatedDateRange
+    | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
+    | SoknadFormField.frilanserSoknadIsOk
 >;
 
 export const initialSelvstendigValues: Partial<SelvstendigFormData> = {

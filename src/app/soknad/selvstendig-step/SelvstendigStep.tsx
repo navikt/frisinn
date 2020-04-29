@@ -16,7 +16,7 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
-import { SoknadFormData, SoknadFormField as Field } from '../../types/SoknadFormData';
+import { SoknadFormData, SoknadFormField as Field, SoknadFormField } from '../../types/SoknadFormData';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import FormComponents from '../SoknadFormComponents';
@@ -77,7 +77,8 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
 
     useEffect(() => {
         setFieldValue(Field.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);
-    }, [availableDateRange]);
+        setFieldValue(SoknadFormField.selvstendigSoknadIsOk, hasValidSelvstendigFormData);
+    }, [availableDateRange, hasValidSelvstendigFormData]);
 
     return (
         <SoknadStep

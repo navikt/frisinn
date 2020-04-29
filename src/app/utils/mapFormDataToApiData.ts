@@ -58,6 +58,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigRevisorNavn,
         selvstendigRevisorTelefon,
         selvstendigRevisorNAVKanTaKontakt,
+        selvstendigSoknadIsOk,
     } = formData;
     if (
         personligeForetak !== undefined &&
@@ -140,7 +141,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         return apiData;
     }
 
-    if (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
+    if (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES && selvstendigSoknadIsOk) {
         const payload = isRunningInDevEnvironment()
             ? {
                   formData,
@@ -185,12 +186,13 @@ export const mapFrilanserFormDataToApiData = (
         frilanserInntektstapStartetDato,
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
-        frilanserCalculatedDateRange,
+        frilanserBeregnetTilgjengeligSønadsperiode,
         søkerOmTaptInntektSomFrilanser,
+        frilanserSoknadIsOk,
     } = formData;
     if (
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
-        frilanserCalculatedDateRange &&
+        frilanserBeregnetTilgjengeligSønadsperiode &&
         !(
             frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
             frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES
@@ -220,12 +222,12 @@ export const mapFrilanserFormDataToApiData = (
                     ? frilanserInntektSomSelvstendigIPerioden
                     : undefined,
             info: {
-                period: formatDateRange(frilanserCalculatedDateRange),
+                period: formatDateRange(frilanserBeregnetTilgjengeligSønadsperiode),
             },
             questions,
         };
     }
-    if (søkerOmTaptInntektSomFrilanser === YesOrNo.NO) {
+    if (søkerOmTaptInntektSomFrilanser === YesOrNo.NO && frilanserSoknadIsOk) {
         /** Something is amiss - log */
         const payload = isRunningInDevEnvironment()
             ? {
@@ -234,7 +236,7 @@ export const mapFrilanserFormDataToApiData = (
               }
             : {
                   frilanserHarTaptInntektPgaKorona,
-                  frilanserCalculatedDateRange,
+                  frilanserBeregnetTilgjengeligSønadsperiode,
                   frilanserHarYtelseFraNavSomDekkerTapet,
                   frilanserYtelseFraNavDekkerHeleTapet,
               };

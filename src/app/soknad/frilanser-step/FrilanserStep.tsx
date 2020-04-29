@@ -58,8 +58,9 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         frilanserYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {
-        setFieldValue(SoknadFormField.frilanserCalculatedDateRange, availableDateRange);
-    }, [availableDateRange]);
+        setFieldValue(SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode, availableDateRange);
+        setFieldValue(SoknadFormField.frilanserSoknadIsOk, hasValidFrilanserFormData);
+    }, [availableDateRange, hasValidFrilanserFormData]);
 
     return (
         <SoknadStep

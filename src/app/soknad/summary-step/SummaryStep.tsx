@@ -37,7 +37,7 @@ interface Props {
 
 const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSoknadSent, soknadEssentials }: Props) => {
     const intl = useIntl();
-    const formik = useFormikContext<SoknadFormData>();
+    const { values } = useFormikContext<SoknadFormData>();
     const history = useHistory();
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
@@ -48,7 +48,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             await sendSoknad(data);
             if (isRunningInDevEnvironment()) {
                 triggerSentryMessage(SentryEventName.soknadSentSuccessfully, {
-                    values: formik.values,
+                    values,
                     apiData: { ...data },
                 });
                 setTimeout(() => {
@@ -67,7 +67,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
         }
     }
 
-    const apiValues = mapFormDataToApiData(soknadEssentials, formik.values, intl.locale as Locale);
+    const apiValues = mapFormDataToApiData(soknadEssentials, values, intl.locale as Locale);
     const hasValidApiData = apiValues?.selvstendigNæringsdrivende !== undefined || apiValues?.frilanser !== undefined;
     const { person } = soknadEssentials;
 

@@ -27,7 +27,7 @@ describe('mapFrilanserFormDataToApiData', () => {
     };
 
     const formData: FrilanserFormData = {
-        frilanserCalculatedDateRange: periode,
+        frilanserBeregnetTilgjengeligSønadsperiode: periode,
         frilanserInntektIPerioden: 0,
         frilanserInntektstapStartetDato: apiStringDateToDate('2020-04-01'),
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
@@ -47,10 +47,10 @@ describe('mapFrilanserFormDataToApiData', () => {
             });
             expect(apiData).toBeUndefined();
         });
-        it('returns undefined if frilanserCalculatedDateRange is undefined', () => {
+        it('returns undefined if frilanserBeregnetTilgjengeligSønadsperiode is undefined', () => {
             const apiData = mapFrilanserFormDataToApiData(personligeForetak, {
                 ...formData,
-                frilanserCalculatedDateRange: undefined,
+                frilanserBeregnetTilgjengeligSønadsperiode: undefined,
             });
             expect(apiData).toBeUndefined();
         });
