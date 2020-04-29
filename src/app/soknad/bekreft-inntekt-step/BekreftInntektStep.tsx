@@ -35,6 +35,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         bekrefterSelvstendigInntektIPerioden,
         bekrefterSelvstendigInntektI2019,
         bekrefterSelvstendigInntektI2020,
+        bekrefterSelvstendigFrilanserInntektIPerioden,
         frilanserSoknadIsOk,
         selvstendigSoknadIsOk,
     } = values;
@@ -48,7 +49,9 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
     const selvstendigBekreftet = selvstendigNæringsdrivende
         ? bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
           (bekrefterSelvstendigInntektI2020 === YesOrNo.YES || bekrefterSelvstendigInntektI2019 === YesOrNo.YES) &&
-          (spørOmInntektSomFrilanserForSelvstendig ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true)
+          (spørOmInntektSomFrilanserForSelvstendig
+              ? bekrefterSelvstendigFrilanserInntektIPerioden === YesOrNo.YES
+              : true)
         : true;
 
     const frilansBekreftet = frilanser ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true;
