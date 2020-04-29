@@ -26,7 +26,8 @@ import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import FormSection from '../../pages/intro-page/FormSection';
-import { triggerSentryError, SentryEventName } from '../../utils/sentryUtils';
+import { triggerSentryError, SentryEventName, triggerSentryEvent, triggerSentryMessage } from '../../utils/sentryUtils';
+import { isRunningInDevEnvironment } from '../../utils/envUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -45,6 +46,12 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
         setSendingInProgress(true);
         try {
             await sendSoknad(data);
+            if (isRunningInDevEnvironment()) {
+                triggerSentryMessage(SentryEventName.soknadSentSuccessfully, {
+                    values: formik.values,
+                    data,
+                });
+            }
             onSoknadSent();
         } catch (error) {
             triggerSentryError(SentryEventName.sendSoknadFailed, error);

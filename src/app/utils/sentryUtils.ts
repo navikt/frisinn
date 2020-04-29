@@ -8,6 +8,7 @@ export enum SentryEventName {
     'sendSoknadFailed' = 'sendSoknadFailed',
     'apiRequestFailed' = 'apiRequestFailed',
     'invalidSelvstendigAndFrilansApiData' = 'invalidSelvstendigAndFrilansApiData',
+    'soknadSentSuccessfully' = 'soknadSentSuccessfully',
 }
 
 interface CustomError extends Error {
@@ -32,6 +33,18 @@ export const triggerSentryEvent = (
             Sentry.captureException(err);
         }
         Sentry.captureMessage(`${eventName}: ${message}`);
+    });
+};
+
+export const triggerSentryMessage = (eventName: SentryEventName, payload?: string | any) => {
+    Sentry.withScope((scope) => {
+        scope.setTag('eventName', eventName);
+        scope.setLevel(Severity.Info);
+        const evt: SentryEvent = {
+            message: eventName,
+            extra: { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined },
+        };
+        Sentry.captureEvent(evt);
     });
 };
 

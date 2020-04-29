@@ -62,8 +62,14 @@ const bekreftInntektFormConfig: QuestionConfig<BekreftInntektPayload, SoknadForm
         isAnswered: ({ bekrefterFrilansinntektIPerioden }) => yesOrNoIsAnswered(bekrefterFrilansinntektIPerioden),
     },
     [SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden]: {
-        isIncluded: ({ bekrefterFrilansinntektIPerioden, apiValues: { selvstendigNæringsdrivende } }) =>
-            selvstendigNæringsdrivende === undefined && bekrefterFrilansinntektIPerioden === YesOrNo.YES,
+        isIncluded: ({
+            frilanserHarHattInntektSomSelvstendigIPerioden,
+            bekrefterFrilansinntektIPerioden,
+            apiValues: { selvstendigNæringsdrivende },
+        }) =>
+            frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES &&
+            selvstendigNæringsdrivende === undefined &&
+            bekrefterFrilansinntektIPerioden === YesOrNo.YES,
         isAnswered: ({ bekrefterFrilanserSelvstendigInntektIPerioden }) =>
             yesOrNoIsAnswered(bekrefterFrilanserSelvstendigInntektIPerioden),
     },
