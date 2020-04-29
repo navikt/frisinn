@@ -51,9 +51,12 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                     values: formik.values,
                     apiData: { ...data },
                 });
-                await setTimeout(() => null, 500);
+                setTimeout(() => {
+                    onSoknadSent();
+                }, 500);
+            } else {
+                onSoknadSent();
             }
-            onSoknadSent();
         } catch (error) {
             triggerSentryError(SentryEventName.sendSoknadFailed, error);
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
