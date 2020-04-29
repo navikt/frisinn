@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
-import InfoMessage from '../../../components/info-message/InfoMessage';
 import StopMessage from '../../../components/stop-message/StopMessage';
 import SuksessMessage from '../../../components/suksess-message/SuksessMessage';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
@@ -12,10 +11,10 @@ import { hasValue } from '../../../validation/fieldValidations';
 import FormSection from '../FormSection';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import Info from './IntroFormInfo';
-import FormQuestion from './IntroFormQuestion';
 import introFormUtils from './introFormUtils';
 import { IntroResultProps } from '../IntroPage';
 import { introFormText } from './introFormTexts';
+import IntroFormQuestion from './IntroFormQuestion';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -76,7 +75,10 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                         submitButtonLabel="Gå videre">
                         <QuestionVisibilityContext.Provider value={{ visibility }}>
                             <FormSection>
-                                <FormQuestion question={IntroFormField.fødselsdato}>
+                                <IntroFormQuestion
+                                    name={IntroFormField.fødselsdato}
+                                    showStop={hasValue(fødselsdato) && !alderIsOk}
+                                    stopMessage={<Info.ikkeGyldigAlder periode={soknadsperiode} />}>
                                     <FormComponent.DatePicker
                                         name={IntroFormField.fødselsdato}
                                         label={introFormText.fødselsdato}
@@ -84,89 +86,45 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         dayPickerProps={{ initialMonth: new Date(1995, 0, 1) }}
                                         dateLimitations={{ maksDato: moment.utc().subtract(17, 'years').toDate() }}
                                     />
-                                    {hasValue(fødselsdato) && !alderIsOk && (
-                                        <StopMessage>
-                                            <Info.ikkeGyldigAlder periode={soknadsperiode} />
-                                        </StopMessage>
-                                    )}
-                                </FormQuestion>
+                                </IntroFormQuestion>
                             </FormSection>
 
                             {isVisible(IntroFormField.erSelvstendigNæringsdrivende) && (
                                 <FormSection title="Selvstendig næringsdrivende">
-                                    <FormQuestion question={IntroFormField.erSelvstendigNæringsdrivende}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.erSelvstendigNæringsdrivende}
-                                            legend={introFormText.erSelvstendigNæringsdrivende}
-                                        />
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigHarTattUtInntektFraSelskap}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigHarTattUtInntektFraSelskap}
-                                            legend={introFormText.selvstendigHarTattUtInntektFraSelskap}
-                                            description={<Info.selvstendigHvaMenesMedInntekt />}
-                                        />
-                                        {selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO && (
-                                            <StopMessage>
-                                                <Info.selvstendigIkkeTattUtInntekt />
-                                            </StopMessage>
+                                    <IntroFormQuestion name={IntroFormField.erSelvstendigNæringsdrivende} />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.selvstendigHarTattUtInntektFraSelskap}
+                                        showStop={selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO}
+                                        description={<Info.selvstendigHvaMenesMedInntekt />}
+                                        stopMessage={<Info.selvstendigIkkeTattUtInntekt />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.selvstendigHarTaptInntektPgaKorona}
+                                        showStop={selvstendigHarTaptInntektPgaKorona === YesOrNo.NO}
+                                        description={<Info.hvaRegnesSomInntektstap />}
+                                        stopMessage={<Info.selvstendigIkkeTapPgaKorona />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.selvstendigInntektstapStartetFørFrist}
+                                        showStop={selvstendigInntektstapStartetFørFrist === YesOrNo.NO}
+                                        legend={introFormText.selvstendigInntektstapStartetFørFrist(
+                                            sisteGyldigeDagForInntektstap
                                         )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigHarTaptInntektPgaKorona}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigHarTaptInntektPgaKorona}
-                                            legend={introFormText.selvstendigHarTaptInntektPgaKorona}
-                                            description={<Info.hvaRegnesSomInntektstap />}
-                                        />
-                                        {selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                                            <StopMessage>
-                                                <Info.selvstendigIkkeTapPgaKorona />
-                                            </StopMessage>
-                                        )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigInntektstapStartetFørFrist}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigInntektstapStartetFørFrist}
-                                            legend={introFormText.selvstendigInntektstapStartetFørFrist(
-                                                sisteGyldigeDagForInntektstap
-                                            )}
-                                            description={<Info.hvaErStartdatoForInntektstap />}
-                                        />
-                                        {selvstendigInntektstapStartetFørFrist === YesOrNo.NO && (
-                                            <StopMessage>
-                                                <Info.selvstendigForSentInntektstap />
-                                            </StopMessage>
-                                        )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigFårDekketTapet}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigFårDekketTapet}
-                                            legend={introFormText.selvstendigFårDekketTapet}
-                                            description={<Info.fårDekketTapetSomSelvstendigForklaring />}
-                                        />
-                                        {selvstendigFårDekketTapet === YesOrNo.YES && (
-                                            <StopMessage>
-                                                <Info.selvstendigFårDekketTapet />
-                                            </StopMessage>
-                                        )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigHarAlleredeSøkt}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigHarAlleredeSøkt}
-                                            legend={introFormText.selvstendigHarAlleredeSøkt}
-                                        />
-                                        {selvstendigHarAlleredeSøkt === YesOrNo.YES && (
-                                            <InfoMessage margin="l">
-                                                <Info.harAlleredeSøkt />
-                                            </InfoMessage>
-                                        )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.selvstendigVilFortsetteTilSøknad}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.selvstendigVilFortsetteTilSøknad}
-                                            legend={introFormText.selvstendigVilFortsetteTilSøknad}
-                                        />
-                                    </FormQuestion>
+                                        description={<Info.hvaErStartdatoForInntektstap />}
+                                        stopMessage={<Info.selvstendigForSentInntektstap />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.selvstendigFårDekketTapet}
+                                        showStop={selvstendigFårDekketTapet === YesOrNo.YES}
+                                        description={<Info.fårDekketTapetSomSelvstendigForklaring />}
+                                        stopMessage={<Info.selvstendigFårDekketTapet />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.selvstendigHarAlleredeSøkt}
+                                        showInfo={selvstendigHarAlleredeSøkt === YesOrNo.YES}
+                                        infoMessage={<Info.harAlleredeSøkt />}
+                                    />
+                                    <IntroFormQuestion name={IntroFormField.selvstendigVilFortsetteTilSøknad} />
 
                                     {(selvstendigVilFortsetteTilSøknad === YesOrNo.YES ||
                                         selvstendigHarAlleredeSøkt === YesOrNo.NO) && (
@@ -189,74 +147,41 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                             )}
                             {isVisible(IntroFormField.erFrilanser) && (
                                 <FormSection title="Frilanser">
-                                    <FormQuestion question={IntroFormField.erFrilanser}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.erFrilanser}
-                                            legend={introFormText.erFrilanser}
-                                            description={<Info.frilanserNAVsDefinisjon />}
-                                        />
-                                    </FormQuestion>
-                                    {erSelvstendigNæringsdrivende === YesOrNo.NO && erFrilanser === YesOrNo.NO && (
-                                        <StopMessage>
-                                            <Info.ikkeFrilanserOgIkkeRettSomSelvstendig />
-                                        </StopMessage>
-                                    )}
-                                    <FormQuestion question={IntroFormField.frilanserHarTaptInntektPgaKorona}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.frilanserHarTaptInntektPgaKorona}
-                                            legend={introFormText.frilanserHarTaptInntektPgaKorona}
-                                        />
-                                        {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (
-                                            <StopMessage>
-                                                <Info.frilanserIkkeTapPgaKorona />
-                                            </StopMessage>
+                                    <IntroFormQuestion
+                                        name={IntroFormField.erFrilanser}
+                                        showStop={
+                                            erSelvstendigNæringsdrivende === YesOrNo.NO && erFrilanser === YesOrNo.NO
+                                        }
+                                        description={<Info.frilanserNAVsDefinisjon />}
+                                        stopMessage={<Info.ikkeFrilanserOgIkkeRettSomSelvstendig />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.frilanserHarTaptInntektPgaKorona}
+                                        showStop={frilanserHarTaptInntektPgaKorona === YesOrNo.NO}
+                                        stopMessage={<Info.frilanserIkkeTapPgaKorona />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.frilanserInntektstapStartetFørFrist}
+                                        legend={introFormText.frilanserInntektstapStartetFørFrist(
+                                            sisteGyldigeDagForInntektstap
                                         )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.frilanserInntektstapStartetFørFrist}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.frilanserInntektstapStartetFørFrist}
-                                            legend={introFormText.frilanserInntektstapStartetFørFrist(
-                                                sisteGyldigeDagForInntektstap
-                                            )}
-                                            description={<Info.hvaErStartdatoForInntektstap />}
-                                        />
-                                        {frilanserInntektstapStartetFørFrist === YesOrNo.NO && (
-                                            <StopMessage>
-                                                <Info.frilanserForSentInntektstap />
-                                            </StopMessage>
-                                        )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.frilanserFårDekketTapet}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.frilanserFårDekketTapet}
-                                            legend={introFormText.frilanserFårDekketTapet}
-                                            description={<Info.fårDekketTapetSomFrilanserForklaring />}
-                                        />
-                                        {frilanserFårDekketTapet === YesOrNo.YES && (
-                                            <StopMessage>
-                                                <Info.frilanserFårDekketTapet />
-                                            </StopMessage>
-                                        )}
-                                    </FormQuestion>
-
-                                    <FormQuestion question={IntroFormField.frilansHarAlleredeSøkt}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.frilansHarAlleredeSøkt}
-                                            legend={introFormText.frilansHarAlleredeSøkt}
-                                        />
-                                        {frilansHarAlleredeSøkt === YesOrNo.YES && (
-                                            <InfoMessage margin="l">
-                                                <Info.harAlleredeSøkt />
-                                            </InfoMessage>
-                                        )}
-                                    </FormQuestion>
-                                    <FormQuestion question={IntroFormField.frilansVilFortsetteTilSøknad}>
-                                        <FormComponent.YesOrNoQuestion
-                                            name={IntroFormField.frilansVilFortsetteTilSøknad}
-                                            legend={introFormText.frilansVilFortsetteTilSøknad}
-                                        />
-                                    </FormQuestion>
-
+                                        description={<Info.hvaErStartdatoForInntektstap />}
+                                        showStop={frilanserInntektstapStartetFørFrist === YesOrNo.NO}
+                                        stopMessage={<Info.frilanserForSentInntektstap />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.frilanserFårDekketTapet}
+                                        description={<Info.fårDekketTapetSomFrilanserForklaring />}
+                                        showStop={frilanserFårDekketTapet === YesOrNo.YES}
+                                        stopMessage={<Info.frilanserFårDekketTapet />}
+                                    />
+                                    <IntroFormQuestion
+                                        name={IntroFormField.frilansHarAlleredeSøkt}
+                                        description={<Info.fårDekketTapetSomFrilanserForklaring />}
+                                        showInfo={frilansHarAlleredeSøkt === YesOrNo.YES}
+                                        infoMessage={<Info.harAlleredeSøkt />}
+                                    />
+                                    <IntroFormQuestion name={IntroFormField.frilansVilFortsetteTilSøknad} />
                                     {(frilansVilFortsetteTilSøknad === YesOrNo.YES ||
                                         frilansHarAlleredeSøkt === YesOrNo.NO) && (
                                         <SuksessMessage margin="l">
