@@ -158,7 +158,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             field={SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden}
                             tittel={
                                 <>
-                                    Inntekt som frilanser i perioden{' '}
+                                    Inntekt som selvstendig næringsdrivende i perioden{' '}
                                     <DateRangeView dateRange={frilanserCalculatedDateRange} />
                                 </>
                             }
