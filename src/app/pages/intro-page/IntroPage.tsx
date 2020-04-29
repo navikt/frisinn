@@ -1,5 +1,4 @@
 import React from 'react';
-import { Panel } from 'nav-frontend-paneler';
 import { Undertittel, Normaltekst, Ingress, Systemtittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
@@ -15,6 +14,7 @@ import useApiGet from '../../hooks/useApiGet';
 import { ApiEndpoint } from '../../api/api';
 import Guide from '../../components/guide/Guide';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 
 const bem = bemUtils('introPage');
 
@@ -85,7 +85,7 @@ const IntroPage: React.StatelessComponent = () => {
                                 </InformationPoster>
                             </Box>
                             <Box margin="xl">
-                                <Panel>
+                                <ResponsivePanel>
                                     <Undertittel className="sectionTitle">Sjekk om du kan søke</Undertittel>
                                     <p>For å kunne søke kompensasjon for tapt inntekt gjennom denne ordningen, må du</p>
                                     <ul className="infoList">
@@ -100,11 +100,13 @@ const IntroPage: React.StatelessComponent = () => {
                                         Vi vil nå stille deg noen spørsmål som avgjør om du kan søke, og om du kan ha
                                         rett på denne kompensasjonen.
                                     </p>
-                                    <IntroForm
-                                        onValidSubmit={() => relocateToSoknad()}
-                                        soknadsperiode={soknadsperiode.soknadsperiode}
-                                    />
-                                </Panel>
+                                    <Box padBottom="xl">
+                                        <IntroForm
+                                            onValidSubmit={() => relocateToSoknad()}
+                                            soknadsperiode={soknadsperiode.soknadsperiode}
+                                        />
+                                    </Box>
+                                </ResponsivePanel>
                             </Box>
                         </>
                     );

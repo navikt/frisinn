@@ -21,8 +21,6 @@ import IntroFormInfo from './IntroFormInfo';
 import Guide from '../../../components/guide/Guide';
 import VeilederSVG from '../../../components/veileder-svg/VeilederSVG';
 import { Undertittel } from 'nav-frontend-typografi';
-import BigSuccessCheck from '../../../components/big-success-check/BigSuccessCheck';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -315,15 +313,9 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                 )}
                             {canContinueToSoknad && (
                                 <>
-                                    <Box margin="xxl">
-                                        <BigSuccessCheck size={4}>
-                                            <Undertittel>Du kan søke som {canApplyAs.join(' og ')}</Undertittel>
-                                        </BigSuccessCheck>
-                                    </Box>
-
-                                    <FormBlock>
+                                    <FormBlock margin="xxl">
                                         <Guide svg={<VeilederSVG mood={'happy'} />} kompakt={true}>
-                                            <Undertittel>Nyttig informasjon før du går til søknaden</Undertittel>
+                                            <Undertittel>Tips nå du søker som {canApplyAs.join(' og ')}</Undertittel>
                                             <p style={{ marginTop: '.5rem' }}>
                                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat ut, sit
                                                 libero earum quaerat cumque deleniti. Eveniet, quos sed pariatur

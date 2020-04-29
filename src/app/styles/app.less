@@ -35,3 +35,18 @@ ul.infoList {
         margin: 0.5rem 0;
     }
 }
+
+@media screen and (max-width: 450px) {
+    .alertstripe {
+        flex-direction: column;
+        margin-top: 1.75rem;
+        &__ikon {
+            margin: -2rem 0 0.75rem 0;
+            justify-content: center;
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+}

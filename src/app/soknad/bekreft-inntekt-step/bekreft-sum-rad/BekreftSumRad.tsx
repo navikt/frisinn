@@ -25,6 +25,7 @@ const bem = bemUtils('bekreftSumRad');
 const BekreftSumRad = ({ field, tittel, sum, info, values, editStepID }: Props) => (
     <div className={bem.block}>
         <SoknadFormComponents.YesOrNoQuestion
+            useTwoColumns={false}
             name={field}
             legend={
                 <div className={bem.element('tittelOgSum')}>

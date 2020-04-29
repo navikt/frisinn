@@ -42,7 +42,7 @@ const SoknadStep: React.FunctionComponent<Props> = ({ resetSoknad, stepCleanup, 
                 onValidSubmit={onValidFormSubmit}
                 includeButtons={false}
                 includeValidationSummary={true}
-                runDelayedFormValidation={false}
+                runDelayedFormValidation={true}
                 cleanup={stepCleanup}
                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                 {children}

@@ -283,30 +283,34 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                             {isVisible(Field.selvstendigRegnskapsførerNavn) && (
                                                 <Box margin="l">
                                                     <ResponsivePanel>
-                                                        {antallForetak >= 1 && (
-                                                            <>
-                                                                Hvis du har flere regnskapsførere, gir du opplysninger
-                                                                om den som er din hovedregnskapsfører.
-                                                            </>
-                                                        )}
-                                                        <SelvstendigFormQuestion
-                                                            question={Field.selvstendigRegnskapsførerNavn}>
-                                                            <FormComponents.Input
-                                                                name={Field.selvstendigRegnskapsførerNavn}
-                                                                label={txt.selvstendigRegnskapsførerNavn}
-                                                                validate={validateRequiredField}
-                                                            />
-                                                        </SelvstendigFormQuestion>
-                                                        <SelvstendigFormQuestion
-                                                            question={Field.selvstendigRegnskapsførerTelefon}>
-                                                            <FormComponents.Input
-                                                                name={Field.selvstendigRegnskapsførerTelefon}
-                                                                label={txt.selvstendigRegnskapsførerTelefon}
-                                                                bredde="M"
-                                                                maxLength={12}
-                                                                validate={validatePhoneNumber}
-                                                            />
-                                                        </SelvstendigFormQuestion>
+                                                        <Box padBottom="l">
+                                                            {antallForetak >= 1 && (
+                                                                <>
+                                                                    Hvis du har flere regnskapsførere, gir du
+                                                                    opplysninger om den som er din hovedregnskapsfører.
+                                                                </>
+                                                            )}
+                                                            <SelvstendigFormQuestion
+                                                                margin="l"
+                                                                question={Field.selvstendigRegnskapsførerNavn}>
+                                                                <FormComponents.Input
+                                                                    name={Field.selvstendigRegnskapsførerNavn}
+                                                                    label={txt.selvstendigRegnskapsførerNavn}
+                                                                    validate={validateRequiredField}
+                                                                />
+                                                            </SelvstendigFormQuestion>
+                                                            <SelvstendigFormQuestion
+                                                                margin="l"
+                                                                question={Field.selvstendigRegnskapsførerTelefon}>
+                                                                <FormComponents.Input
+                                                                    name={Field.selvstendigRegnskapsførerTelefon}
+                                                                    label={txt.selvstendigRegnskapsførerTelefon}
+                                                                    bredde="M"
+                                                                    maxLength={12}
+                                                                    validate={validatePhoneNumber}
+                                                                />
+                                                            </SelvstendigFormQuestion>
+                                                        </Box>
                                                     </ResponsivePanel>
                                                 </Box>
                                             )}
@@ -323,38 +327,43 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                             {isVisible(Field.selvstendigRevisorNavn) && (
                                                 <Box margin="l">
                                                     <ResponsivePanel>
-                                                        {antallForetak >= 1 && (
-                                                            <>
-                                                                Dersom du har flere revisorer, kan du oppgi informasjon
-                                                                om din hoverrevisor.
-                                                            </>
-                                                        )}
-                                                        <SelvstendigFormQuestion
-                                                            question={Field.selvstendigRevisorNavn}>
-                                                            <FormComponents.Input
-                                                                name={Field.selvstendigRevisorNavn}
-                                                                label={txt.selvstendigRevisorNavn}
-                                                                validate={validateRequiredField}
-                                                            />
-                                                        </SelvstendigFormQuestion>
-                                                        <SelvstendigFormQuestion
-                                                            question={Field.selvstendigRevisorTelefon}>
-                                                            <FormComponents.Input
-                                                                label={txt.selvstendigRevisorTelefon}
-                                                                name={Field.selvstendigRevisorTelefon}
-                                                                bredde="M"
-                                                                maxLength={12}
-                                                                validate={validatePhoneNumber}
-                                                            />
-                                                        </SelvstendigFormQuestion>
-                                                        <SelvstendigFormQuestion
-                                                            question={Field.selvstendigRevisorNAVKanTaKontakt}>
-                                                            <FormComponents.YesOrNoQuestion
-                                                                name={Field.selvstendigRevisorNAVKanTaKontakt}
-                                                                legend={txt.selvstendigRevisorNAVKanTaKontakt}
-                                                                validate={validateYesOrNoIsAnswered}
-                                                            />
-                                                        </SelvstendigFormQuestion>
+                                                        <Box padBottom="l">
+                                                            {antallForetak >= 1 && (
+                                                                <>
+                                                                    Dersom du har flere revisorer, kan du oppgi
+                                                                    informasjon om din hoverrevisor.
+                                                                </>
+                                                            )}
+                                                            <SelvstendigFormQuestion
+                                                                margin="l"
+                                                                question={Field.selvstendigRevisorNavn}>
+                                                                <FormComponents.Input
+                                                                    name={Field.selvstendigRevisorNavn}
+                                                                    label={txt.selvstendigRevisorNavn}
+                                                                    validate={validateRequiredField}
+                                                                />
+                                                            </SelvstendigFormQuestion>
+                                                            <SelvstendigFormQuestion
+                                                                margin="l"
+                                                                question={Field.selvstendigRevisorTelefon}>
+                                                                <FormComponents.Input
+                                                                    label={txt.selvstendigRevisorTelefon}
+                                                                    name={Field.selvstendigRevisorTelefon}
+                                                                    bredde="M"
+                                                                    maxLength={12}
+                                                                    validate={validatePhoneNumber}
+                                                                />
+                                                            </SelvstendigFormQuestion>
+                                                            <SelvstendigFormQuestion
+                                                                margin="l"
+                                                                question={Field.selvstendigRevisorNAVKanTaKontakt}>
+                                                                <FormComponents.YesOrNoQuestion
+                                                                    name={Field.selvstendigRevisorNAVKanTaKontakt}
+                                                                    legend={txt.selvstendigRevisorNAVKanTaKontakt}
+                                                                    validate={validateYesOrNoIsAnswered}
+                                                                />
+                                                            </SelvstendigFormQuestion>
+                                                        </Box>
                                                     </ResponsivePanel>
                                                 </Box>
                                             )}
