@@ -4,6 +4,10 @@ import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/util
 import { mapFrilanserFormDataToApiData } from '../mapFormDataToApiData';
 import { PersonligeForetak } from '../../types/SoknadEssentials';
 
+jest.mock('../envUtils', () => ({
+    isRunningInDevEnvironment: () => true,
+}));
+
 const registreringsdato2019 = apiStringDateToDate('2019-01-1');
 const personligeForetak: PersonligeForetak = {
     foretak: [

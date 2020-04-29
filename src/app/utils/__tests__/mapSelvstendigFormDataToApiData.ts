@@ -5,6 +5,10 @@ import { mapSelvstendigNæringsdrivendeFormDataToApiData } from '../mapFormDataT
 import { PersonligeForetak } from '../../types/SoknadEssentials';
 import { getQuestionAnswer } from '../testUtils';
 
+jest.mock('../envUtils', () => ({
+    isRunningInDevEnvironment: () => true,
+}));
+
 const registreringsdato2019 = apiStringDateToDate('2019-01-1');
 const personligeForetak2019: PersonligeForetak = {
     foretak: [
