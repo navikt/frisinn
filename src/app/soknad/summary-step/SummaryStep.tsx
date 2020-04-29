@@ -51,6 +51,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                     values: formik.values,
                     apiData: { ...data },
                 });
+                await setTimeout(() => null, 500);
             }
             onSoknadSent();
         } catch (error) {

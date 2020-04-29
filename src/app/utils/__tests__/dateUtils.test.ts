@@ -4,7 +4,7 @@ import { getSisteGyldigeDagForInntektstapIPeriode } from '../dateUtils';
 describe('dateUtils', () => {
     describe('getSisteGyldigeDagForInntektstapIPeriode', () => {
         const aprilDateRange: DateRange = {
-            from: apiStringDateToDate('2020-03-16'),
+            from: apiStringDateToDate('2020-03-14'),
             to: apiStringDateToDate('2020-04-30'),
         };
         const mayDateRange: DateRange = {

@@ -102,7 +102,7 @@ const selvstendigHvaMenesMedInntekt = () => (
 
 const hvaErStartdatoForInntektstap = () => (
     <ExpandableInfo title="Fra hvilken dato gjelder inntektstap som følge av koronautbruddet?">
-        Inntektstap som følge av koronautbruddet har virkning fra 16. mars 2020. Du må selv finne datoen for når ditt
+        Inntektstap som følge av koronautbruddet har virkning fra 14. mars 2020. Du må selv finne datoen for når ditt
         inntektstap startet (ikke når du mistet oppdrag).
     </ExpandableInfo>
 );

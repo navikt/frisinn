@@ -56,7 +56,7 @@ const SoknadEntryPage = ({
                             inntekten du har mistet, og ikke fra når du eventuelt har mistet oppdrag.
                         </p>
                         <p>
-                            Du kan søke om inntektstap som gjelder fra tidligst 16. Mars. De første 16 dagene av
+                            Du kan søke om inntektstap som gjelder fra tidligst 14. Mars. De første 16 dagene av
                             inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 1. april
                             2020.
                         </p>

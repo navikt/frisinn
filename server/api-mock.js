@@ -58,7 +58,7 @@ const søkerMock = {
 
 const perioderMock = {
     søknadsperiode: {
-        fom: '2020-03-16',
+        fom: '2020-03-14',
         tom: '2020-04-30',
     },
 };
@@ -155,7 +155,7 @@ const startExpressServer = () => {
         setTimeout(() => {
             res.send({
                 innfrirKrav: true,
-                beskrivelse: 'Søkeren har ikke søkt for periode 2020-03-16/2020-04-30, og kan søke nå',
+                beskrivelse: 'Søkeren har ikke søkt for periode 2020-03-14/2020-04-30, og kan søke nå',
             });
         }, 1000);
     });

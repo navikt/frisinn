@@ -15,7 +15,7 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
         <AlertStripeInfo>
             {startIsBeforeKoronatiltak && (
                 <>
-                    Denne ordningen gjelder fra 16. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.
+                    Denne ordningen gjelder fra 14. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.4
                     Perioden du søker kompensasjon for er{' '}
                     <strong>
                         <DateRangeView dateRange={availableDateRange} />
@@ -25,7 +25,7 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
             )}
             {!startIsBeforeKoronatiltak && (
                 <>
-                    Denne ordningen gjelder fra 16. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.
+                    Denne ordningen gjelder fra 14. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.
                     Perioden du søker kompensasjon for er{' '}
                     <strong>
                         <DateRangeView dateRange={availableDateRange} />
