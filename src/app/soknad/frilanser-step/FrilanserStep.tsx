@@ -89,6 +89,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                     <SoknadFormComponents.YesOrNoQuestion
                         name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                         legend={frilanserStepTexts.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                        description={<FrilanserInfo.koronaTaptInntekt />}
                     />
                 </FrilanserFormQuestion>
                 {frilanserHarTaptInntektPgaKorona === YesOrNo.NO && (

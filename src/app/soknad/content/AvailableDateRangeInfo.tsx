@@ -15,8 +15,8 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
         <AlertStripeInfo>
             {startIsBeforeKoronatiltak && (
                 <>
-                    Du må legge inn en dato fra tidligst 16. Mars 2020 eller senere. Dette er datoen denne ordningen
-                    gjelder fra. Du må selv dekke de 16 første dagene med inntektstap. Perioden du nå søker om er{' '}
+                    Denne ordningen gjelder fra 16. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.
+                    Perioden du søker kompensasjon for er{' '}
                     <strong>
                         <DateRangeView dateRange={availableDateRange} />
                     </strong>
@@ -25,7 +25,8 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
             )}
             {!startIsBeforeKoronatiltak && (
                 <>
-                    Du må selv dekke de 16 første dagene med inntektstap. Perioden du nå søker om er{' '}
+                    Denne ordningen gjelder fra 16. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.
+                    Perioden du søker kompensasjon for er{' '}
                     <strong>
                         <DateRangeView dateRange={availableDateRange} />
                     </strong>

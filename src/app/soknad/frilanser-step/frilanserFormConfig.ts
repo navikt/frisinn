@@ -46,6 +46,9 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField>
         isAnswered: ({ frilanserYtelseFraNavDekkerHeleTapet }) => hasValue(frilanserYtelseFraNavDekkerHeleTapet),
     },
     [Field.frilanserInntektIPerioden]: {
+        isIncluded: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>
+            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
+            frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.NO,
         visibilityFilter: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>
             frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
             yesOrNoIsAnswered(frilanserYtelseFraNavDekkerHeleTapet),

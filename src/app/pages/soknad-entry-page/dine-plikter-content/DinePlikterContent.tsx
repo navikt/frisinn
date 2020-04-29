@@ -1,34 +1,26 @@
 import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Systemtittel } from 'nav-frontend-typografi';
 import getLenker from 'app/lenker';
-
-const getText = (part: string) => <FormattedMessage id={`modal.minePlikter.${part}`} />;
 
 const DinePlikterContent: React.FunctionComponent = () => {
     const intl = useIntl();
     return (
         <>
-            <Systemtittel>{getText('tittel')}</Systemtittel>
+            <Systemtittel>Mine plikter</Systemtittel>
+            <p>Jeg forstår at det kan få konsekvenser hvis jeg</p>
             <ul className="infoList">
-                <li>
-                    <Normaltekst>{getText('part1')}</Normaltekst>
-                    <ul className="infoList">
-                        <li>{getText('part1a')}</li>
-                        <li>{getText('part1b')}</li>
-                    </ul>
-                </li>
-                <li style={{ marginTop: '0.5rem' }}>
-                    <span>
-                        {getText('part2a')}{' '}
-                        <Lenke href={getLenker(intl.locale).rettOgPlikt} target="_blank">
-                            {getText('part2b')}
-                        </Lenke>
-                        .
-                    </span>
-                </li>
+                <li>gir uriktig informasjon, eller</li>
+                <li>holder tilbake opplysninger</li>
             </ul>
+            <p>
+                Jeg har lest og forstått det som står på{' '}
+                <Lenke href={getLenker(intl.locale).rettOgPlikt} target="_blank">
+                    nav.no/rettogplikt
+                </Lenke>
+                .
+            </p>
         </>
     );
 };

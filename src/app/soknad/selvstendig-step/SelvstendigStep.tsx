@@ -112,6 +112,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                     <FormComponents.YesOrNoQuestion
                         name={Field.selvstendigHarTaptInntektPgaKorona}
                         legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                        description={<SelvstendigInfo.koronaTaptInntekt />}
                     />
                 </SelvstendigFormQuestion>
                 {selvstendigHarHattInntektFraForetak === YesOrNo.YES &&

@@ -4,7 +4,6 @@ import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
-// import { pluralize } from '../../utils/pluralize';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
 
@@ -79,21 +78,45 @@ const infoInntektForetak = () => (
     </ExpandableInfo>
 );
 
-const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall: årstall }: { inntektÅrstall: number }) => (
-    <>
-        <>Du må ha hatt inntekt før 1. mars i {årstall} for å kunne søke.</>
-    </>
+const koronaTaptInntekt = () => (
+    <ExpandableInfo title="Hva menes med tapt inntekt?">
+        Den tapte inntekten du kan få kompensert, gjelder fra tidspunktet du ikke får inn inntekter du normalt ville
+        fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske inntekten du har mistet, og ikke fra
+        når du eventuelt har mistet oppdrag.
+    </ExpandableInfo>
 );
 
-const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[]; inntektÅrstall: number }) => (
-    <>
-        <ExpandableInfo title={`Hvorfor inntekt i ${inntektÅrstall}?`}>
-            For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt
-            fra selskapet. Hvis selskapet er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis
-            selskapet ditt er registrert i 2020, må du ha tatt ut inntekt i 2020.
-        </ExpandableInfo>
-    </>
-);
+const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
+    return inntektÅrstall === 2020 ? (
+        <>
+            Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, uten at du har tatt ut
+            inntekt fra selskapet før 1. mars 2020.
+        </>
+    ) : (
+        <>
+            Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, uten at du har tatt ut
+            inntekt fra selskapet i 2019.
+        </>
+    );
+};
+
+const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[]; inntektÅrstall: number }) => {
+    return inntektÅrstall === 2020 ? (
+        <>
+            <ExpandableInfo title={`Hva betyr dette?`}>
+                For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut
+                inntekt før 1. mars 2020.
+            </ExpandableInfo>
+        </>
+    ) : (
+        <>
+            <ExpandableInfo title={`Hva betyr dette?`}>
+                For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut
+                inntekt i 2019.
+            </ExpandableInfo>
+        </>
+    );
+};
 
 const andreUtbetalingerFraNAV = () => (
     <>
@@ -128,6 +151,7 @@ const SelvstendigInfo = {
     infoInntektÅrstall,
     andreUtbetalingerFraNAV,
     infoInntektFlereSelskaper,
+    koronaTaptInntekt,
 };
 
 export default SelvstendigInfo;

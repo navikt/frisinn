@@ -112,6 +112,14 @@ const andreUtbetalingerFraNAV = () => (
     </>
 );
 
+const koronaTaptInntekt = () => (
+    <ExpandableInfo title="Hva menes med tapt inntekt?">
+        Den tapte inntekten du kan få kompensert, gjelder fra tidspunktet du ikke får inn inntekter du normalt ville
+        fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske inntekten du har mistet, og ikke fra
+        når du eventuelt har mistet oppdrag.
+    </ExpandableInfo>
+);
+
 const FrilanserInfo = {
     infoInntektForetak,
     advarselForSentInntektstap,
@@ -120,6 +128,7 @@ const FrilanserInfo = {
     hvordanBeregneInntekt,
     ytelseDekkerHeleTapet,
     andreUtbetalingerFraNAV,
+    koronaTaptInntekt,
 };
 
 export default FrilanserInfo;

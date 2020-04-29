@@ -15,9 +15,7 @@ export interface FrilanserStepFormText {
 
 export const frilanserStepTexts: FrilanserStepFormText = {
     frilanserHarTaptInntektPgaKorona: (dateRange: DateRange) =>
-        `Har du tapt inntekt (ikke tapt oppdrag) som frilanser som følge av koronautbruddet i perioden ${formatDateRange(
-            dateRange
-        )}?`,
+        `Har du tapt inntekt som frilanser i perioden ${formatDateRange(dateRange)}, som følge av koronautbruddet?`,
     frilanserErNyetablert: 'Startet du som frilanser etter 1. september 2019?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:

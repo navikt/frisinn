@@ -7,7 +7,7 @@ import bemUtils from 'common/utils/bemUtils';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
-import { relocateToSoknad } from '../../utils/navigationUtils';
+import { relocateToSoknad, relocateToErrorPage } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
 import useApiGet from '../../hooks/useApiGet';
@@ -24,6 +24,8 @@ const IntroPage: React.StatelessComponent = () => {
 
     const isLoading = soknadsperiode.isLoading || soknadErTilgjengelig.isLoading;
 
+    const hasError = soknadsperiode?.error !== undefined || soknadErTilgjengelig?.error !== undefined;
+
     return (
         <Page
             className={bem.block}
@@ -34,6 +36,9 @@ const IntroPage: React.StatelessComponent = () => {
             <LoadWrapper
                 isLoading={isLoading}
                 contentRenderer={() => {
+                    if (hasError) {
+                        relocateToErrorPage();
+                    }
                     if (!soknadsperiode.soknadsperiode) {
                         return null;
                     }
