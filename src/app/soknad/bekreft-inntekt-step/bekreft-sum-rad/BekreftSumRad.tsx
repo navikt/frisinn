@@ -42,11 +42,11 @@ const BekreftSumRad = ({ field, tittel, sum, info, values, editStepID }: Props) 
         />
         {values[field] === YesOrNo.NO && (
             <StopMessage margin="l">
-                Du må korrigere dette før du kan sende inn søknaden.{' '}
+                Du må{' '}
                 <Link className="lenke" to={getSoknadRoute(editStepID)}>
-                    Endre her
-                </Link>
-                .
+                    gå tilbake i søknaden
+                </Link>{' '}
+                og korrigere tallene før du kan sende inn søknaden.
             </StopMessage>
         )}
     </div>

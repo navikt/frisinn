@@ -246,7 +246,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                 />
                                             </SelvstendigFormQuestion>
                                             {selvstendigInntekt2019 === 0 && (
-                                                <StopMessage>Du må ha hatt inntekt i 2019 for å kunne søke</StopMessage>
+                                                <StopMessage>
+                                                    For å kunne søke om kompensasjon for tapt inntekt som selvstendig
+                                                    næringsdrivende, må du ha tatt ut inntekt i 2019.
+                                                </StopMessage>
                                             )}
                                         </FormSection>
                                     )}

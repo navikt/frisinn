@@ -80,9 +80,9 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     kompakt={true}
                     fargetema={'feilmelding'}
                     fullHeight={true}>
-                    <strong>Det er viktig at du kontrollerer at du har gitt oss korrekt informasjon</strong>. Dersom
-                    tallene ikke stemmer må du endre de for å få de riktige. Det er ditt ansvar at opplysningene er
-                    riktige og fullstendige.
+                    <strong>Her kontrollerer du at du har gitt oss korrekt informasjon om inntekten din</strong>. Hvis
+                    tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du har lagt inn. Det
+                    er ditt ansvar at opplysningene du gir er riktige.
                 </Guide>
             </Box>
             {selvstendigNæringsdrivende && selvstendigBeregnetTilgjengeligSøknadsperiode && (

@@ -48,8 +48,12 @@ const SoknadEntryPage = ({
                     <Box margin="m">
                         <p>
                             Denne søknaden gjelder for deg som helt eller delvis har tapt inntekt som selvstendig
-                            næringsdrivende og/eller frilanser som følge av koronautbruddet. Kompensasjonen du kan få
-                            regnes ut fra tidligere inntekter som du har tatt ut som inntekt fra selskap.
+                            næringsdrivende og/eller frilanser som følge av koronautbruddet.
+                        </p>
+                        <p>
+                            Den tapte inntekten du kan få kompensert, gjelder fra tidspunktet du ikke får inn inntekter
+                            du normalt ville fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske
+                            inntekten du har mistet, og ikke fra når du eventuelt har mistet oppdrag.
                         </p>
                         <p>
                             Du kan søke om inntektstap som gjelder fra tidligst 16. Mars. De første 16 dagene av
