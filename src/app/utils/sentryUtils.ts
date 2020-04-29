@@ -38,7 +38,7 @@ export const triggerSentryCustomError = (eventName: SentryEventName, payload?: s
         scope.setLevel(Severity.Error);
         const evt: SentryEvent = {
             message: eventName,
-            extra: { payload: JSON.parse(JSON.stringify(payload)) },
+            extra: { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined },
         };
         Sentry.captureEvent(evt);
     });
