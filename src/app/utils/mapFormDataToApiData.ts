@@ -2,21 +2,21 @@ import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUti
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
+import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
+import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
 import {
-    SoknadApiData,
+    ApiQuestion,
     FrilanserApiData,
     SelvstendigNæringsdrivendeApiData,
-    ApiQuestion,
+    SoknadApiData,
 } from '../types/SoknadApiData';
-import { SoknadEssentials, PersonligeForetak } from '../types/SoknadEssentials';
-import { SoknadFormData, SelvstendigFormData, SoknadFormField, FrilanserFormData } from '../types/SoknadFormData';
+import { PersonligeForetak, SoknadEssentials } from '../types/SoknadEssentials';
+import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import {
+    hasValidHistoriskInntekt,
     selvstendigSkalOppgiInntekt2019,
     selvstendigSkalOppgiInntekt2020,
-    hasValidHistoriskInntekt,
 } from './selvstendigUtils';
-import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
-import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
@@ -208,6 +208,12 @@ export const mapFrilanserFormDataToApiData = (
             questions,
         };
     }
+    triggerSentryCustomError(SentryEventName.mapFrilanserFormDataToApiDataReturnsUndefined, {
+        frilanserHarTaptInntektPgaKorona,
+        frilanserCalculatedDateRange,
+        frilanserHarYtelseFraNavSomDekkerTapet,
+        frilanserYtelseFraNavDekkerHeleTapet,
+    });
     return undefined;
 };
 
