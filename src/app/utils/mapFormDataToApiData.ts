@@ -18,7 +18,6 @@ import {
 import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
 import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
-import { Severity } from '@sentry/browser';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -139,26 +138,22 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         };
         return apiData;
     }
-    triggerSentryCustomError(
-        SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiData,
-        'mapSelvstendigNæringsdrivendeFormDataToApiData returns undefined',
-        {
-            harPersonligeForetak: personligeForetak !== undefined,
-            selvstendigBeregnetTilgjengeligSøknadsperiode,
-            søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-            selvstendigHarHattInntektFraForetak,
-            selvstendigHarTaptInntektPgaKorona,
-            selvstendigInntektstapStartetDato,
-            selvstendigErFrilanser,
-            selvstendigHarHattInntektSomFrilanserIPerioden,
-            hasValidHistoriskInntekt: personligeForetak
-                ? hasValidHistoriskInntekt(
-                      { selvstendigInntekt2019, selvstendigInntekt2020 },
-                      personligeForetak.tidligsteRegistreringsdato.getFullYear()
-                  )
-                : 'ingen foretak info',
-        }
-    );
+    triggerSentryCustomError(SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined, {
+        harPersonligeForetak: personligeForetak !== undefined,
+        selvstendigBeregnetTilgjengeligSøknadsperiode,
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+        selvstendigHarHattInntektFraForetak,
+        selvstendigHarTaptInntektPgaKorona,
+        selvstendigInntektstapStartetDato,
+        selvstendigErFrilanser,
+        selvstendigHarHattInntektSomFrilanserIPerioden,
+        hasValidHistoriskInntekt: personligeForetak
+            ? hasValidHistoriskInntekt(
+                  { selvstendigInntekt2019, selvstendigInntekt2020 },
+                  personligeForetak.tidligsteRegistreringsdato.getFullYear()
+              )
+            : 'ingen foretak info',
+    });
     return undefined;
 };
 

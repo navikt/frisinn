@@ -17,6 +17,7 @@ import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
 import Lenke from 'nav-frontend-lenker';
 import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
+import { triggerSentryCustomError, SentryEventName } from '../utils/sentryUtils';
 
 interface Props {
     resetSoknad: () => void;
@@ -114,13 +115,20 @@ const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => 
             })}
             <Route path={GlobalRoutes.SOKNAD_ERROR} render={() => <SoknadErrorPage />} />
             <Route path="*">
-                <SoknadErrorPage>
-                    <p>
-                        Noe gikk feil under visningen av denne siden. Kanskje du har lastet siden på nytt? Dette er noe
-                        vi ikke støtter enda, så du må fylle ut søknaden uten å laste siden på nytt.
-                    </p>
-                    <Lenke href={getRouteUrl(GlobalRoutes.SOKNAD)}>Gå tilbake til startsiden for søknaden</Lenke>
-                </SoknadErrorPage>
+                {() => {
+                    triggerSentryCustomError(SentryEventName.noMatchingSoknadRoute);
+                    return (
+                        <SoknadErrorPage>
+                            <p>
+                                Noe gikk feil under visningen av denne siden. Kanskje du har lastet siden på nytt? Dette
+                                er noe vi ikke støtter enda, så du må fylle ut søknaden uten å laste siden på nytt.
+                            </p>
+                            <Lenke href={getRouteUrl(GlobalRoutes.SOKNAD)}>
+                                Gå tilbake til startsiden for søknaden
+                            </Lenke>
+                        </SoknadErrorPage>
+                    );
+                }}
             </Route>
         </Switch>
     );
