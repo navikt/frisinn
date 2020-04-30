@@ -10,6 +10,8 @@ const getKravEndPointFromKrav = (krav: ApiKrav): ApiEndpoint => {
             return ApiEndpoint.kravSelvstendigNæringsdrivende;
         case ApiKrav.maksEnSoknadPerPeriodeAccessCheck:
             return ApiEndpoint.kravMaksEnSoknadPerPeriode;
+        case ApiKrav.apenAlder:
+            return ApiEndpoint.apenKravAlder;
     }
 };
 
@@ -18,9 +20,9 @@ export interface KravApiResponse {
     beskrivelse: string;
 }
 
-export const sjekkKrav = (krav: ApiKrav, dateRange?: DateRange) => {
-    const params = dateRange
-        ? `fom=${formatDateToApiFormat(dateRange.from)}&tom=${formatDateToApiFormat(dateRange.to)}`
-        : undefined;
+export const fomTomParam = (dateRange: DateRange) =>
+    `fom=${formatDateToApiFormat(dateRange.from)}&tom=${formatDateToApiFormat(dateRange.to)}`;
+
+export const sjekkKrav = (krav: ApiKrav, params?: string) => {
     return api.get<KravApiResponse>(getKravEndPointFromKrav(krav), params);
 };

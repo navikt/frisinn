@@ -1,15 +1,6 @@
 import { IntroFormData } from './introFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
-import { DateRange } from '../../../utils/dateUtils';
-import moment from 'moment';
-
-const birthdateIsValid = (date: Date, currentPeriode: DateRange): boolean => {
-    const min = moment(currentPeriode.from).subtract(67, 'years').toDate();
-    const max = moment(currentPeriode.to).subtract(18, 'years').toDate();
-    const isValid = moment(date).isBetween(min, max, 'day', '[]');
-    return isValid;
-};
 
 const canApplyAsSelvstendig = ({
     erSelvstendigNæringsdrivende,
@@ -89,7 +80,6 @@ const introFormUtils = {
     canApplyAsSelvstendig,
     frilanserIsAnswered,
     selvstendigIsAnswered,
-    birthdateIsValid,
 };
 
 export default introFormUtils;

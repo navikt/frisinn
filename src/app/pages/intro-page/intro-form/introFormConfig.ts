@@ -48,7 +48,7 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
         isAnswered: ({ fødselsdato }) => hasValue(fødselsdato),
     },
     [Q.erSelvstendigNæringsdrivende]: {
-        isIncluded: ({ fødselsdato, soknadsperiode }) => introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode),
+        isIncluded: ({ fødselsdato }) => hasValue(fødselsdato),
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
     [Q.selvstendigHarTattUtInntektFraSelskap]: {
@@ -89,7 +89,7 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
     },
     [Q.erFrilanser]: {
         visibilityFilter: (payload) => introFormUtils.selvstendigIsAnswered(payload),
-        isIncluded: ({ fødselsdato, soknadsperiode }) => introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode),
+        isIncluded: ({ fødselsdato }) => hasValue(fødselsdato),
         isAnswered: ({ erFrilanser }) => yesOrNoIsAnswered(erFrilanser),
     },
     [Q.frilanserHarTaptInntektPgaKorona]: {

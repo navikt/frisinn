@@ -132,6 +132,15 @@ const startExpressServer = () => {
         }, 250);
     });
 
+    server.get('/aapen-krav/alder', (req, res) => {
+        setTimeout(() => {
+            res.send({
+                innfrirKrav: false,
+                beskrivelse:
+                    'Søker er 26 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
+            });
+        }, 1000);
+    });
     server.get('/krav/alder', (req, res) => {
         setTimeout(() => {
             res.send({
