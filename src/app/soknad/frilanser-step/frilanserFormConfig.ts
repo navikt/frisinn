@@ -29,7 +29,7 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField>
     },
     [Field.frilanserErNyetablert]: {
         isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
-        isAnswered: ({ frilanserErNyetablert }) => hasValue(frilanserErNyetablert),
+        isAnswered: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
     },
     [Field.frilanserInntektstapStartetDato]: {
         visibilityFilter: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
@@ -37,13 +37,16 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField>
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
-        visibilityFilter: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
-        isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) => hasValue(frilanserHarYtelseFraNavSomDekkerTapet),
+        visibilityFilter: ({ frilanserInntektstapStartetDato, frilanserErNyetablert }) =>
+            hasValue(frilanserInntektstapStartetDato) && yesOrNoIsAnswered(frilanserErNyetablert),
+        isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
+            yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
     [Field.frilanserYtelseFraNavDekkerHeleTapet]: {
         isIncluded: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES,
-        isAnswered: ({ frilanserYtelseFraNavDekkerHeleTapet }) => hasValue(frilanserYtelseFraNavDekkerHeleTapet),
+        isAnswered: ({ frilanserYtelseFraNavDekkerHeleTapet }) =>
+            yesOrNoIsAnswered(frilanserYtelseFraNavDekkerHeleTapet),
     },
     [Field.frilanserInntektIPerioden]: {
         isIncluded: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>

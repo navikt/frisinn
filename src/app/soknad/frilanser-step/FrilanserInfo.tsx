@@ -2,13 +2,23 @@ import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
+import DateView from '../../components/date-view/DateView';
+import moment from 'moment';
+import { DateRange } from '../../utils/dateUtils';
 
-const advarselForSentInntektstap = () => (
-    <>
-        Du kan ikke søke for denne perioden fordi du får dekket først fra og med den 17. dagen etter inntektsstapet
-        startet.
-    </>
-);
+const advarselForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
+    const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
+    const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
+    return (
+        <>
+            <Element>Du må vente med å søke</Element>
+            Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene
+            av inntektstapet ditt. Hvis du har inntektstap i{' '}
+            <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i begynnelsen av{' '}
+            <DateView date={nesteSokeMaaned} format="monthAndYear" />.
+        </>
+    );
+};
 
 const advarselIkkeTapPgaKorona = () => (
     <>

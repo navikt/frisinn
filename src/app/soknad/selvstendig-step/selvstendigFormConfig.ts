@@ -56,13 +56,14 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, SoknadFormFi
             selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
             selvstendigHarHattInntektFraForetak === YesOrNo.YES,
         isAnswered: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
-            hasValue(selvstendigHarYtelseFraNavSomDekkerTapet),
+            yesOrNoIsAnswered(selvstendigHarYtelseFraNavSomDekkerTapet),
     },
     [Field.selvstendigYtelseFraNavDekkerHeleTapet]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
         isIncluded: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
             selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES,
-        isAnswered: ({ selvstendigYtelseFraNavDekkerHeleTapet }) => hasValue(selvstendigYtelseFraNavDekkerHeleTapet),
+        isAnswered: ({ selvstendigYtelseFraNavDekkerHeleTapet }) =>
+            yesOrNoIsAnswered(selvstendigYtelseFraNavDekkerHeleTapet),
     },
 
     [Field.selvstendigInntektIPerioden]: {

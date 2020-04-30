@@ -6,6 +6,7 @@ import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
+import { DateRange } from '../../utils/dateUtils';
 
 const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => {
     if (antallForetak === 1) {
@@ -29,15 +30,19 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     );
 };
 
-const advarselForSentInntektstap = ({ nesteMaaned }: { nesteMaaned: Date }) => (
-    <>
-        <Element>Du må vente med å søke</Element>
-        Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene av
-        inntektstapet ditt. Hvis du har inntektstap i <DateView date={nesteMaaned} format="monthAndYear" /> kan du
-        tidligst sende søknad i begynnelsen av{' '}
-        <DateView date={moment(nesteMaaned).add(1, 'month').toDate()} format="monthAndYear" />.
-    </>
-);
+const advarselForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
+    const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
+    const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
+    return (
+        <>
+            <Element>Du må vente med å søke</Element>
+            Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene
+            av inntektstapet ditt. Hvis du har inntektstap i{' '}
+            <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i begynnelsen av{' '}
+            <DateView date={nesteSokeMaaned} format="monthAndYear" />.
+        </>
+    );
+};
 
 const advarselIkkeTapPgaKorona = () => (
     <>
@@ -100,7 +105,7 @@ const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstal
     );
 };
 
-const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[]; inntektÅrstall: number }) => {
+const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
     return inntektÅrstall === 2020 ? (
         <>
             <ExpandableInfo title={`Hva betyr dette?`}>
@@ -138,6 +143,13 @@ const andreUtbetalingerFraNAV = () => (
     </>
 );
 
+const ingenInntektStopp = ({ årstall }: { årstall: number }) => (
+    <>
+        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i
+        {årstall}.
+    </>
+);
+
 const infoInntektFlereSelskaper = () => <>Du skal legge inn samlet beløp fra alle dine selskaper</>;
 
 const SelvstendigInfo = {
@@ -152,6 +164,7 @@ const SelvstendigInfo = {
     andreUtbetalingerFraNAV,
     infoInntektFlereSelskaper,
     koronaTaptInntekt,
+    ingenInntektStopp,
 };
 
 export default SelvstendigInfo;

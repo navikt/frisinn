@@ -9,12 +9,12 @@ import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityCo
 import { DateRange, getSisteGyldigeDagForInntektstapIPeriode } from '../../../utils/dateUtils';
 import { hasValue } from '../../../validation/fieldValidations';
 import FormSection from '../FormSection';
+import { IntroResultProps } from '../IntroPage';
 import { IntroFormData, IntroFormField, IntroFormQuestions } from './introFormConfig';
 import Info from './IntroFormInfo';
-import introFormUtils from './introFormUtils';
-import { IntroResultProps } from '../IntroPage';
-import { introFormText } from './introFormTexts';
 import IntroFormQuestion from './IntroFormQuestion';
+import { introFormText } from './introFormTexts';
+import introFormUtils from './introFormUtils';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
