@@ -23,6 +23,7 @@ import { selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
 import { Element } from 'nav-frontend-typografi';
 import { Link } from 'react-router-dom';
 import { getSoknadRoute } from '../../utils/routeUtils';
+import FrilanserInfo from '../info/FrilanserInfo';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -43,6 +44,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         bekrefterSelvstendigInntektI2020,
         bekrefterSelvstendigFrilanserInntektIPerioden,
         selvstendigStopReason,
+        frilanserStopReason,
         frilanserSoknadIsOk,
         selvstendigSoknadIsOk,
     } = values;
@@ -63,7 +65,8 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
     const frilansBekreftet = frilanser ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true;
 
-    const showSubmitButton = frilansBekreftet === true && selvstendigBekreftet === true;
+    const showSubmitButton =
+        frilansBekreftet === true && selvstendigBekreftet === true && (frilanserSoknadIsOk || selvstendigSoknadIsOk);
 
     useEffect(() => {
         setValues({
@@ -173,6 +176,19 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             sum={selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser}
                         />
                     )}
+                </FormSection>
+            )}
+            {frilanserSoknadIsOk === false && frilanserStopReason && (
+                <FormSection title="Frilanser">
+                    <StopMessage>
+                        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
+                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.currentSøknadsperiode)}
+                        <p>
+                            <Link className="lenke" to={getSoknadRoute(StepID.FRILANSER)}>
+                                Gå tilbake til informasjon om frilans
+                            </Link>
+                        </p>
+                    </StopMessage>
                 </FormSection>
             )}
             {frilanser &&

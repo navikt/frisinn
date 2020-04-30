@@ -5,8 +5,9 @@ import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
 import { DateRange } from '../../utils/dateUtils';
+import { FrilanserAvslagÅrsak } from '../frilanser-step/frilanserAvslag';
 
-const advarselForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
+const StoppForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
     const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
     const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
     return (
@@ -20,13 +21,13 @@ const advarselForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknad
     );
 };
 
-const advarselIkkeTapPgaKorona = () => (
+const StoppIkkeTapPgaKorona = () => (
     <>
         For å søke om kompensasjon for tapt inntekt som frilanser, må du helt eller delvis ha tapt inntekt som følge av
         koronautbruddet.
     </>
 );
-const advarselAlderSjekkFeiler = () => (
+const StoppAlderSjekkFeiler = () => (
     <>
         <Element>Du kan ikke søke som frilanser for denne perioden</Element>
         <p style={{ marginTop: '.5rem' }}>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
@@ -94,7 +95,7 @@ const infoInntektForetak = () => (
     </>
 );
 
-const ytelseDekkerHeleTapet = () => (
+const StoppYtelseDekkerHeleTapet = () => (
     <>
         For å søke om kompensasjon for tapt inntekt som frilanser, kan ikke inntektstapet allerede være dekket. Det vil
         si at du ikke kan søke om kompensasjon for tapt inntekt som frilanser.
@@ -130,15 +131,26 @@ const koronaTaptInntekt = () => (
     </ExpandableInfo>
 );
 
+const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak, currentSøknadsperiode: DateRange): React.ReactNode => {
+    switch (årsak) {
+        case FrilanserAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
+            return <StoppIkkeTapPgaKorona />;
+        case FrilanserAvslagÅrsak.søkerIkkeForGyldigTidsrom:
+            return <StoppForSentInntektstap currentSøknadsperiode={currentSøknadsperiode} />;
+        case FrilanserAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
+            return <StoppYtelseDekkerHeleTapet />;
+    }
+};
 const FrilanserInfo = {
     infoInntektForetak,
-    advarselForSentInntektstap,
-    advarselIkkeTapPgaKorona,
-    advarselAlderSjekkFeiler,
+    StoppForSentInntektstap,
+    StoppIkkeTapPgaKorona,
+    StoppAlderSjekkFeiler,
     hvordanBeregneInntekt,
-    ytelseDekkerHeleTapet,
+    StoppYtelseDekkerHeleTapet,
     andreUtbetalingerFraNAV,
     koronaTaptInntekt,
+    getMessageForAvslag,
 };
 
 export default FrilanserInfo;

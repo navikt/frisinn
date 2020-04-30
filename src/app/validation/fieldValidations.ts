@@ -15,7 +15,7 @@ export enum AppFieldValidationErrors {
     'ugyldig_telefonnummer' = 'fieldvalidation.ugyldig_telefonnummer',
 }
 
-export const MAX_INNTEKT = 9999999;
+export const MAX_INNTEKT = 10000000;
 
 export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 

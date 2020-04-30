@@ -1,6 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
+import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -47,6 +48,7 @@ export enum SoknadFormField {
     bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
     frilanserBeregnetTilgjengeligSønadsperiode = 'frilanserBeregnetTilgjengeligSønadsperiode',
     frilanserSoknadIsOk = 'frilanserSoknadIsOk',
+    frilanserStopReason = 'frilanserStopReason',
 }
 
 export interface SoknadFormData {
@@ -88,6 +90,7 @@ export interface SoknadFormData {
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
     [SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode]?: DateRange;
     [SoknadFormField.frilanserSoknadIsOk]?: boolean;
+    [SoknadFormField.frilanserStopReason]?: FrilanserAvslagÅrsak;
     [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2019]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2020]?: YesOrNo;

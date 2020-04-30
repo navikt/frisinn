@@ -21,8 +21,13 @@ import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import FrilanserInfo from '../info/FrilanserInfo';
-import { kontrollerFrilanserSvar } from './frilanserAvslag';
+import { kontrollerFrilanserSvar, FrilanserAvslagStatus, FrilanserAvslagÅrsak } from './frilanserAvslag';
 import { soknadQuestionText } from '../soknadQuestionText';
+
+const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | undefined => {
+    const feil = Object.keys(status).filter((key) => status[key] === true);
+    return feil ? (feil[0] as FrilanserAvslagÅrsak) : undefined;
+};
 
 const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
@@ -71,7 +76,12 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
-            stepCleanup={(values) => cleanupFrilanserStep(values)}
+            stepCleanup={(values) => {
+                const v = { ...values };
+                v.frilanserSoknadIsOk = frilanserSoknadIsOk;
+                v.frilanserStopReason = frilanserSoknadIsOk ? undefined : getStopReason(avslag);
+                return cleanupFrilanserStep(v);
+            }}
             showSubmitButton={
                 !isLoading &&
                 (frilanserSoknadIsOk ||
@@ -97,7 +107,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                     legend={soknadQuestionText.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
                     description={<FrilanserInfo.koronaTaptInntekt />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
-                    stopMessage={<FrilanserInfo.advarselIkkeTapPgaKorona />}
+                    stopMessage={<FrilanserInfo.StoppIkkeTapPgaKorona />}
                 />
 
                 <SoknadQuestion name={SoknadFormField.frilanserErNyetablert} />
@@ -132,7 +142,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                             if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
-                                        <FrilanserInfo.advarselForSentInntektstap
+                                        <FrilanserInfo.StoppForSentInntektstap
                                             currentSøknadsperiode={currentSøknadsperiode}
                                         />
                                     </StopMessage>
@@ -149,7 +159,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}
                                                 showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
-                                                stopMessage={<FrilanserInfo.ytelseDekkerHeleTapet />}
+                                                stopMessage={<FrilanserInfo.StoppYtelseDekkerHeleTapet />}
                                             />
                                         </FormSection>
                                     )}

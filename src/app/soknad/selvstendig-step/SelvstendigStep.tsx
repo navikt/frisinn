@@ -95,7 +95,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                 const v = { ...values };
                 v.selvstendigSoknadIsOk = hasValidSelvstendigFormData;
                 v.selvstendigStopReason = hasValidSelvstendigFormData ? undefined : getStopReason(avslag);
-
                 return cleanupSelvstendigStep(v);
             }}
             showSubmitButton={
