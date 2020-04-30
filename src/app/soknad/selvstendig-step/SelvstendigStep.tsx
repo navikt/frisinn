@@ -80,7 +80,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const avslag = kontrollerSelvstendigSvar(payload);
 
     useEffect(() => {
-        setFieldValue(SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);
+        setFieldValue(
+            SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode,
+            isValidDateRange(availableDateRange) ? availableDateRange : undefined
+        );
     }, [availableDateRange]);
 
     return (
