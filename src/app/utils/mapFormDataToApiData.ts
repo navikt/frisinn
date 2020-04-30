@@ -2,8 +2,6 @@ import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUti
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
-import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
-import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
 import {
     ApiSpørsmålOgSvar,
     FrilanserApiData,
@@ -19,6 +17,7 @@ import {
 } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
 import { isRunningInDevEnvironment } from './envUtils';
+import { soknadQuestionText } from '../soknad/soknadQuestionText';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -78,41 +77,41 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
             {
                 field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
-                spørsmål: selvstendigStepTexts.selvstendigHarYtelseFraNavSomDekkerTapet,
+                spørsmål: soknadQuestionText.selvstendigHarYtelseFraNavSomDekkerTapet,
                 svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
         if (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
             spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet,
-                spørsmål: selvstendigStepTexts.selvstendigYtelseFraNavDekkerHeleTapet,
+                spørsmål: soknadQuestionText.selvstendigYtelseFraNavDekkerHeleTapet,
                 svar: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
             });
         }
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigHarRevisor,
-                spørsmål: selvstendigStepTexts.selvstendigHarRevisor,
+                spørsmål: soknadQuestionText.selvstendigHarRevisor,
                 svar: formatYesOrNoAnswer(selvstendigHarRevisor),
             });
             if (selvstendigRevisorNavn) {
                 spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigRevisorNavn,
-                    spørsmål: selvstendigStepTexts.selvstendigRevisorNavn,
+                    spørsmål: soknadQuestionText.selvstendigRevisorNavn,
                     svar: selvstendigRevisorNavn,
                 });
             }
             if (selvstendigRevisorTelefon) {
                 spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigRevisorTelefon,
-                    spørsmål: selvstendigStepTexts.selvstendigRevisorTelefon,
+                    spørsmål: soknadQuestionText.selvstendigRevisorTelefon,
                     svar: selvstendigRevisorTelefon,
                 });
             }
             if (selvstendigRevisorNAVKanTaKontakt) {
                 spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigRevisorNAVKanTaKontakt,
-                    spørsmål: selvstendigStepTexts.selvstendigRevisorNAVKanTaKontakt,
+                    spørsmål: soknadQuestionText.selvstendigRevisorNAVKanTaKontakt,
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
@@ -202,13 +201,13 @@ export const mapFrilanserFormDataToApiData = (
         if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
             questions.push({
                 field: SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet,
-                spørsmål: frilanserStepTexts.frilanserHarYtelseFraNavSomDekkerTapet,
+                spørsmål: soknadQuestionText.frilanserHarYtelseFraNavSomDekkerTapet,
                 svar: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
             });
             if (frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
                 questions.push({
                     field: SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet,
-                    spørsmål: frilanserStepTexts.frilanserYtelseFraNavDekkerHeleTapet,
+                    spørsmål: soknadQuestionText.frilanserYtelseFraNavDekkerHeleTapet,
                     svar: formatYesOrNoAnswer(frilanserYtelseFraNavDekkerHeleTapet),
                 });
             }

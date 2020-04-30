@@ -17,6 +17,12 @@ import Guide from '../../components/guide/Guide';
 import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 import { triggerSentryCustomError, SentryEventName } from '../../utils/sentryUtils';
 import { isRunningInDevEnvironment } from '../../utils/envUtils';
+import StopMessage from '../../components/stop-message/StopMessage';
+import SelvstendigInfo from '../info/SelvstendigInfo';
+import { selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
+import { Element } from 'nav-frontend-typografi';
+import { Link } from 'react-router-dom';
+import { getSoknadRoute } from '../../utils/routeUtils';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -36,6 +42,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         bekrefterSelvstendigInntektI2019,
         bekrefterSelvstendigInntektI2020,
         bekrefterSelvstendigFrilanserInntektIPerioden,
+        selvstendigStopReason,
         frilanserSoknadIsOk,
         selvstendigSoknadIsOk,
     } = values;
@@ -99,7 +106,24 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     er ditt ansvar at opplysningene du gir er riktige.
                 </Guide>
             </Box>
-            {selvstendigNæringsdrivende && selvstendigBeregnetTilgjengeligSøknadsperiode && (
+            {selvstendigSoknadIsOk === false && selvstendigStopReason && (
+                <FormSection title="Selvstendig næringsdrivende">
+                    <StopMessage>
+                        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
+                        {SelvstendigInfo.getMessageForAvslag(
+                            selvstendigStopReason,
+                            selvstendigSkalOppgiInntekt2019(soknadEssentials.personligeForetak) ? 2019 : 2020,
+                            soknadEssentials.currentSøknadsperiode
+                        )}
+                        <p>
+                            <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>
+                                Gå tilbake til informasjon om selvstendig næringsdrivende
+                            </Link>
+                        </p>
+                    </StopMessage>
+                </FormSection>
+            )}
+            {selvstendigSoknadIsOk && selvstendigNæringsdrivende && selvstendigBeregnetTilgjengeligSøknadsperiode && (
                 <FormSection title="Inntekt som selvstendig næringsdrivende">
                     {isVisible(SoknadFormField.bekrefterSelvstendigInntektIPerioden) && (
                         <BekreftSumRad

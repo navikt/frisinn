@@ -7,6 +7,7 @@ import { Foretak } from '../../types/SoknadEssentials';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
 import { DateRange } from '../../utils/dateUtils';
+import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendig-step/selvstendigAvslag';
 
 const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => {
     if (antallForetak === 1) {
@@ -30,37 +31,51 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     );
 };
 
-const advarselForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
+const StoppForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
     const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
     const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
     return (
         <>
-            <Element>Du må vente med å søke</Element>
-            Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene
-            av inntektstapet ditt. Hvis du har inntektstap i{' '}
-            <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i begynnelsen av{' '}
-            <DateView date={nesteSokeMaaned} format="monthAndYear" />.
+            Du må vente med å søke som selvstendig næringsdrivende. Ordningen er lagt opp til at du må søke
+            etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene av inntektstapet ditt. Hvis du har
+            inntektstap i <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i
+            begynnelsen av <DateView date={nesteSokeMaaned} format="monthAndYear" />.
         </>
     );
 };
 
-const advarselIkkeTapPgaKorona = () => (
+const StoppIkkeTapPgaKorona = () => (
     <>
         For å søke om kompensasjon for tapt inntekt, må du helt eller delvis ha tapt inntekt som selvstendig
         næringsdrivende som følge av koronautbruddet.
     </>
 );
 
-const advarselAlderSjekkFeiler = () => (
-    <>
-        <p style={{ marginTop: '.5rem' }}>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
-    </>
-);
-
-const ytelseDekkerHeleTapet = () => (
+const StoppYtelseDekkerHeleTapet = () => (
     <>
         For å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, kan ikke inntektstapet allerede
         være dekket. Det vil si at du ikke kan søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende.
+    </>
+);
+
+const StoppIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
+    return inntektÅrstall === 2020 ? (
+        <>
+            Du kan ikke søke om kompensasjon for tapt inntekt, uten at du har tatt ut inntekt fra selskapet før 1. mars
+            2020.
+        </>
+    ) : (
+        <>
+            Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, uten at du har tatt ut
+            inntekt fra selskapet i 2019.
+        </>
+    );
+};
+
+const StoppIngenHistoriskInntekt = ({ årstall }: { årstall: number }) => (
+    <>
+        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i{' '}
+        {årstall}.
     </>
 );
 
@@ -90,20 +105,6 @@ const koronaTaptInntekt = () => (
         når du eventuelt har mistet oppdrag.
     </ExpandableInfo>
 );
-
-const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
-    return inntektÅrstall === 2020 ? (
-        <>
-            Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, uten at du har tatt ut
-            inntekt fra selskapet før 1. mars 2020.
-        </>
-    ) : (
-        <>
-            Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, uten at du har tatt ut
-            inntekt fra selskapet i 2019.
-        </>
-    );
-};
 
 const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
     return inntektÅrstall === 2020 ? (
@@ -143,28 +144,40 @@ const andreUtbetalingerFraNAV = () => (
     </>
 );
 
-const ingenInntektStopp = ({ årstall }: { årstall: number }) => (
-    <>
-        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i{' '}
-        {årstall}.
-    </>
-);
-
 const infoInntektFlereSelskaper = () => <>Du skal legge inn samlet beløp fra alle dine selskaper</>;
+
+const getMessageForAvslag = (
+    årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
+    inntektÅrstall: number,
+    currentSøknadsperiode: DateRange
+): React.ReactNode => {
+    switch (årsak) {
+        case SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende:
+            return <StoppIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
+            return <StoppIkkeTapPgaKorona />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom:
+            return <StoppForSentInntektstap currentSøknadsperiode={currentSøknadsperiode} />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
+            return <StoppYtelseDekkerHeleTapet />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt:
+            return <StoppIngenHistoriskInntekt årstall={inntektÅrstall} />;
+    }
+};
 
 const SelvstendigInfo = {
     intro,
+    StoppForSentInntektstap,
+    StoppIkkeTapPgaKorona,
+    StoppYtelseDekkerHeleTapet,
+    StoppIkkeHattInntektFraForetak,
+    StoppIngenHistoriskInntekt,
     infoInntektForetak,
-    advarselForSentInntektstap,
-    advarselIkkeTapPgaKorona,
-    advarselAlderSjekkFeiler,
-    ytelseDekkerHeleTapet,
-    advarselIkkeHattInntektFraForetak,
     infoInntektÅrstall,
     andreUtbetalingerFraNAV,
     infoInntektFlereSelskaper,
     koronaTaptInntekt,
-    ingenInntektStopp,
+    getMessageForAvslag,
 };
 
 export default SelvstendigInfo;

@@ -21,8 +21,8 @@ import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import FrilanserInfo from '../info/FrilanserInfo';
-import { frilanserStepTexts } from './frilanserStepTexts';
 import { kontrollerFrilanserSvar } from './frilanserAvslag';
+import { soknadQuestionText } from '../soknadQuestionText';
 
 const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
@@ -94,7 +94,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
-                    legend={frilanserStepTexts.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                    legend={soknadQuestionText.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
                     description={<FrilanserInfo.koronaTaptInntekt />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<FrilanserInfo.advarselIkkeTapPgaKorona />}
@@ -113,7 +113,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                     }>
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}
-                        label={frilanserStepTexts.frilanserInntektstapStartetDato}
+                        label={soknadQuestionText.frilanserInntektstapStartetDato}
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,
@@ -162,7 +162,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     type="number"
                                                     bredde="S"
                                                     description={<FrilanserInfo.hvordanBeregneInntekt />}
-                                                    label={frilanserStepTexts.frilanserInntektIPerioden(
+                                                    label={soknadQuestionText.frilanserInntektIPerioden(
                                                         availableDateRange
                                                     )}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
@@ -182,7 +182,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     name={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}
                                                     type="number"
                                                     bredde="S"
-                                                    label={frilanserStepTexts.frilanserInntektSomSelvstendigIPerioden}
+                                                    label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
                                             </SoknadQuestion>
