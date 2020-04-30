@@ -44,8 +44,8 @@ const SoknadQuestion = ({
                         validate={validateYesOrNoIsAnswered}
                     />
                 )}
-                {showStop && stopMessage && <StopMessage>{stopMessage}</StopMessage>}
-                {showInfo && infoMessage && <InfoMessage>{infoMessage}</InfoMessage>}
+                {showStop && stopMessage && <StopMessage margin="l">{stopMessage}</StopMessage>}
+                {showInfo && infoMessage && <InfoMessage margin="l">{infoMessage}</InfoMessage>}
             </FormBlock>
         </QuestionVisibilityBlock>
     );
