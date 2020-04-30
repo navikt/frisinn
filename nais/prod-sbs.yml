@@ -9,13 +9,13 @@ spec:
     image: {{ image }}
     port: 8080
     liveness:
-        path: /frisinn/health/isAlive
+        path: /arbeid/inntektskompensasjon/health/isAlive
         initialDelay: 20
         timeout: 1
         periodSeconds: 5
         failureThreshold: 10
     readiness:
-        path: /frisinn/health/isReady
+        path: /arbeid/inntektskompensasjon/health/isReady
         initialDelay: 20
         timeout: 1
     resources:
@@ -43,7 +43,7 @@ spec:
         - name: API_URL
           value: https://frisinn-api.nav.no
         - name: PUBLIC_PATH
-          value: /frisinn
+          value: /arbeid/inntektskompensasjon
         - name: LOGIN_URL
           value: https://loginservice.nav.no/login?redirect=https://www.nav.no/arbeid/inntektskompensasjon
         - name: APP_VERSION
