@@ -22,6 +22,7 @@ import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import FrilanserInfo from '../info/FrilanserInfo';
 import { frilanserStepTexts } from './frilanserStepTexts';
+import { kontrollerFrilanserSvar } from './frilanserAvslag';
 
 const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
@@ -40,10 +41,12 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
     );
 
     const isLoading = availableDateRangeIsLoading;
-    const visibility = FrilanserFormQuestions.getVisbility({
+    const payload = {
         ...values,
         ...soknadEssentials,
-    });
+    };
+    const visibility = FrilanserFormQuestions.getVisbility(payload);
+
     const { isVisible, areAllQuestionsAnswered } = visibility;
     const allQuestionsAreAnswered = areAllQuestionsAnswered();
 
@@ -57,6 +60,8 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         setFieldValue(SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode, availableDateRange);
         setFieldValue(SoknadFormField.frilanserSoknadIsOk, frilanserSoknadIsOk);
     }, [availableDateRange, frilanserSoknadIsOk]);
+
+    const avslag = kontrollerFrilanserSvar(payload);
 
     return (
         <SoknadStep
@@ -88,7 +93,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                     name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                     legend={frilanserStepTexts.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
                     description={<FrilanserInfo.koronaTaptInntekt />}
-                    showStop={frilanserHarTaptInntektPgaKorona === YesOrNo.NO}
+                    showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<FrilanserInfo.advarselIkkeTapPgaKorona />}
                 />
 
@@ -120,6 +125,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                             if (availableDateRange === undefined) {
                                 return null;
                             }
+
                             if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
@@ -139,7 +145,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             />
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}
-                                                showStop={frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES}
+                                                showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
                                                 stopMessage={<FrilanserInfo.ytelseDekkerHeleTapet />}
                                             />
                                         </FormSection>

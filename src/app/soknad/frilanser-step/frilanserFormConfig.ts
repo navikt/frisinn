@@ -9,6 +9,7 @@ const Field = SoknadFormField;
 
 type FrilanserFormData = Pick<
     SoknadFormData,
+    | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
     | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
@@ -21,7 +22,7 @@ type FrilanserFormData = Pick<
     | SoknadFormField.erSelvstendigNæringsdrivende
 >;
 
-type FrilanserFormPayload = Partial<FrilanserFormData> & SoknadEssentials;
+export type FrilanserFormPayload = Partial<FrilanserFormData> & SoknadEssentials;
 
 const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField> = {
     [Field.frilanserHarTaptInntektPgaKorona]: {

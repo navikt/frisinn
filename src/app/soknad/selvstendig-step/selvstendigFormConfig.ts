@@ -5,12 +5,10 @@ import { SoknadFormField, SelvstendigFormData } from '../../types/SoknadFormData
 import { hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
-import { AvailableDateRange, isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 
 const Field = SoknadFormField;
 
-export type SelvstendigFormPayload = SelvstendigFormData &
-    SoknadEssentials & { availableDateRange: AvailableDateRange; inntektÅrstall: number };
+export type SelvstendigFormPayload = SelvstendigFormData & SoknadEssentials & { inntektÅrstall: number };
 
 const showHistoricIncomeQuestion = ({
     søkerOmTaptInntektSomFrilanser,
@@ -51,8 +49,12 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormPayload, SoknadFormFi
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.selvstendigHarTaptInntektPgaKorona,
-        isIncluded: ({ availableDateRange, selvstendigHarTaptInntektPgaKorona, selvstendigHarHattInntektFraForetak }) =>
-            isValidDateRange(availableDateRange) &&
+        isIncluded: ({
+            selvstendigBeregnetTilgjengeligSøknadsperiode,
+            selvstendigHarTaptInntektPgaKorona,
+            selvstendigHarHattInntektFraForetak,
+        }) =>
+            selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
             selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
             selvstendigHarHattInntektFraForetak === YesOrNo.YES,
         isAnswered: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>

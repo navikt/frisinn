@@ -25,7 +25,7 @@ import SelvstendigInfo from '../info/SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import {
-    kontrollerSelvstendigAvslag,
+    kontrollerSelvstendigSvar,
     SelvstendigNæringsdrivendeAvslagStatus,
     SelvstendigNæringdsrivendeAvslagÅrsak,
 } from './selvstendigAvslag';
@@ -63,7 +63,6 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
     const payload: SelvstendigFormPayload = {
         ...values,
         ...soknadEssentials,
-        availableDateRange,
         inntektÅrstall,
     };
     const visibility = SelvstendigFormQuestions.getVisbility(payload);
@@ -78,7 +77,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
-    const avslag = kontrollerSelvstendigAvslag(payload);
+    const avslag = kontrollerSelvstendigSvar(payload);
 
     useEffect(() => {
         setFieldValue(SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);

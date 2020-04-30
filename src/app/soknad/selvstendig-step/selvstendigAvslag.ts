@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import { hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { SelvstendigFormPayload } from './selvstendigFormConfig';
+import { hasValue } from '../../validation/fieldValidations';
 
 export enum SelvstendigNæringdsrivendeAvslagÅrsak {
     'erIkkeSelvstendigNæringsdrivende' = 'erIkkeSelvstendigNæringsdrivende',
@@ -25,7 +25,7 @@ const erIkkeSelvstendigNæringsdrivende = ({ selvstendigHarHattInntektFraForetak
 const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormPayload) =>
     selvstendigHarTaptInntektPgaKorona === YesOrNo.NO;
 
-const harIKkeHattHistoriskInntekt = ({
+const harIkkeHattHistoriskInntekt = ({
     selvstendigHarHattInntektFraForetak,
     selvstendigInntekt2019,
     selvstendigInntekt2020,
@@ -37,9 +37,11 @@ const harIKkeHattHistoriskInntekt = ({
     );
 };
 
-const søkerIkkeForGyldigTidsrom = ({ availableDateRange }: SelvstendigFormPayload) => {
-    return isValidDateRange(availableDateRange) === false;
-};
+const søkerIkkeForGyldigTidsrom = ({
+    selvstendigBeregnetTilgjengeligSøknadsperiode,
+    selvstendigInntektstapStartetDato,
+}: SelvstendigFormPayload) =>
+    hasValue(selvstendigInntektstapStartetDato) && selvstendigBeregnetTilgjengeligSøknadsperiode === undefined;
 
 const utbetalingFraNAVDekkerHeleTapet = ({
     selvstendigHarYtelseFraNavSomDekkerTapet,
@@ -51,10 +53,10 @@ const utbetalingFraNAVDekkerHeleTapet = ({
     );
 };
 
-export const kontrollerSelvstendigAvslag = (payload: SelvstendigFormPayload) => ({
+export const kontrollerSelvstendigSvar = (payload: SelvstendigFormPayload): SelvstendigNæringsdrivendeAvslagStatus => ({
     erIkkeSelvstendigNæringsdrivende: erIkkeSelvstendigNæringsdrivende(payload),
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     utebetalingFraNAVDekkerHeleInntektstapet: utbetalingFraNAVDekkerHeleTapet(payload),
-    harIkkeHattHistoriskInntekt: harIKkeHattHistoriskInntekt(payload),
+    harIkkeHattHistoriskInntekt: harIkkeHattHistoriskInntekt(payload),
 });
