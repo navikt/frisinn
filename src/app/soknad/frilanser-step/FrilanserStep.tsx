@@ -5,11 +5,13 @@ import { useFormikContext } from 'formik';
 import Lenke from 'nav-frontend-lenker';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
+import StopMessage from '../../components/stop-message/StopMessage';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import { MAX_INNTEKT } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import SoknadFormComponents from '../SoknadFormComponents';
@@ -20,8 +22,6 @@ import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import FrilanserInfo from './FrilanserInfo';
 import { frilanserStepTexts } from './frilanserStepTexts';
-import StopMessage from '../../components/stop-message/StopMessage';
-import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 
 const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
@@ -58,13 +58,12 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         setFieldValue(SoknadFormField.frilanserSoknadIsOk, frilanserSoknadIsOk);
     }, [availableDateRange, frilanserSoknadIsOk]);
 
-    console.log(values);
     return (
         <SoknadStep
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
-            stepCleanup={(values) => cleanupFrilanserStep(values, frilanserSoknadIsOk)}
+            stepCleanup={(values) => cleanupFrilanserStep(values)}
             showSubmitButton={
                 !isLoading &&
                 (frilanserSoknadIsOk ||

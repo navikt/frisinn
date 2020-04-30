@@ -145,7 +145,7 @@ const andreUtbetalingerFraNAV = () => (
 
 const ingenInntektStopp = ({ årstall }: { årstall: number }) => (
     <>
-        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i
+        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i{' '}
         {årstall}.
     </>
 );

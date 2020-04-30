@@ -37,17 +37,15 @@ const SoknadQuestion = ({
         <QuestionVisibilityBlock<SoknadFormField> fieldName={name}>
             <FormBlock margin={margin}>
                 {children || (
-                    <>
-                        <FormikYesOrNoQuestion
-                            name={name}
-                            legend={legend || soknadQuestionText[name]}
-                            description={description}
-                            validate={validateYesOrNoIsAnswered}
-                        />
-                        {showStop && stopMessage && <StopMessage>{stopMessage}</StopMessage>}
-                        {showInfo && infoMessage && <InfoMessage>{infoMessage}</InfoMessage>}
-                    </>
+                    <FormikYesOrNoQuestion
+                        name={name}
+                        legend={legend || soknadQuestionText[name]}
+                        description={description}
+                        validate={validateYesOrNoIsAnswered}
+                    />
                 )}
+                {showStop && stopMessage && <StopMessage>{stopMessage}</StopMessage>}
+                {showInfo && infoMessage && <InfoMessage>{infoMessage}</InfoMessage>}
             </FormBlock>
         </QuestionVisibilityBlock>
     );
