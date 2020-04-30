@@ -1,6 +1,6 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
-import { SelvstendigNæringdsrivendeRegel } from '../soknad/selvstendig-step/selvstendigRegler';
+import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -76,7 +76,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigRevisorTelefon]?: string;
     [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]?: YesOrNo;
     [SoknadFormField.selvstendigSoknadIsOk]?: boolean;
-    [SoknadFormField.selvstendigStopReason]?: SelvstendigNæringdsrivendeRegel;
+    [SoknadFormField.selvstendigStopReason]?: SelvstendigNæringdsrivendeAvslagÅrsak;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.frilanserErNyetablert]: YesOrNo;
     [SoknadFormField.frilanserInntektstapStartetDato]: Date;

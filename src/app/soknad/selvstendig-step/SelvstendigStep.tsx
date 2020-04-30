@@ -24,12 +24,19 @@ import { SelvstendigFormPayload, SelvstendigFormQuestions } from './selvstendigF
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import { kontrollerSelvstendigRegler, KontrollResultat, SelvstendigNæringdsrivendeRegel } from './selvstendigRegler';
+import {
+    kontrollerSelvstendigAvslag,
+    SelvstendigNæringsdrivendeAvslagStatus,
+    SelvstendigNæringdsrivendeAvslagÅrsak,
+} from './selvstendigAvslag';
 
 const txt = selvstendigStepTexts;
-const getStopReason = (kontroll: KontrollResultat): SelvstendigNæringdsrivendeRegel | undefined => {
-    const feil = Object.keys(kontroll).filter((key) => kontroll[key] === false);
-    return feil ? (feil[0] as SelvstendigNæringdsrivendeRegel) : undefined;
+
+const getStopReason = (
+    status: SelvstendigNæringsdrivendeAvslagStatus
+): SelvstendigNæringdsrivendeAvslagÅrsak | undefined => {
+    const feil = Object.keys(status).filter((key) => status[key] === false);
+    return feil ? (feil[0] as SelvstendigNæringdsrivendeAvslagÅrsak) : undefined;
 };
 
 const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
@@ -71,7 +78,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
-    const regelKontroll = kontrollerSelvstendigRegler(payload);
+    const avslag = kontrollerSelvstendigAvslag(payload);
 
     useEffect(() => {
         setFieldValue(SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);
@@ -85,7 +92,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
             stepCleanup={(values) => {
                 const v = { ...values };
                 v.selvstendigSoknadIsOk = hasValidSelvstendigFormData;
-                v.selvstendigStopReason = hasValidSelvstendigFormData ? undefined : getStopReason(regelKontroll);
+                v.selvstendigStopReason = hasValidSelvstendigFormData ? undefined : getStopReason(avslag);
                 return cleanupSelvstendigStep(v);
             }}
             showSubmitButton={
@@ -102,14 +109,14 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                     name={SoknadFormField.selvstendigHarHattInntektFraForetak}
                     legend={txt.selvstendigHarHattInntektFraForetak(inntektÅrstall)}
                     description={<SelvstendigInfo.infoInntektÅrstall inntektÅrstall={inntektÅrstall} />}
-                    showStop={regelKontroll.erSelvstendigNæringsdrivende === false}
+                    showStop={avslag.erIkkeSelvstendigNæringsdrivende}
                     stopMessage={<SelvstendigInfo.advarselIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />}
                 />
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigHarTaptInntektPgaKorona}
                     legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
                     description={<SelvstendigInfo.koronaTaptInntekt />}
-                    showStop={regelKontroll.harHattInntektstapPgaKorona === false}
+                    showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<SelvstendigInfo.advarselIkkeTapPgaKorona />}
                 />
                 <SoknadQuestion
@@ -157,9 +164,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet}
                                                 description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
-                                                showStop={
-                                                    regelKontroll.utebetalingFraNAVDekkerIkkeHeleInntektstapet === false
-                                                }
+                                                showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
                                                 stopMessage={<SelvstendigInfo.ytelseDekkerHeleTapet />}
                                             />
                                         </FormSection>
@@ -207,7 +212,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2019">
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigInntekt2019}
-                                                showStop={regelKontroll.harHattHistoriskInntekt === false}
+                                                showStop={avslag.harIkkeHattHistoriskInntekt}
                                                 stopMessage={<SelvstendigInfo.ingenInntektStopp årstall={2019} />}>
                                                 <FormComponents.Input
                                                     name={SoknadFormField.selvstendigInntekt2019}
@@ -230,7 +235,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2020">
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigInntekt2020}
-                                                showStop={regelKontroll.harHattHistoriskInntekt === false}
+                                                showStop={avslag.harIkkeHattHistoriskInntekt}
                                                 stopMessage={<SelvstendigInfo.ingenInntektStopp årstall={2020} />}>
                                                 <FormComponents.Input
                                                     name={SoknadFormField.selvstendigInntekt2020}
