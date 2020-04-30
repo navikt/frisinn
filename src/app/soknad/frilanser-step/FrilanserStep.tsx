@@ -50,9 +50,10 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         ...soknadEssentials,
     });
     const { isVisible, areAllQuestionsAnswered } = visibility;
+    const allQuestionsAreAnswered = areAllQuestionsAnswered();
 
     const hasValidFrilanserFormData: boolean =
-        areAllQuestionsAnswered() &&
+        allQuestionsAreAnswered &&
         isValidDateRange(availableDateRange) &&
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
         frilanserYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
@@ -70,7 +71,8 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
             stepCleanup={(values) => cleanupFrilanserStep(values, hasValidFrilanserFormData)}
             showSubmitButton={
                 !isLoading &&
-                (hasValidFrilanserFormData || søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES)
+                (hasValidFrilanserFormData ||
+                    (allQuestionsAreAnswered && søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES))
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
