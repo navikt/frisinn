@@ -13,7 +13,7 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
         const startIsBeforeKoronatiltak = isDateBeforeKoronatiltak(inntektstapStartetDato);
         return startIsBeforeKoronatiltak ? (
             <>
-                Denne ordningen gjelder fra 14. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.4
+                Denne ordningen gjelder fra 14. mars 2020. Du må selv dekke de 16 første dagene med inntektstap.
                 Perioden du søker kompensasjon for er{' '}
                 <strong>
                     <DateRangeView dateRange={availableDateRange} />
