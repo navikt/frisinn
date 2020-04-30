@@ -13,14 +13,14 @@ import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import { MAX_INNTEKT } from '../../validation/fieldValidations';
-import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
+import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadQuestion from '../SoknadQuestion';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
-import FrilanserInfo from './FrilanserInfo';
+import FrilanserInfo from '../info/FrilanserInfo';
 import { frilanserStepTexts } from './frilanserStepTexts';
 
 const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
