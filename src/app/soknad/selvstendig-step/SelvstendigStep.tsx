@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredField, validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import moment from 'moment';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
@@ -25,8 +23,7 @@ import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
 import { SelvstendigFormPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
 import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
-
-const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
+import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 
 const txt = selvstendigStepTexts;
 
@@ -116,18 +113,16 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                     name={SoknadFormField.selvstendigInntektstapStartetDato}
                     showInfo={isValidDateRange(availableDateRange)}
                     infoMessage={
-                        isValidDateRange(availableDateRange) ? (
-                            <AvailableDateRangeInfo
-                                inntektstapStartetDato={selvstendigInntektstapStartetDato}
-                                availableDateRange={availableDateRange}
-                            />
-                        ) : null
+                        <AvailableDateRangeInfo
+                            inntektstapStartetDato={selvstendigInntektstapStartetDato}
+                            availableDateRange={availableDateRange}
+                        />
                     }>
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}
                         dateLimitations={{
-                            minDato: MIN_DATE,
+                            minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,
                         }}
                     />
@@ -143,7 +138,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                 return (
                                     <StopMessage>
                                         <SelvstendigInfo.advarselForSentInntektstap
-                                            nesteMaaned={moment(currentSøknadsperiode.to).add(1, 'day').toDate()}
+                                            currentSøknadsperiode={currentSøknadsperiode}
                                         />
                                     </StopMessage>
                                 );

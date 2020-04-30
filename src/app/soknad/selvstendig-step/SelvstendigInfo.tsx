@@ -6,6 +6,7 @@ import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
+import { DateRange } from '../../utils/dateUtils';
 
 const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => {
     if (antallForetak === 1) {
@@ -29,15 +30,19 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     );
 };
 
-const advarselForSentInntektstap = ({ nesteMaaned }: { nesteMaaned: Date }) => (
-    <>
-        <Element>Du må vente med å søke</Element>
-        Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene av
-        inntektstapet ditt. Hvis du har inntektstap i <DateView date={nesteMaaned} format="monthAndYear" /> kan du
-        tidligst sende søknad i begynnelsen av{' '}
-        <DateView date={moment(nesteMaaned).add(1, 'month').toDate()} format="monthAndYear" />.
-    </>
-);
+const advarselForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
+    const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
+    const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
+    return (
+        <>
+            <Element>Du må vente med å søke</Element>
+            Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene
+            av inntektstapet ditt. Hvis du har inntektstap i{' '}
+            <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i begynnelsen av{' '}
+            <DateView date={nesteSokeMaaned} format="monthAndYear" />.
+        </>
+    );
+};
 
 const advarselIkkeTapPgaKorona = () => (
     <>

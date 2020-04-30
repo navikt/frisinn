@@ -37,7 +37,8 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField>
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
-        visibilityFilter: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
+        visibilityFilter: ({ frilanserInntektstapStartetDato, frilanserErNyetablert }) =>
+            hasValue(frilanserInntektstapStartetDato) && yesOrNoIsAnswered(frilanserErNyetablert),
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
