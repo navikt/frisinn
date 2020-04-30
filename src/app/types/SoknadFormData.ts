@@ -1,5 +1,6 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
+import { SelvstendigNæringdsrivendeRegel } from '../soknad/selvstendig-step/selvstendigRegler';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -28,6 +29,7 @@ export enum SoknadFormField {
     selvstendigRevisorNAVKanTaKontakt = 'selvstendigRevisorNAVKanTaKontakt',
     selvstendigBeregnetTilgjengeligSøknadsperiode = 'selvstendigBeregnetTilgjengeligSøknadsperiode',
     selvstendigSoknadIsOk = 'selvstendigSoknadIsOk',
+    selvstendigStopReason = 'selvstendigStopReason',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
     frilanserErNyetablert = 'frilanserErNyetablert',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
@@ -74,6 +76,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigRevisorTelefon]?: string;
     [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]?: YesOrNo;
     [SoknadFormField.selvstendigSoknadIsOk]?: boolean;
+    [SoknadFormField.selvstendigStopReason]?: SelvstendigNæringdsrivendeRegel;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.frilanserErNyetablert]: YesOrNo;
     [SoknadFormField.frilanserInntektstapStartetDato]: Date;

@@ -135,7 +135,7 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
                     selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
                 });
                 expect(
-                    getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
                 ).toBe('Nei');
             });
             it('does not include selvstendigYtelseFraNavDekkerHeleTapet info when selvstendigHarYtelseFraNavSomDekkerTapet === NO', () => {
@@ -144,10 +144,10 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
                     selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
                 });
                 expect(
-                    getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
                 ).toBe('Nei');
                 expect(
-                    getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
                 ).toBeUndefined();
             });
             it('does include selvstendigYtelseFraNavDekkerHeleTapet when selvstendigHarYtelseFraNavSomDekkerTapet === YES', () => {
@@ -162,10 +162,13 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
                     selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.YES,
                 });
                 expect(
-                    getQuestionAnswer(apiDataNo?.questions, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
+                    getQuestionAnswer(apiDataNo?.spørsmålOgSvar, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
                 ).toBe('Nei');
                 expect(
-                    getQuestionAnswer(apiDataYes?.questions, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
+                    getQuestionAnswer(
+                        apiDataYes?.spørsmålOgSvar,
+                        SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet
+                    )
                 ).toBe('Ja');
             });
         });
@@ -194,12 +197,14 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
                     selvstendigRegnskapsførerNavn: 'Regnskapsfører',
                     selvstendigRegnskapsførerTelefon: '123456789',
                 });
-                expect(getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNavn)).toBeUndefined();
                 expect(
-                    getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorTelefon)
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigRevisorNavn)
                 ).toBeUndefined();
                 expect(
-                    getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNAVKanTaKontakt)
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigRevisorTelefon)
+                ).toBeUndefined();
+                expect(
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigRevisorNAVKanTaKontakt)
                 ).toBeUndefined();
             });
             it('Contains all info about revisor if selvstendigHarRegnskapsfører === NO and selvstendigHarRevisor === YEs', () => {
@@ -211,14 +216,14 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
                     selvstendigRevisorTelefon: '123456789',
                     selvstendigRevisorNAVKanTaKontakt: YesOrNo.YES,
                 });
-                expect(getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNavn)).toEqual(
+                expect(getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigRevisorNavn)).toEqual(
                     'Revisor'
                 );
-                expect(getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorTelefon)).toEqual(
+                expect(getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigRevisorTelefon)).toEqual(
                     '123456789'
                 );
                 expect(
-                    getQuestionAnswer(apiData?.questions, SoknadFormField.selvstendigRevisorNAVKanTaKontakt)
+                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigRevisorNAVKanTaKontakt)
                 ).toEqual('Ja');
             });
         });

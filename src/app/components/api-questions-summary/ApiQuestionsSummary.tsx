@@ -1,20 +1,20 @@
 import React from 'react';
-import { ApiQuestion } from '../../types/SoknadApiData';
+import { ApiSpørsmålOgSvar } from '../../types/SoknadApiData';
 import SummaryBlock from '../summary-block/SummaryBlock';
 
 interface Props {
-    questions?: ApiQuestion[];
+    spørsmålOgSvar?: ApiSpørsmålOgSvar[];
 }
 
-const ApiQuestionsSummary = ({ questions }: Props) => {
-    if (!questions || questions.length === 0) {
+const ApiQuestionsSummary = ({ spørsmålOgSvar }: Props) => {
+    if (!spørsmålOgSvar || spørsmålOgSvar.length === 0) {
         return null;
     }
     return (
         <>
-            {questions.map((q, key) => (
-                <SummaryBlock key={key} header={q.question}>
-                    {q.answer}
+            {spørsmålOgSvar.map((s, key) => (
+                <SummaryBlock key={key} header={s.spørsmål}>
+                    {s.svar}
                 </SummaryBlock>
             ))}
         </>

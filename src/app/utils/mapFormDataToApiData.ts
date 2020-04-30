@@ -5,7 +5,7 @@ import { formatDateRange } from '../components/date-range-view/DateRangeView';
 import { frilanserStepTexts } from '../soknad/frilanser-step/frilanserStepTexts';
 import { selvstendigStepTexts } from '../soknad/selvstendig-step/selvstendigStepTexts';
 import {
-    ApiQuestion,
+    ApiSpørsmålOgSvar,
     FrilanserApiData,
     SelvstendigNæringsdrivendeApiData,
     SoknadApiData,
@@ -75,45 +75,45 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        const questions: ApiQuestion[] = [
+        const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
             {
                 field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
-                question: selvstendigStepTexts.selvstendigHarYtelseFraNavSomDekkerTapet,
-                answer: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
+                spørsmål: selvstendigStepTexts.selvstendigHarYtelseFraNavSomDekkerTapet,
+                svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
         if (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
-            questions.push({
+            spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet,
-                question: selvstendigStepTexts.selvstendigYtelseFraNavDekkerHeleTapet,
-                answer: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
+                spørsmål: selvstendigStepTexts.selvstendigYtelseFraNavDekkerHeleTapet,
+                svar: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
             });
         }
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
-            questions.push({
+            spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigHarRevisor,
-                question: selvstendigStepTexts.selvstendigHarRevisor,
-                answer: formatYesOrNoAnswer(selvstendigHarRevisor),
+                spørsmål: selvstendigStepTexts.selvstendigHarRevisor,
+                svar: formatYesOrNoAnswer(selvstendigHarRevisor),
             });
             if (selvstendigRevisorNavn) {
-                questions.push({
+                spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigRevisorNavn,
-                    question: selvstendigStepTexts.selvstendigRevisorNavn,
-                    answer: selvstendigRevisorNavn,
+                    spørsmål: selvstendigStepTexts.selvstendigRevisorNavn,
+                    svar: selvstendigRevisorNavn,
                 });
             }
             if (selvstendigRevisorTelefon) {
-                questions.push({
+                spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigRevisorTelefon,
-                    question: selvstendigStepTexts.selvstendigRevisorTelefon,
-                    answer: selvstendigRevisorTelefon,
+                    spørsmål: selvstendigStepTexts.selvstendigRevisorTelefon,
+                    svar: selvstendigRevisorTelefon,
                 });
             }
             if (selvstendigRevisorNAVKanTaKontakt) {
-                questions.push({
+                spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigRevisorNAVKanTaKontakt,
-                    question: selvstendigStepTexts.selvstendigRevisorNAVKanTaKontakt,
-                    answer: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
+                    spørsmål: selvstendigStepTexts.selvstendigRevisorNAVKanTaKontakt,
+                    svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
         }
@@ -136,7 +136,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                           telefon: selvstendigRegnskapsførerTelefon,
                       }
                     : undefined,
-            questions,
+            spørsmålOgSvar: spørsmålOgSvar,
         };
         return apiData;
     }
@@ -198,18 +198,18 @@ export const mapFrilanserFormDataToApiData = (
             frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES
         )
     ) {
-        const questions: ApiQuestion[] = [];
+        const questions: ApiSpørsmålOgSvar[] = [];
         if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
             questions.push({
                 field: SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet,
-                question: frilanserStepTexts.frilanserHarYtelseFraNavSomDekkerTapet,
-                answer: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
+                spørsmål: frilanserStepTexts.frilanserHarYtelseFraNavSomDekkerTapet,
+                svar: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
             });
             if (frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
                 questions.push({
                     field: SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet,
-                    question: frilanserStepTexts.frilanserYtelseFraNavDekkerHeleTapet,
-                    answer: formatYesOrNoAnswer(frilanserYtelseFraNavDekkerHeleTapet),
+                    spørsmål: frilanserStepTexts.frilanserYtelseFraNavDekkerHeleTapet,
+                    svar: formatYesOrNoAnswer(frilanserYtelseFraNavDekkerHeleTapet),
                 });
             }
         }
@@ -224,7 +224,7 @@ export const mapFrilanserFormDataToApiData = (
             info: {
                 period: formatDateRange(frilanserBeregnetTilgjengeligSønadsperiode),
             },
-            questions,
+            spørsmålOgSvar: questions,
         };
     }
     if (søkerOmTaptInntektSomFrilanser === YesOrNo.NO && frilanserSoknadIsOk) {

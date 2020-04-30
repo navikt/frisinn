@@ -1,21 +1,21 @@
-import { Regel, RegelType, RegelTestresultat, RegelStatus } from '../../utils/regler/regelTypes';
-import { SelvstendigFormPayload } from './selvstendigFormConfig';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import { hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
+import { SelvstendigFormPayload } from './selvstendigFormConfig';
 
-enum SelvstendigNæringdsrivendeRegler {
-    'harHattTapPgaKorona' = 'harHattTapPgaKorona',
+export enum SelvstendigNæringdsrivendeRegel {
+    'erSelvstendigNæringsdrivende' = 'erSelvstendigNæringsdrivende',
+    'harHattInntektstapPgaKorona' = 'harHattInntektstapPgaKorona',
+    'søkerIGyldigTidsrom' = 'søkerIGyldigTidsrom',
+    'utebetalingFraNAVDekkerIkkeHeleInntektstapet' = 'utebetalingFraNAVDekkerIkkeHeleInntektstapet',
     'harHattHistoriskInntekt' = 'harHattHistoriskInntekt',
 }
 
-export type SelvstendigRegel = Regel<SelvstendigNæringdsrivendeRegler, SelvstendigFormPayload>;
-export type SelvstendigRegelStatus = RegelStatus<SelvstendigNæringdsrivendeRegler, SelvstendigFormPayload>;
+const erSelvstendigNæringsdrivende = ({ selvstendigHarHattInntektFraForetak }: SelvstendigFormPayload) =>
+    selvstendigHarHattInntektFraForetak === YesOrNo.YES;
 
-const harHattTapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormPayload): RegelTestresultat => {
-    const passerer = selvstendigHarTaptInntektPgaKorona === YesOrNo.YES;
-    return {
-        passerer,
-    };
+const harHattTapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormPayload): boolean => {
+    return selvstendigHarTaptInntektPgaKorona === YesOrNo.YES;
 };
 
 const harHattHistoriskInntekt = ({
@@ -23,44 +23,38 @@ const harHattHistoriskInntekt = ({
     selvstendigInntekt2019,
     selvstendigInntekt2020,
     inntektÅrstall,
-}: SelvstendigFormPayload): RegelTestresultat => {
-    const passerer =
+}: SelvstendigFormPayload): boolean => {
+    return (
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
-        hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020 }, inntektÅrstall);
-    return {
-        passerer,
-        info: passerer
-            ? undefined
-            : {
-                  values: { inntektÅrstall },
-              },
-    };
+        hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020 }, inntektÅrstall)
+    );
 };
 
-const selvstendigRegler: Regel<SelvstendigNæringdsrivendeRegler, SelvstendigFormPayload>[] = [
-    {
-        key: SelvstendigNæringdsrivendeRegler.harHattTapPgaKorona,
-        type: RegelType.FEIL,
-        test: harHattTapPgaKorona,
-    },
-    {
-        key: SelvstendigNæringdsrivendeRegler.harHattHistoriskInntekt,
-        type: RegelType.FEIL,
-        test: harHattHistoriskInntekt,
-    },
-];
-
-export const SelvstendigChecks = {
-    [SelvstendigNæringdsrivendeRegler.harHattHistoriskInntekt]: {
-        key: SelvstendigNæringdsrivendeRegler.harHattTapPgaKorona,
-        type: RegelType.FEIL,
-        test: harHattTapPgaKorona,
-    },
-    [SelvstendigNæringdsrivendeRegler.harHattTapPgaKorona]: {
-        key: SelvstendigNæringdsrivendeRegler.harHattHistoriskInntekt,
-        type: RegelType.FEIL,
-        test: harHattHistoriskInntekt,
-    },
+const søkerIGyldigTidsrom = ({ availableDateRange }: SelvstendigFormPayload) => {
+    return isValidDateRange(availableDateRange);
 };
 
-export default selvstendigRegler;
+const utbetalingFraNAVDekkerIkkeHeleTapet = ({
+    selvstendigHarYtelseFraNavSomDekkerTapet,
+    selvstendigYtelseFraNavDekkerHeleTapet,
+}: SelvstendigFormPayload) => {
+    return (
+        selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
+        (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
+            selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES)
+    );
+};
+
+export interface KontrollResultat {
+    [key: string]: boolean;
+}
+
+export const kontrollerSelvstendigRegler = (payload: SelvstendigFormPayload): KontrollResultat => ({
+    [SelvstendigNæringdsrivendeRegel.erSelvstendigNæringsdrivende]: erSelvstendigNæringsdrivende(payload),
+    [SelvstendigNæringdsrivendeRegel.harHattInntektstapPgaKorona]: harHattTapPgaKorona(payload),
+    [SelvstendigNæringdsrivendeRegel.søkerIGyldigTidsrom]: søkerIGyldigTidsrom(payload),
+    [SelvstendigNæringdsrivendeRegel.utebetalingFraNAVDekkerIkkeHeleInntektstapet]: utbetalingFraNAVDekkerIkkeHeleTapet(
+        payload
+    ),
+    [SelvstendigNæringdsrivendeRegel.harHattHistoriskInntekt]: harHattHistoriskInntekt(payload),
+});

@@ -18,7 +18,7 @@ const FrilanserSummary = ({
         inntektIPeriodenSomSelvstendigNæringsdrivende,
         info,
         erNyetablert,
-        questions,
+        spørsmålOgSvar: questions,
     },
 }: Props) => (
     <>
@@ -38,7 +38,7 @@ const FrilanserSummary = ({
                 <KronerSvar verdi={inntektIPeriodenSomSelvstendigNæringsdrivende} />
             </SummaryBlock>
         )}
-        <ApiQuestionsSummary questions={questions} />
+        <ApiQuestionsSummary spørsmålOgSvar={questions} />
     </>
 );
 

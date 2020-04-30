@@ -1,15 +1,15 @@
 import React from 'react';
+import { BoxMargin } from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import { validateYesOrNoIsAnswered } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import FormikYesOrNoQuestion, {
     FormikYesOrNoQuestionProps,
 } from '@navikt/sif-common-formik/lib/components/formik-yes-or-no-question/FormikYesOrNoQuestion';
-import { SoknadFormField } from '../types/SoknadFormData';
-import QuestionVisibilityBlock from '../components/question-visibility-block/QuestionVisibilityBlock';
-import { soknadQuestionText } from './soknadQuestionText';
-import StopMessage from '../components/stop-message/StopMessage';
 import InfoMessage from '../components/info-message/InfoMessage';
-import { BoxMargin } from '@navikt/sif-common-core/lib/components/box/Box';
-import { validateYesOrNoIsAnswered } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import QuestionVisibilityBlock from '../components/question-visibility-block/QuestionVisibilityBlock';
+import StopMessage from '../components/stop-message/StopMessage';
+import { SoknadFormField } from '../types/SoknadFormData';
+import { soknadQuestionText } from './soknadQuestionText';
 
 interface Props extends FormikYesOrNoQuestionProps<SoknadFormField> {
     showStop?: boolean;

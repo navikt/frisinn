@@ -19,7 +19,7 @@ const SelvstendigNæringsdrivendeSummary = ({
         inntektIPeriodenSomFrilanser,
         regnskapsfører,
         info,
-        questions,
+        spørsmålOgSvar: questions,
     },
 }: Props) => (
     <>
@@ -51,7 +51,7 @@ const SelvstendigNæringsdrivendeSummary = ({
                 Navn: {regnskapsfører.navn}. Telefon: {regnskapsfører.telefon}
             </SummaryBlock>
         )}
-        <ApiQuestionsSummary questions={questions} />
+        <ApiQuestionsSummary spørsmålOgSvar={questions} />
     </>
 );
 
