@@ -132,8 +132,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         }
                                         stopMessage={<Info.vilIkkeTrekkeAnnenSøknadSelvstendig />}
                                     />
-                                    {(selvstendigVilFortsetteTilSøknad === YesOrNo.YES ||
-                                        selvstendigHarAlleredeSøkt === YesOrNo.NO) && (
+                                    {selvstendigIsOk && (
                                         <SuksessMessage margin="l">
                                             <Info.selvstendigKanSøke
                                                 visInfoOmTrekkeSøknad={
@@ -189,8 +188,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode }: Props) => {
                                         }
                                         stopMessage={<Info.vilIkkeTrekkeAnnenSøknadFrilanser />}
                                     />
-                                    {(frilansVilFortsetteTilSøknad === YesOrNo.YES ||
-                                        frilansHarAlleredeSøkt === YesOrNo.NO) && (
+                                    {frilanserIsOk && (
                                         <SuksessMessage margin="l">
                                             <Info.frilanserKanSøke
                                                 visInfoOmTrekkeSøknad={

@@ -34,6 +34,7 @@ const canApplyAsFrilanser = ({
     erFrilanser,
     frilanserHarTaptInntektPgaKorona,
     frilanserFårDekketTapet,
+    frilanserInntektstapStartetFørFrist,
     frilansHarAlleredeSøkt,
     frilansVilFortsetteTilSøknad,
 }: IntroFormData): boolean => {
@@ -41,6 +42,7 @@ const canApplyAsFrilanser = ({
         erFrilanser === YesOrNo.YES &&
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
         frilanserFårDekketTapet === YesOrNo.NO &&
+        frilanserInntektstapStartetFørFrist === YesOrNo.YES &&
         (frilansHarAlleredeSøkt === YesOrNo.NO || frilansVilFortsetteTilSøknad === YesOrNo.YES)
     );
 };
@@ -69,14 +71,16 @@ const selvstendigIsAnswered = ({
     selvstendigFårDekketTapet,
     selvstendigInntektstapStartetFørFrist,
     selvstendigHarAlleredeSøkt,
+    selvstendigVilFortsetteTilSøknad,
 }: IntroFormData): boolean => {
     return (
         erSelvstendigNæringsdrivende === YesOrNo.NO ||
         selvstendigHarTattUtInntektFraSelskap === YesOrNo.NO ||
         selvstendigHarTaptInntektPgaKorona === YesOrNo.NO ||
         selvstendigInntektstapStartetFørFrist === YesOrNo.NO ||
+        selvstendigFårDekketTapet === YesOrNo.YES ||
         selvstendigHarAlleredeSøkt === YesOrNo.NO ||
-        yesOrNoIsAnswered(selvstendigFårDekketTapet)
+        (selvstendigHarAlleredeSøkt === YesOrNo.YES && yesOrNoIsAnswered(selvstendigVilFortsetteTilSøknad))
     );
 };
 

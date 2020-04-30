@@ -88,8 +88,7 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
         isAnswered: ({ selvstendigVilFortsetteTilSøknad }) => yesOrNoIsAnswered(selvstendigVilFortsetteTilSøknad),
     },
     [Q.erFrilanser]: {
-        visibilityFilter: (payload) =>
-            introFormUtils.selvstendigIsAnswered(payload) || yesOrNoIsAnswered(payload.erFrilanser),
+        visibilityFilter: (payload) => introFormUtils.selvstendigIsAnswered(payload),
         isIncluded: ({ fødselsdato, soknadsperiode }) => introFormUtils.birthdateIsValid(fødselsdato, soknadsperiode),
         isAnswered: ({ erFrilanser }) => yesOrNoIsAnswered(erFrilanser),
     },
@@ -120,18 +119,6 @@ const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField>
             erFrilanser === YesOrNo.YES && frilansHarAlleredeSøkt === YesOrNo.YES,
         isAnswered: ({ frilansVilFortsetteTilSøknad }) => yesOrNoIsAnswered(frilansVilFortsetteTilSøknad),
     },
-    // [Q.selvstendigHarAlleredeSøkt]: {
-    //     isIncluded: (payload) =>
-    //         introFormUtils.selvstendigIsAnswered(payload) &&
-    //         introFormUtils.frilanserIsAnswered(payload) &&
-    //         (introFormUtils.canApplyAsFrilanser(payload) || introFormUtils.canApplyAsSelvstendig(payload)),
-    //     isAnswered: ({ harAlleredeSøkt }) => yesOrNoIsAnswered(harAlleredeSøkt),
-    // },
-    // [Q.vilFortsetteTilSøknad]: {
-    //     parentQuestion: Q.harAlleredeSøkt,
-    //     visibilityFilter: ({ harAlleredeSøkt }) => harAlleredeSøkt === YesOrNo.YES,
-    //     isAnswered: ({ vilFortsetteTilSøknad }) => yesOrNoIsAnswered(vilFortsetteTilSøknad),
-    // },
 };
 
 export const IntroFormQuestions = Questions<IntroFormQuestionsPayload, IntroFormField>(IntroFormConfig);
