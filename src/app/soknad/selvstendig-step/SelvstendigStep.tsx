@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    validateRequiredNumber,
-    validateRequiredField,
-    validateYesOrNoIsAnswered,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { validateRequiredField, validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
+import moment from 'moment';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
 import Guide from '../../components/guide/Guide';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
@@ -16,19 +13,18 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
-import { SoknadFormData, SoknadFormField as Field, SoknadFormField } from '../../types/SoknadFormData';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { hasValidHistoriskInntekt, selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../content/AvailableDateRangeInfo';
 import FormComponents from '../SoknadFormComponents';
+import SoknadQuestion from '../SoknadQuestion';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import { SelvstendigFormQuestions, SelvstendigFormPayload } from './selvstendigFormConfig';
-import SelvstendigFormQuestion from './SelvstendigFormQuestion';
+import { SelvstendigFormPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
 import SelvstendigInfo from './SelvstendigInfo';
 import { selvstendigStepTexts } from './selvstendigStepTexts';
-import { selvstendigSkalOppgiInntekt2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
-import moment from 'moment';
 
 const MIN_DATE: Date = apiStringDateToDate('2020-02-01');
 
@@ -44,6 +40,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         selvstendigYtelseFraNavDekkerHeleTapet,
         selvstendigInntekt2019,
         selvstendigInntekt2020,
+        selvstendigHarYtelseFraNavSomDekkerTapet,
     } = values;
     const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
     const { foretak = [] } = personligeForetak || {};
@@ -67,8 +64,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
 
     const { isVisible, areAllQuestionsAnswered } = visibility;
 
+    const allQuestionsAreAnswered = areAllQuestionsAnswered();
+
     const hasValidSelvstendigFormData: boolean =
-        areAllQuestionsAnswered() &&
+        allQuestionsAreAnswered &&
         isValidDateRange(availableDateRange) &&
         hasValidHistoriskInntekt(values, inntektÅrstall) &&
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
@@ -76,7 +75,7 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
 
     useEffect(() => {
-        setFieldValue(Field.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);
+        setFieldValue(SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode, availableDateRange);
         setFieldValue(SoknadFormField.selvstendigSoknadIsOk, hasValidSelvstendigFormData);
     }, [availableDateRange, hasValidSelvstendigFormData]);
 
@@ -89,57 +88,50 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
             showSubmitButton={
                 !isLoading &&
                 (hasValidSelvstendigFormData ||
-                    (areAllQuestionsAnswered() && søkerOmTaptInntektSomFrilanser === YesOrNo.YES))
+                    (allQuestionsAreAnswered && søkerOmTaptInntektSomFrilanser === YesOrNo.YES))
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <SelvstendigInfo.intro antallForetak={antallForetak} foretak={foretak} />
                 </Guide>
-                <SelvstendigFormQuestion question={Field.selvstendigHarHattInntektFraForetak}>
-                    <FormComponents.YesOrNoQuestion
-                        name={Field.selvstendigHarHattInntektFraForetak}
-                        legend={txt.selvstendigHarHattInntektFraForetak(inntektÅrstall)}
-                        description={
-                            <SelvstendigInfo.infoInntektÅrstall foretak={foretak} inntektÅrstall={inntektÅrstall} />
-                        }
-                    />
-                </SelvstendigFormQuestion>
-                {selvstendigHarHattInntektFraForetak === YesOrNo.NO && (
-                    <StopMessage>
-                        <SelvstendigInfo.advarselIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />
-                    </StopMessage>
-                )}
-                <SelvstendigFormQuestion question={Field.selvstendigHarTaptInntektPgaKorona}>
-                    <FormComponents.YesOrNoQuestion
-                        name={Field.selvstendigHarTaptInntektPgaKorona}
-                        legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
-                        description={<SelvstendigInfo.koronaTaptInntekt />}
-                    />
-                </SelvstendigFormQuestion>
-                {selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
-                    selvstendigHarTaptInntektPgaKorona === YesOrNo.NO && (
-                        <StopMessage>
-                            <SelvstendigInfo.advarselIkkeTapPgaKorona />
-                        </StopMessage>
-                    )}
-                <SelvstendigFormQuestion question={Field.selvstendigInntektstapStartetDato}>
+
+                <SoknadQuestion
+                    name={SoknadFormField.selvstendigHarHattInntektFraForetak}
+                    legend={txt.selvstendigHarHattInntektFraForetak(inntektÅrstall)}
+                    description={<SelvstendigInfo.infoInntektÅrstall inntektÅrstall={inntektÅrstall} />}
+                    showStop={selvstendigHarHattInntektFraForetak === YesOrNo.NO}
+                    stopMessage={<SelvstendigInfo.advarselIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />}
+                />
+                <SoknadQuestion
+                    name={SoknadFormField.selvstendigHarTaptInntektPgaKorona}
+                    legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                    description={<SelvstendigInfo.koronaTaptInntekt />}
+                    showStop={
+                        selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
+                        selvstendigHarTaptInntektPgaKorona === YesOrNo.NO
+                    }
+                    stopMessage={<SelvstendigInfo.advarselIkkeTapPgaKorona />}
+                />
+                <SoknadQuestion
+                    name={SoknadFormField.selvstendigInntektstapStartetDato}
+                    showInfo={isValidDateRange(availableDateRange)}
+                    infoMessage={
+                        isValidDateRange(availableDateRange) ? (
+                            <AvailableDateRangeInfo
+                                inntektstapStartetDato={selvstendigInntektstapStartetDato}
+                                availableDateRange={availableDateRange}
+                            />
+                        ) : null
+                    }>
                     <FormComponents.DatePicker
-                        name={Field.selvstendigInntektstapStartetDato}
+                        name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}
                         dateLimitations={{
                             minDato: MIN_DATE,
                             maksDato: currentSøknadsperiode.to,
                         }}
                     />
-                    {isValidDateRange(availableDateRange) && (
-                        <Box margin="l">
-                            <AvailableDateRangeInfo
-                                inntektstapStartetDato={selvstendigInntektstapStartetDato}
-                                availableDateRange={availableDateRange}
-                            />
-                        </Box>
-                    )}
-                </SelvstendigFormQuestion>
+                </SoknadQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
                     <LoadWrapper
                         isLoading={isLoading}
@@ -158,66 +150,52 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             }
                             return (
                                 <>
-                                    {isVisible(Field.selvstendigHarYtelseFraNavSomDekkerTapet) && (
+                                    {isVisible(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet) && (
                                         <FormSection title="Andre utbetalinger fra NAV ">
-                                            <SelvstendigFormQuestion
-                                                question={Field.selvstendigHarYtelseFraNavSomDekkerTapet}>
-                                                <FormComponents.YesOrNoQuestion
-                                                    name={Field.selvstendigHarYtelseFraNavSomDekkerTapet}
-                                                    legend={txt.selvstendigHarYtelseFraNavSomDekkerTapet}
-                                                    description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
-                                                />
-                                            </SelvstendigFormQuestion>
-                                            <SelvstendigFormQuestion
-                                                question={Field.selvstendigYtelseFraNavDekkerHeleTapet}>
-                                                <FormComponents.YesOrNoQuestion
-                                                    name={Field.selvstendigYtelseFraNavDekkerHeleTapet}
-                                                    legend={txt.selvstendigYtelseFraNavDekkerHeleTapet}
-                                                />
-                                            </SelvstendigFormQuestion>
-                                            {values.selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
-                                                selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES && (
-                                                    <StopMessage>
-                                                        <SelvstendigInfo.ytelseDekkerHeleTapet />
-                                                    </StopMessage>
-                                                )}
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet}
+                                                description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
+                                            />
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet}
+                                                description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
+                                                showStop={
+                                                    selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
+                                                    selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES
+                                                }
+                                                stopMessage={<SelvstendigInfo.ytelseDekkerHeleTapet />}
+                                            />
                                         </FormSection>
                                     )}
-                                    {isVisible(Field.selvstendigInntektIPerioden) && (
+                                    {isVisible(SoknadFormField.selvstendigInntektIPerioden) && (
                                         <FormSection title={`Inntekt du har tatt ut i perioden`}>
-                                            <SelvstendigFormQuestion question={Field.selvstendigInntektIPerioden}>
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigInntektIPerioden}
+                                                description={<SelvstendigInfo.andreUtbetalingerFraNAV />}>
                                                 <FormComponents.Input
-                                                    name={Field.selvstendigInntektIPerioden}
+                                                    name={SoknadFormField.selvstendigInntektIPerioden}
                                                     label={txt.selvstendigInntektIPerioden(availableDateRange)}
                                                     type="number"
                                                     bredde="S"
                                                     description={<SelvstendigInfo.infoInntektForetak />}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
-                                            </SelvstendigFormQuestion>
+                                            </SoknadQuestion>
                                         </FormSection>
                                     )}
-                                    {isVisible(Field.selvstendigErFrilanser) && (
+                                    {isVisible(SoknadFormField.selvstendigErFrilanser) && (
                                         <FormSection title="Frilanser">
-                                            <SelvstendigFormQuestion question={Field.selvstendigErFrilanser}>
-                                                <FormComponents.YesOrNoQuestion
-                                                    name={Field.selvstendigErFrilanser}
-                                                    legend={txt.selvstendigErFrilanser}
-                                                />
-                                            </SelvstendigFormQuestion>
-                                            <SelvstendigFormQuestion
-                                                question={Field.selvstendigHarHattInntektSomFrilanserIPerioden}>
-                                                <FormComponents.YesOrNoQuestion
-                                                    name={Field.selvstendigHarHattInntektSomFrilanserIPerioden}
-                                                    legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
-                                                        availableDateRange
-                                                    )}
-                                                />
-                                            </SelvstendigFormQuestion>
-                                            <SelvstendigFormQuestion
-                                                question={Field.selvstendigInntektSomFrilanserIPerioden}>
+                                            <SoknadQuestion name={SoknadFormField.selvstendigErFrilanser} />
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
+                                                legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
+                                                    availableDateRange
+                                                )}
+                                            />
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}>
                                                 <FormComponents.Input
-                                                    name={Field.selvstendigInntektSomFrilanserIPerioden}
+                                                    name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}
                                                     type="number"
                                                     bredde="S"
                                                     label={txt.selvstendigInntektSomFrilanserIPerioden(
@@ -225,14 +203,17 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                     )}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                 />
-                                            </SelvstendigFormQuestion>
+                                            </SoknadQuestion>
                                         </FormSection>
                                     )}
-                                    {isVisible(Field.selvstendigInntekt2019) && (
+                                    {isVisible(SoknadFormField.selvstendigInntekt2019) && (
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2019">
-                                            <SelvstendigFormQuestion question={Field.selvstendigInntekt2019}>
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigInntekt2019}
+                                                showStop={selvstendigInntekt2019 === 0}
+                                                stopMessage={<SelvstendigInfo.ingenInntektStopp årstall={2019} />}>
                                                 <FormComponents.Input
-                                                    name={Field.selvstendigInntekt2019}
+                                                    name={SoknadFormField.selvstendigInntekt2019}
                                                     type="number"
                                                     bredde="S"
                                                     label={txt.selvstendigInntekt2019}
@@ -245,20 +226,17 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                         ) : undefined
                                                     }
                                                 />
-                                            </SelvstendigFormQuestion>
-                                            {selvstendigInntekt2019 === 0 && (
-                                                <StopMessage>
-                                                    For å kunne søke om kompensasjon for tapt inntekt som selvstendig
-                                                    næringsdrivende, må du ha tatt ut inntekt i 2019.
-                                                </StopMessage>
-                                            )}
+                                            </SoknadQuestion>
                                         </FormSection>
                                     )}
-                                    {isVisible(Field.selvstendigInntekt2020) && (
+                                    {isVisible(SoknadFormField.selvstendigInntekt2020) && (
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2020">
-                                            <SelvstendigFormQuestion question={Field.selvstendigInntekt2020}>
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigInntekt2020}
+                                                showStop={selvstendigInntekt2020 === 0}
+                                                stopMessage={<SelvstendigInfo.ingenInntektStopp årstall={2020} />}>
                                                 <FormComponents.Input
-                                                    name={Field.selvstendigInntekt2020}
+                                                    name={SoknadFormField.selvstendigInntekt2020}
                                                     type="number"
                                                     bredde="S"
                                                     label={txt.selvstendigInntekt2020}
@@ -269,23 +247,13 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                         ) : undefined
                                                     }
                                                 />
-                                            </SelvstendigFormQuestion>
-                                            {selvstendigInntekt2020 === 0 && (
-                                                <StopMessage>
-                                                    Du må ha hatt inntekt i 2020 for å kunne søke på denne ytelsen
-                                                </StopMessage>
-                                            )}
+                                            </SoknadQuestion>
                                         </FormSection>
                                     )}
-                                    {isVisible(Field.selvstendigHarRegnskapsfører) && (
+                                    {isVisible(SoknadFormField.selvstendigHarRegnskapsfører) && (
                                         <FormSection title="Regnskapsfører">
-                                            <SelvstendigFormQuestion question={Field.selvstendigHarRegnskapsfører}>
-                                                <FormComponents.YesOrNoQuestion
-                                                    name={Field.selvstendigHarRegnskapsfører}
-                                                    legend={txt.selvstendigHarRegnskapsfører}
-                                                />
-                                            </SelvstendigFormQuestion>
-                                            {isVisible(Field.selvstendigRegnskapsførerNavn) && (
+                                            <SoknadQuestion name={SoknadFormField.selvstendigHarRegnskapsfører} />
+                                            {isVisible(SoknadFormField.selvstendigRegnskapsførerNavn) && (
                                                 <Box margin="l">
                                                     <ResponsivePanel>
                                                         <Box padBottom="l">
@@ -295,41 +263,38 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                     opplysninger om den som er din hovedregnskapsfører.
                                                                 </>
                                                             )}
-                                                            <SelvstendigFormQuestion
-                                                                margin="l"
-                                                                question={Field.selvstendigRegnskapsførerNavn}>
+                                                            <SoknadQuestion
+                                                                name={SoknadFormField.selvstendigRegnskapsførerNavn}>
                                                                 <FormComponents.Input
-                                                                    name={Field.selvstendigRegnskapsførerNavn}
+                                                                    name={SoknadFormField.selvstendigRegnskapsførerNavn}
                                                                     label={txt.selvstendigRegnskapsførerNavn}
                                                                     validate={validateRequiredField}
                                                                 />
-                                                            </SelvstendigFormQuestion>
-                                                            <SelvstendigFormQuestion
-                                                                margin="l"
-                                                                question={Field.selvstendigRegnskapsførerTelefon}>
+                                                            </SoknadQuestion>
+
+                                                            <SoknadQuestion
+                                                                name={SoknadFormField.selvstendigRegnskapsførerTelefon}
+                                                                margin="l">
                                                                 <FormComponents.Input
-                                                                    name={Field.selvstendigRegnskapsførerTelefon}
+                                                                    name={
+                                                                        SoknadFormField.selvstendigRegnskapsførerTelefon
+                                                                    }
                                                                     label={txt.selvstendigRegnskapsførerTelefon}
                                                                     bredde="M"
                                                                     maxLength={12}
                                                                     validate={validatePhoneNumber}
                                                                 />
-                                                            </SelvstendigFormQuestion>
+                                                            </SoknadQuestion>
                                                         </Box>
                                                     </ResponsivePanel>
                                                 </Box>
                                             )}
                                         </FormSection>
                                     )}
-                                    {isVisible(Field.selvstendigHarRevisor) && (
+                                    {isVisible(SoknadFormField.selvstendigHarRevisor) && (
                                         <FormSection title="Revisor">
-                                            <SelvstendigFormQuestion question={Field.selvstendigHarRevisor}>
-                                                <FormComponents.YesOrNoQuestion
-                                                    name={Field.selvstendigHarRevisor}
-                                                    legend={txt.selvstendigHarRevisor}
-                                                />
-                                            </SelvstendigFormQuestion>
-                                            {isVisible(Field.selvstendigRevisorNavn) && (
+                                            <SoknadQuestion name={SoknadFormField.selvstendigHarRevisor} />
+                                            {isVisible(SoknadFormField.selvstendigRevisorNavn) && (
                                                 <Box margin="l">
                                                     <ResponsivePanel>
                                                         <Box padBottom="l">
@@ -339,35 +304,30 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                                                     informasjon om din hoverrevisor.
                                                                 </>
                                                             )}
-                                                            <SelvstendigFormQuestion
-                                                                margin="l"
-                                                                question={Field.selvstendigRevisorNavn}>
+                                                            <SoknadQuestion
+                                                                name={SoknadFormField.selvstendigRevisorNavn}
+                                                                margin="l">
                                                                 <FormComponents.Input
-                                                                    name={Field.selvstendigRevisorNavn}
+                                                                    name={SoknadFormField.selvstendigRevisorNavn}
                                                                     label={txt.selvstendigRevisorNavn}
                                                                     validate={validateRequiredField}
                                                                 />
-                                                            </SelvstendigFormQuestion>
-                                                            <SelvstendigFormQuestion
-                                                                margin="l"
-                                                                question={Field.selvstendigRevisorTelefon}>
+                                                            </SoknadQuestion>
+                                                            <SoknadQuestion
+                                                                name={SoknadFormField.selvstendigRevisorTelefon}
+                                                                margin="l">
                                                                 <FormComponents.Input
                                                                     label={txt.selvstendigRevisorTelefon}
-                                                                    name={Field.selvstendigRevisorTelefon}
+                                                                    name={SoknadFormField.selvstendigRevisorTelefon}
                                                                     bredde="M"
                                                                     maxLength={12}
                                                                     validate={validatePhoneNumber}
                                                                 />
-                                                            </SelvstendigFormQuestion>
-                                                            <SelvstendigFormQuestion
+                                                            </SoknadQuestion>
+                                                            <SoknadQuestion
+                                                                name={SoknadFormField.selvstendigRevisorNAVKanTaKontakt}
                                                                 margin="l"
-                                                                question={Field.selvstendigRevisorNAVKanTaKontakt}>
-                                                                <FormComponents.YesOrNoQuestion
-                                                                    name={Field.selvstendigRevisorNAVKanTaKontakt}
-                                                                    legend={txt.selvstendigRevisorNAVKanTaKontakt}
-                                                                    validate={validateYesOrNoIsAnswered}
-                                                                />
-                                                            </SelvstendigFormQuestion>
+                                                            />
                                                         </Box>
                                                     </ResponsivePanel>
                                                 </Box>

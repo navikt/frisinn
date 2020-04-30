@@ -100,7 +100,7 @@ const advarselIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstal
     );
 };
 
-const infoInntektÅrstall = ({ foretak, inntektÅrstall }: { foretak: Foretak[]; inntektÅrstall: number }) => {
+const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
     return inntektÅrstall === 2020 ? (
         <>
             <ExpandableInfo title={`Hva betyr dette?`}>
@@ -138,6 +138,13 @@ const andreUtbetalingerFraNAV = () => (
     </>
 );
 
+const ingenInntektStopp = ({ årstall }: { årstall: number }) => (
+    <>
+        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i
+        {årstall}.
+    </>
+);
+
 const infoInntektFlereSelskaper = () => <>Du skal legge inn samlet beløp fra alle dine selskaper</>;
 
 const SelvstendigInfo = {
@@ -152,6 +159,7 @@ const SelvstendigInfo = {
     andreUtbetalingerFraNAV,
     infoInntektFlereSelskaper,
     koronaTaptInntekt,
+    ingenInntektStopp,
 };
 
 export default SelvstendigInfo;
