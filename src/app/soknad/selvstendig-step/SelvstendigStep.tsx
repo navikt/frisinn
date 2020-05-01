@@ -12,23 +12,23 @@ import { QuestionVisibilityContext } from '../../context/QuestionVisibilityConte
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import { hasValidHistoriskInntekt, selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
+import SelvstendigInfo from '../info/SelvstendigInfo';
 import FormComponents from '../SoknadFormComponents';
 import SoknadQuestion from '../SoknadQuestion';
+import { soknadQuestionText } from '../soknadQuestionText';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import { SelvstendigFormPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
-import SelvstendigInfo from '../info/SelvstendigInfo';
-import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import {
     kontrollerSelvstendigSvar,
-    SelvstendigNæringsdrivendeAvslagStatus,
     SelvstendigNæringdsrivendeAvslagÅrsak,
+    SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
-import { soknadQuestionText } from '../soknadQuestionText';
+import { SelvstendigFormPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
 
 const txt = soknadQuestionText;
 
@@ -39,7 +39,7 @@ const getStopReason = (
     return feil ? (feil[0] as SelvstendigNæringdsrivendeAvslagÅrsak) : undefined;
 };
 
-const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
+const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
     const {
         selvstendigInntektstapStartetDato,
@@ -137,6 +137,9 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,
                         }}
+                        dayPickerProps={{
+                            initialMonth: currentSøknadsperiode.to,
+                        }}
                     />
                 </SoknadQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
@@ -214,7 +217,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2019">
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigInntekt2019}
-                                                showStop={avslag.harIkkeHattHistoriskInntekt}
+                                                showStop={
+                                                    values.selvstendigInntekt2019 !== undefined &&
+                                                    avslag.harIkkeHattHistoriskInntekt
+                                                }
                                                 stopMessage={
                                                     <SelvstendigInfo.StoppIngenHistoriskInntekt årstall={2019} />
                                                 }>
@@ -239,7 +245,10 @@ const SelvstendigStep = ({ resetSoknad: resetSoknad, onValidSubmit, soknadEssent
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2020">
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigInntekt2020}
-                                                showStop={avslag.harIkkeHattHistoriskInntekt}
+                                                showStop={
+                                                    values.selvstendigInntekt2020 !== undefined &&
+                                                    avslag.harIkkeHattHistoriskInntekt
+                                                }
                                                 stopMessage={
                                                     <SelvstendigInfo.StoppIngenHistoriskInntekt årstall={2020} />
                                                 }>

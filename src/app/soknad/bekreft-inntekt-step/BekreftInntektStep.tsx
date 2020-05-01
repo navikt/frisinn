@@ -24,6 +24,7 @@ import { Element } from 'nav-frontend-typografi';
 import { Link } from 'react-router-dom';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -98,16 +99,31 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             resetSoknad={resetSoknad}
             showSubmitButton={showSubmitButton}>
             <Box padBottom="l" margin="xxxl">
-                <Guide
-                    svg={<ChecklistCircleIcon />}
-                    type={'plakat'}
-                    kompakt={true}
-                    fargetema={'feilmelding'}
-                    fullHeight={true}>
-                    <strong>Her kontrollerer du at du har gitt oss korrekt informasjon om inntekten din</strong>. Hvis
-                    tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du har lagt inn. Det
-                    er ditt ansvar at opplysningene du gir er riktige.
-                </Guide>
+                {frilanserSoknadIsOk ||
+                    (selvstendigSoknadIsOk && (
+                        <Guide
+                            svg={<ChecklistCircleIcon />}
+                            type={'plakat'}
+                            kompakt={true}
+                            fargetema={'feilmelding'}
+                            fullHeight={true}>
+                            <strong>Her kontrollerer du at du har gitt oss korrekt informasjon om inntekten din</strong>
+                            . Hvis tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du
+                            har lagt inn. Det er ditt ansvar at opplysningene du gir er riktige.
+                        </Guide>
+                    ))}
+                {frilanserSoknadIsOk === false && selvstendigSoknadIsOk === false && (
+                    <>
+                        <Guide
+                            svg={<VeilederSVG mood={'uncertain'} />}
+                            type={'plakat'}
+                            kompakt={true}
+                            fargetema={'feilmelding'}
+                            fullHeight={false}>
+                            Basert på informasjonen du harDu kan ikke søke som frilanser eller selvstendig
+                        </Guide>
+                    </>
+                )}
             </Box>
             {selvstendigSoknadIsOk === false && selvstendigStopReason && (
                 <FormSection title="Selvstendig næringsdrivende">

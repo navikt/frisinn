@@ -14,15 +14,15 @@ import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import { MAX_INNTEKT } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
+import FrilanserInfo from '../info/FrilanserInfo';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadQuestion from '../SoknadQuestion';
+import { soknadQuestionText } from '../soknadQuestionText';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupFrilanserStep } from './cleanupFrilanserStep';
+import { FrilanserAvslagStatus, FrilanserAvslagÅrsak, kontrollerFrilanserSvar } from './frilanserAvslag';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
-import FrilanserInfo from '../info/FrilanserInfo';
-import { kontrollerFrilanserSvar, FrilanserAvslagStatus, FrilanserAvslagÅrsak } from './frilanserAvslag';
-import { soknadQuestionText } from '../soknadQuestionText';
 
 const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | undefined => {
     const feil = Object.keys(status).filter((key) => status[key] === true);
@@ -128,6 +128,9 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,
                         }}
+                        dayPickerProps={{
+                            initialMonth: currentSøknadsperiode.to,
+                        }}
                     />
                 </SoknadQuestion>
 
@@ -193,7 +196,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     type="number"
                                                     bredde="S"
                                                     label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden}
-                                                    validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                                    validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}
                                                 />
                                             </SoknadQuestion>
                                         </FormSection>

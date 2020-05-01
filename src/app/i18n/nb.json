@@ -8,7 +8,7 @@
     "personopplysninger.lenketekst": "Les om hvordan NAV behandler personopplysningene dine",
     "modal.behandlingAvPersonalia.tittel": "Om behandling av personopplysninger",
     "modal.personalopplysninger.tittel": "Slik behandler NAV personopplysningene dine",
-    "modal.personalopplysninger.intro.1": "NAV innhenter og mottar opplysninger om deg når du sender inn en melding. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.",
+    "modal.personalopplysninger.intro.1": "NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.",
     "modal.personalopplysninger.opplysninger.tittel": "Opplysningene vi innhenter",
     "modal.personalopplysninger.opplysninger.part1": "Opplysningene kommer enten fra deg eller fra offentlige registre:",
     "modal.personalopplysninger.opplysninger.1": "arbeidsforholdene dine og inntekten din",
@@ -68,7 +68,7 @@
     "step.oppsummering.stepTitle": "Oppsummering",
     "step.oppsummering.nextButtonLabel": "Send inn søknad",
 
-    "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til omsorgspenger.",
+    "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til denne kompensasjonen.",
 
     "fieldvalidation.påkrevd": "Feltet er påkrevd",
     "fieldvalidation.samtykkeErPåkrevd": "Du må bekrefte at du har lest og forstått dine plikter",

@@ -88,8 +88,16 @@ const Soknad = () => {
                         <SoknadFormComponents.FormikWrapper
                             initialValues={tempStorage.storageData?.formData || {}}
                             onSubmit={() => null}
-                            renderForm={() => {
-                                return <SoknadRoutes soknadEssentials={soknadEssentials} resetSoknad={resetSoknad} />;
+                            renderForm={(formik) => {
+                                return (
+                                    <SoknadRoutes
+                                        soknadEssentials={soknadEssentials}
+                                        resetSoknad={() => {
+                                            formik.resetForm();
+                                            resetSoknad();
+                                        }}
+                                    />
+                                );
                             }}
                         />
                     );

@@ -17,6 +17,7 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { Knapp } from 'nav-frontend-knapper';
 import IntroCheckList from './IntroCheckList';
+import { useIntl } from 'react-intl';
 
 const bem = bemUtils('introPage');
 
@@ -28,6 +29,7 @@ export interface IntroResultProps {
 const IntroPage: React.StatelessComponent = () => {
     const [introResult, setIntroResult] = useState<IntroResultProps | undefined>();
 
+    const intl = useIntl();
     const soknadsperiode = useSoknadsperiode();
     const soknadErTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
 
@@ -37,10 +39,8 @@ const IntroPage: React.StatelessComponent = () => {
     return (
         <Page
             className={bem.block}
-            title="Inntektskompensasjon for selvstendig næringsdrivende (ENK) og frilansere"
-            topContentRenderer={() => (
-                <StepBanner text="Inntektskompensasjon for selvstendig næringsdrivende (ENK) og frilansere" />
-            )}>
+            title={intl.formatMessage({ id: 'banner.title' })}
+            topContentRenderer={() => <StepBanner text={intl.formatMessage({ id: 'banner.title' })} />}>
             {introResult ? (
                 <Box margin="xxxl">
                     <IntroCheckList {...introResult} />
@@ -92,7 +92,7 @@ const IntroPage: React.StatelessComponent = () => {
                                             </p>
                                             <p>
                                                 Er du selvstendig næringsdrivende må du enten ha et enkeltpersonforetak
-                                                (EK), et ansvarlig selskap (ANS), eller et ansvarlig selskap med delt
+                                                (ENK), et ansvarlig selskap (ANS), eller et ansvarlig selskap med delt
                                                 ansvar (DA). Selskapet må være registrert før 1. mars 2020.
                                             </p>
                                             <p>

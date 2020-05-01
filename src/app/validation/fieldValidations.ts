@@ -80,7 +80,7 @@ export const validatePhoneNumber = (value: string): FieldValidationResult => {
     if (!hasValue(value)) {
         return fieldIsRequiredError();
     }
-    if (value.length < 5 || value.length > 12) {
+    if (value.length < 5 || value.length > 15) {
         return createAppFieldValidationError(AppFieldValidationErrors.ugyldig_telefonnummer);
     }
     return undefined;

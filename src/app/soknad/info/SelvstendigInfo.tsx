@@ -13,7 +13,7 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     if (antallForetak === 1) {
         return (
             <>
-                <p>Det er 1 selskap registrert på deg i Brønnøysundregistret.</p>
+                <p>Det er 1 selskap registrert på deg i Brønnøysundregisterene.</p>
                 <ForetakList foretak={foretak} />
             </>
         );
@@ -21,7 +21,7 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     return (
         <>
             <p>
-                Det er {antallForetak} selskap registrert på deg i Brønnøysundregisteret. Du skal oppgi inntektene
+                Det er {antallForetak} selskap registrert på deg i Brønnøysundregisterene. Du skal oppgi inntektene
                 samlet for alle selskapene, selv om du kanskje bare har tapt inntekt i det ene selskapet.
             </p>
             <ExpandableInfo closeTitle={'Skjul liste'} title={'Vis selskap som er registrert'} filledBackground={false}>

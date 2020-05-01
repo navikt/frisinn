@@ -11,6 +11,7 @@ import EndreKontonummer from '../../information/EndreKontonummer';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import SoknadEntryForm from './SoknadEntryForm';
 import { ResetSoknadFunction } from '../../soknad/Soknad';
+import { useIntl } from 'react-intl';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -30,14 +31,13 @@ const SoknadEntryPage = ({
         resetSoknad(false);
     }, []);
 
+    const intl = useIntl();
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;
 
     return (
         <Page
             title="Kan du bruke søknaden?"
-            topContentRenderer={() => (
-                <StepBanner text="Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere" />
-            )}>
+            topContentRenderer={() => <StepBanner text={intl.formatMessage({ id: 'banner.title' })} />}>
             <Box margin="xxxl">
                 <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
                     <Box margin="l">

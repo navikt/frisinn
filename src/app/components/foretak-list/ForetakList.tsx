@@ -13,7 +13,7 @@ const ForetakList = ({ foretak }: Props) => (
                 return (
                     <li key={f.organisasjonsnummer}>
                         <div>{f.navn}</div>
-                        Orgnr: {f.organisasjonsnummer}:. Registrert {prettifyDate(f.registreringsdato)}
+                        Orgnr: {f.organisasjonsnummer}: Registrert {prettifyDate(f.registreringsdato)}
                     </li>
                 );
             })}

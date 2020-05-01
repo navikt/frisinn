@@ -24,7 +24,7 @@ interface Props {
     soknadEssentials: SoknadEssentials;
 }
 
-const SoknadRoutes = ({ resetSoknad: resetSoknad, soknadEssentials }: Props) => {
+const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
     const history = useHistory();
 
     const { values } = useFormikContext<SoknadFormData>();
