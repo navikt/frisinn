@@ -122,6 +122,12 @@ const IntroPage: React.StatelessComponent = () => {
                                             <li>
                                                 ikke motta annen utbetaling fra NAV som kompenserer det samme
                                                 inntektstapet
+                                                <ul>
+                                                    <li>
+                                                        Hvis du er frilanser og mottar dagpenger, eller forskudd på
+                                                        dagpenger, kan du ikke søke om denne kompensasjonen
+                                                    </li>
+                                                </ul>
                                             </li>
                                         </ul>
                                         <p>
