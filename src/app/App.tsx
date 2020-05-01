@@ -15,9 +15,9 @@ import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import ReceiptPage from './pages/receipt-page/ReceiptPage';
 import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavailablePage';
 import Soknad from './soknad/Soknad';
+import { getEnvironmentVariable } from './utils/envUtils';
 import 'common/styles/globalStyles.less';
 import './styles/app.less';
-import { getEnvironmentVariable } from './utils/envUtils';
 
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
