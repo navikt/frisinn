@@ -18,6 +18,7 @@ import SummaryStep from './summary-step/SummaryStep';
 import Lenke from 'nav-frontend-lenker';
 import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
 import { triggerSentryCustomError, SentryEventName } from '../utils/sentryUtils';
+import { isRunningInDevEnvironment } from '../utils/envUtils';
 
 interface Props {
     resetSoknad: () => void;
@@ -116,7 +117,9 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             <Route path={GlobalRoutes.SOKNAD_ERROR} render={() => <SoknadErrorPage />} />
             <Route path="*">
                 {() => {
-                    triggerSentryCustomError(SentryEventName.noMatchingSoknadRoute);
+                    if (isRunningInDevEnvironment()) {
+                        triggerSentryCustomError(SentryEventName.noMatchingSoknadRoute, { values });
+                    }
                     return (
                         <SoknadErrorPage>
                             <p>

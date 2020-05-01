@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import axiosConfig from '../config/axiosConfig';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
-import { getEnvironmentVariable } from '../utils/envUtils';
+import { getEnvironmentVariable, isRunningInDevEnvironment } from '../utils/envUtils';
 import { relocateToLoginPage } from '../utils/navigationUtils';
 import { triggerSentryError, SentryEventName } from '../utils/sentryUtils';
 
@@ -19,7 +19,9 @@ axios.interceptors.response.use(
             relocateToLoginPage();
             return;
         }
-        triggerSentryError(SentryEventName.apiRequestFailed, error);
+        if (isRunningInDevEnvironment()) {
+            triggerSentryError(SentryEventName.apiRequestFailed, error);
+        }
         return Promise.reject(error);
     }
 );

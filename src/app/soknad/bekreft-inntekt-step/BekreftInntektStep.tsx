@@ -13,11 +13,9 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import FormSection from '../../pages/intro-page/FormSection';
 import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { isRunningInDevEnvironment } from '../../utils/envUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import { selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
-import { SentryEventName, triggerSentryCustomError } from '../../utils/sentryUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadStep from '../SoknadStep';
@@ -83,13 +81,6 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         apiValues,
     });
 
-    useEffect(() => {
-        if (!frilanserSoknadIsOk && !selvstendigSoknadIsOk) {
-            const payload = isRunningInDevEnvironment() ? values : undefined;
-            triggerSentryCustomError(SentryEventName.invalidSelvstendigAndFrilansApiData, payload);
-        }
-    }, [selvstendigSoknadIsOk, frilanserSoknadIsOk]);
-
     return (
         <SoknadStep
             id={StepID.BEKREFT_INNTEKT}
@@ -118,7 +109,9 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             kompakt={true}
                             fargetema={'feilmelding'}
                             fullHeight={false}>
-                            Du kan ikke sende inn denne søknaden. Se mer informasjon om hvorfor nedenfor.
+                            Ut fra opplysningene du har gitt, kan du ikke søke om kompensasjon for tapt inntekt som
+                            selvstendig næringsdrivende og/eller frilanser. Hva som er årsaken til dette, kan du lese
+                            nedenfor.
                         </Guide>
                     </>
                 )}

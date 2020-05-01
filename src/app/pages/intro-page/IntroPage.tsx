@@ -118,7 +118,7 @@ const IntroPage: React.StatelessComponent = () => {
                                         <ul className="infoList">
                                             <li>være fylt 18 år</li>
                                             <li>ikke ha fylt 67 år</li>
-                                            <li>ha tapt inntekt (tapte oppdrag) som følge av koronasituasjonen</li>
+                                            <li>ha tapt inntekt (ikke tapte oppdrag) som følge av koronasituasjonen</li>
                                             <li>
                                                 ikke motta annen utbetaling fra NAV som kompenserer det samme
                                                 inntektstapet
