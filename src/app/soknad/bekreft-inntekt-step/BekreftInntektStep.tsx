@@ -1,30 +1,29 @@
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import { Locale } from 'common/types/Locale';
+import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
+import Guide from '../../components/guide/Guide';
+import StopMessage from '../../components/stop-message/StopMessage';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import FormSection from '../../pages/intro-page/FormSection';
+import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { isRunningInDevEnvironment } from '../../utils/envUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
+import { getSoknadRoute } from '../../utils/routeUtils';
+import { selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
+import { SentryEventName, triggerSentryCustomError } from '../../utils/sentryUtils';
+import FrilanserInfo from '../info/FrilanserInfo';
+import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
-import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
-import Guide from '../../components/guide/Guide';
-import ChecklistCircleIcon from '../../assets/ChecklistCircleIcon';
-import { triggerSentryCustomError, SentryEventName } from '../../utils/sentryUtils';
-import { isRunningInDevEnvironment } from '../../utils/envUtils';
-import StopMessage from '../../components/stop-message/StopMessage';
-import SelvstendigInfo from '../info/SelvstendigInfo';
-import { selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
-import { Element } from 'nav-frontend-typografi';
-import { Link } from 'react-router-dom';
-import { getSoknadRoute } from '../../utils/routeUtils';
-import FrilanserInfo from '../info/FrilanserInfo';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -72,7 +71,6 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
     useEffect(() => {
         setValues({
             ...values,
-
             bekrefterFrilansinntektIPerioden: YesOrNo.UNANSWERED,
             bekrefterSelvstendigInntektI2020: YesOrNo.UNANSWERED,
             bekrefterSelvstendigInntektI2019: YesOrNo.UNANSWERED,
@@ -120,7 +118,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             kompakt={true}
                             fargetema={'feilmelding'}
                             fullHeight={false}>
-                            Basert på informasjonen du harDu kan ikke søke som frilanser eller selvstendig
+                            Du kan ikke sende inn denne søknaden. Se mer informasjon om hvorfor nedenfor.
                         </Guide>
                     </>
                 )}
@@ -128,7 +126,6 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             {selvstendigSoknadIsOk === false && selvstendigStopReason && (
                 <FormSection title="Selvstendig næringsdrivende">
                     <StopMessage>
-                        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
                         {SelvstendigInfo.getMessageForAvslag(
                             selvstendigStopReason,
                             selvstendigSkalOppgiInntekt2019(soknadEssentials.personligeForetak) ? 2019 : 2020,
@@ -197,8 +194,8 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             {frilanserSoknadIsOk === false && frilanserStopReason && (
                 <FormSection title="Frilanser">
                     <StopMessage>
-                        <Element>Du kan ikke søke som selvstendig næringsdrivende</Element>
                         {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.currentSøknadsperiode)}
+
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.FRILANSER)}>
                                 Gå tilbake til informasjon om frilans
