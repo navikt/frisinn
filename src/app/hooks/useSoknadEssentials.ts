@@ -8,13 +8,12 @@ import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
-    const [isDone, setIsDone] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [userIsLoggedIn, setUserIsLoggedIn] = useState<boolean | undefined>(undefined);
     const [error, setError] = useState<AxiosError | undefined>();
-    const [notLoggedIn, setNotLoggedIn] = useState<boolean | undefined>();
 
     const fetch = async () => {
-        setNotLoggedIn(undefined);
+        setSoknadEssentials(undefined);
         setError(undefined);
         setIsLoading(true);
         try {
@@ -26,18 +25,18 @@ function useSoknadEssentials() {
                 currentSøknadsperiode,
                 personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
             });
+            setUserIsLoggedIn(true);
         } catch (error) {
             if (isForbidden(error) || isUnauthorized(error)) {
-                setNotLoggedIn(true);
+                setUserIsLoggedIn(false);
             }
             setError(error);
         } finally {
-            setIsDone(true);
             setIsLoading(false);
         }
     };
 
-    return { soknadEssentials, isLoading, isDone, notLoggedIn, error, fetch };
+    return { soknadEssentials, userIsLoggedIn, isLoading, error, fetch };
 }
 
 export default useSoknadEssentials;
