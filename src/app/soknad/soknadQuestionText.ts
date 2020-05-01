@@ -62,7 +62,7 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigRevisorNAVKanTaKontakt: 'Gir du NAV fullmakt til å innhente opplysninger fra revisor?',
     frilanserHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som frilanser i perioden ${formatDateRange(dateRange)}, som følge av koronautbruddet?`,
-    frilanserErNyetablert: 'Startet du som frilanser etter 1. september 2019?',
+    frilanserErNyetablert: 'Startet du å jobbe som frilanser etter 1. mars 2019?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som dekker hele eller deler av inntektstapet ditt som frilanser?',

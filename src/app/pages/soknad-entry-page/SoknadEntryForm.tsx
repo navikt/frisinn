@@ -126,10 +126,13 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                                 {infoStates.isSelvstendigButNoForetakFound && <p>sdf</p>}
                             </AlertStripeAdvarsel>
                         </FormBlock>
-                        <Box textAlignCenter={true} className="stepFooter">
-                            <Lenke href="https://www.nav.no/">Avbryt søknad, og gå til nav.no forside</Lenke>
-                        </Box>
                     </>
+                )}
+                {(kontonummerErRiktig === YesOrNo.NO ||
+                    (infoStates.hasNotChosenSoknad && !infoStates.isSelvstendigButNoForetakFound)) && (
+                    <Box textAlignCenter={true} className="stepFooter">
+                        <Lenke href="https://www.nav.no/">Avbryt søknad, og gå til nav.no forside</Lenke>
+                    </Box>
                 )}
 
                 {canContinue && (

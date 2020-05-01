@@ -112,7 +112,10 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                     stopMessage={<FrilanserInfo.StoppIkkeTapPgaKorona />}
                 />
 
-                <SoknadQuestion name={SoknadFormField.frilanserErNyetablert} />
+                <SoknadQuestion
+                    name={SoknadFormField.frilanserErNyetablert}
+                    description={<FrilanserInfo.infoErNyetablert />}
+                />
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserInntektstapStartetDato}

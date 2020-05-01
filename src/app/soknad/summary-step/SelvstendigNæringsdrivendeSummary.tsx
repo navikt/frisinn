@@ -27,7 +27,7 @@ const SelvstendigNæringsdrivendeSummary = ({
         <SummaryBlock header={'Inntektstapet som selvstendig næringsdrivende startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
-        <SummaryBlock header={'Periode det søkes for'}>{info.period}</SummaryBlock>
+        <SummaryBlock header={'Periode det søkes for som selvstendig næringsdrivende'}>{info.period}</SummaryBlock>
         <SummaryBlock header={`Inntekt fra selskap i perioden ${info.period}`}>
             <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>

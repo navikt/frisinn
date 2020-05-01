@@ -141,6 +141,14 @@ const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak, currentSøknadsperio
             return <StoppYtelseDekkerHeleTapet />;
     }
 };
+
+const infoErNyetablert = () => (
+    <ExpandableInfo title="Hva menes med dette?">
+        Hvis du også har vært frilanser før 1. mars 2019, men ikke har hatt inntekt etter 2017, kan du svare ja på dette
+        spørsmålet.
+    </ExpandableInfo>
+);
+
 const FrilanserInfo = {
     infoInntektForetak,
     StoppForSentInntektstap,
@@ -151,6 +159,7 @@ const FrilanserInfo = {
     andreUtbetalingerFraNAV,
     koronaTaptInntekt,
     getMessageForAvslag,
+    infoErNyetablert,
 };
 
 export default FrilanserInfo;

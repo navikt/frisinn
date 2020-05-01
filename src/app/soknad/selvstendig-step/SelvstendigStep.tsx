@@ -192,29 +192,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             </SoknadQuestion>
                                         </FormSection>
                                     )}
-                                    {isVisible(SoknadFormField.selvstendigErFrilanser) && (
-                                        <FormSection title="Frilanser">
-                                            <SoknadQuestion name={SoknadFormField.selvstendigErFrilanser} />
-                                            <SoknadQuestion
-                                                name={SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
-                                                legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
-                                                    availableDateRange
-                                                )}
-                                            />
-                                            <SoknadQuestion
-                                                name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}>
-                                                <FormComponents.Input
-                                                    name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}
-                                                    type="number"
-                                                    bredde="S"
-                                                    label={txt.selvstendigInntektSomFrilanserIPerioden(
-                                                        availableDateRange
-                                                    )}
-                                                    validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
-                                                />
-                                            </SoknadQuestion>
-                                        </FormSection>
-                                    )}
                                     {isVisible(SoknadFormField.selvstendigInntekt2019) && (
                                         <FormSection title="Inntekter du har tatt ut av selskap i 2019">
                                             <SoknadQuestion
@@ -269,6 +246,30 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             </SoknadQuestion>
                                         </FormSection>
                                     )}
+                                    {isVisible(SoknadFormField.selvstendigErFrilanser) && (
+                                        <FormSection title="Frilanser">
+                                            <SoknadQuestion name={SoknadFormField.selvstendigErFrilanser} />
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
+                                                legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
+                                                    availableDateRange
+                                                )}
+                                            />
+                                            <SoknadQuestion
+                                                name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}>
+                                                <FormComponents.Input
+                                                    name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}
+                                                    type="number"
+                                                    bredde="S"
+                                                    label={txt.selvstendigInntektSomFrilanserIPerioden(
+                                                        availableDateRange
+                                                    )}
+                                                    validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                                />
+                                            </SoknadQuestion>
+                                        </FormSection>
+                                    )}
+
                                     {isVisible(SoknadFormField.selvstendigHarRegnskapsfører) && (
                                         <FormSection title="Regnskapsfører">
                                             <SoknadQuestion name={SoknadFormField.selvstendigHarRegnskapsfører} />

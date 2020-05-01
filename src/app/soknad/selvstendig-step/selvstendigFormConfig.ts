@@ -11,7 +11,7 @@ const Field = SoknadFormField;
 export type SelvstendigFormConfigPayload = SelvstendigFormData &
     SoknadEssentials & { inntektÅrstall: number } & { avslag: SelvstendigNæringsdrivendeAvslagStatus };
 
-const showHistoricIncomeQuestion = ({
+const showRegnskapsfører = ({
     søkerOmTaptInntektSomFrilanser,
     selvstendigInntektIPerioden,
     selvstendigErFrilanser,
@@ -69,7 +69,6 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
         isAnswered: ({ selvstendigYtelseFraNavDekkerHeleTapet }) =>
             yesOrNoIsAnswered(selvstendigYtelseFraNavDekkerHeleTapet),
     },
-
     [Field.selvstendigInntektIPerioden]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
         isIncluded: ({ avslag: { utebetalingFraNAVDekkerHeleInntektstapet } }) =>
@@ -79,40 +78,39 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
             yesOrNoIsAnswered(selvstendigYtelseFraNavDekkerHeleTapet),
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
-    [Field.selvstendigErFrilanser]: {
-        parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ søkerOmTaptInntektSomFrilanser }) => søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
-        isAnswered: ({ selvstendigErFrilanser }) => yesOrNoIsAnswered(selvstendigErFrilanser),
-    },
-    [Field.selvstendigHarHattInntektSomFrilanserIPerioden]: {
-        isIncluded: ({ selvstendigErFrilanser }) => selvstendigErFrilanser === YesOrNo.YES,
-        isAnswered: ({ selvstendigHarHattInntektSomFrilanserIPerioden }) =>
-            yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
-    },
-    [Field.selvstendigInntektSomFrilanserIPerioden]: {
-        isIncluded: ({ selvstendigErFrilanser, selvstendigHarHattInntektSomFrilanserIPerioden }) =>
-            selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES,
-        visibilityFilter: ({ selvstendigHarHattInntektSomFrilanserIPerioden }) =>
-            yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
-        isAnswered: ({ selvstendigInntektSomFrilanserIPerioden }) => hasValue(selvstendigInntektSomFrilanserIPerioden),
-    },
     [Field.selvstendigInntekt2019]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
-        visibilityFilter: showHistoricIncomeQuestion,
         isIncluded: ({ inntektÅrstall }) => inntektÅrstall === 2019,
         isAnswered: ({ selvstendigInntekt2019 }) => hasValue(selvstendigInntekt2019),
     },
     [Field.selvstendigInntekt2020]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
-        visibilityFilter: showHistoricIncomeQuestion,
         isIncluded: ({ inntektÅrstall }) => inntektÅrstall === 2020,
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
     },
+    [Field.selvstendigErFrilanser]: {
+        visibilityFilter: ({ inntektÅrstall, selvstendigInntekt2019, selvstendigInntekt2020 }) =>
+            inntektÅrstall === 2019 ? hasValue(selvstendigInntekt2019) : hasValue(selvstendigInntekt2020),
+        isIncluded: ({ søkerOmTaptInntektSomFrilanser }) => søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
+        isAnswered: ({ selvstendigErFrilanser }) => yesOrNoIsAnswered(selvstendigErFrilanser),
+    },
+    [Field.selvstendigHarHattInntektSomFrilanserIPerioden]: {
+        parentQuestion: Field.selvstendigErFrilanser,
+        isIncluded: ({ selvstendigErFrilanser }) => selvstendigErFrilanser === YesOrNo.YES,
+        isAnswered: ({ selvstendigHarHattInntektSomFrilanserIPerioden }) =>
+            yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
+    },
+    [Field.selvstendigInntektSomFrilanserIPerioden]: {
+        parentQuestion: Field.selvstendigErFrilanser,
+        isIncluded: ({ selvstendigErFrilanser, selvstendigHarHattInntektSomFrilanserIPerioden }) =>
+            selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES,
+        // visibilityFilter: ({ selvstendigHarHattInntektSomFrilanserIPerioden }) =>
+        //     yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
+        isAnswered: ({ selvstendigInntektSomFrilanserIPerioden }) => hasValue(selvstendigInntektSomFrilanserIPerioden),
+    },
     [Field.selvstendigHarRegnskapsfører]: {
-        parentQuestion: Field.selvstendigInntektIPerioden,
+        visibilityFilter: showRegnskapsfører,
         isIncluded: ({ avslag: { harIkkeHattHistoriskInntekt } }) => harIkkeHattHistoriskInntekt === false,
-        visibilityFilter: ({ selvstendigInntekt2020, selvstendigInntekt2019 }) =>
-            hasValue(selvstendigInntekt2020) || hasValue(selvstendigInntekt2019),
         isAnswered: ({ selvstendigHarRegnskapsfører }) => yesOrNoIsAnswered(selvstendigHarRegnskapsfører),
     },
     [Field.selvstendigRegnskapsførerNavn]: {
