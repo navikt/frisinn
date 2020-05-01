@@ -56,16 +56,16 @@ const Soknad = () => {
     }, [{ isTilgjengelig }]);
 
     useEffect(() => {
-        if (
-            essentials.isLoading === false &&
-            (essentials.userIsLoggedIn === true || (essentials.userIsLoggedIn === undefined && essentials.error))
-        ) {
+        if (essentials.isRedirectingToLogin) {
+            return;
+        }
+        if (essentials.isLoading === false) {
             setInitializing(false);
         }
     }, [essentialsIsLoading]);
     return (
         <LoadWrapper
-            isLoading={isLoading}
+            isLoading={isLoading || essentials.isRedirectingToLogin === true}
             contentRenderer={() => {
                 if (tilgjengelig.isTilgjengelig === false) {
                     return (
