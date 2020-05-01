@@ -23,9 +23,6 @@ const FrilanserSummary = ({
 }: Props) => (
     <>
         <Undertittel className="sectionTitle">Frilanser</Undertittel>
-        <SummaryBlock header={'Startet som frilanser etter 1. september 2019'}>
-            <JaNeiSvar harSvartJa={erNyetablert} />
-        </SummaryBlock>
         <SummaryBlock header={'Inntektstapet som frilanser startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
@@ -38,6 +35,9 @@ const FrilanserSummary = ({
                 <KronerSvar verdi={inntektIPeriodenSomSelvstendigNæringsdrivende} />
             </SummaryBlock>
         )}
+        <SummaryBlock header={'Startet som frilanser etter 1. september 2019'}>
+            <JaNeiSvar harSvartJa={erNyetablert} />
+        </SummaryBlock>
         <ApiQuestionsSummary spørsmålOgSvar={questions} />
     </>
 );

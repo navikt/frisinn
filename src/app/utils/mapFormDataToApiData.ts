@@ -14,6 +14,7 @@ import {
     hasValidHistoriskInntekt,
     selvstendigSkalOppgiInntekt2019,
     selvstendigSkalOppgiInntekt2020,
+    getHistoriskInntektÅrstall,
 } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
 import { isRunningInDevEnvironment } from './envUtils';
@@ -74,7 +75,21 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
+        const årstallHistoriskInntekt = getHistoriskInntektÅrstall(personligeForetak);
+
         const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
+            {
+                field: SoknadFormField.selvstendigHarHattInntektFraForetak,
+                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(årstallHistoriskInntekt),
+                svar: formatYesOrNoAnswer(selvstendigHarHattInntektFraForetak),
+            },
+            {
+                field: SoknadFormField.selvstendigHarTaptInntektPgaKorona,
+                spørsmål: soknadQuestionText.selvstendigHarTaptInntektPgaKorona(
+                    selvstendigBeregnetTilgjengeligSøknadsperiode
+                ),
+                svar: formatYesOrNoAnswer(selvstendigHarTaptInntektPgaKorona),
+            },
             {
                 field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
                 spørsmål: soknadQuestionText.selvstendigHarYtelseFraNavSomDekkerTapet,

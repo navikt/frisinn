@@ -3,20 +3,24 @@ import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
+import { Undertittel } from 'nav-frontend-typografi';
 import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
 import Guide from '../../components/guide/Guide';
 import StopMessage from '../../components/stop-message/StopMessage';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import * as apiUtils from '../../utils/apiUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { navigateToErrorPage, relocateToLoginPage } from '../../utils/navigationUtils';
+import { SentryEventName, triggerSentryError } from '../../utils/sentryUtils';
 import { validateBekrefterOpplysninger } from '../../validation/fieldValidations';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
@@ -24,9 +28,6 @@ import { StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
-import FormSection from '../../pages/intro-page/FormSection';
-import { triggerSentryError, SentryEventName } from '../../utils/sentryUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -87,30 +88,36 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                 anbefaler derfor at du tar et bilde, eller en skjermdump av siden.
                             </p>
                         </Guide>
-                        <FormSection title="Søker">
-                            <SummaryBlock header="Søker">
-                                <Box>{formatName(person.fornavn, person.etternavn, person.mellomnavn)}</Box>
-                                {person.fødselsnummer}
-                            </SummaryBlock>
-                        </FormSection>
-                        <Box>
-                            <SummaryBlock header="Søker som selvstendig næringsdrivende">
-                                <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
-                            </SummaryBlock>
-                            <SummaryBlock header="Søker som frilanser">
-                                <JaNeiSvar harSvartJa={apiValues.frilanser !== undefined} />
-                            </SummaryBlock>
+                        <Box margin="xxl">
+                            <ResponsivePanel border={true}>
+                                <Undertittel className="sectionTitle">Søker</Undertittel>
+                                <Box margin="l">
+                                    <strong>{formatName(person.fornavn, person.etternavn, person.mellomnavn)}</strong>
+                                    <div>Fødselsnummer: {person.fødselsnummer}</div>
+                                    <div>Kontonummer: {person.kontonummer}</div>
+                                </Box>
+                                <Box>
+                                    <SummaryBlock header="Søker som selvstendig næringsdrivende">
+                                        <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
+                                    </SummaryBlock>
+                                    <SummaryBlock header="Søker som frilanser">
+                                        <JaNeiSvar harSvartJa={apiValues.frilanser !== undefined} />
+                                    </SummaryBlock>
+                                </Box>
+                                {apiValues.selvstendigNæringsdrivende && (
+                                    <Box margin="xl">
+                                        <SelvstendigNæringsdrivendeSummary
+                                            apiData={apiValues.selvstendigNæringsdrivende}
+                                        />
+                                    </Box>
+                                )}
+                                {apiValues.frilanser && (
+                                    <Box margin={'xxl'}>
+                                        <FrilanserSummary apiData={apiValues.frilanser} />
+                                    </Box>
+                                )}
+                            </ResponsivePanel>
                         </Box>
-                        {apiValues.selvstendigNæringsdrivende && (
-                            <Box margin="xl">
-                                <SelvstendigNæringsdrivendeSummary apiData={apiValues.selvstendigNæringsdrivende} />
-                            </Box>
-                        )}
-                        {apiValues.frilanser && (
-                            <Box margin={'xxl'}>
-                                <FrilanserSummary apiData={apiValues.frilanser} />
-                            </Box>
-                        )}
                     </Box>
                     <Box margin="l">
                         <SoknadFormComponents.ConfirmationCheckbox

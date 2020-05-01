@@ -28,7 +28,7 @@ const SelvstendigNæringsdrivendeSummary = ({
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
         <SummaryBlock header={'Periode det søkes for'}>{info.period}</SummaryBlock>
-        <SummaryBlock header={`Inntekt fra selskap i perioden det søkes for`}>
+        <SummaryBlock header={`Inntekt fra selskap i perioden ${info.period}`}>
             <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>
         {inntektIPeriodenSomFrilanser !== undefined && (

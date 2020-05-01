@@ -18,6 +18,10 @@ export const selvstendigSkalOppgiInntekt2020 = (personligeForetak: PersonligeFor
     return moment(tidligsteRegistreringsdato).isSameOrAfter(new Date(2020, 0, 1), 'day');
 };
 
+export const getHistoriskInntektÅrstall = (personligeForetak: PersonligeForetak): number => {
+    return selvstendigSkalOppgiInntekt2019(personligeForetak) === true ? 2019 : 2020;
+};
+
 export const hasValidHistoriskInntekt = (
     { selvstendigInntekt2019, selvstendigInntekt2020 }: Partial<SelvstendigFormData>,
     inntektÅrstall: number
