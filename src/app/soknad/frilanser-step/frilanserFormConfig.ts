@@ -27,23 +27,19 @@ export type FrilanserFormConfigPayload = Partial<FrilanserFormData> &
     SoknadEssentials & { avslag: FrilanserAvslagStatus };
 
 const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadFormField> = {
-    [Field.frilanserHarTaptInntektPgaKorona]: {
-        isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
-    },
     [Field.frilanserErNyetablert]: {
-        isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
     },
+    [Field.frilanserHarTaptInntektPgaKorona]: {
+        isIncluded: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
+        isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
+    },
     [Field.frilanserInntektstapStartetDato]: {
-        visibilityFilter: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
         isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
-        visibilityFilter: ({ frilanserInntektstapStartetDato, frilanserErNyetablert, avslag }) =>
-            avslag.søkerIkkeForGyldigTidsrom !== true &&
-            hasValue(frilanserInntektstapStartetDato) &&
-            yesOrNoIsAnswered(frilanserErNyetablert),
+        isIncluded: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
