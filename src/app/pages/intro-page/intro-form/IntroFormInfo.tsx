@@ -95,9 +95,9 @@ const ikkeFrilanserOgIkkeRettSomSelvstendig = () => (
 const selvstendigIkkeTattUtInntekt = () => (
     <>
         <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
-        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt fra
-        selskapet. Hvis selskapet er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet
-        ditt er registrert i 2020, må du ha tatt ut inntekt i 2020.
+        For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
+        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet er registrert i 2020, må
+        du ha tatt ut inntekt før 1. mars 2020.
     </>
 );
 
@@ -110,7 +110,7 @@ const selvstendigHvaMenesMedInntekt = () => (
     <ExpandableInfo title="Hva menes med dette?">
         For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
         er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet er registrert i 2020, må
-        du ha tatt ut inntekt i løpet av 2020.
+        du ha tatt ut inntekt før 1. mars 2020.
     </ExpandableInfo>
 );
 
