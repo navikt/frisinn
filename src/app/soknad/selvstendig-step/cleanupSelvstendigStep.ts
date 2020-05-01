@@ -1,7 +1,11 @@
 import { SoknadFormData } from '../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { SelvstendigNæringsdrivendeAvslagStatus } from './selvstendigAvslag';
 
-export const cleanupSelvstendigStep = (values: SoknadFormData): SoknadFormData => {
+export const cleanupSelvstendigStep = (
+    values: SoknadFormData,
+    avslag: SelvstendigNæringsdrivendeAvslagStatus
+): SoknadFormData => {
     const v: SoknadFormData = {
         ...values,
     };
@@ -11,26 +15,25 @@ export const cleanupSelvstendigStep = (values: SoknadFormData): SoknadFormData =
     if (v.selvstendigHarTaptInntektPgaKorona !== YesOrNo.YES) {
         v.selvstendigInntektstapStartetDato = undefined as any;
     }
-    if (
-        v.selvstendigInntektstapStartetDato === undefined ||
-        v.selvstendigBeregnetTilgjengeligSøknadsperiode === undefined
-    ) {
+    if (v.selvstendigInntektstapStartetDato === undefined || avslag.søkerIkkeForGyldigTidsrom) {
+        v.selvstendigInntektIPerioden = undefined as any;
+    }
+    if (v.selvstendigInntektIPerioden === undefined) {
+        v.selvstendigInntekt2019 = undefined as any;
+        v.selvstendigInntekt2020 = undefined as any;
+    }
+    if (v.selvstendigInntekt2019 === undefined && v.selvstendigInntekt2020 === undefined) {
         v.selvstendigHarYtelseFraNavSomDekkerTapet = YesOrNo.UNANSWERED;
     }
     if (v.selvstendigHarYtelseFraNavSomDekkerTapet !== YesOrNo.YES) {
         v.selvstendigYtelseFraNavDekkerHeleTapet = YesOrNo.UNANSWERED;
     }
-    if (v.selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES) {
-        v.selvstendigInntektIPerioden = undefined as any;
-    }
-    if (v.selvstendigInntektIPerioden === undefined) {
+    if (avslag.utebetalingFraNAVDekkerHeleInntektstapet) {
         v.selvstendigErFrilanser = YesOrNo.UNANSWERED;
-        v.selvstendigInntekt2019 = undefined as any;
-        v.selvstendigInntekt2020 = undefined as any;
-        v.selvstendigHarHattInntektSomFrilanserIPerioden = YesOrNo.UNANSWERED;
         v.selvstendigHarRegnskapsfører = YesOrNo.UNANSWERED;
     }
-    if (v.selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.NO) {
+    if (v.selvstendigErFrilanser !== YesOrNo.YES) {
+        v.selvstendigHarHattInntektSomFrilanserIPerioden = YesOrNo.UNANSWERED;
         v.selvstendigInntektSomFrilanserIPerioden = undefined;
     }
     if (v.selvstendigHarRegnskapsfører !== YesOrNo.YES) {

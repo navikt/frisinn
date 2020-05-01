@@ -82,7 +82,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                 const v = { ...values };
                 v.frilanserSoknadIsOk = frilanserSoknadIsOk;
                 v.frilanserStopReason = frilanserSoknadIsOk ? undefined : getStopReason(avslag);
-                return cleanupFrilanserStep(v);
+                return cleanupFrilanserStep(v, avslag);
             }}
             showSubmitButton={
                 !isLoading &&
@@ -158,6 +158,17 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                             }
                             return (
                                 <>
+                                    <SoknadQuestion name={SoknadFormField.frilanserInntektIPerioden}>
+                                        <SoknadFormComponents.Input
+                                            name={SoknadFormField.frilanserInntektIPerioden}
+                                            type="number"
+                                            bredde="S"
+                                            description={<FrilanserInfo.hvordanBeregneInntekt />}
+                                            label={soknadQuestionText.frilanserInntektIPerioden(availableDateRange)}
+                                            validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                        />
+                                    </SoknadQuestion>
+
                                     {isVisible(SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet) && (
                                         <FormSection title="Andre utbetalinger fra NAV">
                                             <SoknadQuestion
@@ -172,27 +183,13 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                         </FormSection>
                                     )}
 
-                                    {isVisible(SoknadFormField.frilanserInntektIPerioden) && (
-                                        <FormSection title={`Inntekt som frilanser i perioden du søker for`}>
-                                            <SoknadQuestion name={SoknadFormField.frilanserInntektIPerioden}>
-                                                <SoknadFormComponents.Input
-                                                    name={SoknadFormField.frilanserInntektIPerioden}
-                                                    type="number"
-                                                    bredde="S"
-                                                    description={<FrilanserInfo.hvordanBeregneInntekt />}
-                                                    label={soknadQuestionText.frilanserInntektIPerioden(
-                                                        availableDateRange
-                                                    )}
-                                                    validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
-                                                />
-                                            </SoknadQuestion>
-                                        </FormSection>
-                                    )}
-
                                     {isVisible(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden) && (
                                         <FormSection title="Selvstendig næringsdrivende">
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}
+                                                legend={soknadQuestionText.frilanserHarHattInntektSomSelvstendigIPerioden(
+                                                    availableDateRange
+                                                )}
                                             />
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}>
@@ -200,7 +197,9 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     name={SoknadFormField.frilanserInntektSomSelvstendigIPerioden}
                                                     type="number"
                                                     bredde="S"
-                                                    label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden}
+                                                    label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden(
+                                                        availableDateRange
+                                                    )}
                                                     validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}
                                                 />
                                             </SoknadQuestion>
