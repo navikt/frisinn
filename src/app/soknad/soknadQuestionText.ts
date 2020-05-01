@@ -47,7 +47,7 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken inntekt har du tatt ut i perioden ${formatDateRange(dateRange)}?`,
     selvstendigInntekt2019: 'Hvilken inntekt har du tatt ut i 2019?',
-    selvstendigInntekt2020: `Hvilken inntekt har du tatt ut i 2020?`,
+    selvstendigInntekt2020: `Hvilken inntekt har du tatt ut før 1. mars 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',
     selvstendigHarHattInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
         `Har du hatt inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
