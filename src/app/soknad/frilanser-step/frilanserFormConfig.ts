@@ -38,7 +38,12 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
         isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
+    [Field.frilanserInntektIPerioden]: {
+        isIncluded: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
+        isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
+    },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
+        parentQuestion: Field.frilanserInntektIPerioden,
         isIncluded: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
@@ -49,17 +54,10 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
         isAnswered: ({ frilanserYtelseFraNavDekkerHeleTapet }) =>
             yesOrNoIsAnswered(frilanserYtelseFraNavDekkerHeleTapet),
     },
-    [Field.frilanserInntektIPerioden]: {
-        isIncluded: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>
-            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
-            frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.NO,
+    [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {
         visibilityFilter: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>
             frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
-            yesOrNoIsAnswered(frilanserYtelseFraNavDekkerHeleTapet),
-        isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
-    },
-    [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {
-        visibilityFilter: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
+            frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.NO,
         isIncluded: ({
             personligeForetak,
             søkerOmTaptInntektSomSelvstendigNæringsdrivende,
