@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
 import useSoknadEssentials from '../hooks/useSoknadEssentials';
@@ -18,6 +18,7 @@ import { usePrevious } from '../hooks/usePrevious';
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
 const Soknad = () => {
+    const [initializing, setInitializing] = useState<boolean>(true);
     const tilgjengelig = useTilgjengelig();
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
@@ -39,6 +40,7 @@ const Soknad = () => {
     const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
     const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
     const isLoading =
+        initializing ||
         (!soknadEssentials && essentialsIsDone === false) ||
         essentials.isLoading ||
         alderCheck.isLoading ||
@@ -55,6 +57,11 @@ const Soknad = () => {
         }
     }, [{ isTilgjengelig }]);
 
+    useEffect(() => {
+        if (essentials.error && essentials.notLoggedIn === false) {
+            setInitializing(false);
+        }
+    }, [essentialsIsDone]);
     return (
         <LoadWrapper
             isLoading={isLoading}
