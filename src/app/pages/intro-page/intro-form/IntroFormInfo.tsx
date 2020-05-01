@@ -149,41 +149,16 @@ const harAlleredeSøkt = () => (
 const fårDekketTapetSomSelvstendigForklaring = () => (
     <ExpandableInfo title="Hva vil dette si?">
         Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
-        ikke søke om kompensasjon. Utbetalingene fra NAV kan være én av disse:
-        <ul className="infoList">
-            <li>Omsorgspenger</li>
-            <li>Sykepenger</li>
-            <li>Foreldrepenger</li>
-            <li>Svangerskapspenger</li>
-            <li>Pleiepenger</li>
-            <li>Opplæringspenger</li>
-            <li>Arbeidsavklaringspenger</li>
-        </ul>
-        <p>
-            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
-            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
-        </p>
+        ikke søke. Hvis du har en utbetaling fra NAV som bare delvis dekker inntektstapet ditt, kan du søke om
+        kompensasjon for den delen du ikke får dekket.
     </ExpandableInfo>
 );
 
 const fårDekketTapetSomFrilanserForklaring = () => (
     <ExpandableInfo title="Hva vil dette si?">
-        Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke om
-        kompensasjon. Utbetalingene fra NAV kan være én av disse:
-        <ul className="infoList">
-            <li>Dagpenger</li>
-            <li>Omsorgspenger</li>
-            <li>Sykepenger</li>
-            <li>Foreldrepenger</li>
-            <li>Svangerskapspenger</li>
-            <li>Pleiepenger</li>
-            <li>Opplæringspenger</li>
-            <li>Arbeidsavklaringspenger</li>
-        </ul>
-        <p>
-            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
-            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
-        </p>
+        Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke. Hvis du
+        har en utbetaling fra NAV som bare delvis dekker inntektstapet ditt, kan du søke om kompensasjon for den delen
+        du ikke får dekket.
     </ExpandableInfo>
 );
 
