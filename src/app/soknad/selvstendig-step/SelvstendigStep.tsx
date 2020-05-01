@@ -28,7 +28,7 @@ import {
     SelvstendigNæringdsrivendeAvslagÅrsak,
     SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
-import { SelvstendigFormPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
+import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
 
 const txt = soknadQuestionText;
 
@@ -60,10 +60,13 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const isLoading = availableDateRangeIsLoading;
 
     const inntektÅrstall = selvstendigSkalOppgiInntekt2019(personligeForetak) ? 2019 : 2020;
-    const payload: SelvstendigFormPayload = {
+    const avslag = kontrollerSelvstendigSvar({ ...values, inntektÅrstall });
+
+    const payload: SelvstendigFormConfigPayload = {
         ...values,
         ...soknadEssentials,
         inntektÅrstall,
+        avslag,
     };
     const visibility = SelvstendigFormQuestions.getVisbility(payload);
     const { isVisible, areAllQuestionsAnswered } = visibility;
@@ -76,8 +79,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
-
-    const avslag = kontrollerSelvstendigSvar(payload);
 
     useEffect(() => {
         setFieldValue(

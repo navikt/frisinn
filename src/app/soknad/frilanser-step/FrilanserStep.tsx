@@ -46,10 +46,14 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
     );
 
     const isLoading = availableDateRangeIsLoading;
+    const avslag = kontrollerFrilanserSvar(values);
+
     const payload = {
         ...values,
         ...soknadEssentials,
+        avslag,
     };
+
     const visibility = FrilanserFormQuestions.getVisbility(payload);
 
     const { isVisible, areAllQuestionsAnswered } = visibility;
@@ -68,8 +72,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         );
         setFieldValue(SoknadFormField.frilanserSoknadIsOk, frilanserSoknadIsOk);
     }, [availableDateRange, frilanserSoknadIsOk]);
-
-    const avslag = kontrollerFrilanserSvar(payload);
 
     return (
         <SoknadStep

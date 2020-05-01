@@ -8,7 +8,7 @@ interface Props {
 
 const ForetakList = ({ foretak }: Props) => (
     <div>
-        <ul>
+        <ul className="infoList">
             {foretak.map((f) => {
                 return (
                     <li key={f.organisasjonsnummer}>

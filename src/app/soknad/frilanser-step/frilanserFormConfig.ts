@@ -4,6 +4,7 @@ import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
+import { FrilanserAvslagStatus } from './frilanserAvslag';
 
 const Field = SoknadFormField;
 
@@ -22,9 +23,10 @@ type FrilanserFormData = Pick<
     | SoknadFormField.erSelvstendigNæringsdrivende
 >;
 
-export type FrilanserFormPayload = Partial<FrilanserFormData> & SoknadEssentials;
+export type FrilanserFormConfigPayload = Partial<FrilanserFormData> &
+    SoknadEssentials & { avslag: FrilanserAvslagStatus };
 
-const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField> = {
+const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadFormField> = {
     [Field.frilanserHarTaptInntektPgaKorona]: {
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
@@ -38,8 +40,10 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField>
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
-        visibilityFilter: ({ frilanserInntektstapStartetDato, frilanserErNyetablert }) =>
-            hasValue(frilanserInntektstapStartetDato) && yesOrNoIsAnswered(frilanserErNyetablert),
+        visibilityFilter: ({ frilanserInntektstapStartetDato, frilanserErNyetablert, avslag }) =>
+            avslag.søkerIkkeForGyldigTidsrom !== true &&
+            hasValue(frilanserInntektstapStartetDato) &&
+            yesOrNoIsAnswered(frilanserErNyetablert),
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
@@ -80,4 +84,4 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormPayload, SoknadFormField>
     },
 };
 
-export const FrilanserFormQuestions = Questions<FrilanserFormPayload, SoknadFormField>(FrilanserFormConfig);
+export const FrilanserFormQuestions = Questions<FrilanserFormConfigPayload, SoknadFormField>(FrilanserFormConfig);

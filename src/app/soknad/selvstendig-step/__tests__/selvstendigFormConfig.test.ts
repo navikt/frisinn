@@ -2,7 +2,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { SoknadEssentials, Person } from '../../../types/SoknadEssentials';
 import { SoknadFormField, initialSoknadFormData } from '../../../types/SoknadFormData';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
-import { SelvstendigFormPayload, SelvstendigFormQuestions } from '../selvstendigFormConfig';
+import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from '../selvstendigFormConfig';
 
 jest.mock('../../../utils/envUtils.ts', () => ({
     getEnvironmentVariable: () => 'whoa',
@@ -27,7 +27,7 @@ const appEssentials: SoknadEssentials = {
         tidligsteRegistreringsdato: apiStringDateToDate('2001-04-30'),
     },
 };
-const emptyPayload: Partial<SelvstendigFormPayload> = {
+const emptyPayload: Partial<SelvstendigFormConfigPayload> = {
     ...initialSoknadFormData,
     selvstendigHarHattInntektFraForetak: YesOrNo.UNANSWERED,
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
@@ -37,12 +37,12 @@ const emptyPayload: Partial<SelvstendigFormPayload> = {
 };
 
 describe('selvstendigFormConfig', () => {
-    let values: SelvstendigFormPayload;
+    let values: SelvstendigFormConfigPayload;
     beforeEach(() => {
         values = {
             ...emptyPayload,
             søkerOmTaptInntektSomFrilanser: YesOrNo.YES,
-        } as SelvstendigFormPayload;
+        } as SelvstendigFormConfigPayload;
     });
     it('Har hatt inntekt skal være synlig', () => {
         const { isVisible } = SelvstendigFormQuestions.getVisbility(values);
