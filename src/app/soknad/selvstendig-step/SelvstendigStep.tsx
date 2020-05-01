@@ -176,7 +176,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         </FormSection>
                                     )}
                                     {isVisible(SoknadFormField.selvstendigInntektIPerioden) && (
-                                        <FormSection title={`Inntekt du har tatt ut i perioden`}>
+                                        <FormSection
+                                            title={`Inntekt du har tatt ut fra selskap i perioden du søker for`}>
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigInntektIPerioden}
                                                 description={<SelvstendigInfo.andreUtbetalingerFraNAV />}>
@@ -223,7 +224,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                                     avslag.harIkkeHattHistoriskInntekt
                                                 }
                                                 stopMessage={
-                                                    <SelvstendigInfo.StoppIngenHistoriskInntekt årstall={2019} />
+                                                    <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2019} />
                                                 }>
                                                 <FormComponents.Input
                                                     name={SoknadFormField.selvstendigInntekt2019}
@@ -251,7 +252,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                                     avslag.harIkkeHattHistoriskInntekt
                                                 }
                                                 stopMessage={
-                                                    <SelvstendigInfo.StoppIngenHistoriskInntekt årstall={2020} />
+                                                    <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2020} />
                                                 }>
                                                 <FormComponents.Input
                                                     name={SoknadFormField.selvstendigInntekt2020}

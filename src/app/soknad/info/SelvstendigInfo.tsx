@@ -72,12 +72,19 @@ const StoppIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: 
     );
 };
 
-const StoppIngenHistoriskInntekt = ({ årstall }: { årstall: number }) => (
-    <>
-        For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt i{' '}
-        {årstall}.
-    </>
-);
+const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
+    return inntektÅrstall === 2020 ? (
+        <>
+            Du kan ikke søke om kompensasjon for tapt inntekt, uten at du har tatt ut inntekt fra selskapet før 1. mars
+            2020.
+        </>
+    ) : (
+        <>
+            For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt
+            i 2019
+        </>
+    );
+};
 
 const infoInntektForetak = () => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
@@ -144,7 +151,7 @@ const andreUtbetalingerFraNAV = () => (
     </>
 );
 
-const infoInntektFlereSelskaper = () => <>Du skal legge inn samlet beløp fra alle dine selskaper</>;
+const infoInntektFlereSelskaper = () => <>Du skal oppgi inntektene samlet for alle selskapene.</>;
 
 const getMessageForAvslag = (
     årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
@@ -161,7 +168,7 @@ const getMessageForAvslag = (
         case SelvstendigNæringdsrivendeAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
             return <StoppYtelseDekkerHeleTapet />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt:
-            return <StoppIngenHistoriskInntekt årstall={inntektÅrstall} />;
+            return <StoppIngenHistoriskInntekt inntektÅrstall={inntektÅrstall} />;
     }
 };
 
