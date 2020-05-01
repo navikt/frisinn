@@ -12,20 +12,20 @@ export type SelvstendigFormConfigPayload = SelvstendigFormData &
     SoknadEssentials & { inntektÅrstall: number } & { avslag: SelvstendigNæringsdrivendeAvslagStatus };
 
 const showRegnskapsfører = ({
-    søkerOmTaptInntektSomFrilanser,
-    selvstendigInntektIPerioden,
     selvstendigErFrilanser,
     selvstendigHarHattInntektSomFrilanserIPerioden,
     selvstendigInntektSomFrilanserIPerioden,
+    selvstendigYtelseFraNavDekkerHeleTapet,
+    selvstendigHarYtelseFraNavSomDekkerTapet,
 }: SelvstendigFormConfigPayload): boolean => {
-    if (søkerOmTaptInntektSomFrilanser === YesOrNo.YES) {
-        return hasValue(selvstendigInntektIPerioden);
-    }
     if (selvstendigErFrilanser === YesOrNo.YES) {
         if (selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES) {
             return hasValue(selvstendigInntektSomFrilanserIPerioden);
         }
         return yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden);
+    }
+    if (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
+        return selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.NO;
     }
     if (selvstendigErFrilanser === YesOrNo.NO) {
         return true;
@@ -104,13 +104,12 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
         parentQuestion: Field.selvstendigErFrilanser,
         isIncluded: ({ selvstendigErFrilanser, selvstendigHarHattInntektSomFrilanserIPerioden }) =>
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES,
-        // visibilityFilter: ({ selvstendigHarHattInntektSomFrilanserIPerioden }) =>
-        //     yesOrNoIsAnswered(selvstendigHarHattInntektSomFrilanserIPerioden),
         isAnswered: ({ selvstendigInntektSomFrilanserIPerioden }) => hasValue(selvstendigInntektSomFrilanserIPerioden),
     },
     [Field.selvstendigHarRegnskapsfører]: {
         visibilityFilter: showRegnskapsfører,
-        isIncluded: ({ avslag: { harIkkeHattHistoriskInntekt } }) => harIkkeHattHistoriskInntekt === false,
+        isIncluded: ({ avslag: { harIkkeHattHistoriskInntekt, utebetalingFraNAVDekkerHeleInntektstapet } }) =>
+            harIkkeHattHistoriskInntekt === false && utebetalingFraNAVDekkerHeleInntektstapet === false,
         isAnswered: ({ selvstendigHarRegnskapsfører }) => yesOrNoIsAnswered(selvstendigHarRegnskapsfører),
     },
     [Field.selvstendigRegnskapsførerNavn]: {
