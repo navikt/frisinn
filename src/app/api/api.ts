@@ -17,7 +17,7 @@ axios.interceptors.response.use(
     (error: AxiosError) => {
         if (isForbidden(error) || isUnauthorized(error)) {
             relocateToLoginPage();
-            return;
+            return Promise.reject(error);
         }
         if (isRunningInDevEnvironment()) {
             triggerSentryError(SentryEventName.apiRequestFailed, error);

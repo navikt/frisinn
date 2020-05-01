@@ -36,13 +36,11 @@ const Soknad = () => {
             navigateToSoknadFrontpage(history);
         }
     }
-    const { soknadEssentials, isDone: essentialsIsDone } = essentials;
+    const { soknadEssentials, isLoading: essentialsIsLoading } = essentials;
     const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
     const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
     const isLoading =
         initializing ||
-        (!soknadEssentials && essentialsIsDone === false) ||
-        essentials.isLoading ||
         alderCheck.isLoading ||
         tempStorage.isLoading ||
         maksEnSoknadPerPeriodeCheck.isLoading ||
@@ -50,18 +48,21 @@ const Soknad = () => {
 
     useEffect(() => {
         if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
-            tempStorage.fetch();
             essentials.fetch();
+            tempStorage.fetch();
             alderCheck.check();
             maksEnSoknadPerPeriodeCheck.check();
         }
     }, [{ isTilgjengelig }]);
 
     useEffect(() => {
-        if (essentials.isDone || (essentials.error !== undefined && essentials.notLoggedIn === false)) {
+        if (
+            essentials.isLoading === false &&
+            (essentials.userIsLoggedIn === true || (essentials.userIsLoggedIn === undefined && essentials.error))
+        ) {
             setInitializing(false);
         }
-    }, [essentialsIsDone]);
+    }, [essentialsIsLoading]);
     return (
         <LoadWrapper
             isLoading={isLoading}
