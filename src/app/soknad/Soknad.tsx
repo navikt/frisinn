@@ -58,7 +58,7 @@ const Soknad = () => {
     }, [{ isTilgjengelig }]);
 
     useEffect(() => {
-        if (essentials.error && essentials.notLoggedIn === false) {
+        if (essentials.isDone || (essentials.error !== undefined && essentials.notLoggedIn === false)) {
             setInitializing(false);
         }
     }, [essentialsIsDone]);
