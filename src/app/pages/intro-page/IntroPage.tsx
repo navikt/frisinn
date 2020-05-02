@@ -4,7 +4,6 @@ import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
-import DateRangeView from '../../components/date-range-view/DateRangeView';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
 import {
@@ -19,6 +18,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import IntroCheckList from './IntroCheckList';
 import { useIntl } from 'react-intl';
 import useTilgjengelig from '../../hooks/useTilgjengelig';
+import Lenke from 'nav-frontend-lenker';
 
 const bem = bemUtils('introPage');
 
@@ -75,7 +75,7 @@ const IntroPage: React.StatelessComponent = () => {
                                         </Undertittel>
                                         <Normaltekst tag="div">
                                             <p>
-                                                Dette er en <strong>ny og midlertidig ordning</strong> som er opprettet
+                                                Dette er en <strong>ny og midlertidig</strong> ordning som er opprettet
                                                 som en følge av koronasituasjonen. Den er for deg som er selvstendig
                                                 næringsdrivende og/eller frilanser som helt eller delvis har tapt
                                                 inntekt på grunn av koronautbruddet.
@@ -86,14 +86,25 @@ const IntroPage: React.StatelessComponent = () => {
                                                 ansvar (DA). Selskapet må være registrert før 1. mars 2020.
                                             </p>
                                             <p>
-                                                Ordningen trådte i kraft fra 14. mars 2020. De første 16 dagene av
-                                                inntektstapet må du dekke selv.
+                                                Er du frilanser må du sjekke om oppdragene dine er registrert som
+                                                “Frilanser, oppdragstaker, honorar”. Dette sjekker du på skatteetatens
+                                                sider:{' '}
+                                                <Lenke
+                                                    href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold"
+                                                    target="_blank">
+                                                    www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/
+                                                </Lenke>{' '}
                                             </p>
                                             <p>
-                                                Perioden du kan søke om nå, er{' '}
-                                                <DateRangeView dateRange={soknadsperiode.soknadsperiode} />.
-                                                Kompensasjon for inntektstap i mai, kan du søke om i begynnelsen av
-                                                juni.
+                                                Ordningen trådte i kraft 14. Mars 2020. I søknaden oppgir du fra når
+                                                inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
+                                                inntektstap. Det betyr at om inntektstapet ditt startet 14. mars kan du
+                                                søke om kompensasjon fra 28. Mars 2020.
+                                            </p>
+                                            <p>
+                                                Du må søke etterskuddsvis måned for måned. Hvis du har inntektstap i
+                                                mai, kan du tidligst søke kompensasjon for denne måneden i begynnelsen
+                                                av juni.
                                             </p>
                                         </Normaltekst>
                                     </InformationPoster>

@@ -1,11 +1,12 @@
 import React from 'react';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
 import { DateRange } from '../../utils/dateUtils';
 import { FrilanserAvslagÅrsak } from '../frilanser-step/frilanserAvslag';
+import DateRangeView from '../../components/date-range-view/DateRangeView';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 const StoppForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
     const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
@@ -34,65 +35,27 @@ const StoppAlderSjekkFeiler = () => (
     </>
 );
 
-const hvordanBeregneInntekt = () => (
+const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
-        <Element>Inntekter som skal tas med:</Element>
-        <ul>
-            <li>Inntektene du har på ditt arbeid som frilanser</li>
-            <li>Inntekter som er utbetalinger fra NAV som frilanser</li>
-        </ul>
-        <Element>Inntekter som IKKE skal tas med:</Element>
-        <ul>
-            <li>Eventuell uføretrygd</li>
-            <li>Eventuell alderspensjon</li>
-            <li>Eventuell inntekt som selvstendig næringsdrivende</li>
-        </ul>
-    </ExpandableInfo>
-);
-const infoInntektForetak = () => (
-    <>
-        <Element>Inntekter som skal tas med:</Element>
-        <ul>
-            <li>Inntekter du får for oppdrag som frilanser</li>
-            <li>
-                <p>Utbetalinger fra NAV som kompenserer inntekten din som frilanser.</p>
-                <ul>
-                    Hvilke utbetalinger fra NAV gjelder dette?
-                    <li>Dagpenger</li>
-                    <li>Omsorgspenger</li>
-                    <li>Sykepenger</li>
-                    <li>Foreldrepenger</li>
-                    <li>Svangerskapspenger</li>
-                    <li>Pleiepenger</li>
-                    <li>Opplæringspenger</li>
-                    <li>Arbeidsavklaringspenger</li>
-                </ul>
-            </li>
-        </ul>
-
-        <Element>Inntekter som ikke skal tas med:</Element>
-        <ul>
-            <li>Inntekter som selvstendig næringsdrivende</li>
-            <li>Inntekter som arbeidstaker</li>
-            <li>Alderspensjon</li>
-            <li>Uføretrygd </li>
-            <li>Sosial stønad</li>
-        </ul>
-
+        Inntekten du skal opplyse om er personinntekt for oppdrag, som du mottar for perioden{' '}
+        <strong>
+            <DateRangeView dateRange={periode} />
+        </strong>
+        . Personinntekt betyr inntekter minus utgifter i denne perioden.
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
-            <ul>
-                <li>Inntektene du har på dine foretak. Dette er omsetning - utgifter</li>
-                <li>Inntekter som er utbetalinger fra NAV som selvstendig næringsdrivende</li>
+            <ul className="infoList">
+                <li>Inntekter du mottar for oppdrag hos en arbeidsgiver </li>
+                <li>Eventuelle utbetalinger fra NAV som du får som frilanser </li>
             </ul>
-            <Element>Inntekter som IKKE skal tas med:</Element>
-            <ul>
-                <li>Eventuell uføretrygd</li>
-                <li>Eventuell alderspensjon</li>
-                <li>Eventuell inntekt som frilanser</li>
+            <Element>Inntekter som ikke skal tas med:</Element>
+            <ul className="infoList">
+                <li>Uføretrygd </li>
+                <li>Alderspensjon </li>
+                <li>Inntekt som selvstendig næringsdrivende </li>
             </ul>
         </Box>
-    </>
+    </ExpandableInfo>
 );
 
 const StoppYtelseDekkerHeleTapet = () => (
@@ -150,11 +113,10 @@ const infoErNyetablert = () => (
 );
 
 const FrilanserInfo = {
-    infoInntektForetak,
     StoppForSentInntektstap,
     StoppIkkeTapPgaKorona,
     StoppAlderSjekkFeiler,
-    hvordanBeregneInntekt,
+    infoHvordanBeregneInntekt,
     StoppYtelseDekkerHeleTapet,
     andreUtbetalingerFraNAV,
     koronaTaptInntekt,

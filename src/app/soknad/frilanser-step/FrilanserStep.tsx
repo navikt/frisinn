@@ -163,7 +163,9 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             name={SoknadFormField.frilanserInntektIPerioden}
                                             type="number"
                                             bredde="S"
-                                            description={<FrilanserInfo.hvordanBeregneInntekt />}
+                                            description={
+                                                <FrilanserInfo.infoHvordanBeregneInntekt periode={availableDateRange} />
+                                            }
                                             label={soknadQuestionText.frilanserInntektIPerioden(availableDateRange)}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />

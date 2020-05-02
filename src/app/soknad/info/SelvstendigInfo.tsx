@@ -8,6 +8,7 @@ import DateView from '../../components/date-view/DateView';
 import moment from 'moment';
 import { DateRange } from '../../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendig-step/selvstendigAvslag';
+import DateRangeView from '../../components/date-range-view/DateRangeView';
 
 const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => {
     if (antallForetak === 1) {
@@ -86,20 +87,24 @@ const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall: numb
     );
 };
 
-const infoInntektForetak = () => (
+const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
-        Hvis du har flere selskap, skal du legge inn samlet beløp
+        Inntekten du skal opplyse om er personinntekt for næring, og som gjelder for perioden{' '}
+        <strong>
+            <DateRangeView dateRange={periode} />
+        </strong>
+        . Personinntekt betyr inntekter minus utgifter i denne perioden.
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
-            <ul>
-                <li>Inntektene du har tatt ut av selskap</li>
-                <li>Inntekter som er utbetalinger fra NAV som selvstendig næringsdrivende</li>
+            <ul className="infoList">
+                <li>Inntekter du har tatt ut av selskapet</li>
+                <li>Eventuelle utbetalinger fra NAV som du får som selvstendig næringsdrivende</li>
             </ul>
-            <Element>Inntekter som IKKE skal tas med:</Element>
-            <ul>
-                <li>Eventuell uføretrygd</li>
-                <li>Eventuell alderspensjon</li>
-                <li>Eventuell inntekt som frilanser</li>
+            <Element>Inntekter som ikke skal tas med:</Element>
+            <ul className="infoList">
+                <li>Uføretrygd</li>
+                <li>Alderspensjon</li>
+                <li>Frilansinntekt</li>
             </ul>
         </Box>
     </ExpandableInfo>
@@ -179,7 +184,7 @@ const SelvstendigInfo = {
     StoppYtelseDekkerHeleTapet,
     StoppIkkeHattInntektFraForetak,
     StoppIngenHistoriskInntekt,
-    infoInntektForetak,
+    infoHvordanBeregneInntekt,
     infoInntektÅrstall,
     andreUtbetalingerFraNAV,
     infoInntektFlereSelskaper,

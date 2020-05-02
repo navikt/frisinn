@@ -169,7 +169,11 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             label={txt.selvstendigInntektIPerioden(availableDateRange)}
                                             type="number"
                                             bredde="S"
-                                            description={<SelvstendigInfo.infoInntektForetak />}
+                                            description={
+                                                <SelvstendigInfo.infoHvordanBeregneInntekt
+                                                    periode={availableDateRange}
+                                                />
+                                            }
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
                                     </SoknadQuestion>
