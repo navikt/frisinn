@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
@@ -11,9 +11,9 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
 import Guide from '../../components/guide/Guide';
-import StopMessage from '../../components/stop-message/StopMessage';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
+import GlobalRoutes from '../../config/routeConfig';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
@@ -60,6 +60,10 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
     const apiValues = mapFormDataToApiData(soknadEssentials, values, intl.locale as Locale);
     const hasValidApiData = apiValues?.selvstendigNæringsdrivende !== undefined || apiValues?.frilanser !== undefined;
     const { person } = soknadEssentials;
+
+    if (apiValues && apiValues.harForståttRettigheterOgPlikter === undefined) {
+        return <Redirect to={GlobalRoutes.SOKNAD} />;
+    }
 
     return (
         <SoknadStep
@@ -126,14 +130,6 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                             validate={validateBekrefterOpplysninger}
                         />
                     </Box>
-                </>
-            )}
-            {apiValues && hasValidApiData === false && (
-                <>
-                    <StopMessage>
-                        TODO: utviklermelding: apiValues === undefined
-                        <p>Ja, det skal fikses :)</p>
-                    </StopMessage>
                 </>
             )}
             {apiValues === undefined && (
