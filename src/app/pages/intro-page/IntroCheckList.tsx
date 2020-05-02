@@ -1,7 +1,7 @@
 import React from 'react';
 import Lenke from 'nav-frontend-lenker';
-import Guide from '../../components/guide/Guide';
 import { Undertittel } from 'nav-frontend-typografi';
+import Guide from '../../components/guide/Guide';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 
 interface Props {
@@ -18,12 +18,7 @@ const IntroCheckList = ({ canApplyAsSelvstending, canApplyAsFrilanser }: Props) 
         <>
             <Guide svg={<VeilederSVG mood={'happy'} />} kompakt={true} type="plakat">
                 <Undertittel>Viktig informasjon når du skal søke som {canApplyAs.join(' og ')}</Undertittel>
-                <p style={{ marginTop: '.5rem' }}>
-                    Midlertidig tekst. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat ut, sit libero
-                    earum quaerat cumque deleniti. Eveniet, quos sed pariatur architecto atque quidem nam adipisci
-                    maxime, laborum, quis corporis enim?
-                </p>
-                <ul className="checklist">
+                <ul>
                     <li>
                         Nå går du videre i prosessen til utfyllingen av selve søknaden om kompensasjon for tapt inntekt
                         som følge av koronautbruddet.
