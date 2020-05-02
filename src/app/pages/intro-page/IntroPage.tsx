@@ -86,7 +86,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                 ansvar (DA). Selskapet må være registrert før 1. mars 2020.
                                             </p>
                                             <p>
-                                                Ordningen trådte i kraft fra 14. Mars 2020. De første 16 dagene av
+                                                Ordningen trådte i kraft fra 14. mars 2020. De første 16 dagene av
                                                 inntektstapet må du dekke selv.
                                             </p>
                                             <p>
