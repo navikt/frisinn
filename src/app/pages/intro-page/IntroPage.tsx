@@ -96,10 +96,10 @@ const IntroPage: React.StatelessComponent = () => {
                                                 </Lenke>{' '}
                                             </p>
                                             <p>
-                                                Ordningen trådte i kraft 14. Mars 2020. I søknaden oppgir du fra når
+                                                Ordningen trådte i kraft 14. mars 2020. I søknaden oppgir du fra når
                                                 inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
                                                 inntektstap. Det betyr at om inntektstapet ditt startet 14. mars kan du
-                                                søke om kompensasjon fra 28. Mars 2020.
+                                                søke om kompensasjon fra 28. mars 2020.
                                             </p>
                                             <p>
                                                 Du må søke etterskuddsvis måned for måned. Hvis du har inntektstap i

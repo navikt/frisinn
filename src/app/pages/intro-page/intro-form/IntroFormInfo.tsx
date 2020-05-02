@@ -30,8 +30,9 @@ const selvstendigIkkeTapPgaKorona = () => (
 const selvstendigForSentInntektstap = () => (
     <>
         <Element>Du må vente med å søke kompensasjon for tapt inntekt som selvstendig næringsdrivende </Element>
-        Du må selv dekke de første 16 dagene med inntektstap. Ordningen er lagt opp til at du må søke etterskuddsvis
-        måned for måned. Hvis du har inntektstap i mai 2020 kan du først sende søknad i begynnelsen av juni.
+        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
+        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
+        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
     </>
 );
 
@@ -61,8 +62,9 @@ const frilanserIkkeTapPgaKorona = () => (
 const frilanserForSentInntektstap = () => (
     <>
         <Element>Du må vente med å søke kompensasjon for tapt inntekt som frilanser</Element>
-        Du må selv dekke de første 16 dagene med inntektstap. Ordningen er lagt opp til at du må søke etterskuddsvis
-        måned for måned. Hvis du har inntektstap i mai 2020 kan du først sende søknad i begynnelsen av juni.
+        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
+        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
+        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
     </>
 );
 
@@ -96,8 +98,8 @@ const selvstendigIkkeTattUtInntekt = () => (
     <>
         <Element>Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende</Element>
         For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
-        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet er registrert i 2020, må
-        du ha tatt ut inntekt før 1. mars 2020.
+        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019.
+        <br /> Hvis selskapet er registrert i 2020, må du ha tatt ut inntekt før 1. mars 2020.
     </>
 );
 
@@ -109,15 +111,16 @@ const hvaRegnesSomInntektstap = () => (
 const selvstendigHvaMenesMedInntekt = () => (
     <ExpandableInfo title="Hva menes med dette?">
         For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
-        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019. Hvis selskapet er registrert i 2020, må
-        du ha tatt ut inntekt før 1. mars 2020.
+        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019.
+        <br /> Hvis selskapet er registrert i 2020, må du ha tatt ut inntekt før 1. mars 2020.
     </ExpandableInfo>
 );
 
 const hvaErStartdatoForInntektstap = () => (
-    <ExpandableInfo title="Fra hvilken dato gjelder inntektstap som følge av koronautbruddet?">
-        Inntektstap som følge av koronautbruddet har virkning fra 14. mars 2020. Du må selv finne datoen for når ditt
-        inntektstap startet (ikke når du mistet oppdrag).
+    <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
+        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
+        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
+        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
     </ExpandableInfo>
 );
 
@@ -146,30 +149,29 @@ const harAlleredeSøkt = () => (
     </>
 );
 
+const fårDekketTapetAllerede = (
+    rolle: string
+) => `Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som ${rolle},
+kan du ikke søke. Hvis du har en utbetaling fra NAV som bare delvis dekker inntektstapet ditt, kan du søke om
+kompensasjon for den delen du ikke får dekket.`;
+
 const fårDekketTapetSomSelvstendigForklaring = () => (
-    <ExpandableInfo title="Hva vil dette si?">
-        Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
-        ikke søke. Hvis du har en utbetaling fra NAV som bare delvis dekker inntektstapet ditt, kan du søke om
-        kompensasjon for den delen du ikke får dekket.
-    </ExpandableInfo>
+    <ExpandableInfo title="Hva vil dette si?">{fårDekketTapetAllerede('selvstendig næringsdrivende')}</ExpandableInfo>
 );
 
 const fårDekketTapetSomFrilanserForklaring = () => (
-    <ExpandableInfo title="Hva vil dette si?">
-        Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke. Hvis du
-        har en utbetaling fra NAV som bare delvis dekker inntektstapet ditt, kan du søke om kompensasjon for den delen
-        du ikke får dekket.
-    </ExpandableInfo>
+    <ExpandableInfo title="Hva vil dette si?">{fårDekketTapetAllerede('frilanser')}</ExpandableInfo>
 );
 
 const vilIkkeTrekkeAnnenSøknadSelvstendig = () => (
     <>
-        Dersom du ikke trekker denne andre søknaden, kan du ikke søke kompensasjon som selvstendig næringsdrivende. Du
-        kan fortsatt svare på spørsmålene nedenfor for å se om du kan søke som frilanser.
+        Du må trekke den andre søknaden du har sendt inn for å kunne søke kompensasjon for tapt inntekt som selvstendig
+        næringsdrivende. Hvis du også er frilanser, kan du svare på spørsmålene under for å se om du kan søke
+        kompensasjon som frilanser.
     </>
 );
 const vilIkkeTrekkeAnnenSøknadFrilanser = () => (
-    <>Dersom du ikke trekker denne andre søknaden, kan du ikke søke kompensasjon som frilanser.</>
+    <>Du må trekke den andre søknaden du har sendt inn for å kunne søke kompensasjon for tapt inntekt som frilanser.</>
 );
 
 const frilanserKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøknad: boolean }) => (
