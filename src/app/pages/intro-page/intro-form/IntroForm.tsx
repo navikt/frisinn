@@ -211,8 +211,8 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                             <SuksessMessage margin="l">
                                                 <Info.frilanserKanSøke
                                                     visInfoOmTrekkeSøknad={
-                                                        selvstendigVilFortsetteTilSøknad === YesOrNo.YES &&
-                                                        selvstendigHarAlleredeSøkt === YesOrNo.YES
+                                                        frilansVilFortsetteTilSøknad === YesOrNo.YES &&
+                                                        frilansHarAlleredeSøkt === YesOrNo.YES
                                                     }
                                                 />
                                             </SuksessMessage>

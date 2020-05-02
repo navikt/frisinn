@@ -107,7 +107,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                             <p>
                                 Det er ikke registrert noe selskap på deg som selvstendig næringsdrivende. Hvis du mener
                                 det er feil at det ikke er registrert selskap på deg som selvstendig næringsdrivende, må
-                                du kontakte Brønnøysundregisterene.
+                                du kontakte Brønnøysundregistrene.
                             </p>
                             <p>
                                 For å være registrert som selvstendig næringsdrivende må du enten ha et

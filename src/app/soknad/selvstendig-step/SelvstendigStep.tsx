@@ -227,7 +227,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             />
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet}
-                                                description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
                                                 showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
                                                 stopMessage={<SelvstendigInfo.StoppYtelseDekkerHeleTapet />}
                                             />
@@ -308,7 +307,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                                             {antallForetak >= 1 && (
                                                                 <>
                                                                     Dersom du har flere revisorer, kan du oppgi
-                                                                    informasjon om din hoverrevisor.
+                                                                    informasjon om din hovedrevisor.
                                                                 </>
                                                             )}
                                                             <SoknadQuestion

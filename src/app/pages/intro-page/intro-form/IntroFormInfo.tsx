@@ -130,8 +130,8 @@ const ikkeValgtSelvstendigEllerFrilanser = () => (
 
 const selvstendigIkkeOkOgErIkkeFrilanser = () => (
     <>
-        Du kan ikke søke som selvstendig næringsdrivende og du oppgir du ikke er frilanser. Da kan du ikke bruke denne
-        søknaden nå.
+        Du kan ikke søke som selvstendig næringsdrivende og du oppgir at du ikke er frilanser. Da kan du ikke bruke
+        denne søknaden nå.
     </>
 );
 
