@@ -6,8 +6,6 @@ const getKravEndPointFromKrav = (krav: ApiKrav): ApiEndpoint => {
     switch (krav) {
         case ApiKrav.alder:
             return ApiEndpoint.kravAlder;
-        case ApiKrav.selvstendig:
-            return ApiEndpoint.kravSelvstendigNæringsdrivende;
         case ApiKrav.maksEnSoknadPerPeriodeAccessCheck:
             return ApiEndpoint.kravMaksEnSoknadPerPeriode;
         case ApiKrav.apenAlder:
