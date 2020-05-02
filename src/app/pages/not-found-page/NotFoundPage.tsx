@@ -1,24 +1,15 @@
 import React from 'react';
-import { Ingress, Systemtittel } from 'nav-frontend-typografi';
-import Veilederpanel from 'nav-frontend-veilederpanel';
-import Box from 'common/components/box/Box';
-import Page from 'common/components/page/Page';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
-import './notFoundPage.less';
+import { Ingress } from 'nav-frontend-typografi';
+import ErrorGuide from '../../components/error-guide/ErrorGuide';
+import ErrorPage from '../../components/error-page/ErrorPage';
 
-const NotFoundPage: React.FunctionComponent = ({ children }: { children?: React.ReactNode }) => {
+const NotFoundPage: React.FunctionComponent = () => {
     return (
-        <Page title="Side ikke funnet">
-            <div className={'generalErrorPage'}>
-                <Veilederpanel type="plakat" kompakt={true} fargetema="normal" svg={<VeilederSVG mood="uncertain" />}>
-                    <Systemtittel tag="h2">Du har kommet til en side som ikke finnes</Systemtittel>
-                    <Box margin="m" padBottom="l">
-                        <Ingress>Vennligst gå tilbake</Ingress>
-                    </Box>
-                </Veilederpanel>
-            </div>
-            {children && <Box margin="xxl">{children}</Box>}
-        </Page>
+        <ErrorPage pageTitle="Side ikke funnet">
+            <ErrorGuide title="Du har kommet til en side som ikke finnes">
+                <Ingress>Vennligst gå tilbake</Ingress>
+            </ErrorGuide>
+        </ErrorPage>
     );
 };
 

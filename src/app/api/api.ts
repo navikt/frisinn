@@ -3,7 +3,7 @@ import axiosConfig from '../config/axiosConfig';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 import { getEnvironmentVariable, isRunningInDevEnvironment } from '../utils/envUtils';
 import { relocateToLoginPage } from '../utils/navigationUtils';
-import { triggerSentryError, SentryEventName } from '../utils/sentryUtils';
+import { SentryEventName, triggerSentryError } from '../utils/sentryUtils';
 
 axios.defaults.baseURL = getEnvironmentVariable('API_URL');
 axios.defaults.withCredentials = true;
@@ -27,15 +27,15 @@ axios.interceptors.response.use(
 );
 
 export enum ApiEndpoint {
-    'personligeForetak' = 'personlige-foretak',
+    'apenKravAlder' = 'aapen-krav/alder',
+    'kravAlder' = 'krav/alder',
+    'kravMaksEnSoknadPerPeriode' = 'krav/maks-en-soknad-per-periode',
+    'kravSelvstendigNæringsdrivende' = 'krav/selvstendig-naeringsdrivende',
+    'mellomlagring' = 'mellomlagring',
     'perioder' = 'perioder',
+    'personligeForetak' = 'personlige-foretak',
     'soker' = 'soker',
     'soknad' = 'soknad',
-    'kravAlder' = 'krav/alder',
-    'kravSelvstendigNæringsdrivende' = 'krav/selvstendig-naeringsdrivende',
-    'kravMaksEnSoknadPerPeriode' = 'krav/maks-en-soknad-per-periode',
-    'apenKravAlder' = 'aapen-krav/alder',
-    'mellomlagring' = 'mellomlagring',
     'tilgjengelig' = 'tilgjengelig',
 }
 

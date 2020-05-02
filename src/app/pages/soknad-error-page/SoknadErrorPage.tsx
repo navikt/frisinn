@@ -1,33 +1,22 @@
 import React from 'react';
-import { Undertittel } from 'nav-frontend-typografi';
-import Box from 'common/components/box/Box';
-import Page from 'common/components/page/Page';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
-import './soknadErrorPage.less';
-import Guide from '../../components/guide/Guide';
+import { useIntl } from 'react-intl';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { useIntl } from 'react-intl';
+import Box from 'common/components/box/Box';
+import Page from 'common/components/page/Page';
 
 interface Props {
-    title?: string;
-    children?: React.ReactNode;
+    children: React.ReactNode;
+    pageTitle?: string;
 }
 
-const SoknadErrorPage: React.FunctionComponent = ({ children, title }: Props) => {
+const SoknadErrorPage = ({ children, pageTitle }: Props) => {
     const intl = useIntl();
     return (
         <Page
-            title="Noe gikk galt med visningen av siden"
+            title={pageTitle || 'Det oppstod en feil'}
             topContentRenderer={() => <StepBanner text={intlHelper(intl, 'banner.title')} />}>
-            <Box margin="xxxl">
-                <Guide type="plakat" kompakt={true} fargetema="normal" svg={<VeilederSVG mood="uncertain" />}>
-                    <Undertittel tag="h2">{title || 'Nødvendig informasjon mangler'}</Undertittel>
-                    <Box margin="m" padBottom="l">
-                        {children || <p>Vennligst gå tilbake</p>}
-                    </Box>
-                </Guide>
-            </Box>
+            <Box margin="xxxl">{children}</Box>
         </Page>
     );
 };

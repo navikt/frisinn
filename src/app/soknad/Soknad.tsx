@@ -71,8 +71,7 @@ const Soknad = () => {
                     return (
                         <NoAccessPage title="Søknaden er ikke tilgjengelig">
                             <Ingress>
-                                Søknaden er dessverre ikke tilgjengelig akkurat nå. Vennligst prøv igjen på et senere
-                                tidspunkt.
+                                Søknaden er dessverre ikke tilgjengelig akkurat nå. Vennligst prøv igjen litt senere.
                             </Ingress>
                         </NoAccessPage>
                     );

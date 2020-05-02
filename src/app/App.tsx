@@ -12,8 +12,8 @@ import GlobalRoutes from './config/routeConfig';
 import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
 import IntroPage from './pages/intro-page/IntroPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
+import NotOpenPage from './pages/not-open-page/NotOpenPage';
 import ReceiptPage from './pages/receipt-page/ReceiptPage';
-import SystemUnavailablePage from './pages/system-unavailable-page/SystemUnavailablePage';
 import Soknad from './soknad/Soknad';
 import { getEnvironmentVariable } from './utils/envUtils';
 import 'common/styles/globalStyles.less';
@@ -44,7 +44,7 @@ const App: React.FunctionComponent = () => {
                 }}>
                 <>
                     <Switch>
-                        <Route path={GlobalRoutes.SYSTEM_UNAVAILABLE} component={SystemUnavailablePage} />
+                        <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
                         <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
                         <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
                         <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />

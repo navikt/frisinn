@@ -1,7 +1,7 @@
 import { getEnvironmentVariable } from 'app/utils/envUtils';
 
 enum GlobalRoutes {
-    SYSTEM_UNAVAILABLE = '/utilgjengelig',
+    NOT_OPEN = '/stengt',
     HOME = '/',
     SOKNAD = '/soknad',
     SOKNAD_ERROR = '/soknad/feil',

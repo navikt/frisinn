@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Undertittel, Normaltekst, Ingress, Systemtittel } from 'nav-frontend-typografi';
+import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
@@ -7,17 +7,18 @@ import bemUtils from 'common/utils/bemUtils';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
-import { relocateToSoknad, relocateToErrorPage } from '../../utils/navigationUtils';
+import {
+    relocateToSoknad,
+    relocateToErrorPage,
+    relocateToNoOpenPage as relocateToNotOpenPage,
+} from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
-import useApiGet from '../../hooks/useApiGet';
-import { ApiEndpoint } from '../../api/api';
-import Guide from '../../components/guide/Guide';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { Knapp } from 'nav-frontend-knapper';
 import IntroCheckList from './IntroCheckList';
 import { useIntl } from 'react-intl';
+import useTilgjengelig from '../../hooks/useTilgjengelig';
 
 const bem = bemUtils('introPage');
 
@@ -31,11 +32,10 @@ const IntroPage: React.StatelessComponent = () => {
 
     const intl = useIntl();
     const soknadsperiode = useSoknadsperiode();
-    const soknadErTilgjengelig = useApiGet(ApiEndpoint.tilgjengelig);
+    const tilgjengelig = useTilgjengelig();
 
-    const isLoading = soknadsperiode.isLoading || soknadErTilgjengelig.isLoading;
-    const hasError = soknadsperiode?.error !== undefined || soknadErTilgjengelig?.error !== undefined;
-
+    const isLoading = soknadsperiode.isLoading || tilgjengelig.isLoading;
+    const hasError = soknadsperiode?.error !== undefined || tilgjengelig?.error !== undefined;
     return (
         <Page
             className={bem.block}
@@ -54,26 +54,16 @@ const IntroPage: React.StatelessComponent = () => {
                 <LoadWrapper
                     isLoading={isLoading}
                     contentRenderer={() => {
+                        if (tilgjengelig.isTilgjengelig === false) {
+                            relocateToNotOpenPage();
+                            return null;
+                        }
                         if (hasError) {
                             relocateToErrorPage();
+                            return null;
                         }
                         if (!soknadsperiode.soknadsperiode) {
                             return null;
-                        }
-                        if (soknadErTilgjengelig.error?.response?.status === 503) {
-                            return (
-                                <Box margin="xxxl">
-                                    <Guide svg={<VeilederSVG mood="uncertain" />} kompakt={true} type="plakat">
-                                        <Box padBottom="m">
-                                            <Systemtittel>Søknaden er ikke tilgjengelig</Systemtittel>
-                                        </Box>
-                                        <Ingress>
-                                            Søknaden er dessverre ikke tilgjengelig akkurat nå. Vennligst prøv igjen på
-                                            et senere tidspunkt.
-                                        </Ingress>
-                                    </Guide>
-                                </Box>
-                            );
                         }
                         return (
                             <>

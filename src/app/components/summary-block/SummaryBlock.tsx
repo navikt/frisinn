@@ -1,6 +1,6 @@
 import React from 'react';
-import Box from 'common/components/box/Box';
 import ContentWithHeader from 'common/components/content-with-header/ContentWithHeader';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 interface Props {
     header: string;
