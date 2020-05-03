@@ -11,6 +11,7 @@ import {
     FellesStoppForSentInntektstapInnlogget,
     FellesStoppIkkeTapPgaKoronaInnlogget,
     FellesStoppYtelseDekkerHeleTapetInnlogget,
+    FellesNårStartetInntektstapet,
 } from './FellesInfo';
 
 const rolleNavn = 'frilanser';
@@ -67,6 +68,8 @@ const infoErNyetablert = () => (
     </ExpandableInfo>
 );
 
+const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
+
 const FrilanserInfo = {
     StoppForSentInntektstap,
     StoppIkkeTapPgaKorona,
@@ -76,6 +79,7 @@ const FrilanserInfo = {
     infoTaptInntektPgaKorona,
     infoErNyetablert,
     getMessageForAvslag,
+    infoNårStartetInntektstapet,
 };
 
 export default FrilanserInfo;

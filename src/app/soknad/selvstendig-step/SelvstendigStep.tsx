@@ -135,6 +135,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}
+                        description={<SelvstendigInfo.infoNårStartetInntektstapet />}
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,
@@ -143,7 +144,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                             initialMonth: currentSøknadsperiode.to,
                         }}
                     />
-                    <SelvstendigInfo.infoNårStartetInntektstapet />
                 </SoknadQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
                     <LoadWrapper
