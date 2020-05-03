@@ -143,6 +143,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                             initialMonth: currentSøknadsperiode.to,
                         }}
                     />
+
+                    <SelvstendigInfo.infoNårStartetInntektstapet />
                 </SoknadQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
                     <LoadWrapper

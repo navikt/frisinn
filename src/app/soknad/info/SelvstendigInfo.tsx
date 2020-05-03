@@ -13,6 +13,7 @@ import {
     FellesStoppForSentInntektstapInnlogget,
     FellesStoppIkkeTapPgaKoronaInnlogget,
     FellesStoppYtelseDekkerHeleTapetInnlogget,
+    FellesNårStartetInntektstapet,
 } from './FellesInfo';
 
 const rolleNavn = 'selvstendig næringsdrivende';
@@ -151,6 +152,8 @@ const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, in
     }
 };
 
+const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
+
 const SelvstendigInfo = {
     intro,
     StoppForSentInntektstap,
@@ -164,6 +167,7 @@ const SelvstendigInfo = {
     infoTaptInntektPgaKorona,
     getMessageForAvslag,
     infoSelvstendigInntekt2019,
+    infoNårStartetInntektstapet,
 };
 
 export default SelvstendigInfo;

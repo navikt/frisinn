@@ -10,6 +10,20 @@ export const FellesInfoHvaMenesMedTaptInntekt = () => (
     </ExpandableInfo>
 );
 
+export const FellesNårStartetInntektstapet = () => (
+    <ExpandableInfo title="Hvilken dato skal legges inn?">
+        Her skal du legge inn datoen fra da inntektstapet ditt startet på grunn av koronautbruddet.
+        <p>
+            Hvis du har hatt en utbetaling fra NAV i perioden <strong>etter</strong> at inntektstapet ditt startet,
+            legger du inn datoen fra den dagen utbetalingen fra NAV stoppet.
+        </p>
+        <p>
+            Det vil si at hvis du for eksempel har hatt omsorgspenger frem til 29. mars, skal du legge inn 30. mars som
+            dato for når inntektstapet ditt startet.
+        </p>
+    </ExpandableInfo>
+);
+
 export const FellesInfoAndreUtbetalingerFraNav = ({ rolle }: { rolle: string }) => (
     <ExpandableInfo title="Hva vil dette si?">
         Hvis du allerede har en utbetaling fra NAV som kompenserer det samme inntektstapet som {rolle}, kan du ikke
