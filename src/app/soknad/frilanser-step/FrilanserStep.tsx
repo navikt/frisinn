@@ -114,7 +114,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                 <SoknadQuestion
                     name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                     legend={soknadQuestionText.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
-                    description={<FrilanserInfo.koronaTaptInntekt />}
+                    description={<FrilanserInfo.infoTaptInntektPgaKorona />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<FrilanserInfo.StoppIkkeTapPgaKorona />}
                 />
@@ -175,7 +175,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                         <FormSection title="Andre utbetalinger fra NAV">
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet}
-                                                description={<FrilanserInfo.andreUtbetalingerFraNAV />}
+                                                description={<FrilanserInfo.infoAndreUtbetalingerFraNAV />}
                                                 showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
                                                 stopMessage={<FrilanserInfo.StoppYtelseDekkerHeleTapet />}
                                             />

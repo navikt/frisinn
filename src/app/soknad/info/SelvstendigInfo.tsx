@@ -96,7 +96,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     </ExpandableInfo>
 );
 
-const koronaTaptInntekt = () => <FellesInfoHvaMenesMedTaptInntekt />;
+const infoTaptInntektPgaKorona = () => <FellesInfoHvaMenesMedTaptInntekt />;
 
 const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
     return inntektÅrstall === 2020 ? (
@@ -116,7 +116,7 @@ const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) =
     );
 };
 
-const andreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rolle={rolleNavn} />;
+const infoAndreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rolle={rolleNavn} />;
 
 const infoSelvstendigInntekt2019 = () => (
     <>
@@ -151,8 +151,8 @@ const SelvstendigInfo = {
     StoppIngenHistoriskInntekt,
     infoHvordanBeregneInntekt,
     infoInntektÅrstall,
-    andreUtbetalingerFraNAV,
-    koronaTaptInntekt,
+    infoAndreUtbetalingerFraNAV,
+    infoTaptInntektPgaKorona,
     getMessageForAvslag,
     infoSelvstendigInntekt2019,
 };

@@ -119,7 +119,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigHarTaptInntektPgaKorona}
                     legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
-                    description={<SelvstendigInfo.koronaTaptInntekt />}
+                    description={<SelvstendigInfo.infoTaptInntektPgaKorona />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<SelvstendigInfo.StoppIkkeTapPgaKorona />}
                 />
@@ -162,7 +162,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                 <>
                                     <SoknadQuestion
                                         name={SoknadFormField.selvstendigInntektIPerioden}
-                                        description={<SelvstendigInfo.andreUtbetalingerFraNAV />}>
+                                        description={<SelvstendigInfo.infoAndreUtbetalingerFraNAV />}>
                                         <FormComponents.Input
                                             name={SoknadFormField.selvstendigInntektIPerioden}
                                             label={txt.selvstendigInntektIPerioden(availableDateRange)}
@@ -217,7 +217,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         <FormSection title="Andre utbetalinger fra NAV ">
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet}
-                                                description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
+                                                description={<SelvstendigInfo.infoAndreUtbetalingerFraNAV />}
                                                 showStop={avslag.harYtelseFraNavSomDekkerTapet}
                                                 stopMessage={<SelvstendigInfo.StoppYtelseDekkerHeleTapet />}
                                             />

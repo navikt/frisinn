@@ -44,9 +44,9 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     </ExpandableInfo>
 );
 
-const andreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rolle={rolleNavn} />;
+const infoAndreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rolle={rolleNavn} />;
 
-const koronaTaptInntekt = () => <FellesInfoHvaMenesMedTaptInntekt />;
+const infoTaptInntektPgaKorona = () => <FellesInfoHvaMenesMedTaptInntekt />;
 
 const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak): React.ReactNode => {
     switch (årsak) {
@@ -69,12 +69,12 @@ const infoErNyetablert = () => (
 const FrilanserInfo = {
     StoppForSentInntektstap,
     StoppIkkeTapPgaKorona,
-    infoHvordanBeregneInntekt,
     StoppYtelseDekkerHeleTapet,
-    andreUtbetalingerFraNAV,
-    koronaTaptInntekt,
-    getMessageForAvslag,
+    infoHvordanBeregneInntekt,
+    infoAndreUtbetalingerFraNAV,
+    infoTaptInntektPgaKorona,
     infoErNyetablert,
+    getMessageForAvslag,
 };
 
 export default FrilanserInfo;
