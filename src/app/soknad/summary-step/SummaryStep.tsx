@@ -28,6 +28,7 @@ import { StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
+import SpacedCharString from './SpacedCharString';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -93,8 +94,12 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                 <Undertittel className="sectionTitle">Søker</Undertittel>
                                 <Box margin="l">
                                     <strong>{formatName(person.fornavn, person.etternavn, person.mellomnavn)}</strong>
-                                    <div>Fødselsnummer: {person.fødselsnummer}</div>
-                                    <div>Kontonummer: {person.kontonummer}</div>
+                                    <div>
+                                        Fødselsnummer: <SpacedCharString str={person.fødselsnummer} />
+                                    </div>
+                                    <div>
+                                        Kontonummer: <SpacedCharString str={person.kontonummer} />
+                                    </div>
                                 </Box>
                                 <Box>
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">
