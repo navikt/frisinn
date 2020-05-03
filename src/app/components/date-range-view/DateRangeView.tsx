@@ -13,7 +13,7 @@ export const formatDateRange = (dateRange: DateRange, extendedFormat = true): st
 };
 
 const DateRangeView = ({ dateRange, extendedFormat = true }: Props) => (
-    <span>{formatDateRange(dateRange, extendedFormat)}</span>
+    <span style={{ whiteSpace: 'nowrap' }}>{formatDateRange(dateRange, extendedFormat)}</span>
 );
 
 export default DateRangeView;

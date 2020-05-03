@@ -23,6 +23,7 @@ import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserAvslagStatus, FrilanserAvslagÅrsak, kontrollerFrilanserSvar } from './frilanserAvslag';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
+import SelvstendigInfo from '../info/SelvstendigInfo';
 
 const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | undefined => {
     const feil = Object.keys(status).filter((key) => status[key] === true);
@@ -200,6 +201,11 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden(
                                                         availableDateRange
                                                     )}
+                                                    description={
+                                                        <SelvstendigInfo.infoHvordanBeregneInntekt
+                                                            periode={availableDateRange}
+                                                        />
+                                                    }
                                                     validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}
                                                 />
                                             </SoknadQuestion>

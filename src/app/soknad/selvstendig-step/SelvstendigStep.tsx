@@ -29,6 +29,7 @@ import {
     SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
 import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
+import FrilanserInfo from '../info/FrilanserInfo';
 
 const txt = soknadQuestionText;
 
@@ -241,6 +242,11 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                                         availableDateRange
                                                     )}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                                    description={
+                                                        <FrilanserInfo.infoHvordanBeregneInntekt
+                                                            periode={availableDateRange}
+                                                        />
+                                                    }
                                                 />
                                             </SoknadQuestion>
                                         </FormSection>
