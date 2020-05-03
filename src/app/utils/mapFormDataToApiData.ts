@@ -2,6 +2,7 @@ import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUti
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
+import { soknadQuestionText } from '../soknad/soknadQuestionText';
 import {
     ApiSpørsmålOgSvar,
     FrilanserApiData,
@@ -10,15 +11,14 @@ import {
 } from '../types/SoknadApiData';
 import { PersonligeForetak, SoknadEssentials } from '../types/SoknadEssentials';
 import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
+import { isRunningInDevEnvironment } from './envUtils';
 import {
+    getHistoriskInntektÅrstall,
     hasValidHistoriskInntekt,
     selvstendigSkalOppgiInntekt2019,
     selvstendigSkalOppgiInntekt2020,
-    getHistoriskInntektÅrstall,
 } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
-import { isRunningInDevEnvironment } from './envUtils';
-import { soknadQuestionText } from '../soknad/soknadQuestionText';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -188,7 +188,6 @@ export const mapFrilanserFormDataToApiData = (
         frilanserErNyetablert,
         frilanserInntektIPerioden,
         frilanserHarYtelseFraNavSomDekkerTapet,
-        frilanserYtelseFraNavDekkerHeleTapet,
         frilanserInntektstapStartetDato,
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
@@ -199,10 +198,7 @@ export const mapFrilanserFormDataToApiData = (
     if (
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
         frilanserBeregnetTilgjengeligSønadsperiode &&
-        !(
-            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
-            frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES
-        )
+        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO
     ) {
         const questions: ApiSpørsmålOgSvar[] = [];
         if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
@@ -211,13 +207,6 @@ export const mapFrilanserFormDataToApiData = (
                 spørsmål: soknadQuestionText.frilanserHarYtelseFraNavSomDekkerTapet,
                 svar: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
             });
-            if (frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
-                questions.push({
-                    field: SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet,
-                    spørsmål: soknadQuestionText.frilanserYtelseFraNavDekkerHeleTapet,
-                    svar: formatYesOrNoAnswer(frilanserYtelseFraNavDekkerHeleTapet),
-                });
-            }
         }
         return {
             inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
@@ -244,7 +233,6 @@ export const mapFrilanserFormDataToApiData = (
                   frilanserHarTaptInntektPgaKorona,
                   frilanserBeregnetTilgjengeligSønadsperiode,
                   frilanserHarYtelseFraNavSomDekkerTapet,
-                  frilanserYtelseFraNavDekkerHeleTapet,
               };
         triggerSentryCustomError(
             SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,

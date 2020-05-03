@@ -24,7 +24,6 @@ export interface SoknadQuestionText {
     [SoknadFormField.frilanserErNyetablert]: string;
     [SoknadFormField.frilanserInntektstapStartetDato]: string;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
-    [SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet]: string;
     [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
@@ -64,7 +63,6 @@ export const soknadQuestionText: SoknadQuestionText = {
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',
-    frilanserYtelseFraNavDekkerHeleTapet: 'Dekker utbetalingen du får fra NAV hele inntektstapet ditt?',
     frilanserInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken personinntekt har du hatt fra oppdrag i perioden ${formatDateRange(dateRange)}?`,
     frilanserHarHattInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>

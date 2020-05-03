@@ -20,13 +20,8 @@ const søkerIkkeForGyldigTidsrom = ({ frilanserBeregnetTilgjengeligSønadsperiod
     return frilanserBeregnetTilgjengeligSønadsperiode === undefined;
 };
 
-const utbetalingFraNAVDekkerHeleTapet = ({
-    frilanserHarYtelseFraNavSomDekkerTapet,
-    frilanserYtelseFraNavDekkerHeleTapet,
-}: FrilanserFormData) => {
-    return (
-        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES && frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.YES
-    );
+const utbetalingFraNAVDekkerHeleTapet = ({ frilanserHarYtelseFraNavSomDekkerTapet }: FrilanserFormData) => {
+    return frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES;
 };
 
 export const kontrollerFrilanserSvar = (payload: FrilanserFormData) => ({

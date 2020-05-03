@@ -34,7 +34,6 @@ export enum SoknadFormField {
     frilanserErNyetablert = 'frilanserErNyetablert',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserHarYtelseFraNavSomDekkerTapet = 'frilanserHarYtelseFraNavSomDekkerTapet',
-    frilanserYtelseFraNavDekkerHeleTapet = 'frilanserYtelseFraNavDekkerHeleTapet',
     frilanserInntektIPerioden = 'frilanserInntektIPerioden',
     frilanserErSelvstendigNæringsdrivende = 'frilanserErSelvstendigNæringsdrivende',
     frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
@@ -81,7 +80,6 @@ export interface SoknadFormData {
     [SoknadFormField.frilanserErNyetablert]: YesOrNo;
     [SoknadFormField.frilanserInntektstapStartetDato]: Date;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: YesOrNo;
-    [SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet]: YesOrNo;
     [SoknadFormField.frilanserInntektIPerioden]: number;
     [SoknadFormField.frilanserErSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
@@ -139,7 +137,6 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.frilanserInntektIPerioden
     | SoknadFormField.frilanserInntektstapStartetDato
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
-    | SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet
     | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
@@ -170,7 +167,6 @@ export const initialFrilanserValues: Partial<FrilanserFormData> = {
     frilanserHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     frilanserErNyetablert: YesOrNo.UNANSWERED,
     frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,
-    frilanserYtelseFraNavDekkerHeleTapet: YesOrNo.UNANSWERED,
     frilanserHarHattInntektSomSelvstendigIPerioden: YesOrNo.UNANSWERED,
     frilanserInntektSomSelvstendigIPerioden: undefined,
 };

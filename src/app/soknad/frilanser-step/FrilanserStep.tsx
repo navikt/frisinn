@@ -35,7 +35,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
     const {
         frilanserInntektstapStartetDato,
         frilanserHarTaptInntektPgaKorona,
-        frilanserYtelseFraNavDekkerHeleTapet,
+        frilanserHarYtelseFraNavSomDekkerTapet,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
     } = values;
     const { currentSøknadsperiode } = soknadEssentials;
@@ -63,7 +63,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         allQuestionsAreAnswered &&
         isValidDateRange(availableDateRange) &&
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
-        frilanserYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
+        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
 
     useEffect(() => {
         setFieldValue(
@@ -177,9 +177,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet}
                                                 description={<FrilanserInfo.andreUtbetalingerFraNAV />}
-                                            />
-                                            <SoknadQuestion
-                                                name={SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet}
                                                 showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
                                                 stopMessage={<FrilanserInfo.StoppYtelseDekkerHeleTapet />}
                                             />

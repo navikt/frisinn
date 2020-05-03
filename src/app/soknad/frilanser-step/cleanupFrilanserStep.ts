@@ -15,9 +15,6 @@ export const cleanupFrilanserStep = (values: SoknadFormData, avslag: FrilanserAv
     if (v.frilanserInntektIPerioden === undefined) {
         v.frilanserHarYtelseFraNavSomDekkerTapet = YesOrNo.UNANSWERED;
     }
-    if (v.frilanserHarYtelseFraNavSomDekkerTapet !== YesOrNo.YES) {
-        v.frilanserYtelseFraNavDekkerHeleTapet = YesOrNo.UNANSWERED;
-    }
     if (avslag.utebetalingFraNAVDekkerHeleInntektstapet) {
         v.frilanserHarHattInntektSomSelvstendigIPerioden = YesOrNo.UNANSWERED;
     }

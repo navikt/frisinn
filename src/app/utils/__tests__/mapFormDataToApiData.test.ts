@@ -35,7 +35,6 @@ describe('mapFrilanserFormDataToApiData', () => {
         frilanserErNyetablert: YesOrNo.NO,
         frilanserHarTaptInntektPgaKorona: YesOrNo.YES,
         frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
-        frilanserYtelseFraNavDekkerHeleTapet: YesOrNo.UNANSWERED,
         frilanserHarHattInntektSomSelvstendigIPerioden: YesOrNo.UNANSWERED,
         frilanserInntektSomSelvstendigIPerioden: undefined,
     };
@@ -54,11 +53,10 @@ describe('mapFrilanserFormDataToApiData', () => {
             });
             expect(apiData).toBeUndefined();
         });
-        it('returns undefined if frilanserHarYtelseFraNavSomDekkerTapet === YES && frilanserYtelseFraNavDekkerHeleTapet === YES', () => {
+        it('returns undefined if frilanserHarYtelseFraNavSomDekkerTapet === YES', () => {
             const apiData = mapFrilanserFormDataToApiData(personligeForetak, {
                 ...formData,
                 frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.YES,
-                frilanserYtelseFraNavDekkerHeleTapet: YesOrNo.YES,
             });
             expect(apiData).toBeUndefined();
         });

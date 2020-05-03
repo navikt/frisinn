@@ -15,7 +15,6 @@ type FrilanserFormData = Pick<
     | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
-    | SoknadFormField.frilanserYtelseFraNavDekkerHeleTapet
     | SoknadFormField.frilanserInntektstapStartetDato
     | SoknadFormField.frilanserInntektIPerioden
     | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
@@ -48,16 +47,9 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
-    [Field.frilanserYtelseFraNavDekkerHeleTapet]: {
-        isIncluded: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
-            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES,
-        isAnswered: ({ frilanserYtelseFraNavDekkerHeleTapet }) =>
-            yesOrNoIsAnswered(frilanserYtelseFraNavDekkerHeleTapet),
-    },
     [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {
-        visibilityFilter: ({ frilanserHarYtelseFraNavSomDekkerTapet, frilanserYtelseFraNavDekkerHeleTapet }) =>
-            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO ||
-            frilanserYtelseFraNavDekkerHeleTapet === YesOrNo.NO,
+        visibilityFilter: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
+            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO,
         isIncluded: ({
             personligeForetak,
             søkerOmTaptInntektSomSelvstendigNæringsdrivende,
