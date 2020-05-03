@@ -88,9 +88,10 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
             <ul className="infoList">
+                <li>Inntekt som arbeidstaker</li>
+                <li>Inntekt som frilanser</li>
                 <li>Uføretrygd</li>
                 <li>Alderspensjon</li>
-                <li>Frilansinntekt</li>
             </ul>
         </Box>
     </ExpandableInfo>
@@ -120,9 +121,17 @@ const infoAndreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rol
 
 const infoSelvstendigInntekt2019 = () => (
     <>
-        <ExpandableInfo title="TODO: her må vi forklare mer">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit saepe eius esse quas animi, aliquam
-            cupiditate unde consequuntur vitae libero nisi ea sint maxime at ullam sequi rem quo sed!
+        <ExpandableInfo title="Personinntekt fra næringen din for 2019">
+            Her skal du oppgi personinntekten fra næringen din for 2019. Personinntekten må samsvare med
+            &quot;personinntekt for næring&quot; som du oppgir til Skatteetaten i skattemeldingen.
+            <p>
+                Hvis du ikke har levert skattemelding og næringsoppgave til Skatteetaten enda, må du fastsette
+                personinntekten fra næringen din. Dette må du gjøre for å kunne sende inn denne søknaden.
+            </p>
+            <p>
+                Når skattemeldingen for 2019 er klar, kontrollerer vi at tallene du legger inn her samsvarer med tallene
+                du oppgir til Skattetaten i næringsoppgaven for 2019.
+            </p>
         </ExpandableInfo>
     </>
 );

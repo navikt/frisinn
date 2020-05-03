@@ -182,7 +182,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             values.selvstendigInntekt2019 !== undefined &&
                                             avslag.harIkkeHattHistoriskInntekt
                                         }
-                                        description={<SelvstendigInfo.infoSelvstendigInntekt2019 />}
                                         stopMessage={
                                             <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2019} />
                                         }>
@@ -191,6 +190,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             type="number"
                                             bredde="S"
                                             label={txt.selvstendigInntekt2019}
+                                            description={<SelvstendigInfo.infoSelvstendigInntekt2019 />}
                                             validate={validateAll([
                                                 validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
                                             ])}
