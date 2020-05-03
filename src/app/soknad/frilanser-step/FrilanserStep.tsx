@@ -152,9 +152,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                             if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
-                                        <FrilanserInfo.StoppForSentInntektstap
-                                            currentSøknadsperiode={currentSøknadsperiode}
-                                        />
+                                        <FrilanserInfo.StoppForSentInntektstap />
                                     </StopMessage>
                                 );
                             }

@@ -53,6 +53,7 @@ const SoknadEntryPage = ({
                             næringsdrivende og/eller frilanser som følge av koronautbruddet.
                         </p>
                         <p>
+                            {/* FellesInfoHvaMenesMedTaptInntekt*/}
                             Den tapte inntekten du kan få kompensert, gjelder fra tidspunktet du ikke får inn inntekter
                             du normalt ville fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske
                             inntekten du har mistet, og ikke fra når du eventuelt har mistet oppdrag.

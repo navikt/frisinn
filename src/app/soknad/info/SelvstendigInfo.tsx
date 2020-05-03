@@ -7,6 +7,15 @@ import { Foretak } from '../../types/SoknadEssentials';
 import { DateRange } from '../../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendig-step/selvstendigAvslag';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
+import {
+    FellesInfoHvaMenesMedTaptInntekt,
+    FellesInfoAndreUtbetalingerFraNav,
+    FellesStoppForSentInntektstapInnlogget,
+    FellesStoppIkkeTapPgaKoronaInnlogget,
+    FellesStoppYtelseDekkerHeleTapetInnlogget,
+} from './FellesInfo';
+
+const rolleNavn = 'selvstendig næringsdrivende';
 
 const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: Foretak[] }) => {
     if (antallForetak === 1) {
@@ -30,28 +39,11 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     );
 };
 
-const StoppForSentInntektstap = () => {
-    return (
-        <>
-            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15.
-            april, dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned.
-        </>
-    );
-};
+const StoppForSentInntektstap = () => <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} />;
 
-const StoppIkkeTapPgaKorona = () => (
-    <>
-        For å søke om kompensasjon for tapt inntekt, må du helt eller delvis ha tapt inntekt som selvstendig
-        næringsdrivende som følge av koronautbruddet.
-    </>
-);
+const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle={rolleNavn} />;
 
-const StoppYtelseDekkerHeleTapet = () => (
-    <>
-        For å søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, kan ikke inntektstapet allerede
-        være dekket. Det vil si at du ikke kan søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende.
-    </>
-);
+const StoppYtelseDekkerHeleTapet = () => <FellesStoppYtelseDekkerHeleTapetInnlogget rolle={rolleNavn} />;
 
 const StoppIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
     return inntektÅrstall === 2020 ? (
@@ -104,13 +96,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     </ExpandableInfo>
 );
 
-const koronaTaptInntekt = () => (
-    <ExpandableInfo title="Hva menes med tapt inntekt?">
-        Den tapte inntekten du kan få kompensert, gjelder fra tidspunktet du ikke får inn inntekter du normalt ville
-        fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske inntekten du har mistet, og ikke fra
-        når du eventuelt har mistet oppdrag.
-    </ExpandableInfo>
-);
+const koronaTaptInntekt = () => <FellesInfoHvaMenesMedTaptInntekt />;
 
 const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
     return inntektÅrstall === 2020 ? (
@@ -130,15 +116,7 @@ const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) =
     );
 };
 
-const andreUtbetalingerFraNAV = () => (
-    <>
-        <ExpandableInfo title="Hva vil dette si?">
-            Hvis du allerede har en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig
-            næringsdrivende, kan du ikke søke. Du kan søke selv om du mottar sosial stønad, alderspensjon før fylte 67
-            år eller uføretrygd fra NAV.
-        </ExpandableInfo>
-    </>
-);
+const andreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rolle={rolleNavn} />;
 
 const infoSelvstendigInntekt2019 = () => (
     <>

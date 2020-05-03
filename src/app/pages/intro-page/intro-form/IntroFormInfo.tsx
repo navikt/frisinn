@@ -5,6 +5,7 @@ import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import Lenke from 'nav-frontend-lenker';
 import PhoneView from '../../../components/phone-view/PhoneView';
+import { FellesStoppSentInntektstap } from '../../../soknad/info/FellesInfo';
 
 const infoOmTrekkingAvSøknad = () => (
     <p style={{ marginBottom: 0 }}>
@@ -27,14 +28,7 @@ const selvstendigIkkeTapPgaKorona = () => (
     </>
 );
 
-const selvstendigForSentInntektstap = () => (
-    <>
-        <Element>Du må vente med å søke kompensasjon for tapt inntekt som selvstendig næringsdrivende </Element>
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
-        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
-    </>
-);
+const selvstendigForSentInntektstap = () => <FellesStoppSentInntektstap rolle="selvstendig næringsdrivende" />;
 
 const selvstendigFårDekketTapet = () => (
     <>
@@ -59,14 +53,7 @@ const frilanserIkkeTapPgaKorona = () => (
     </>
 );
 
-const frilanserForSentInntektstap = () => (
-    <>
-        <Element>Du må vente med å søke kompensasjon for tapt inntekt som frilanser</Element>
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
-        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
-    </>
-);
+const frilanserForSentInntektstap = () => <FellesStoppSentInntektstap rolle="frilanser" />;
 
 const frilanserFårDekketTapet = () => (
     <>

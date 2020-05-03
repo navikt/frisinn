@@ -1,39 +1,25 @@
 import React from 'react';
 import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
-import DateView from '../../components/date-view/DateView';
-import moment from 'moment';
 import { DateRange } from '../../utils/dateUtils';
 import { FrilanserAvslagÅrsak } from '../frilanser-step/frilanserAvslag';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import {
+    FellesInfoHvaMenesMedTaptInntekt,
+    FellesInfoAndreUtbetalingerFraNav,
+    FellesStoppForSentInntektstapInnlogget,
+    FellesStoppIkkeTapPgaKoronaInnlogget,
+    FellesStoppYtelseDekkerHeleTapetInnlogget,
+} from './FellesInfo';
 
-const StoppForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
-    const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
-    const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
-    return (
-        <>
-            <Element>Du må vente med å søke</Element>
-            Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene
-            av inntektstapet ditt. Hvis du har inntektstap i{' '}
-            <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i begynnelsen av{' '}
-            <DateView date={nesteSokeMaaned} format="monthAndYear" />.
-        </>
-    );
-};
+const rolleNavn = 'frilanser';
 
-const StoppIkkeTapPgaKorona = () => (
-    <>
-        For å søke om kompensasjon for tapt inntekt som frilanser, må du helt eller delvis ha tapt inntekt som følge av
-        koronautbruddet.
-    </>
-);
-const StoppAlderSjekkFeiler = () => (
-    <>
-        <Element>Du kan ikke søke som frilanser for denne perioden</Element>
-        <p style={{ marginTop: '.5rem' }}>Kravet er at du må være mellom 18 og 67 år i perioden du søker for.</p>
-    </>
-);
+const StoppForSentInntektstap = () => <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} />;
+
+const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle={rolleNavn} />;
+
+const StoppYtelseDekkerHeleTapet = () => <FellesStoppYtelseDekkerHeleTapetInnlogget rolle={rolleNavn} />;
 
 const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
@@ -58,38 +44,16 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     </ExpandableInfo>
 );
 
-const StoppYtelseDekkerHeleTapet = () => (
-    <>
-        For å søke om kompensasjon for tapt inntekt som frilanser, kan ikke inntektstapet allerede være dekket. Det vil
-        si at du ikke kan søke om kompensasjon for tapt inntekt som frilanser.
-    </>
-);
+const andreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rolle={rolleNavn} />;
 
-const andreUtbetalingerFraNAV = () => (
-    // LIK
-    <>
-        <ExpandableInfo title="Hva vil dette si?">
-            Hvis du allerede har en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser, kan du
-            ikke søke. Du kan søke selv om du mottar sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra
-            NAV.
-        </ExpandableInfo>
-    </>
-);
+const koronaTaptInntekt = () => <FellesInfoHvaMenesMedTaptInntekt />;
 
-const koronaTaptInntekt = () => (
-    <ExpandableInfo title="Hva menes med tapt inntekt?">
-        Den tapte inntekten du kan få kompensert, gjelder fra tidspunktet du ikke får inn inntekter du normalt ville
-        fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske inntekten du har mistet, og ikke fra
-        når du eventuelt har mistet oppdrag.
-    </ExpandableInfo>
-);
-
-const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak, currentSøknadsperiode: DateRange): React.ReactNode => {
+const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak): React.ReactNode => {
     switch (årsak) {
         case FrilanserAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
         case FrilanserAvslagÅrsak.søkerIkkeForGyldigTidsrom:
-            return <StoppForSentInntektstap currentSøknadsperiode={currentSøknadsperiode} />;
+            return <StoppForSentInntektstap />;
         case FrilanserAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
             return <StoppYtelseDekkerHeleTapet />;
     }
@@ -105,7 +69,6 @@ const infoErNyetablert = () => (
 const FrilanserInfo = {
     StoppForSentInntektstap,
     StoppIkkeTapPgaKorona,
-    StoppAlderSjekkFeiler,
     infoHvordanBeregneInntekt,
     StoppYtelseDekkerHeleTapet,
     andreUtbetalingerFraNAV,

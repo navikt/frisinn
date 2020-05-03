@@ -187,8 +187,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             {frilanserSoknadIsOk === false && frilanserStopReason && (
                 <FormSection title="Frilanser">
                     <StopMessage>
-                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.currentSøknadsperiode)}
-
+                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason)}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.FRILANSER)}>
                                 Gå tilbake til informasjon om frilans
