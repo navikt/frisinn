@@ -83,7 +83,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                 <FormSection>
                     <IntroFormQuestion
                         name={IntroFormField.fødselsdato}
-                        showStop={hasValue(fødselsdato) && !alderIsOk}
+                        showStop={hasValue(fødselsdato) && !alderIsOk && isLoading === false}
                         stopMessage={<Info.ikkeGyldigAlder periode={soknadsperiode} />}>
                         <FormComponent.DatePicker
                             name={IntroFormField.fødselsdato}
