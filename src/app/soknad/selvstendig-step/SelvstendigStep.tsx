@@ -169,6 +169,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             label={txt.selvstendigInntektIPerioden(availableDateRange)}
                                             type="number"
                                             bredde="S"
+                                            maxLength={8}
+                                            max={MAX_INNTEKT}
                                             description={
                                                 <SelvstendigInfo.infoHvordanBeregneInntekt
                                                     periode={availableDateRange}
@@ -190,6 +192,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             name={SoknadFormField.selvstendigInntekt2019}
                                             type="number"
                                             bredde="S"
+                                            maxLength={8}
+                                            max={MAX_INNTEKT}
                                             label={txt.selvstendigInntekt2019}
                                             description={<SelvstendigInfo.infoSelvstendigInntekt2019 />}
                                             validate={validateAll([
@@ -210,6 +214,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             name={SoknadFormField.selvstendigInntekt2020}
                                             type="number"
                                             bredde="S"
+                                            maxLength={8}
+                                            max={MAX_INNTEKT}
                                             label={txt.selvstendigInntekt2020}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                         />
@@ -239,6 +245,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                                     name={SoknadFormField.selvstendigInntektSomFrilanserIPerioden}
                                                     type="number"
                                                     bredde="S"
+                                                    maxLength={8}
+                                                    max={MAX_INNTEKT}
                                                     label={txt.selvstendigInntektSomFrilanserIPerioden(
                                                         availableDateRange
                                                     )}

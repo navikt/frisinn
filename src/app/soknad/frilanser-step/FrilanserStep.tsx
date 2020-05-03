@@ -169,6 +169,8 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             }
                                             label={soknadQuestionText.frilanserInntektIPerioden(availableDateRange)}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                            maxLength={8}
+                                            max={MAX_INNTEKT}
                                         />
                                     </SoknadQuestion>
 
@@ -200,6 +202,8 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden(
                                                         availableDateRange
                                                     )}
+                                                    maxLength={8}
+                                                    max={MAX_INNTEKT}
                                                     description={
                                                         <SelvstendigInfo.infoHvordanBeregneInntekt
                                                             periode={availableDateRange}
