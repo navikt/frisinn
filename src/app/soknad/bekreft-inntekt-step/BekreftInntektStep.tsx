@@ -98,8 +98,11 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                             fargetema={'feilmelding'}
                             fullHeight={true}>
                             <strong>Her kontrollerer du at du har gitt oss korrekt informasjon om inntekten din</strong>
-                            . Hvis tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du
-                            har lagt inn. Det er ditt ansvar at opplysningene du gir er riktige.
+                            .
+                            <p>
+                                Hvis tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du
+                                har lagt inn. Det er ditt ansvar at opplysningene du gir er riktige.
+                            </p>
                         </Guide>
                     ))}
                 {frilanserSoknadIsOk === false && selvstendigSoknadIsOk === false && (
@@ -133,59 +136,63 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                 </FormSection>
             )}
             {selvstendigSoknadIsOk && selvstendigNæringsdrivende && selvstendigBeregnetTilgjengeligSøknadsperiode && (
-                <FormSection title="Inntekt som selvstendig næringsdrivende">
-                    {isVisible(SoknadFormField.bekrefterSelvstendigInntektIPerioden) && (
-                        <BekreftSumRad
-                            values={values}
-                            editStepID={StepID.SELVSTENDIG}
-                            field={SoknadFormField.bekrefterSelvstendigInntektIPerioden}
-                            tittel={
-                                <>
-                                    Inntekt fra selskap i perioden{' '}
-                                    <DateRangeView dateRange={selvstendigBeregnetTilgjengeligSøknadsperiode} />
-                                </>
-                            }
-                            sum={selvstendigNæringsdrivende.inntektIPerioden}
-                        />
-                    )}
-                    {isVisible(SoknadFormField.bekrefterSelvstendigInntektI2019) &&
-                        selvstendigNæringsdrivende.inntekt2019 && (
+                <>
+                    <FormSection title="Inntekt som selvstendig næringsdrivende">
+                        {isVisible(SoknadFormField.bekrefterSelvstendigInntektIPerioden) && (
                             <BekreftSumRad
                                 values={values}
                                 editStepID={StepID.SELVSTENDIG}
-                                field={SoknadFormField.bekrefterSelvstendigInntektI2019}
-                                tittel={<>Inntekt fra selskap i 2019</>}
-                                sum={selvstendigNæringsdrivende.inntekt2019}
+                                field={SoknadFormField.bekrefterSelvstendigInntektIPerioden}
+                                tittel={
+                                    <>
+                                        Personinntekt fra næring i perioden{' '}
+                                        <DateRangeView dateRange={selvstendigBeregnetTilgjengeligSøknadsperiode} />
+                                    </>
+                                }
+                                sum={selvstendigNæringsdrivende.inntektIPerioden}
                             />
                         )}
-                    {isVisible(SoknadFormField.bekrefterSelvstendigInntektI2020) &&
-                        selvstendigNæringsdrivende.inntekt2020 && (
-                            <BekreftSumRad
-                                values={values}
-                                editStepID={StepID.SELVSTENDIG}
-                                field={SoknadFormField.bekrefterSelvstendigInntektI2020}
-                                tittel={<>Inntekt fra selskap i januar og februar 2020</>}
-                                sum={selvstendigNæringsdrivende.inntekt2020}
-                            />
-                        )}
+                        {isVisible(SoknadFormField.bekrefterSelvstendigInntektI2019) &&
+                            selvstendigNæringsdrivende.inntekt2019 && (
+                                <BekreftSumRad
+                                    values={values}
+                                    editStepID={StepID.SELVSTENDIG}
+                                    field={SoknadFormField.bekrefterSelvstendigInntektI2019}
+                                    tittel={<>Personinntekt fra næring i 2019</>}
+                                    sum={selvstendigNæringsdrivende.inntekt2019}
+                                />
+                            )}
+                        {isVisible(SoknadFormField.bekrefterSelvstendigInntektI2020) &&
+                            selvstendigNæringsdrivende.inntekt2020 && (
+                                <BekreftSumRad
+                                    values={values}
+                                    editStepID={StepID.SELVSTENDIG}
+                                    field={SoknadFormField.bekrefterSelvstendigInntektI2020}
+                                    tittel={<>Personinntekt fra næring i januar og februar 2020</>}
+                                    sum={selvstendigNæringsdrivende.inntekt2020}
+                                />
+                            )}
+                    </FormSection>
                     {isVisible(SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden) && (
-                        <BekreftSumRad
-                            values={values}
-                            editStepID={StepID.SELVSTENDIG}
-                            field={SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden}
-                            tittel={
-                                <>
-                                    Inntekt som frilanser i perioden{' '}
-                                    <DateRangeView dateRange={selvstendigBeregnetTilgjengeligSøknadsperiode} />
-                                </>
-                            }
-                            sum={selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser}
-                        />
+                        <FormSection title="Inntekt som frilanser">
+                            <BekreftSumRad
+                                values={values}
+                                editStepID={StepID.SELVSTENDIG}
+                                field={SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden}
+                                tittel={
+                                    <>
+                                        Personinntekt fra oppdrag i perioden{' '}
+                                        <DateRangeView dateRange={selvstendigBeregnetTilgjengeligSøknadsperiode} />
+                                    </>
+                                }
+                                sum={selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser}
+                            />
+                        </FormSection>
                     )}
-                </FormSection>
+                </>
             )}
             {frilanserSoknadIsOk === false && frilanserStopReason && (
-                <FormSection title="Frilanser">
+                <FormSection title="Inntekt som frilanser">
                     <StopMessage>
                         {FrilanserInfo.getMessageForAvslag(frilanserStopReason)}
                         <p>
@@ -199,34 +206,38 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             {frilanser &&
                 frilanserBeregnetTilgjengeligSønadsperiode &&
                 isVisible(SoknadFormField.bekrefterFrilansinntektIPerioden) && (
-                    <FormSection title="Inntekt som frilanser">
-                        <BekreftSumRad
-                            values={values}
-                            editStepID={StepID.FRILANSER}
-                            field={SoknadFormField.bekrefterFrilansinntektIPerioden}
-                            tittel={
-                                <>
-                                    Inntekt som frilanser i perioden{' '}
-                                    <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
-                                </>
-                            }
-                            sum={frilanser.inntektIPerioden}
-                        />
-                        {isVisible(SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden) && (
+                    <>
+                        <FormSection title="Inntekt som frilanser">
                             <BekreftSumRad
                                 values={values}
                                 editStepID={StepID.FRILANSER}
-                                field={SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden}
+                                field={SoknadFormField.bekrefterFrilansinntektIPerioden}
                                 tittel={
                                     <>
-                                        Inntekt som selvstendig næringsdrivende i perioden{' '}
+                                        Personinntekt fra oppdrag i perioden{' '}
                                         <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
                                     </>
                                 }
-                                sum={frilanser.inntektIPeriodenSomSelvstendigNæringsdrivende}
+                                sum={frilanser.inntektIPerioden}
                             />
+                        </FormSection>
+                        {isVisible(SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden) && (
+                            <FormSection title="Inntekt som selvstendig næringsdrivende">
+                                <BekreftSumRad
+                                    values={values}
+                                    editStepID={StepID.FRILANSER}
+                                    field={SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden}
+                                    tittel={
+                                        <>
+                                            Personinntekt fra næring i perioden{' '}
+                                            <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
+                                        </>
+                                    }
+                                    sum={frilanser.inntektIPeriodenSomSelvstendigNæringsdrivende}
+                                />
+                            </FormSection>
                         )}
-                    </FormSection>
+                    </>
                 )}
         </SoknadStep>
     );
