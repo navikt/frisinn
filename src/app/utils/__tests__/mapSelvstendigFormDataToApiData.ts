@@ -51,7 +51,6 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
         selvstendigHarRegnskapsfører: YesOrNo.NO,
         selvstendigHarHattInntektSomFrilanserIPerioden: YesOrNo.NO,
         selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
-        selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.UNANSWERED,
         selvstendigInntekt2020: undefined,
         søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
     };
@@ -137,39 +136,6 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
                 expect(
                     getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
                 ).toBe('Nei');
-            });
-            it('does not include selvstendigYtelseFraNavDekkerHeleTapet info when selvstendigHarYtelseFraNavSomDekkerTapet === NO', () => {
-                const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
-                    ...formData,
-                    selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
-                });
-                expect(
-                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)
-                ).toBe('Nei');
-                expect(
-                    getQuestionAnswer(apiData?.spørsmålOgSvar, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
-                ).toBeUndefined();
-            });
-            it('does include selvstendigYtelseFraNavDekkerHeleTapet when selvstendigHarYtelseFraNavSomDekkerTapet === YES', () => {
-                const apiDataNo = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
-                    ...formData,
-                    selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.YES,
-                    selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.NO,
-                });
-                const apiDataYes = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
-                    ...formData,
-                    selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.YES,
-                    selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.YES,
-                });
-                expect(
-                    getQuestionAnswer(apiDataNo?.spørsmålOgSvar, SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet)
-                ).toBe('Nei');
-                expect(
-                    getQuestionAnswer(
-                        apiDataYes?.spørsmålOgSvar,
-                        SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet
-                    )
-                ).toBe('Ja');
             });
         });
         describe('Regnskapsfører', () => {

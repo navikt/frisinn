@@ -7,7 +7,7 @@ export enum SelvstendigNæringdsrivendeAvslagÅrsak {
     'erIkkeSelvstendigNæringsdrivende' = 'erIkkeSelvstendigNæringsdrivende',
     'harIkkeHattInntektstapPgaKorona' = 'harIkkeHattInntektstapPgaKorona',
     'søkerIkkeForGyldigTidsrom' = 'søkerIkkeForGyldigTidsrom',
-    'utebetalingFraNAVDekkerHeleInntektstapet' = 'utebetalingFraNAVDekkerHeleInntektstapet',
+    'harYtelseFraNavSomDekkerTapet' = 'harYtelseFraNavSomDekkerTapet',
     'harIkkeHattHistoriskInntekt' = 'harIkkeHattHistoriskInntekt',
 }
 
@@ -15,7 +15,7 @@ export interface SelvstendigNæringsdrivendeAvslagStatus {
     [SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom]: boolean;
-    [SelvstendigNæringdsrivendeAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt]: boolean;
 }
 
@@ -47,12 +47,8 @@ const søkerIkkeForGyldigTidsrom = ({
 
 const utbetalingFraNAVDekkerHeleTapet = ({
     selvstendigHarYtelseFraNavSomDekkerTapet,
-    selvstendigYtelseFraNavDekkerHeleTapet,
 }: KontrollerSelvstendigSvarPayload) => {
-    return (
-        selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES &&
-        selvstendigYtelseFraNavDekkerHeleTapet === YesOrNo.YES
-    );
+    return selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES;
 };
 
 export const kontrollerSelvstendigSvar = (
@@ -61,6 +57,6 @@ export const kontrollerSelvstendigSvar = (
     erIkkeSelvstendigNæringsdrivende: erIkkeSelvstendigNæringsdrivende(payload),
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
-    utebetalingFraNAVDekkerHeleInntektstapet: utbetalingFraNAVDekkerHeleTapet(payload),
+    harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
     harIkkeHattHistoriskInntekt: harIkkeHattHistoriskInntekt(payload),
 });

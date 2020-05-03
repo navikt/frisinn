@@ -43,7 +43,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigHarTaptInntektPgaKorona,
         selvstendigInntektstapStartetDato,
         selvstendigHarYtelseFraNavSomDekkerTapet,
-        selvstendigYtelseFraNavDekkerHeleTapet,
         selvstendigInntektIPerioden,
         selvstendigInntekt2019,
         selvstendigInntekt2020,
@@ -96,13 +95,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
-        if (selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES) {
-            spørsmålOgSvar.push({
-                field: SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet,
-                spørsmål: soknadQuestionText.selvstendigYtelseFraNavDekkerHeleTapet,
-                svar: formatYesOrNoAnswer(selvstendigYtelseFraNavDekkerHeleTapet),
-            });
-        }
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigHarRevisor,

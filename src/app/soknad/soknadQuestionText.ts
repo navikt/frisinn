@@ -8,7 +8,6 @@ export interface SoknadQuestionText {
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
-    [SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet]: string;
     [SoknadFormField.selvstendigInntekt2019]: string;
     [SoknadFormField.selvstendigInntekt2020]: string;
     [SoknadFormField.selvstendigErFrilanser]: string;
@@ -43,7 +42,6 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',
-    selvstendigYtelseFraNavDekkerHeleTapet: 'Dekker utbetalingen du får fra NAV hele inntektstapet ditt?',
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken personinntekt har du hatt fra næringen din i perioden ${formatDateRange(dateRange)}?`,
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',

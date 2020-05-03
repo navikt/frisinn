@@ -157,7 +157,7 @@ const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, in
             return <StoppIkkeTapPgaKorona />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom:
             return <StoppForSentInntektstap />;
-        case SelvstendigNæringdsrivendeAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
+        case SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet:
             return <StoppYtelseDekkerHeleTapet />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt:
             return <StoppIngenHistoriskInntekt inntektÅrstall={inntektÅrstall} />;

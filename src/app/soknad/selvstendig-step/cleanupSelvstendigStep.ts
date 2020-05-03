@@ -25,10 +25,7 @@ export const cleanupSelvstendigStep = (
     if (v.selvstendigInntekt2019 === undefined && v.selvstendigInntekt2020 === undefined) {
         v.selvstendigHarYtelseFraNavSomDekkerTapet = YesOrNo.UNANSWERED;
     }
-    if (v.selvstendigHarYtelseFraNavSomDekkerTapet !== YesOrNo.YES) {
-        v.selvstendigYtelseFraNavDekkerHeleTapet = YesOrNo.UNANSWERED;
-    }
-    if (avslag.utebetalingFraNAVDekkerHeleInntektstapet) {
+    if (avslag.harYtelseFraNavSomDekkerTapet) {
         v.selvstendigErFrilanser = YesOrNo.UNANSWERED;
         v.selvstendigHarRegnskapsfører = YesOrNo.UNANSWERED;
     }

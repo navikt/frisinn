@@ -14,7 +14,6 @@ export enum SoknadFormField {
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
     selvstendigHarYtelseFraNavSomDekkerTapet = 'selvstendigHarYtelseFraNavSomDekkerTapet',
-    selvstendigYtelseFraNavDekkerHeleTapet = 'selvstendigYtelseFraNavDekkerHeleTapet',
     selvstendigInntektIPerioden = 'selvstendigInntektIPerioden',
     selvstendigErFrilanser = 'selvstendigErFrilanser',
     selvstendigHarHattInntektSomFrilanserIPerioden = 'selvstendigHarHattInntektSomFrilanserIPerioden',
@@ -62,7 +61,6 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: YesOrNo;
-    [SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet]: YesOrNo;
     [SoknadFormField.selvstendigInntektIPerioden]: number;
     [SoknadFormField.selvstendigErFrilanser]?: YesOrNo;
     [SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden]?: YesOrNo;
@@ -116,7 +114,6 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato
     | SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet
-    | SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet
     | SoknadFormField.selvstendigInntektIPerioden
     | SoknadFormField.selvstendigErFrilanser
     | SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden
@@ -154,7 +151,6 @@ export const initialSelvstendigValues: Partial<SelvstendigFormData> = {
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     selvstendigInntektstapStartetDato: undefined,
     selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,
-    selvstendigYtelseFraNavDekkerHeleTapet: YesOrNo.UNANSWERED,
     selvstendigInntektIPerioden: undefined,
     selvstendigInntekt2019: undefined,
     selvstendigInntekt2020: undefined,

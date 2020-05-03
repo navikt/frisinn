@@ -46,7 +46,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigHarHattInntektFraForetak,
         selvstendigHarTaptInntektPgaKorona,
         søkerOmTaptInntektSomFrilanser,
-        selvstendigYtelseFraNavDekkerHeleTapet,
+        selvstendigHarYtelseFraNavSomDekkerTapet,
     } = values;
     const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
     const { foretak = [] } = personligeForetak || {};
@@ -78,7 +78,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         hasValidHistoriskInntekt(values, inntektÅrstall) &&
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
-        selvstendigYtelseFraNavDekkerHeleTapet !== YesOrNo.YES;
+        selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
 
     useEffect(() => {
         setFieldValue(
@@ -217,10 +217,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet}
                                                 description={<SelvstendigInfo.andreUtbetalingerFraNAV />}
-                                            />
-                                            <SoknadQuestion
-                                                name={SoknadFormField.selvstendigYtelseFraNavDekkerHeleTapet}
-                                                showStop={avslag.utebetalingFraNAVDekkerHeleInntektstapet}
+                                                showStop={avslag.harYtelseFraNavSomDekkerTapet}
                                                 stopMessage={<SelvstendigInfo.StoppYtelseDekkerHeleTapet />}
                                             />
                                         </FormSection>
