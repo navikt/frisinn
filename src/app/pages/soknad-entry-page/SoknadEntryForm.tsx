@@ -21,8 +21,9 @@ import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import EntryQuestion from './EntryFormQuestion';
-import StopMessage from '../../components/stop-message/StopMessage';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
+import { stringToSpacedCharString } from '../../utils/accessibility';
+import SoknadQuestion from '../../soknad/SoknadQuestion';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -72,17 +73,18 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
             includeButtons={false}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
-                <EntryQuestion question={SoknadFormField.kontonummerErRiktig}>
-                    <FormComponents.YesOrNoQuestion
-                        name={SoknadFormField.kontonummerErRiktig}
-                        legend={`Vi har registrert kontonummeret ${kontonummer} på deg. Er dette riktig kontonummer?`}
-                    />
-                </EntryQuestion>
-                {kontonummerErRiktig === YesOrNo.NO && (
-                    <StopMessage>
-                        <EndreKontonummer />
-                    </StopMessage>
-                )}
+                <SoknadQuestion
+                    name={SoknadFormField.kontonummerErRiktig}
+                    legend={
+                        <>
+                            Vi har registrert kontonummeret{' '}
+                            <span aria-label={stringToSpacedCharString(kontonummer)}>{kontonummer}</span> på deg. Er
+                            dette riktig kontonummer?
+                        </>
+                    }
+                    showStop={kontonummerErRiktig === YesOrNo.NO}
+                    stopMessage={<EndreKontonummer />}
+                />
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}>
                     <FormComponents.YesOrNoQuestion
                         legend={`Skal du søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}

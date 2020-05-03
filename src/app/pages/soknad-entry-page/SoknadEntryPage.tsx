@@ -12,6 +12,7 @@ import { SoknadEssentials } from '../../types/SoknadEssentials';
 import SoknadEntryForm from './SoknadEntryForm';
 import { ResetSoknadFunction } from '../../soknad/Soknad';
 import { useIntl } from 'react-intl';
+import { createDocumentPageTitle } from '../../utils/documentPageTitle';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -38,12 +39,12 @@ const SoknadEntryPage = ({
 
     return (
         <Page
-            title="Kan du bruke søknaden?"
+            title={createDocumentPageTitle('Kan du bruke søknaden?')}
             topContentRenderer={() => <StepBanner text={intl.formatMessage({ id: 'banner.title' })} />}>
             <Box margin="xxxl">
                 <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
                     <Box margin="l">
-                        <Undertittel>
+                        <Undertittel tag="h1">
                             Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet
                         </Undertittel>
                     </Box>

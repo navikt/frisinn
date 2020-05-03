@@ -12,6 +12,7 @@ import intlHelper from 'common/utils/intlUtils';
 import { getStepTexts } from 'app/utils/stepUtils';
 import { StepConfigInterface, StepConfigItemTexts, StepID } from '../../soknad/stepConfig';
 import StepIndicator from './step-indicator/StepIndicator';
+import { createDocumentPageTitle } from '../../utils/documentPageTitle';
 import './step.less';
 
 const bem = bemHelper('step');
@@ -44,7 +45,7 @@ const Step: React.FunctionComponent<StepProps & OwnProps> = ({
     return (
         <Page
             className={bem.block}
-            title={stepTexts.pageTitle}
+            title={createDocumentPageTitle(stepTexts.pageTitle)}
             topContentRenderer={
                 topContentRenderer
                     ? topContentRenderer
@@ -71,7 +72,9 @@ const Step: React.FunctionComponent<StepProps & OwnProps> = ({
                 </>
             )}
             <Box margin="xxl">
-                <Systemtittel className={bem.element('title')}>{stepTexts.stepTitle}</Systemtittel>
+                <Systemtittel className={bem.element('title')} tag="h1">
+                    {stepTexts.stepTitle}
+                </Systemtittel>
             </Box>
             <Box margin="xl">{children}</Box>
         </Page>
