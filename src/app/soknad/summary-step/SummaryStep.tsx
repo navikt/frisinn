@@ -87,10 +87,6 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                             Du har godkjent at tallene du har lagt inn i søknaden er korrekte. I denne oppsummeringen
                             kan du se om de andre opplysningene du har gitt er korrekte. Hvis du oppdager at noe feil,
                             må du gå tilbake og korrigere det du har lagt inn feil.
-                            <p>
-                                Denne oppsummeringssiden vil først bli synlig for deg på Ditt NAV om en uke. Vi
-                                anbefaler derfor at du tar et bilde, eller en skjermdump av siden.
-                            </p>
                         </Guide>
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
