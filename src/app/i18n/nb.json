@@ -77,7 +77,7 @@
     "fieldvalidation.dato_utenfor_gyldig_tidsrom": "Dato er ikke innfor gyldig tidsrom",
     "fieldvalidation.ugyldig_telefonnummer": "Telefonnummer er ikke gyldig",
 
-    "page.receipt.sidetittel": "Vi har mottatt søknaden din",
+    "page.receipt.sidetittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",
     "page.receipt.tittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",
     "page.receipt.undertittel": "Hva skjer videre nå?",
     "page.receipt.hvaSkjer1": "Søknaden din vil bli behandlet innen noen få dager",

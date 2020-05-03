@@ -39,10 +39,12 @@ const IntroFormQuestion = ({
                             legend={legend || introFormText[name]}
                             description={description}
                         />
-                        {showStop && stopMessage && <StopMessage>{stopMessage}</StopMessage>}
-                        {showInfo && infoMessage && <InfoMessage>{infoMessage}</InfoMessage>}
                     </>
                 )}
+                <div aria-live="polite">
+                    {showStop && stopMessage && <StopMessage>{stopMessage}</StopMessage>}
+                    {showInfo && infoMessage && <InfoMessage>{infoMessage}</InfoMessage>}
+                </div>
             </FormBlock>
         </QuestionVisibilityBlock>
     );
