@@ -31,11 +31,6 @@ const SelvstendigNæringsdrivendeSummary = ({
         <SummaryBlock header={`Inntekt fra selskap i perioden ${info.period}`}>
             <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>
-        {inntektIPeriodenSomFrilanser !== undefined && (
-            <SummaryBlock header="Inntekt som frilanser i perioden">
-                <KronerSvar verdi={inntektIPeriodenSomFrilanser} />
-            </SummaryBlock>
-        )}
         {inntekt2019 !== undefined && (
             <SummaryBlock header="Inntekt fra selskap i 2019">
                 <KronerSvar verdi={inntekt2019} />
@@ -44,6 +39,11 @@ const SelvstendigNæringsdrivendeSummary = ({
         {inntekt2020 !== undefined && (
             <SummaryBlock header="Inntekt fra selskap i januar og februar 2020">
                 <KronerSvar verdi={inntekt2020} />
+            </SummaryBlock>
+        )}
+        {inntektIPeriodenSomFrilanser !== undefined && (
+            <SummaryBlock header="Inntekt som frilanser i perioden">
+                <KronerSvar verdi={inntektIPeriodenSomFrilanser} />
             </SummaryBlock>
         )}
         {regnskapsfører && (

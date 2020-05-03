@@ -73,6 +73,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             bekrefterSelvstendigInntektI2020: YesOrNo.UNANSWERED,
             bekrefterSelvstendigInntektI2019: YesOrNo.UNANSWERED,
             bekrefterSelvstendigInntektIPerioden: YesOrNo.UNANSWERED,
+            bekrefterSelvstendigFrilanserInntektIPerioden: YesOrNo.UNANSWERED,
         });
     }, []);
 
