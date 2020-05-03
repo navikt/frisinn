@@ -17,25 +17,15 @@ const ReceiptPage: React.FunctionComponent = () => {
             <div className={bem.element('centeredContent')}>
                 <CheckmarkIcon />
                 <Box margin="xl">
-                    <Innholdstittel>
-                        <FormattedMessage id="page.receipt.tittel" />
-                    </Innholdstittel>
+                    <Innholdstittel>Vi har mottatt søknad fra deg om inntektskompensasjon</Innholdstittel>
                 </Box>
             </div>
             <Box margin="xl">
-                <Ingress>
-                    <FormattedMessage id="page.receipt.undertittel" />
-                </Ingress>
+                <Ingress>Hva skjer videre nå?</Ingress>
                 <ul className="checklist">
-                    <li>
-                        <FormattedHTMLMessage id="page.receipt.hvaSkjer1" />
-                    </li>
-                    <li>
-                        <FormattedHTMLMessage id="page.receipt.hvaSkjer2" />
-                    </li>
-                    <li>
-                        <FormattedHTMLMessage id="page.receipt.hvaSkjer3" />
-                    </li>
+                    <li>Søknaden din vil bli behandlet så raskt som mulig</li>
+                    <li>Du vil få et svar fra oss, når søknaden er ferdig behandlet</li>
+                    <li>Hvis søknaden blir innvilget, får du utbetaling til kontoen din i løpet av 3 dager</li>
                 </ul>
             </Box>
         </Page>

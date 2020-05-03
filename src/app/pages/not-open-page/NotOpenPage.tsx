@@ -6,8 +6,8 @@ import { Ingress } from 'nav-frontend-typografi';
 const NotOpenPage: React.StatelessComponent<{}> = () => {
     return (
         <ErrorPage pageTitle="Søknaden er ikke tilgjengelig">
-            <ErrorGuide title="Søknaden er ikke tilgjengelig" stillHappy={false}>
-                <Ingress>Du kan dessverre ikke bruke denne søknaden nå. Prøv igjen litt senere.</Ingress>
+            <ErrorGuide title="Søknaden er dessverre ikke tilgjengelig" stillHappy={false}>
+                <Ingress tag="div">Vi jobber så raskt vi kan med å få den tilgjengelig.</Ingress>
             </ErrorGuide>
         </ErrorPage>
     );
