@@ -28,6 +28,8 @@ const SoknadEntryPage = ({
     resetSoknad,
 }: Props) => {
     useEffect(() => {
+        console.log('reset ');
+
         resetSoknad(false);
     }, []);
 
@@ -56,8 +58,8 @@ const SoknadEntryPage = ({
                             inntekten du har mistet, og ikke fra når du eventuelt har mistet oppdrag.
                         </p>
                         <p>
-                            Du kan søke om inntektstap som gjelder fra tidligst 14. Mars. De første 16 dagene av
-                            inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 1. april
+                            Du kan søke om inntektstap som gjelder fra tidligst 14. mars. De første 16 dagene av
+                            inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 30. mars
                             2020.
                         </p>
                         <p>

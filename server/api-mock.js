@@ -66,9 +66,9 @@ const perioderMock = {
 const personligeForetak = {
     personligeForetak: [
         { organisasjonsnummer: '922753458', navn: 'KEBAB HOUSE DA', registreringsdato: '2020-01-01' },
-        { organisasjonsnummer: '922753459', navn: 'PIZZE HYTTE ANS', registreringsdato: '2020-01-01' },
+        { organisasjonsnummer: '922753459', navn: 'PIZZE HYTTE ANS', registreringsdato: '2019-01-01' },
     ],
-    tidligsteRegistreringsdato: '2020-01-01',
+    tidligsteRegistreringsdato: '2019-01-01',
 };
 
 const ingenPersonligeForetak = {

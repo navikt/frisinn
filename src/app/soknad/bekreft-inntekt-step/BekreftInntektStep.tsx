@@ -121,8 +121,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     <StopMessage>
                         {SelvstendigInfo.getMessageForAvslag(
                             selvstendigStopReason,
-                            selvstendigSkalOppgiInntekt2019(soknadEssentials.personligeForetak) ? 2019 : 2020,
-                            soknadEssentials.currentSøknadsperiode
+                            selvstendigSkalOppgiInntekt2019(soknadEssentials.personligeForetak) ? 2019 : 2020
                         )}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>

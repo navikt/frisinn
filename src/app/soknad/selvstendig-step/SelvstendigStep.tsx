@@ -153,9 +153,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                             if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
-                                        <SelvstendigInfo.StoppForSentInntektstap
-                                            currentSøknadsperiode={currentSøknadsperiode}
-                                        />
+                                        <SelvstendigInfo.StoppForSentInntektstap />
                                     </StopMessage>
                                 );
                             }
@@ -183,6 +181,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             values.selvstendigInntekt2019 !== undefined &&
                                             avslag.harIkkeHattHistoriskInntekt
                                         }
+                                        description={<SelvstendigInfo.infoSelvstendigInntekt2019 />}
                                         stopMessage={
                                             <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2019} />
                                         }>
@@ -194,11 +193,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             validate={validateAll([
                                                 validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
                                             ])}
-                                            description={
-                                                antallForetak > 1 ? (
-                                                    <SelvstendigInfo.infoInntektFlereSelskaper />
-                                                ) : undefined
-                                            }
                                         />
                                     </SoknadQuestion>
                                     <SoknadQuestion
@@ -216,11 +210,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             bredde="S"
                                             label={txt.selvstendigInntekt2020}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
-                                            description={
-                                                antallForetak > 1 ? (
-                                                    <SelvstendigInfo.infoInntektFlereSelskaper />
-                                                ) : undefined
-                                            }
                                         />
                                     </SoknadQuestion>
                                     {isVisible(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet) && (

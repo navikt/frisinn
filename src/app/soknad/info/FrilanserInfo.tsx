@@ -66,22 +66,12 @@ const StoppYtelseDekkerHeleTapet = () => (
 );
 
 const andreUtbetalingerFraNAV = () => (
+    // LIK
     <>
         <ExpandableInfo title="Hva vil dette si?">
-            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som frilanser, kan du ikke søke om
-            kompensasjon. Utbetalingene fra NAV kan være én av disse:
-            <ul>
-                <li>Dagpenger</li>
-                <li>Omsorgspenger</li>
-                <li>Sykepenger</li>
-                <li>Foreldrepenger</li>
-                <li>Svangerskapspenger</li>
-                <li>Pleiepenger</li>
-                <li>Opplæringspenger</li>
-                <li>Arbeidsavklaringspenger</li>
-            </ul>
-            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
-            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
+            Hvis du allerede har en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser, kan du
+            ikke søke. Du kan søke selv om du mottar sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra
+            NAV.
         </ExpandableInfo>
     </>
 );

@@ -42,12 +42,12 @@ export const soknadQuestionText: SoknadQuestionText = {
         )}, som følge av koronautbruddet?`,
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigHarYtelseFraNavSomDekkerTapet:
-        'Har du allerede en utbetaling fra NAV som dekker hele eller deler av inntektstapet ditt som selvstendig næringsdrivende?',
+        'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',
     selvstendigYtelseFraNavDekkerHeleTapet: 'Dekker utbetalingen du får fra NAV hele inntektstapet ditt?',
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
-        `Hvilken inntekt har du tatt ut i perioden ${formatDateRange(dateRange)}?`,
-    selvstendigInntekt2019: 'Hvilken inntekt har du tatt ut i 2019?',
-    selvstendigInntekt2020: `Hvilken inntekt har du tatt ut før 1. mars 2020?`,
+        `Hvilken personinntekt har du hatt fra næringen din i perioden ${formatDateRange(dateRange)}?`,
+    selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
+    selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',
     selvstendigHarHattInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
         `Har du hatt inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
@@ -65,10 +65,10 @@ export const soknadQuestionText: SoknadQuestionText = {
     frilanserErNyetablert: 'Startet du å jobbe som frilanser etter 1. mars 2019?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:
-        'Har du allerede en utbetaling fra NAV som dekker hele eller deler av inntektstapet ditt som frilanser?',
+        'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',
     frilanserYtelseFraNavDekkerHeleTapet: 'Dekker utbetalingen du får fra NAV hele inntektstapet ditt?',
     frilanserInntektIPerioden: (dateRange: DateRange) =>
-        `Hvor mye hadde du i inntekt i perioden ${formatDateRange(dateRange)}?`,
+        `Hvilken personinntekt har du hatt fra oppdrag i perioden ${formatDateRange(dateRange)}?`,
     frilanserHarHattInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>
         `Har du tatt ut noe inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(dateRange)}?`,
     frilanserInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>

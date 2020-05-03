@@ -93,14 +93,17 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <p>
                         Du er frilanser når du mottar lønn for enkeltstående oppdrag uten å være fast eller midlertidig
-                        ansatt hos den du utfører oppdraget for. Du må sjekke om oppdragene dine er registrert som
-                        frilansoppdrag, på{' '}
-                        <Lenke
-                            href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/"
-                            target="_blank">
-                            skatteetaten sine nettsider
-                        </Lenke>{' '}
-                        (åpnes i nytt vindu).
+                        ansatt hos den du utfører oppdraget for.
+                        <p>
+                            <strong>Har du sjekket om du er frilanser?</strong> Det gjør du ved å sjekke om oppdragene
+                            dine er registrert som frilansoppdrag på{' '}
+                            <Lenke
+                                href="https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/"
+                                target="_blank">
+                                skatteetaten sine nettsider
+                            </Lenke>{' '}
+                            (åpnes i nytt vindu).
+                        </p>
                     </p>
                 </Guide>
 

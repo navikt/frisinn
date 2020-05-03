@@ -9,16 +9,16 @@ interface Props {
     canApplyAsFrilanser?: boolean;
 }
 const IntroCheckList = ({ canApplyAsSelvstending, canApplyAsFrilanser }: Props) => {
-    const canApplyAs = [
-        ...(canApplyAsSelvstending ? ['selvstendig næringsdrivende'] : []),
-        ...(canApplyAsFrilanser ? ['frilanser'] : []),
-    ];
+    // const canApplyAs = [
+    //     ...(canApplyAsSelvstending ? ['selvstendig næringsdrivende'] : []),
+    //     ...(canApplyAsFrilanser ? ['frilanser'] : []),
+    // ];
 
     return (
         <>
             <Guide svg={<VeilederSVG mood={'happy'} />} kompakt={true} type="plakat">
-                <Undertittel>Viktig informasjon når du skal søke som {canApplyAs.join(' og ')}</Undertittel>
-                <ul>
+                <Undertittel>Nyttig informasjon når du skal søke</Undertittel>
+                <ul className="infoList">
                     <li>
                         Nå går du videre i prosessen til utfyllingen av selve søknaden om kompensasjon for tapt inntekt
                         som følge av koronautbruddet.
@@ -33,17 +33,12 @@ const IntroCheckList = ({ canApplyAsSelvstending, canApplyAsFrilanser }: Props) 
                         Du vil måtte svare på noen av de samme spørsmålene som ovenfor når du har logget deg inn. En del
                         opplysninger henter vi fra offentlige registre, mens noen opplysninger må du skrive inn på nytt.
                     </li>
-                    <li>
-                        Du er selv ansvarlig for å gi oss riktige opplysninger. Vi kontrollerer opplysningene du gir.
-                    </li>
-                    <li>
-                        Du vil måtte svare på noen av de samme spørsmålene som ovenfor når du har logget deg inn. En del
-                        opplysninger henter vi fra offentlige registre, mens noen opplysninger må du skrive inn på nytt.
-                    </li>
-                    <li>
-                        Du er selv ansvarlig for å gi oss riktige opplysninger. Vi kontrollerer opplysningene du gir.
-                    </li>
                 </ul>
+                <p>
+                    <strong>
+                        Du er selv ansvarlig for å gi oss riktige opplysninger. Vi kontrollerer opplysningene du gir.
+                    </strong>
+                </p>
             </Guide>
         </>
     );

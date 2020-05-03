@@ -4,8 +4,6 @@ import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
 import { Foretak } from '../../types/SoknadEssentials';
-import DateView from '../../components/date-view/DateView';
-import moment from 'moment';
 import { DateRange } from '../../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendig-step/selvstendigAvslag';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
@@ -32,15 +30,11 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
     );
 };
 
-const StoppForSentInntektstap = ({ currentSøknadsperiode }: { currentSøknadsperiode: DateRange }) => {
-    const maanedNestePeriode = moment(currentSøknadsperiode.to).add(1, 'day').toDate();
-    const nesteSokeMaaned = moment(maanedNestePeriode).add(1, 'month').toDate();
+const StoppForSentInntektstap = () => {
     return (
         <>
-            Du må vente med å søke som selvstendig næringsdrivende. Ordningen er lagt opp til at du må søke
-            etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene av inntektstapet ditt. Hvis du har
-            inntektstap i <DateView date={maanedNestePeriode} format="monthAndYear" /> kan du tidligst sende søknad i
-            begynnelsen av <DateView date={nesteSokeMaaned} format="monthAndYear" />.
+            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15.
+            april, dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned.
         </>
     );
 };
@@ -139,37 +133,30 @@ const infoInntektÅrstall = ({ inntektÅrstall }: { inntektÅrstall: number }) =
 const andreUtbetalingerFraNAV = () => (
     <>
         <ExpandableInfo title="Hva vil dette si?">
-            Hvis du har en utbetaling fra NAV som dekker hele inntektstapet ditt som selvstendig næringsdrivende, kan du
-            ikke søke om kompensasjon. Utbetalingene fra NAV kan være én av disse:
-            <ul>
-                <li>Omsorgspenger</li>
-                <li>Sykepenger</li>
-                <li>Foreldrepenger</li>
-                <li>Svangerskapspenger</li>
-                <li>Pleiepenger</li>
-                <li>Opplæringspenger</li>
-                <li>Arbeidsavklaringspenger</li>
-            </ul>
-            Hvis du har én av disse utbetalingene, men bare delvis, kan du søke. Du kan også søke selv om du mottar
-            sosial stønad, alderspensjon før fylte 67 år eller uføretrygd fra NAV.
+            Hvis du allerede har en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig
+            næringsdrivende, kan du ikke søke. Du kan søke selv om du mottar sosial stønad, alderspensjon før fylte 67
+            år eller uføretrygd fra NAV.
         </ExpandableInfo>
     </>
 );
 
-const infoInntektFlereSelskaper = () => <>Du skal oppgi inntektene samlet for alle selskapene.</>;
+const infoSelvstendigInntekt2019 = () => (
+    <>
+        <ExpandableInfo title="TODO: her må vi forklare mer">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit saepe eius esse quas animi, aliquam
+            cupiditate unde consequuntur vitae libero nisi ea sint maxime at ullam sequi rem quo sed!
+        </ExpandableInfo>
+    </>
+);
 
-const getMessageForAvslag = (
-    årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
-    inntektÅrstall: number,
-    currentSøknadsperiode: DateRange
-): React.ReactNode => {
+const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, inntektÅrstall: number): React.ReactNode => {
     switch (årsak) {
         case SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende:
             return <StoppIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom:
-            return <StoppForSentInntektstap currentSøknadsperiode={currentSøknadsperiode} />;
+            return <StoppForSentInntektstap />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
             return <StoppYtelseDekkerHeleTapet />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt:
@@ -187,9 +174,9 @@ const SelvstendigInfo = {
     infoHvordanBeregneInntekt,
     infoInntektÅrstall,
     andreUtbetalingerFraNAV,
-    infoInntektFlereSelskaper,
     koronaTaptInntekt,
     getMessageForAvslag,
+    infoSelvstendigInntekt2019,
 };
 
 export default SelvstendigInfo;
