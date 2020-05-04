@@ -15,6 +15,8 @@ import { Ingress } from 'nav-frontend-typografi';
 import useTilgjengelig from '../hooks/useTilgjengelig';
 import { usePrevious } from '../hooks/usePrevious';
 import NotOpenPage from '../pages/not-open-page/NotOpenPage';
+import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
+import SoknadErrors from './soknad-errors/SoknadErrors';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -49,10 +51,14 @@ const Soknad = () => {
 
     useEffect(() => {
         if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
-            essentials.fetch();
-            tempStorage.fetch();
-            alderCheck.check();
-            maksEnSoknadPerPeriodeCheck.check();
+            if (isTilgjengelig === true) {
+                essentials.fetch();
+                tempStorage.fetch();
+                alderCheck.check();
+                maksEnSoknadPerPeriodeCheck.check();
+            } else {
+                setInitializing(false);
+            }
         }
     }, [{ isTilgjengelig }]);
 
@@ -60,16 +66,29 @@ const Soknad = () => {
         if (essentials.isRedirectingToLogin) {
             return;
         }
-        if (essentials.isLoading === false) {
+        if (isTilgjengelig === true && essentials.isLoading === false) {
             setInitializing(false);
         }
     }, [essentialsIsLoading]);
+
+    const hasError =
+        essentials.error !== undefined ||
+        alderCheck.error !== undefined ||
+        maksEnSoknadPerPeriodeCheck.error !== undefined;
+
     return (
         <LoadWrapper
             isLoading={isLoading || essentials.isRedirectingToLogin === true}
             contentRenderer={() => {
                 if (tilgjengelig.isTilgjengelig === false) {
                     return <NotOpenPage />;
+                }
+                if (hasError) {
+                    return (
+                        <SoknadErrorPage pageTitle="Det oppstod en feil under visning av siden">
+                            <SoknadErrors.GeneralSoknadFrontpageError />
+                        </SoknadErrorPage>
+                    );
                 }
                 if (alderCheck.result?.passes === false) {
                     return (

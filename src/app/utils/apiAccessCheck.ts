@@ -17,6 +17,7 @@ export async function apiAccessCheck(krav: ApiKrav, params?: string): Promise<Ac
             checkName: krav,
             passes: false,
             info: error.message,
+            error,
         };
     }
 }

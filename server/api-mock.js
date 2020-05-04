@@ -103,7 +103,7 @@ const startExpressServer = () => {
     server.get('/tilgjengelig', (req, res) => {
         setTimeout(() => {
             res.sendStatus(200);
-        }, 200);
+        }, 0);
     });
 
     server.get('/utilgjengelig', (req, res) => {
@@ -121,7 +121,7 @@ const startExpressServer = () => {
     server.get('/soker', (req, res) => {
         setTimeout(() => {
             res.send(søkerMock);
-        }, 250);
+        }, 200);
     });
 
     server.get('/perioder', (req, res) => {
@@ -132,13 +132,13 @@ const startExpressServer = () => {
             } else {
                 res.send(perioderMock);
             }
-        }, 0);
+        }, 1200);
     });
 
     server.get('/personlige-foretak', (req, res) => {
         setTimeout(() => {
             res.send(personligeForetak);
-        }, 250);
+        }, 2000);
     });
 
     server.get('/ingen-personlige-foretak', (req, res) => {
@@ -163,7 +163,7 @@ const startExpressServer = () => {
                 beskrivelse:
                     'Søker er 26 år i begynnelsen av perioden , og 26 i slutten av perioden, og innfrir dermed alderskravet.',
             });
-        }, 1000);
+        }, 500);
     });
 
     server.get('/krav/selvstendig-naeringsdrivende', (req, res) => {
