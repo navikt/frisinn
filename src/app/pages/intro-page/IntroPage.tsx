@@ -47,7 +47,6 @@ const IntroPage: React.StatelessComponent = () => {
     useEffect(() => {
         if (tilgjengeligFetcher.isLoading === false && soknadsperiodeIsLoading === false) {
             setInitializing(false);
-            return;
         }
     }, [soknadsperiodeIsLoading]);
 
