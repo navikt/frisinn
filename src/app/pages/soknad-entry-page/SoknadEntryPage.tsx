@@ -29,8 +29,6 @@ const SoknadEntryPage = ({
     resetSoknad,
 }: Props) => {
     useEffect(() => {
-        console.log('reset ');
-
         resetSoknad(false);
     }, []);
 
