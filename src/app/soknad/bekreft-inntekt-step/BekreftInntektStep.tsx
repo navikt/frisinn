@@ -22,6 +22,7 @@ import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
+import SoknadErrors from '../soknad-errors/SoknadErrors';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -31,7 +32,11 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
     if (!apiValues) {
-        return <SoknadErrorPage>Det oppstod en feil under visningen av siden</SoknadErrorPage>;
+        return (
+            <SoknadErrorPage>
+                <SoknadErrors.MissingApiDataError />
+            </SoknadErrorPage>
+        );
     }
     const { selvstendigNæringsdrivende, frilanser } = apiValues;
 

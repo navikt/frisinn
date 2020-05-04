@@ -14,6 +14,7 @@ import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 import { Ingress } from 'nav-frontend-typografi';
 import useTilgjengelig from '../hooks/useTilgjengelig';
 import { usePrevious } from '../hooks/usePrevious';
+import NotOpenPage from '../pages/not-open-page/NotOpenPage';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -68,13 +69,7 @@ const Soknad = () => {
             isLoading={isLoading || essentials.isRedirectingToLogin === true}
             contentRenderer={() => {
                 if (tilgjengelig.isTilgjengelig === false) {
-                    return (
-                        <NoAccessPage title="Søknaden er ikke tilgjengelig">
-                            <Ingress>
-                                Søknaden er dessverre ikke tilgjengelig akkurat nå. Vennligst prøv igjen litt senere.
-                            </Ingress>
-                        </NoAccessPage>
-                    );
+                    return <NotOpenPage />;
                 }
                 if (alderCheck.result?.passes === false) {
                     return (
