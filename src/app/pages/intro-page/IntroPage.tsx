@@ -76,7 +76,7 @@ const IntroPage: React.StatelessComponent = () => {
                 <LoadWrapper
                     isLoading={isLoading}
                     contentRenderer={() => {
-                        if (tilgjengeligFetcher.isTilgjengelig === false) {
+                        if (isTilgjengelig === false) {
                             relocateToNotOpenPage();
                             return null;
                         }
