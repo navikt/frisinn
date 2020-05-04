@@ -103,7 +103,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                             alderCheck.result &&
                             alderCheck.result.passes === false
                         ) {
-                            return <StopMessage>{alderCheck.result.info}</StopMessage>;
+                            return null; // Error is shown below datepicker
                         }
                         return (
                             <>
