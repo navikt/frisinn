@@ -28,7 +28,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
         <strong>
             <DateRangeView dateRange={periode} />
         </strong>
-        . Personinntekt betyr inntekter minus utgifter i denne perioden.
+        .
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul className="infoList">
