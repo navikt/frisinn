@@ -100,6 +100,18 @@ const startExpressServer = () => {
         res.sendStatus(401);
     });
 
+    server.get('/tilgjengelig', (req, res) => {
+        setTimeout(() => {
+            res.sendStatus(200);
+        }, 200);
+    });
+
+    server.get('/utilgjengelig', (req, res) => {
+        setTimeout(() => {
+            res.sendStatus(503);
+        }, 200);
+    });
+
     server.get('/login', (req, res) => {
         setTimeout(() => {
             res.sendStatus(404);
@@ -120,7 +132,7 @@ const startExpressServer = () => {
             } else {
                 res.send(perioderMock);
             }
-        }, 250);
+        }, 0);
     });
 
     server.get('/personlige-foretak', (req, res) => {
@@ -170,18 +182,6 @@ const startExpressServer = () => {
                 beskrivelse: 'Søkeren har ikke søkt for periode 2020-03-14/2020-04-30, og kan søke nå',
             });
         }, 1000);
-    });
-
-    server.get('/tilgjengelig', (req, res) => {
-        setTimeout(() => {
-            res.sendStatus(200);
-        }, 200);
-    });
-
-    server.get('/utilgjengelig', (req, res) => {
-        setTimeout(() => {
-            res.sendStatus(503);
-        }, 200);
     });
 
     server.post('/soknad', (req, res) => {
