@@ -66,9 +66,9 @@ const perioderMock = {
 const personligeForetak = {
     personligeForetak: [
         { organisasjonsnummer: '922753458', navn: 'KEBAB HOUSE DA', registreringsdato: '2020-01-01' },
-        { organisasjonsnummer: '922753459', navn: 'PIZZE HYTTE ANS', registreringsdato: '2019-01-01' },
+        { organisasjonsnummer: '922753459', navn: 'PIZZE HYTTE ANS', registreringsdato: '2020-01-01' },
     ],
-    tidligsteRegistreringsdato: '2019-01-01',
+    tidligsteRegistreringsdato: '2020-01-01',
 };
 
 const ingenPersonligeForetak = {
@@ -132,13 +132,13 @@ const startExpressServer = () => {
             } else {
                 res.send(perioderMock);
             }
-        }, 1200);
+        }, 220);
     });
 
     server.get('/personlige-foretak', (req, res) => {
         setTimeout(() => {
             res.send(personligeForetak);
-        }, 2000);
+        }, 240);
     });
 
     server.get('/ingen-personlige-foretak', (req, res) => {

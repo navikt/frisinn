@@ -51,7 +51,9 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigHarHattInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
         `Har du hatt inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
     selvstendigInntektSomFrilanserIPerioden: (dateRange: DateRange) =>
-        `Hva hadde du i inntekt som frilanser i perioden ${formatDateRange(dateRange)}`,
+        `Hvilken personinntekt har du hatt fra oppdrag som frilanser, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som frilanser i perioden ${formatDateRange(
+            dateRange
+        )}?`,
     selvstendigHarRegnskapsfører: 'Har du regnskapsfører?',
     selvstendigRegnskapsførerNavn: 'Navn på regnskapsfører',
     selvstendigRegnskapsførerTelefon: 'Telefonnummer til regnskapsfører',
@@ -66,7 +68,9 @@ export const soknadQuestionText: SoknadQuestionText = {
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',
     frilanserInntektIPerioden: (dateRange: DateRange) =>
-        `Hvilken personinntekt har du hatt fra oppdrag i perioden ${formatDateRange(dateRange)}?`,
+        `Hvilken personinntekt har du hatt fra oppdrag, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som frilanser i perioden ${formatDateRange(
+            dateRange
+        )}?`,
     frilanserHarHattInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>
         `Har du hatt noen personinntekt fra næring, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
