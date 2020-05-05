@@ -1,5 +1,5 @@
 import React from 'react';
-import { DateRange, prettifyDate, prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, prettifyDate, prettifyDateFull } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     dateRange: DateRange;
@@ -8,7 +8,7 @@ interface Props {
 
 export const formatDateRange = (dateRange: DateRange, extendedFormat = true): string => {
     return extendedFormat
-        ? `${prettifyDateExtended(dateRange.from)} - ${prettifyDateExtended(dateRange.to)}`
+        ? `${prettifyDateFull(dateRange.from)} - ${prettifyDateFull(dateRange.to)}`
         : `${prettifyDate(dateRange.from)}  - ${prettifyDate(dateRange.to)}`;
 };
 
