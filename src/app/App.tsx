@@ -23,6 +23,7 @@ require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
+
 moment.locale(localeFromSessionStorage);
 
 Sentry.init({
