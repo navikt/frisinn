@@ -12,7 +12,7 @@ function useTilgjengelig(isIntroPage = false) {
         setIsLoading(true);
         setCounter(counter + 1);
         if (isIntroPage && counter > 10) {
-            const error = new Error('Tilgjengelig called 10 times');
+            const error = new Error('Tilgjengelig called 10 times.');
             setError(error);
             throw error;
         }
