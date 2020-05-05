@@ -68,7 +68,7 @@ export const soknadQuestionText: SoknadQuestionText = {
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',
     frilanserInntektIPerioden: (dateRange: DateRange) =>
-        `Hvilken personinntekt har du hatt fra oppdrag, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som frilanser i perioden ${formatDateRange(
+        `Hvilken personinntekt har du hatt fra oppdrag som frilanser, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som frilanser i perioden ${formatDateRange(
             dateRange
         )}?`,
     frilanserHarHattInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>
