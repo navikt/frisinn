@@ -42,7 +42,9 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',
     selvstendigInntektIPerioden: (dateRange: DateRange) =>
-        `Hvilken personinntekt har du hatt fra næringen din i perioden ${formatDateRange(dateRange)}?`,
+        `Har du hatt noen personinntekt fra næring, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som selvstendig næringsdrivende i perioden ${formatDateRange(
+            dateRange
+        )}?`,
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
     selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',
@@ -66,7 +68,9 @@ export const soknadQuestionText: SoknadQuestionText = {
     frilanserInntektIPerioden: (dateRange: DateRange) =>
         `Hvilken personinntekt har du hatt fra oppdrag i perioden ${formatDateRange(dateRange)}?`,
     frilanserHarHattInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>
-        `Har du hatt noen personinntekt fra næring i perioden ${formatDateRange(dateRange)}?`,
+        `Har du hatt noen personinntekt fra næring, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som selvstendig næringsdrivende i perioden ${formatDateRange(
+            dateRange
+        )}?`,
     frilanserInntektSomSelvstendigIPerioden: (dateRange: DateRange) =>
         `Hvilken personinntekt hadde du fra næringen din i perioden ${formatDateRange(dateRange)}`,
 };
