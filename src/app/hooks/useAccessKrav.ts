@@ -12,6 +12,9 @@ function useAccessCheck(accessCheck: AccessCheck) {
         try {
             setIsLoading(true);
             const checkResult = await accessCheck.check();
+            if (checkResult.error) {
+                setError(checkResult.error);
+            }
             setAccessCheckResult(checkResult);
         } catch (error) {
             setError(error);

@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 import { getSøknadsperiode } from '../api/perioder';
 import { DateRange } from '../utils/dateUtils';
 
-function useSoknadsperiode() {
+function useSoknadsperiode(runImmediately = true) {
     const [soknadsperiode, setCurrentPeriode] = useState<DateRange | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError | undefined>();
@@ -20,12 +20,19 @@ function useSoknadsperiode() {
             setIsLoading(false);
         }
     };
-
     useEffect(() => {
-        fetch();
-    }, []);
+        if (runImmediately) {
+            fetch();
+        } else {
+            setIsLoading(false);
+        }
+    }, [runImmediately]);
 
-    return { soknadsperiode, isLoading, error };
+    const triggerFetch = () => {
+        fetch();
+    };
+
+    return { soknadsperiode, triggerFetch, isLoading, error };
 }
 
 export default useSoknadsperiode;
