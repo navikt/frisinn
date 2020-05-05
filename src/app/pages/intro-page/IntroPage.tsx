@@ -33,7 +33,7 @@ const IntroPage: React.StatelessComponent = () => {
     const [introResult, setIntroResult] = useState<IntroResultProps | undefined>();
 
     const intl = useIntl();
-    const tilgjengeligFetcher = useTilgjengelig();
+    const tilgjengeligFetcher = useTilgjengelig(true);
     const soknadsperiodeFetcher = useSoknadsperiode(false);
 
     const { isTilgjengelig } = tilgjengeligFetcher;
