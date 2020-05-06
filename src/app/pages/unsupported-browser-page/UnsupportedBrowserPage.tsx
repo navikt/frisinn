@@ -8,7 +8,7 @@ import { Ingress } from 'nav-frontend-typografi';
 const GeneralErrorPage = () => {
     return (
         <Page
-            title={''}
+            title={'Vi støtter ikke nettleseren du bruker'}
             topContentRenderer={() => (
                 <StepBanner text="Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere" />
             )}>
