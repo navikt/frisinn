@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/sif-common-core/lib/utils/localeUtils';
 import * as Sentry from '@sentry/browser';
+import { detect } from 'detect-browser';
 import moment from 'moment';
 import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
@@ -14,6 +15,7 @@ import IntroPage from './pages/intro-page/IntroPage';
 import NotFoundPage from './pages/not-found-page/NotFoundPage';
 import NotOpenPage from './pages/not-open-page/NotOpenPage';
 import ReceiptPage from './pages/receipt-page/ReceiptPage';
+import UnsupportedBrowserPage from './pages/unsupported-browser-page/UnsupportedBrowserPage';
 import Soknad from './soknad/Soknad';
 import { getEnvironmentVariable } from './utils/envUtils';
 import 'common/styles/globalStyles.less';
@@ -33,8 +35,23 @@ Sentry.init({
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
 
+const isBrowserSupported = (): boolean => {
+    const browser = detect();
+    if (browser) {
+        const { name, version = '', os } = browser;
+        if (os === 'Windows 10' && name === 'edge') {
+            if (version?.match(/(^14.|^15.)\w+/)) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
+
 const App: React.FunctionComponent = () => {
     const [locale, setLocale] = React.useState<Locale>(localeFromSessionStorage);
+    const isSupportedBrowser = isBrowserSupported();
+
     return (
         <ErrorBoundary>
             <ApplicationWrapper
@@ -44,14 +61,17 @@ const App: React.FunctionComponent = () => {
                     setLocale(activeLocale);
                 }}>
                 <>
-                    <Switch>
-                        <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
-                        <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
-                        <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
-                        <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
-                        <Route path="/" component={IntroPage} exact={true} />
-                        <Route component={NotFoundPage} />
-                    </Switch>
+                    {isSupportedBrowser && (
+                        <Switch>
+                            <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
+                            <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
+                            <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
+                            <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                            <Route path="/" component={IntroPage} exact={true} />
+                            <Route component={NotFoundPage} />
+                        </Switch>
+                    )}
+                    {isSupportedBrowser === false && <UnsupportedBrowserPage />}
                 </>
             </ApplicationWrapper>
         </ErrorBoundary>
