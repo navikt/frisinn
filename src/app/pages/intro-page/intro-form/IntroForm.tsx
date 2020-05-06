@@ -33,6 +33,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
         ...values,
         soknadsperiode,
     });
+
     const { isVisible, areAllQuestionsAnswered } = visibility;
 
     const {
