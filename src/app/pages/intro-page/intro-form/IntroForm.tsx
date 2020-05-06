@@ -33,6 +33,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
         ...values,
         soknadsperiode,
     });
+
     const { isVisible, areAllQuestionsAnswered } = visibility;
 
     const {
@@ -91,6 +92,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                             showYearSelector={true}
                             dayPickerProps={{ initialMonth: new Date(1995, 0, 1) }}
                             dateLimitations={{ maksDato: moment.utc().subtract(17, 'years').toDate() }}
+                            useErrorBoundary={true}
                         />
                     </IntroFormQuestion>
                 </FormSection>
