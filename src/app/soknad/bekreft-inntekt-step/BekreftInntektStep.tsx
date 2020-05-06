@@ -95,22 +95,20 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             resetSoknad={resetSoknad}
             showSubmitButton={showSubmitButton}>
             <Box padBottom="l" margin="xxxl">
-                {frilanserSoknadIsOk ||
-                    (selvstendigSoknadIsOk && (
-                        <Guide
-                            svg={<ChecklistCircleIcon />}
-                            type={'plakat'}
-                            kompakt={true}
-                            fargetema={'feilmelding'}
-                            fullHeight={true}>
-                            <strong>Her kontrollerer du at du har gitt oss korrekt informasjon om inntekten din</strong>
-                            .
-                            <p>
-                                Hvis tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du
-                                har lagt inn. Det er ditt ansvar at opplysningene du gir er riktige.
-                            </p>
-                        </Guide>
-                    ))}
+                {(frilanserSoknadIsOk || selvstendigSoknadIsOk) && (
+                    <Guide
+                        svg={<ChecklistCircleIcon />}
+                        type={'plakat'}
+                        kompakt={true}
+                        fargetema={'feilmelding'}
+                        fullHeight={true}>
+                        <strong>Her kontrollerer du at du har gitt oss korrekt informasjon om inntekten din</strong>.
+                        <p>
+                            Hvis tallene nedenfor ikke stemmer, må du gå tilbake i søknaden og korrigere tallene du har
+                            lagt inn. Det er ditt ansvar at opplysningene du gir er riktige.
+                        </p>
+                    </Guide>
+                )}
                 {frilanserSoknadIsOk === false && selvstendigSoknadIsOk === false && (
                     <>
                         <Guide
@@ -141,7 +139,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     </StopMessage>
                 </FormSection>
             )}
-            <Box margin="l">
+            <Box>
                 <InfoMessage>
                     <strong>Du kan kun sende inn søknaden én gang</strong>. Det vil si at hvis du sender inn en søknad
                     med opplysninger som er feil, kan du ikke sende ny søknad eller trekke den søknaden du har sendt.
