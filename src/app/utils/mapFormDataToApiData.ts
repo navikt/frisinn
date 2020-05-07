@@ -59,6 +59,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigRevisorNAVKanTaKontakt,
         selvstendigSoknadIsOk,
     } = formData;
+
     if (
         personligeForetak !== undefined &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
@@ -68,7 +69,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigInntektstapStartetDato !== undefined &&
         hasValidHistoriskInntekt(
             { selvstendigInntekt2019, selvstendigInntekt2020 },
-            personligeForetak.tidligsteRegistreringsdato.getFullYear()
+            getHistoriskInntektÅrstall(personligeForetak)
         )
     ) {
         const harFrilanserInntekt =
@@ -165,7 +166,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                   hasValidHistoriskInntekt: personligeForetak
                       ? hasValidHistoriskInntekt(
                             { selvstendigInntekt2019, selvstendigInntekt2020 },
-                            personligeForetak.tidligsteRegistreringsdato.getFullYear()
+                            getHistoriskInntektÅrstall(personligeForetak)
                         )
                       : 'ingen foretak info',
               };
