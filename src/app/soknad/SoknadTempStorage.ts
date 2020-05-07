@@ -37,7 +37,7 @@ const soknadTempStorage: SoknadTemporartStorage = {
         return persistSetup.persist({ formData, metadata: { lastStepID, version: STORAGE_VERSION } });
     },
     purge: persistSetup.purge,
-    rehydrate: persistSetup.rehydrate,
+    fetch: persistSetup.fetch,
     getValidStorage: getValidTemporaryStorage,
 };
 

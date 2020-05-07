@@ -9,7 +9,7 @@ function useTemporaryStorage() {
     async function fetchStorage() {
         setIsLoading(true);
         try {
-            const storageData = await soknadTempStorage.rehydrate();
+            const storageData = await soknadTempStorage.fetch();
             setStorageData(storageData ? soknadTempStorage.getValidStorage(storageData.data) : undefined);
         } catch (error) {
             setStorageData(undefined);

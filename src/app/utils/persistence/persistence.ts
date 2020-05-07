@@ -3,7 +3,7 @@ import moment from 'moment';
 
 export interface PersistenceInterface<StorageFormat, ResponseFormat = any> {
     persist: (data: StorageFormat) => Promise<AxiosResponse<ResponseFormat>>;
-    rehydrate: () => Promise<AxiosResponse<StorageFormat>>;
+    fetch: () => Promise<AxiosResponse<StorageFormat>>;
     purge: () => Promise<AxiosResponse>;
 }
 
@@ -30,7 +30,7 @@ function persistence<StorageFormat>({ requestConfig, url }: PersistenceConfig): 
         persist: (data: StorageFormat) => {
             return Axios.put(url, data, requestConfig);
         },
-        rehydrate: () => {
+        fetch: () => {
             return Axios.get(url, { ...requestConfig, transformResponse: storageParser });
         },
         purge: () => {
