@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Ingress } from 'nav-frontend-typografi';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
+import useAccessCheck from '../hooks/useAccessKrav';
+import { usePrevious } from '../hooks/usePrevious';
 import useSoknadEssentials from '../hooks/useSoknadEssentials';
 import useTemporaryStorage from '../hooks/useTempStorage';
-import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
-import { navigateToSoknadFrontpage } from '../utils/navigationUtils';
-import SoknadFormComponents from './SoknadFormComponents';
-import SoknadRoutes from './SoknadRoutes';
-import { maksEnSoknadPerPeriodeAccessCheck, alderAccessCheck } from '../utils/apiAccessCheck';
-import useAccessCheck from '../hooks/useAccessKrav';
-import NoAccessPage from '../pages/no-access-page/NoAccessPage';
-import { Ingress } from 'nav-frontend-typografi';
 import useTilgjengelig from '../hooks/useTilgjengelig';
-import { usePrevious } from '../hooks/usePrevious';
+import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
+import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 import NotOpenPage from '../pages/not-open-page/NotOpenPage';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
+import { alderAccessCheck, maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
+import { navigateTo, navigateToSoknadFrontpage } from '../utils/navigationUtils';
+import { getSoknadRoute } from '../utils/routeUtils';
 import SoknadErrors from './soknad-errors/SoknadErrors';
+import SoknadFormComponents from './SoknadFormComponents';
+import SoknadRoutes from './SoknadRoutes';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -49,6 +50,18 @@ const Soknad = () => {
         maksEnSoknadPerPeriodeCheck.isLoading ||
         tilgjengeligIsLoading;
 
+    const initializingDone = (): void => {
+        const { storageData } = tempStorage;
+        if (storageData) {
+            const currentRoute = history.location.pathname;
+            const lastStepRoute = getSoknadRoute(storageData.metadata.lastStepID);
+            if (currentRoute !== lastStepRoute) {
+                navigateTo(lastStepRoute, history);
+            }
+        }
+        setInitializing(false);
+    };
+
     useEffect(() => {
         if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
             if (isTilgjengelig === true) {
@@ -57,7 +70,7 @@ const Soknad = () => {
                 alderCheck.check();
                 maksEnSoknadPerPeriodeCheck.check();
             } else {
-                setInitializing(false);
+                initializingDone();
             }
         }
     }, [{ isTilgjengelig }]);
@@ -67,7 +80,7 @@ const Soknad = () => {
             return;
         }
         if (isTilgjengelig === true && essentials.isLoading === false) {
-            setInitializing(false);
+            initializingDone();
         }
     }, [essentialsIsLoading]);
 
