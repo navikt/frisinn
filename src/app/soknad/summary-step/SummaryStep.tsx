@@ -74,6 +74,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                     setTimeout(() => {
                         setSendingInProgress(true);
                         setTimeout(() => {
+                            // Prevent double click send
                             send(apiValues);
                         });
                     });
