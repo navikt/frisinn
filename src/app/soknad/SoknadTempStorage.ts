@@ -1,8 +1,8 @@
-import persistence, { PersistenceInterface } from '@navikt/sif-common-core/lib/utils/persistence/persistence';
 import { AxiosResponse } from 'axios';
 import { ApiEndpoint } from '../api/api';
 import axiosConfig from '../config/axiosConfig';
 import { SoknadFormData } from '../types/SoknadFormData';
+import persistence, { PersistenceInterface } from '../utils/persistence/persistence';
 import { StepID } from './stepConfig';
 
 export interface TemporaryStorageData {
