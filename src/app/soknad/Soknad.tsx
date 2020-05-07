@@ -18,11 +18,14 @@ import { getSoknadRoute } from '../utils/routeUtils';
 import SoknadErrors from './soknad-errors/SoknadErrors';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
+import { isStorageDataValid } from './SoknadTempStorage';
+import { SoknadFormData } from '../types/SoknadFormData';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
 const Soknad = () => {
     const [initializing, setInitializing] = useState<boolean>(true);
+    const [initialFormValues, setInitialFormValues] = useState<Partial<SoknadFormData>>({});
     const tilgjengelig = useTilgjengelig();
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
@@ -37,6 +40,7 @@ const Soknad = () => {
             }
         }
         if (redirectToFrontpage) {
+            setInitialFormValues({});
             navigateToSoknadFrontpage(history);
         }
     }
@@ -50,13 +54,23 @@ const Soknad = () => {
         maksEnSoknadPerPeriodeCheck.isLoading ||
         tilgjengeligIsLoading;
 
+    const hasError =
+        essentials.error !== undefined ||
+        alderCheck.error !== undefined ||
+        maksEnSoknadPerPeriodeCheck.error !== undefined;
+
     const initializingDone = (): void => {
         const { storageData } = tempStorage;
-        if (storageData) {
-            const currentRoute = history.location.pathname;
-            const lastStepRoute = getSoknadRoute(storageData.metadata.lastStepID);
-            if (currentRoute !== lastStepRoute) {
-                navigateTo(lastStepRoute, history);
+        if (storageData && soknadEssentials) {
+            if (isStorageDataValid(storageData, soknadEssentials)) {
+                setInitialFormValues(storageData.formData);
+                const currentRoute = history.location.pathname;
+                const lastStepRoute = getSoknadRoute(storageData.metadata.lastStepID);
+                if (currentRoute !== lastStepRoute) {
+                    navigateTo(lastStepRoute, history);
+                }
+            } else {
+                navigateToSoknadFrontpage(history);
             }
         }
         setInitializing(false);
@@ -64,7 +78,7 @@ const Soknad = () => {
 
     useEffect(() => {
         if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
-            if (isTilgjengelig === true) {
+            if (isTilgjengelig === true && hasError === false) {
                 essentials.fetch();
                 tempStorage.fetch();
                 alderCheck.check();
@@ -83,11 +97,6 @@ const Soknad = () => {
             initializingDone();
         }
     }, [essentialsIsLoading]);
-
-    const hasError =
-        essentials.error !== undefined ||
-        alderCheck.error !== undefined ||
-        maksEnSoknadPerPeriodeCheck.error !== undefined;
 
     return (
         <LoadWrapper
@@ -120,7 +129,7 @@ const Soknad = () => {
                 if (soknadEssentials) {
                     return (
                         <SoknadFormComponents.FormikWrapper
-                            initialValues={tempStorage.storageData?.formData || {}}
+                            initialValues={initialFormValues}
                             onSubmit={() => null}
                             renderForm={(formik) => {
                                 return (

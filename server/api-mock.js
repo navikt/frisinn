@@ -124,6 +124,12 @@ const startExpressServer = () => {
         }, 200);
     });
 
+    server.get('/soker2', (req, res) => {
+        setTimeout(() => {
+            res.send({ ...søkerMock, fornavn: 'Godslig2' });
+        }, 200);
+    });
+
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
             if (req.query && req.query.inntektstapStartet) {
@@ -199,12 +205,20 @@ const startExpressServer = () => {
         }
     });
 
+    server.put('/mellomlagring', (req, res) => {
+        const body = req.body;
+        const jsBody = isJSON(body) ? JSON.parse(body) : body;
+        writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify(jsBody, null, 2));
+        res.sendStatus(200);
+    });
+
     server.post('/mellomlagring', (req, res) => {
         const body = req.body;
         const jsBody = isJSON(body) ? JSON.parse(body) : body;
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify(jsBody, null, 2));
         res.sendStatus(200);
     });
+
     server.delete('/mellomlagring', (req, res) => {
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify({}, null, 2));
         res.sendStatus(200);

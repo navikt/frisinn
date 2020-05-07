@@ -37,7 +37,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             if (isFeatureEnabled(Feature.PERSISTENCE)) {
                 const stepToPersist = stepConfig[stepID].nextStep;
                 if (stepToPersist) {
-                    soknadTempStorage.persist(values, stepToPersist);
+                    soknadTempStorage.persist(values, stepToPersist, soknadEssentials);
                 }
             }
         }
@@ -94,7 +94,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
                 ? StepID.SELVSTENDIG
                 : StepID.FRILANSER;
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            soknadTempStorage.persist(values, nextStepID);
+            soknadTempStorage.persist(values, nextStepID, soknadEssentials);
         }
         setTimeout(() => {
             navigateTo(`${getSoknadRoute(nextStepID)}`, history);
