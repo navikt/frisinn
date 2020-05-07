@@ -49,5 +49,5 @@ spec:
         - name: APP_VERSION
           value: dev
         - name: PERSISTENCE
-          value: on
+          value: "on"
 
