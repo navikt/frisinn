@@ -28,7 +28,7 @@ const storageParser = (storageResponse: string) => {
 function persistence<StorageFormat>({ requestConfig, url }: PersistenceConfig): PersistenceInterface<StorageFormat> {
     return {
         persist: (data: StorageFormat) => {
-            return Axios.post(url, data, { ...requestConfig, method: 'PUT' });
+            return Axios.put(url, data, requestConfig);
         },
         fetch: () => {
             return Axios.get(url, { ...requestConfig, transformResponse: storageParser });
