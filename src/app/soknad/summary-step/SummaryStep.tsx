@@ -44,7 +44,6 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
     async function send(data: SoknadApiData) {
-        setSendingInProgress(true);
         try {
             await sendSoknad(data);
             onSoknadSent();
@@ -73,7 +72,10 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             onValidFormSubmit={() => {
                 if (apiValues) {
                     setTimeout(() => {
-                        send(apiValues);
+                        setSendingInProgress(true);
+                        setTimeout(() => {
+                            send(apiValues);
+                        });
                     });
                 }
             }}
