@@ -99,7 +99,7 @@ const hvaRegnesSomInntektstap = () => (
     </ExpandableInfo>
 );
 
-const infoSelvstendigHarAlleredeSøkt = () => (
+const infoSelvstendigTrekkeAnnenSøknad = () => (
     <ExpandableInfo title="Hva betyr dette?">
         Eksempel:
         <br />
@@ -108,7 +108,7 @@ const infoSelvstendigHarAlleredeSøkt = () => (
     </ExpandableInfo>
 );
 
-const infoFrilanserHarAlleredeSøkt = () => (
+const infoFrilanserTrekkeAnnenSøknad = () => (
     <ExpandableInfo title="Hva betyr dette?">
         Eksempel:
         <br />
@@ -212,7 +212,7 @@ const IntroFormInfo = {
     ikkeFrilanserOgIkkeRettSomSelvstendig,
     vilIkkeTrekkeAnnenSøknadSelvstendig,
     vilIkkeTrekkeAnnenSøknadFrilanser,
-    infoSelvstendigHarAlleredeSøkt,
-    infoFrilanserHarAlleredeSøkt,
+    infoSelvstendigTrekkeAnnenSøknad: infoSelvstendigTrekkeAnnenSøknad,
+    infoFrilanserTrekkeAnnenSøknad: infoFrilanserTrekkeAnnenSøknad,
 };
 export default IntroFormInfo;
