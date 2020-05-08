@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
+import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
+import { Knapp } from 'nav-frontend-knapper';
+import Lenke from 'nav-frontend-lenker';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
+import InformationPoster from 'common/components/information-poster/InformationPoster';
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
+import InfoMessage from '../../components/info-message/InfoMessage';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
-import {
-    relocateToSoknad,
-    relocateToErrorPage,
-    relocateToNoOpenPage as relocateToNotOpenPage,
-} from '../../utils/navigationUtils';
+import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
-import InformationPoster from 'common/components/information-poster/InformationPoster';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
-import { Knapp } from 'nav-frontend-knapper';
 import IntroCheckList from './IntroCheckList';
-import { useIntl } from 'react-intl';
-import useTilgjengelig from '../../hooks/useTilgjengelig';
-import Lenke from 'nav-frontend-lenker';
-import InfoMessage from '../../components/info-message/InfoMessage';
 
 const bem = bemUtils('introPage');
 
@@ -29,35 +24,16 @@ export interface IntroResultProps {
 }
 
 const IntroPage: React.StatelessComponent = () => {
-    const [initializing, setInitializing] = useState<boolean>(true);
     const [introResult, setIntroResult] = useState<IntroResultProps | undefined>();
 
     const intl = useIntl();
-    const tilgjengeligFetcher = useTilgjengelig(true);
-    const soknadsperiodeFetcher = useSoknadsperiode(false);
-
-    const { isTilgjengelig } = tilgjengeligFetcher;
-    const { soknadsperiode, isLoading: soknadsperiodeIsLoading } = soknadsperiodeFetcher;
-
-    useEffect(() => {
-        if (isTilgjengelig) {
-            soknadsperiodeFetcher.triggerFetch();
-        }
-    }, [isTilgjengelig]);
-
-    useEffect(() => {
-        if (tilgjengeligFetcher.isLoading === false && soknadsperiodeIsLoading === false) {
-            setInitializing(false);
-        }
-    }, [soknadsperiodeIsLoading]);
+    const soknadsperiodeFetcher = useSoknadsperiode();
 
     const hasError =
-        (soknadsperiode === undefined && tilgjengeligFetcher === undefined) ||
-        soknadsperiodeFetcher?.error !== undefined ||
-        tilgjengeligFetcher?.error !== undefined;
-
-    const isLoading =
-        hasError === false && (initializing || soknadsperiodeFetcher.isLoading || tilgjengeligFetcher.isLoading);
+        soknadsperiodeFetcher.isLoading === false &&
+        (soknadsperiodeFetcher === undefined ||
+            soknadsperiodeFetcher.soknadsperiode === undefined ||
+            soknadsperiodeFetcher?.error !== undefined);
 
     return (
         <Page
@@ -75,17 +51,13 @@ const IntroPage: React.StatelessComponent = () => {
                 </Box>
             ) : (
                 <LoadWrapper
-                    isLoading={isLoading}
+                    isLoading={soknadsperiodeFetcher.isLoading}
                     contentRenderer={() => {
-                        if (isTilgjengelig === false) {
-                            relocateToNotOpenPage();
-                            return null;
-                        }
                         if (hasError) {
                             relocateToErrorPage();
                             return null;
                         }
-                        if (!soknadsperiode) {
+                        if (!soknadsperiodeFetcher.soknadsperiode) {
                             return null;
                         }
                         return (
@@ -174,7 +146,7 @@ const IntroPage: React.StatelessComponent = () => {
                                         <Box padBottom="xl">
                                             <IntroForm
                                                 onValidSubmit={(values) => setIntroResult(values)}
-                                                soknadsperiode={soknadsperiode}
+                                                soknadsperiode={soknadsperiodeFetcher.soknadsperiode}
                                             />
                                         </Box>
                                     </ResponsivePanel>

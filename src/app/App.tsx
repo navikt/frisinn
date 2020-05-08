@@ -20,6 +20,7 @@ import Soknad from './soknad/Soknad';
 import { getEnvironmentVariable } from './utils/envUtils';
 import 'common/styles/globalStyles.less';
 import './styles/app.less';
+import TilgjengeligCheck from './components/tilgjengelig-check/TilgjengeligCheck';
 
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
@@ -60,19 +61,21 @@ const App: React.FunctionComponent = () => {
                     setLocaleInSessionStorage(activeLocale);
                     setLocale(activeLocale);
                 }}>
-                <>
-                    {isSupportedBrowser && (
-                        <Switch>
-                            <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
-                            <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
-                            <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
-                            <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
-                            <Route path="/" component={IntroPage} exact={true} />
-                            <Route component={NotFoundPage} />
-                        </Switch>
-                    )}
-                    {isSupportedBrowser === false && <UnsupportedBrowserPage />}
-                </>
+                {isSupportedBrowser && (
+                    <TilgjengeligCheck
+                        tilgjengenligRender={() => (
+                            <Switch>
+                                <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
+                                <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
+                                <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
+                                <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                                <Route path="/" component={IntroPage} exact={true} />
+                                <Route component={NotFoundPage} />
+                            </Switch>
+                        )}
+                    />
+                )}
+                {isSupportedBrowser === false && <UnsupportedBrowserPage />}
             </ApplicationWrapper>
         </ErrorBoundary>
     );

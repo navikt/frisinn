@@ -63,6 +63,13 @@ const perioderMock = {
     },
 };
 
+const perioderMock2 = {
+    søknadsperiode: {
+        fom: '2020-05-01',
+        tom: '2020-05-31',
+    },
+};
+
 const personligeForetak = {
     personligeForetak: [
         { organisasjonsnummer: '922753458', navn: 'KEBAB HOUSE DA', registreringsdato: '2020-01-01' },
@@ -137,6 +144,17 @@ const startExpressServer = () => {
                 res.send(perioder);
             } else {
                 res.send(perioderMock);
+            }
+        }, 220);
+    });
+
+    server.get('/perioder2', (req, res) => {
+        setTimeout(() => {
+            if (req.query && req.query.inntektstapStartet) {
+                const perioder = getPerioder(req.query);
+                res.send(perioder);
+            } else {
+                res.send(perioderMock2);
             }
         }, 220);
     });

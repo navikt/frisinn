@@ -3,30 +3,25 @@ import { useHistory } from 'react-router-dom';
 import { Ingress } from 'nav-frontend-typografi';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
 import useAccessCheck from '../hooks/useAccessKrav';
-import { usePrevious } from '../hooks/usePrevious';
 import useSoknadEssentials from '../hooks/useSoknadEssentials';
 import useTemporaryStorage from '../hooks/useTempStorage';
-import useTilgjengelig from '../hooks/useTilgjengelig';
 import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
 import NoAccessPage from '../pages/no-access-page/NoAccessPage';
-import NotOpenPage from '../pages/not-open-page/NotOpenPage';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
+import { SoknadFormData } from '../types/SoknadFormData';
 import { alderAccessCheck, maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateTo, navigateToSoknadFrontpage } from '../utils/navigationUtils';
 import { getSoknadRoute } from '../utils/routeUtils';
 import SoknadErrors from './soknad-errors/SoknadErrors';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { isStorageDataValid } from './SoknadTempStorage';
-import { SoknadFormData } from '../types/SoknadFormData';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
 const Soknad = () => {
     const [initializing, setInitializing] = useState<boolean>(true);
     const [initialFormValues, setInitialFormValues] = useState<Partial<SoknadFormData>>({});
-    const tilgjengelig = useTilgjengelig();
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const alderCheck = useAccessCheck(alderAccessCheck());
@@ -35,31 +30,21 @@ const Soknad = () => {
 
     async function resetSoknad(redirectToFrontpage = true) {
         if (tempStorage && tempStorage.storageData?.formData) {
-            if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                await tempStorage.purge();
-            }
+            await tempStorage.purge();
         }
         if (redirectToFrontpage) {
             setInitialFormValues({});
             navigateToSoknadFrontpage(history);
         }
     }
-    const { soknadEssentials, isLoading: essentialsIsLoading } = essentials;
-    const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
-    const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
-    const isLoading =
-        initializing ||
-        alderCheck.isLoading ||
-        tempStorage.isLoading ||
-        maksEnSoknadPerPeriodeCheck.isLoading ||
-        tilgjengeligIsLoading;
+    const { soknadEssentials } = essentials;
 
-    const hasError =
+    const hasError = // ignore tempStorage error
         essentials.error !== undefined ||
         alderCheck.error !== undefined ||
         maksEnSoknadPerPeriodeCheck.error !== undefined;
 
-    const initializingDone = (): void => {
+    const allDataLoaded = (): void => {
         const { storageData } = tempStorage;
         if (storageData && soknadEssentials) {
             if (isStorageDataValid(storageData, soknadEssentials)) {
@@ -77,34 +62,34 @@ const Soknad = () => {
     };
 
     useEffect(() => {
-        if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
-            if (isTilgjengelig === true && hasError === false) {
-                essentials.fetch();
-                tempStorage.fetch();
-                alderCheck.check();
-                maksEnSoknadPerPeriodeCheck.check();
-            } else {
-                initializingDone();
-            }
+        if (
+            !hasError &&
+            soknadEssentials &&
+            tempStorage.isLoading === false &&
+            alderCheck.result !== undefined &&
+            maksEnSoknadPerPeriodeCheck.result !== undefined
+        ) {
+            allDataLoaded();
         }
-    }, [{ isTilgjengelig }]);
+    }, [tempStorage, alderCheck, maksEnSoknadPerPeriodeCheck, soknadEssentials]);
 
     useEffect(() => {
-        if (essentials.isRedirectingToLogin) {
-            return;
+        essentials.fetch();
+        tempStorage.fetch();
+        alderCheck.check();
+        maksEnSoknadPerPeriodeCheck.check();
+    }, []);
+
+    useEffect(() => {
+        if (hasError === true) {
+            setInitializing(false);
         }
-        if (isTilgjengelig === true && essentials.isLoading === false) {
-            initializingDone();
-        }
-    }, [essentialsIsLoading]);
+    }, [hasError]);
 
     return (
         <LoadWrapper
-            isLoading={isLoading || essentials.isRedirectingToLogin === true}
+            isLoading={initializing || essentials.isRedirectingToLogin === true}
             contentRenderer={() => {
-                if (tilgjengelig.isTilgjengelig === false) {
-                    return <NotOpenPage />;
-                }
                 if (hasError) {
                     return (
                         <SoknadErrorPage pageTitle="Det oppstod en feil under visning av siden">
