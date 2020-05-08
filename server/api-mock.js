@@ -18,7 +18,7 @@ server.use((req, res, next) => {
     res.set('X-XSS-Protection', '1; mode=block');
     res.set('X-Content-Type-Options', 'nosniff');
     res.set('Access-Control-Allow-Headers', 'content-type');
-    res.set('Access-Control-Allow-Methods', ['GET', 'POST', 'DELETE']);
+    res.set('Access-Control-Allow-Methods', ['GET', 'POST', 'DELETE', 'PUT']);
     res.set('Access-Control-Allow-Credentials', true);
     next();
 });
