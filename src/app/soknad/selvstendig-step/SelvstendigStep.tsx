@@ -143,6 +143,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                         dayPickerProps={{
                             initialMonth: currentSøknadsperiode.to,
                         }}
+                        useErrorBoundary={true}
                     />
                 </SoknadQuestion>
                 {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (

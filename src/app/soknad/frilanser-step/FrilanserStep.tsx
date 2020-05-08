@@ -139,6 +139,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                         dayPickerProps={{
                             initialMonth: currentSøknadsperiode.to,
                         }}
+                        useErrorBoundary={true}
                     />
                 </SoknadQuestion>
 
