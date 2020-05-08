@@ -151,7 +151,7 @@ const harAlleredeSøkt = () => (
     <>
         Når du har søkt om andre utbetalinger fra NAV for det samme inntektstapet, kan du velge å
         <ul>
-            <li>ikke gå videre med denne søknaden, eller å </li>
+            <li>ikke gå videre med denne søknaden, eller</li>
             <li>trekke den andre søknaden du har hos NAV, og gå videre til å søke om denne kompensasjonen</li>
         </ul>
         Du kan kun få dekket det samme inntektstapet én gang.
