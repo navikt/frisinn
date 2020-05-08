@@ -150,6 +150,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                                 selvstendigVilFortsetteTilSøknad === YesOrNo.NO &&
                                                 selvstendigHarAlleredeSøkt === YesOrNo.YES
                                             }
+                                            description={<Info.infoSelvstendigHarAlleredeSøkt />}
                                             stopMessage={<Info.vilIkkeTrekkeAnnenSøknadSelvstendig />}
                                         />
                                         {selvstendigIsOk && (
@@ -203,6 +204,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                         />
                                         <IntroFormQuestion
                                             name={IntroFormField.frilansVilFortsetteTilSøknad}
+                                            description={<Info.infoFrilanserHarAlleredeSøkt />}
                                             showStop={
                                                 frilansVilFortsetteTilSøknad === YesOrNo.NO &&
                                                 frilansHarAlleredeSøkt === YesOrNo.YES

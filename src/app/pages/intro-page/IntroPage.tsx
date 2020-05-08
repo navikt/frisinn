@@ -129,6 +129,14 @@ const IntroPage: React.StatelessComponent = () => {
                                                 mai, kan du tidligst søke kompensasjon for denne måneden i begynnelsen
                                                 av juni.
                                             </p>
+                                            <p>
+                                                <Lenke
+                                                    href="https://www.nav.no/no/person/innhold-til-person-forside/nyheter/midlertidig-ordning-for-selvstendig-naeringsdrivende-og-frilansere-som-mister-inntekt-pa-grunn-av-koronautbruddet"
+                                                    target="_blank">
+                                                    Her finner du mer informasjon om ordningen, hvor du også får
+                                                    eksempler på hvordan kompensasjonen beregnes.
+                                                </Lenke>
+                                            </p>
                                         </Normaltekst>
                                     </InformationPoster>
                                 </Box>
