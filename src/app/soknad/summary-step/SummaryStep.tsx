@@ -29,6 +29,7 @@ import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
+import useTemporaryStorage from '../../hooks/useTempStorage';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -40,12 +41,14 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
     const intl = useIntl();
     const { values } = useFormikContext<SoknadFormData>();
     const history = useHistory();
+    const tempStorage = useTemporaryStorage();
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
     async function send(data: SoknadApiData) {
         try {
             await sendSoknad(data);
+            await tempStorage.purge();
             onSoknadSent();
         } catch (error) {
             triggerSentryError(SentryEventName.sendSoknadFailed, error);

@@ -27,12 +27,14 @@ function useTemporaryStorage() {
     };
 
     async function purge() {
-        setIsLoading(true);
-        try {
-            await soknadTempStorage.purge();
-        } finally {
-            setStorageData(undefined);
-            setIsLoading(false);
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            setIsLoading(true);
+            try {
+                await soknadTempStorage.purge();
+            } finally {
+                setStorageData(undefined);
+                setIsLoading(false);
+            }
         }
     }
 
