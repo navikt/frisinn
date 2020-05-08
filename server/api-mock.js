@@ -214,6 +214,10 @@ const startExpressServer = () => {
         res.sendStatus(200);
     });
 
+    server.post('/soknad-logget-ut', (req, res) => {
+        res.sendStatus(401);
+    });
+
     server.get('/mellomlagring', (req, res) => {
         if (existsSync(MELLOMLAGRING_JSON)) {
             const body = readFileSync(MELLOMLAGRING_JSON);

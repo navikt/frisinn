@@ -51,10 +51,10 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             await tempStorage.purge();
             onSoknadSent();
         } catch (error) {
-            triggerSentryError(SentryEventName.sendSoknadFailed, error);
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
                 relocateToLoginPage();
             } else {
+                triggerSentryError(SentryEventName.sendSoknadFailed, error);
                 navigateToErrorPage(history);
             }
         }
