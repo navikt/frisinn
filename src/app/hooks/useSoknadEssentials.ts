@@ -29,7 +29,7 @@ function useSoknadEssentials() {
             if (isForbidden(error) || isUnauthorized(error)) {
                 setIsRedirectingToLogin(true);
             } else {
-                setError(error);
+                setError(error || new Error('SoknadEssentials load failed'));
             }
         } finally {
             setIsLoading(false);

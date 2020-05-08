@@ -28,6 +28,10 @@ const Soknad = () => {
     const tempStorage = useTemporaryStorage();
     const history = useHistory();
 
+    const { isLoading: tempStorageIsLoading } = tempStorage;
+    const { result: maksEnEoknadResult } = maksEnSoknadPerPeriodeCheck;
+    const { result: alderResult } = alderCheck;
+
     async function resetSoknad(redirectToFrontpage = true) {
         if (tempStorage && tempStorage.storageData?.formData) {
             await tempStorage.purge();
@@ -63,15 +67,16 @@ const Soknad = () => {
 
     useEffect(() => {
         if (
+            initializing === true &&
             !hasError &&
             soknadEssentials &&
-            tempStorage.isLoading === false &&
-            alderCheck.result !== undefined &&
-            maksEnSoknadPerPeriodeCheck.result !== undefined
+            tempStorageIsLoading === false &&
+            alderResult !== undefined &&
+            maksEnEoknadResult !== undefined
         ) {
             allDataLoaded();
         }
-    }, [tempStorage, alderCheck, maksEnSoknadPerPeriodeCheck, soknadEssentials]);
+    }, [tempStorageIsLoading, alderResult, maksEnEoknadResult, soknadEssentials]);
 
     useEffect(() => {
         essentials.fetch();
