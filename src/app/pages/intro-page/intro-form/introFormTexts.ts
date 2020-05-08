@@ -29,9 +29,9 @@ export const introFormText: IntroFormTexts = {
     selvstendigFårDekketTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',
     selvstendigHarAlleredeSøkt:
-        'Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon for som selvstendig næringsdrivende i denne søknaden?',
+        'Har du søkt om andre utbetalinger fra NAV (for eksempel omsorgspenger) som skal dekke det samme inntektstapet du ønsker å søke om kompensasjon for som selvstendig næringsdrivende i denne søknaden?',
     selvstendigVilFortsetteTilSøknad:
-        'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?',
+        'Vil du gå videre med denne søknaden, og trekke den andre søknaden du har hos NAV?',
     erFrilanser: 'Er du frilanser?',
     frilanserHarTaptInntektPgaKorona: 'Har du tapt inntekt som frilanser som følge av koronautbruddet?',
     frilanserInntektstapStartetFørFrist: (sisteGyldigeDagForInntektstap: Date) =>
@@ -39,6 +39,6 @@ export const introFormText: IntroFormTexts = {
     frilanserFårDekketTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',
     frilansHarAlleredeSøkt:
-        'Har du søkt om andre utbetalinger fra NAV som skal dekke det samme inntektstapet du ønsker å søke kompensasjon som frilanser for i denne søknaden?',
-    frilansVilFortsetteTilSøknad: 'Vil du trekke den andre søknaden du har hos NAV og gå videre med denne søknaden?',
+        'Har du søkt om andre utbetalinger fra NAV (for eksempel dagpenger) som skal dekke det samme inntektstapet du ønsker å søke om kompensasjon for som frilanser i denne søknaden?',
+    frilansVilFortsetteTilSøknad: 'Vil du gå videre med denne søknaden, og trekke den andre søknaden du har hos NAV?',
 };

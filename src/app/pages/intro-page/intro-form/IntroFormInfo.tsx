@@ -42,6 +42,9 @@ const selvstendigKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøkna
     <>
         Du kan søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende.
         {visInfoOmTrekkeSøknad && infoOmTrekkingAvSøknad()}
+        <p>
+            <strong>Du kommer videre til søknadsskjemaet etter at du har svart på de resterende spørsmålene.</strong>
+        </p>
     </>
 );
 
@@ -95,6 +98,25 @@ const hvaRegnesSomInntektstap = () => (
         Inntekt som du normalt ville tatt ut, men som du ikke har kunnet som følge av koronautbruddet.
     </ExpandableInfo>
 );
+
+const infoSelvstendigTrekkeAnnenSøknad = () => (
+    <ExpandableInfo title="Hva betyr dette?">
+        Eksempel:
+        <br />
+        Du har søkt om omsorgspenger, men nå vil du heller søke om kompensasjon for tapt inntekt i denne ordningen. Da
+        må du trekke søknaden om omsorgspenger. Dette gjør du ved å kontakte oss på telefon 55 55 33 33.
+    </ExpandableInfo>
+);
+
+const infoFrilanserTrekkeAnnenSøknad = () => (
+    <ExpandableInfo title="Hva betyr dette?">
+        Eksempel:
+        <br />
+        Du har søkt om dagpenger, men nå vil du heller søke om kompensasjon for tapt inntekt i denne ordningen. Da må du
+        trekke søknaden om dagpenger. Dette gjør du ved å kontakte oss på telefon 55 55 33 33.
+    </ExpandableInfo>
+);
+
 const selvstendigHvaMenesMedInntekt = () => (
     <ExpandableInfo title="Hva menes med dette?">
         For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
@@ -190,5 +212,7 @@ const IntroFormInfo = {
     ikkeFrilanserOgIkkeRettSomSelvstendig,
     vilIkkeTrekkeAnnenSøknadSelvstendig,
     vilIkkeTrekkeAnnenSøknadFrilanser,
+    infoSelvstendigTrekkeAnnenSøknad: infoSelvstendigTrekkeAnnenSøknad,
+    infoFrilanserTrekkeAnnenSøknad: infoFrilanserTrekkeAnnenSøknad,
 };
 export default IntroFormInfo;
