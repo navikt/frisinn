@@ -15,7 +15,7 @@ import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
-import { selvstendigSkalOppgiInntekt2019, getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
+import { getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadStep from '../SoknadStep';
