@@ -9,8 +9,8 @@ function useTemporaryStorage() {
     async function fetchStorage() {
         setIsLoading(true);
         try {
-            const storageData = await soknadTempStorage.rehydrate();
-            setStorageData(storageData ? soknadTempStorage.getValidStorage(storageData.data) : undefined);
+            const storageData = await soknadTempStorage.fetch();
+            setStorageData(storageData ? storageData.data : undefined);
         } catch (error) {
             setStorageData(undefined);
         } finally {
@@ -27,12 +27,14 @@ function useTemporaryStorage() {
     };
 
     async function purge() {
-        setIsLoading(true);
-        try {
-            await soknadTempStorage.purge();
-        } finally {
-            setStorageData(undefined);
-            setIsLoading(false);
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            setIsLoading(true);
+            try {
+                await soknadTempStorage.purge();
+            } finally {
+                setStorageData(undefined);
+                setIsLoading(false);
+            }
         }
     }
 

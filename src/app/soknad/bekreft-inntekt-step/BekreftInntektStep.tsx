@@ -15,7 +15,7 @@ import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
-import { selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
+import { getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadStep from '../SoknadStep';
@@ -129,7 +129,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     <StopMessage>
                         {SelvstendigInfo.getMessageForAvslag(
                             selvstendigStopReason,
-                            selvstendigSkalOppgiInntekt2019(soknadEssentials.personligeForetak) ? 2019 : 2020
+                            getHistoriskInntektÅrstall(soknadEssentials.personligeForetak)
                         )}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>

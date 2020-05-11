@@ -9,6 +9,7 @@ import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
 import ApplicationWrapper from './components/application-wrapper/ApplicationWrapper';
 import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
+import TilgjengeligCheck from './components/tilgjengelig-check/TilgjengeligCheck';
 import GlobalRoutes from './config/routeConfig';
 import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
 import IntroPage from './pages/intro-page/IntroPage';
@@ -60,19 +61,21 @@ const App: React.FunctionComponent = () => {
                     setLocaleInSessionStorage(activeLocale);
                     setLocale(activeLocale);
                 }}>
-                <>
-                    {isSupportedBrowser && (
-                        <Switch>
-                            <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
-                            <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
-                            <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
-                            <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
-                            <Route path="/" component={IntroPage} exact={true} />
-                            <Route component={NotFoundPage} />
-                        </Switch>
-                    )}
-                    {isSupportedBrowser === false && <UnsupportedBrowserPage />}
-                </>
+                {isSupportedBrowser && (
+                    <TilgjengeligCheck
+                        tilgjengenligRender={() => (
+                            <Switch>
+                                <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
+                                <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
+                                <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
+                                <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                                <Route path="/" component={IntroPage} exact={true} />
+                                <Route component={NotFoundPage} />
+                            </Switch>
+                        )}
+                    />
+                )}
+                {isSupportedBrowser === false && <UnsupportedBrowserPage />}
             </ApplicationWrapper>
         </ErrorBoundary>
     );

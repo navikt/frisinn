@@ -18,7 +18,7 @@ server.use((req, res, next) => {
     res.set('X-XSS-Protection', '1; mode=block');
     res.set('X-Content-Type-Options', 'nosniff');
     res.set('Access-Control-Allow-Headers', 'content-type');
-    res.set('Access-Control-Allow-Methods', ['GET', 'POST', 'DELETE']);
+    res.set('Access-Control-Allow-Methods', ['GET', 'POST', 'DELETE', 'PUT']);
     res.set('Access-Control-Allow-Credentials', true);
     next();
 });
@@ -60,6 +60,13 @@ const perioderMock = {
     søknadsperiode: {
         fom: '2020-03-14',
         tom: '2020-04-30',
+    },
+};
+
+const perioderMock2 = {
+    søknadsperiode: {
+        fom: '2020-05-01',
+        tom: '2020-05-31',
     },
 };
 
@@ -124,6 +131,12 @@ const startExpressServer = () => {
         }, 200);
     });
 
+    server.get('/soker2', (req, res) => {
+        setTimeout(() => {
+            res.send({ ...søkerMock, fornavn: 'Godslig2' });
+        }, 200);
+    });
+
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
             if (req.query && req.query.inntektstapStartet) {
@@ -131,6 +144,17 @@ const startExpressServer = () => {
                 res.send(perioder);
             } else {
                 res.send(perioderMock);
+            }
+        }, 220);
+    });
+
+    server.get('/perioder2', (req, res) => {
+        setTimeout(() => {
+            if (req.query && req.query.inntektstapStartet) {
+                const perioder = getPerioder(req.query);
+                res.send(perioder);
+            } else {
+                res.send(perioderMock2);
             }
         }, 220);
     });
@@ -190,6 +214,10 @@ const startExpressServer = () => {
         res.sendStatus(200);
     });
 
+    server.post('/soknad-logget-ut', (req, res) => {
+        res.sendStatus(401);
+    });
+
     server.get('/mellomlagring', (req, res) => {
         if (existsSync(MELLOMLAGRING_JSON)) {
             const body = readFileSync(MELLOMLAGRING_JSON);
@@ -199,12 +227,20 @@ const startExpressServer = () => {
         }
     });
 
+    server.put('/mellomlagring', (req, res) => {
+        const body = req.body;
+        const jsBody = isJSON(body) ? JSON.parse(body) : body;
+        writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify(jsBody, null, 2));
+        res.sendStatus(200);
+    });
+
     server.post('/mellomlagring', (req, res) => {
         const body = req.body;
         const jsBody = isJSON(body) ? JSON.parse(body) : body;
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify(jsBody, null, 2));
         res.sendStatus(200);
     });
+
     server.delete('/mellomlagring', (req, res) => {
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify({}, null, 2));
         res.sendStatus(200);

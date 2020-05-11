@@ -48,4 +48,6 @@ spec:
           value: https://loginservice.nav.no/login?redirect=https://www.nav.no/arbeid/inntektskompensasjon/soknad
         - name: APP_VERSION
           value: {{image}}
+        - name: PERSISTENCE
+          value: "off"
 

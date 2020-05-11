@@ -1,88 +1,100 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Ingress } from 'nav-frontend-typografi';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
+import useAccessCheck from '../hooks/useAccessKrav';
 import useSoknadEssentials from '../hooks/useSoknadEssentials';
 import useTemporaryStorage from '../hooks/useTempStorage';
 import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
-import { navigateToSoknadFrontpage } from '../utils/navigationUtils';
+import NoAccessPage from '../pages/no-access-page/NoAccessPage';
+import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
+import { SoknadFormData } from '../types/SoknadFormData';
+import { alderAccessCheck, maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
+import { navigateTo, navigateToSoknadFrontpage } from '../utils/navigationUtils';
+import { getSoknadRoute } from '../utils/routeUtils';
+import SoknadErrors from './soknad-errors/SoknadErrors';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
-import { maksEnSoknadPerPeriodeAccessCheck, alderAccessCheck } from '../utils/apiAccessCheck';
-import useAccessCheck from '../hooks/useAccessKrav';
-import NoAccessPage from '../pages/no-access-page/NoAccessPage';
-import { Ingress } from 'nav-frontend-typografi';
-import useTilgjengelig from '../hooks/useTilgjengelig';
-import { usePrevious } from '../hooks/usePrevious';
-import NotOpenPage from '../pages/not-open-page/NotOpenPage';
-import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
-import SoknadErrors from './soknad-errors/SoknadErrors';
+import { isStorageDataValid } from './SoknadTempStorage';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
 const Soknad = () => {
     const [initializing, setInitializing] = useState<boolean>(true);
-    const tilgjengelig = useTilgjengelig();
+    const [initialFormValues, setInitialFormValues] = useState<Partial<SoknadFormData>>({});
     const essentials = useSoknadEssentials();
     const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
     const alderCheck = useAccessCheck(alderAccessCheck());
     const tempStorage = useTemporaryStorage();
     const history = useHistory();
 
+    const { isLoading: tempStorageIsLoading } = tempStorage;
+    const { result: maksEnEoknadResult } = maksEnSoknadPerPeriodeCheck;
+    const { result: alderResult } = alderCheck;
+
     async function resetSoknad(redirectToFrontpage = true) {
         if (tempStorage && tempStorage.storageData?.formData) {
-            if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                await tempStorage.purge();
-            }
+            await tempStorage.purge();
         }
         if (redirectToFrontpage) {
+            setInitialFormValues({});
             navigateToSoknadFrontpage(history);
         }
     }
-    const { soknadEssentials, isLoading: essentialsIsLoading } = essentials;
-    const { isLoading: tilgjengeligIsLoading, isTilgjengelig } = tilgjengelig;
-    const prevTilgjengelig = usePrevious<boolean | undefined>(isTilgjengelig);
-    const isLoading =
-        initializing ||
-        alderCheck.isLoading ||
-        tempStorage.isLoading ||
-        maksEnSoknadPerPeriodeCheck.isLoading ||
-        tilgjengeligIsLoading;
+    const { soknadEssentials } = essentials;
 
-    useEffect(() => {
-        if (isTilgjengelig !== prevTilgjengelig && isTilgjengelig !== undefined) {
-            if (isTilgjengelig === true) {
-                essentials.fetch();
-                tempStorage.fetch();
-                alderCheck.check();
-                maksEnSoknadPerPeriodeCheck.check();
-            } else {
-                setInitializing(false);
-            }
-        }
-    }, [{ isTilgjengelig }]);
-
-    useEffect(() => {
-        if (essentials.isRedirectingToLogin) {
-            return;
-        }
-        if (isTilgjengelig === true && essentials.isLoading === false) {
-            setInitializing(false);
-        }
-    }, [essentialsIsLoading]);
-
-    const hasError =
+    const hasError = // ignore tempStorage error
         essentials.error !== undefined ||
         alderCheck.error !== undefined ||
         maksEnSoknadPerPeriodeCheck.error !== undefined;
 
+    const allDataLoaded = (): void => {
+        const { storageData } = tempStorage;
+        if (storageData && soknadEssentials) {
+            if (isStorageDataValid(storageData, soknadEssentials)) {
+                setInitialFormValues(storageData.formData);
+                const currentRoute = history.location.pathname;
+                const lastStepRoute = getSoknadRoute(storageData.metadata.lastStepID);
+                if (currentRoute !== lastStepRoute) {
+                    navigateTo(lastStepRoute, history);
+                }
+            } else {
+                navigateToSoknadFrontpage(history);
+            }
+        }
+        setInitializing(false);
+    };
+
+    useEffect(() => {
+        if (
+            initializing === true &&
+            !hasError &&
+            soknadEssentials &&
+            tempStorageIsLoading === false &&
+            alderResult !== undefined &&
+            maksEnEoknadResult !== undefined
+        ) {
+            allDataLoaded();
+        }
+    }, [tempStorageIsLoading, alderResult, maksEnEoknadResult, soknadEssentials]);
+
+    useEffect(() => {
+        essentials.fetch();
+        tempStorage.fetch();
+        alderCheck.check();
+        maksEnSoknadPerPeriodeCheck.check();
+    }, []);
+
+    useEffect(() => {
+        if (hasError === true) {
+            setInitializing(false);
+        }
+    }, [hasError]);
+
     return (
         <LoadWrapper
-            isLoading={isLoading || essentials.isRedirectingToLogin === true}
+            isLoading={initializing || essentials.isRedirectingToLogin === true}
             contentRenderer={() => {
-                if (tilgjengelig.isTilgjengelig === false) {
-                    return <NotOpenPage />;
-                }
                 if (hasError) {
                     return (
                         <SoknadErrorPage pageTitle="Det oppstod en feil under visning av siden">
@@ -107,7 +119,7 @@ const Soknad = () => {
                 if (soknadEssentials) {
                     return (
                         <SoknadFormComponents.FormikWrapper
-                            initialValues={tempStorage.storageData?.formData || {}}
+                            initialValues={initialFormValues}
                             onSubmit={() => null}
                             renderForm={(formik) => {
                                 return (

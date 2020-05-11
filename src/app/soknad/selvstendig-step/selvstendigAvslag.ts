@@ -42,8 +42,11 @@ const harIkkeHattHistoriskInntekt = ({
 const søkerIkkeForGyldigTidsrom = ({
     selvstendigBeregnetTilgjengeligSøknadsperiode,
     selvstendigInntektstapStartetDato,
-}: KontrollerSelvstendigSvarPayload) =>
-    hasValue(selvstendigInntektstapStartetDato) && selvstendigBeregnetTilgjengeligSøknadsperiode === undefined;
+}: KontrollerSelvstendigSvarPayload) => {
+    const gyldig =
+        hasValue(selvstendigInntektstapStartetDato) && selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined;
+    return !gyldig;
+};
 
 const utbetalingFraNAVDekkerHeleTapet = ({
     selvstendigHarYtelseFraNavSomDekkerTapet,
