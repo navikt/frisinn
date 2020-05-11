@@ -13,7 +13,7 @@ import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAv
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import { hasValidHistoriskInntekt, selvstendigSkalOppgiInntekt2019 } from '../../utils/selvstendigUtils';
+import { hasValidHistoriskInntekt, getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
@@ -60,7 +60,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
 
     const isLoading = availableDateRangeIsLoading;
 
-    const inntektÅrstall = selvstendigSkalOppgiInntekt2019(personligeForetak) ? 2019 : 2020;
+    const inntektÅrstall = getHistoriskInntektÅrstall(personligeForetak);
     const avslag = kontrollerSelvstendigSvar({ ...values, inntektÅrstall });
 
     const payload: SelvstendigFormConfigPayload = {

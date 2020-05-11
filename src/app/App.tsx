@@ -9,6 +9,7 @@ import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
 import ApplicationWrapper from './components/application-wrapper/ApplicationWrapper';
 import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
+import TilgjengeligCheck from './components/tilgjengelig-check/TilgjengeligCheck';
 import GlobalRoutes from './config/routeConfig';
 import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
 import IntroPage from './pages/intro-page/IntroPage';
@@ -20,7 +21,6 @@ import Soknad from './soknad/Soknad';
 import { getEnvironmentVariable } from './utils/envUtils';
 import 'common/styles/globalStyles.less';
 import './styles/app.less';
-import TilgjengeligCheck from './components/tilgjengelig-check/TilgjengeligCheck';
 
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
