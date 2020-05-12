@@ -1,1 +1,1 @@
-export type HistoriskInntektÅrstall = 2019 | 2020;
+export type HistoriskInntektÅrstall = number; // = 2019 | 2020;

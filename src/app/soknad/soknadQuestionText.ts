@@ -1,9 +1,10 @@
 import { SoknadFormField } from '../types/SoknadFormData';
 import { DateRange } from '../utils/dateUtils';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
+import { HistoriskInntektÅrstall } from '../types/inntektÅrstall';
 
 export interface SoknadQuestionText {
-    [SoknadFormField.selvstendigHarHattInntektFraForetak]: (årstall: number) => string;
+    [SoknadFormField.selvstendigHarHattInntektFraForetak]: (årstall: HistoriskInntektÅrstall) => string;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;

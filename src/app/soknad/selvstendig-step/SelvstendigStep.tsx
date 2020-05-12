@@ -13,7 +13,7 @@ import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAv
 import useInntektsperiode from '../../hooks/useInntektsperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { MIN_DATE_PERIODEVELGER, isSameDate } from '../../utils/dateUtils';
+import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import {
     harSelskaperRegistrertFør2019,
     hasValidHistoriskInntekt,
@@ -126,15 +126,23 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         );
     }, [inntektsperiode]);
 
-    const prevStartetSomSelvstendigNæringsdrivende = usePrevious(startetSomSelvstendigNæringsdrivende);
+    const prevSelvstendigBeregnetInntektsårstall = usePrevious(selvstendigBeregnetInntektsårstall);
     useEffect(() => {
-        if (!isSameDate(startetSomSelvstendigNæringsdrivende, prevStartetSomSelvstendigNæringsdrivende)) {
+        if (
+            inntektsperiodeIsLoading === true ||
+            selvstendigBeregnetInntektsårstall === undefined ||
+            prevSelvstendigBeregnetInntektsårstall === undefined
+        ) {
+            // Ikke reset når bruker kommer tilbake til steg
+            return;
+        }
+        if (selvstendigBeregnetInntektsårstall !== prevSelvstendigBeregnetInntektsårstall) {
             setFieldValue(SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert, YesOrNo.UNANSWERED);
             setFieldValue(SoknadFormField.selvstendigHarHattInntektFraForetak, YesOrNo.UNANSWERED);
             setFieldValue(SoknadFormField.selvstendigInntekt2019, undefined);
             setFieldValue(SoknadFormField.selvstendigInntekt2020, undefined);
         }
-    }, [startetSomSelvstendigNæringsdrivende]);
+    }, [selvstendigBeregnetInntektsårstall]);
 
     return (
         <SoknadStep
@@ -188,50 +196,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                     />
                 </SoknadQuestion>
 
-                <SoknadQuestion
-                    name={SoknadFormField.selvstendigHarAvvikletSelskaper}
-                    legend={txt.selvstendigHarAvvikletSelskaper}
-                />
-                <SoknadQuestion name={SoknadFormField.selvstendigAvvikledeSelskaper}>
-                    <HistoriskForetakListAndDialog<SoknadFormField>
-                        maxDate={selvstendigInntektstapStartetDato}
-                        name={SoknadFormField.selvstendigAvvikledeSelskaper}
-                    />
-                </SoknadQuestion>
-
-                <SoknadQuestion
-                    name={SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert}
-                    legend={txt.selvstendigAlleAvvikledeSelskaperErRegistrert}
-                    showInfo={values.selvstendigAlleAvvikledeSelskaperErRegistrert === YesOrNo.NO}
-                    info={<SelvstendigInfo.infoAlleAvvikledeSelskaperErIkkeRegistrert />}
-                />
-
-                {isVisible(SoknadFormField.selvstendigHarHattInntektFraForetak) &&
-                    selvstendigBeregnetInntektsårstall && (
-                        <LoadWrapper
-                            isLoading={inntektsperiodeIsLoading}
-                            contentRenderer={() => (
-                                <SoknadQuestion
-                                    name={SoknadFormField.selvstendigHarHattInntektFraForetak}
-                                    legend={txt.selvstendigHarHattInntektFraForetak(selvstendigBeregnetInntektsårstall)}
-                                    description={
-                                        selvstendigBeregnetInntektsårstall && (
-                                            <SelvstendigInfo.infoInntektÅrstall
-                                                inntektÅrstall={selvstendigBeregnetInntektsårstall}
-                                            />
-                                        )
-                                    }
-                                    showStop={avslag.oppgirHarIkkeHattInntektFraForetak}
-                                    stopMessage={
-                                        <SelvstendigInfo.StoppIkkeHattInntektFraForetak
-                                            inntektÅrstall={selvstendigBeregnetInntektsårstall}
-                                        />
-                                    }
-                                />
-                            )}
-                        />
-                    )}
-                {isVisible(SoknadFormField.selvstendigInntektIPerioden) && inntektsperiodeIsLoading === false && (
+                {isVisible(SoknadFormField.selvstendigInntektIPerioden) && (
                     <LoadWrapper
                         isLoading={availableDateRangeIsLoading}
                         contentRenderer={() => {
@@ -266,10 +231,60 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         />
                                     </SoknadQuestion>
                                     <SoknadQuestion
+                                        name={SoknadFormField.selvstendigHarAvvikletSelskaper}
+                                        legend={txt.selvstendigHarAvvikletSelskaper}
+                                    />
+                                    <SoknadQuestion name={SoknadFormField.selvstendigAvvikledeSelskaper}>
+                                        <HistoriskForetakListAndDialog<SoknadFormField>
+                                            maxDate={selvstendigInntektstapStartetDato}
+                                            name={SoknadFormField.selvstendigAvvikledeSelskaper}
+                                        />
+                                    </SoknadQuestion>
+
+                                    <SoknadQuestion
+                                        name={SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert}
+                                        legend={txt.selvstendigAlleAvvikledeSelskaperErRegistrert}
+                                        showInfo={values.selvstendigAlleAvvikledeSelskaperErRegistrert === YesOrNo.NO}
+                                        info={<SelvstendigInfo.infoAlleAvvikledeSelskaperErIkkeRegistrert />}
+                                    />
+
+                                    {isVisible(SoknadFormField.selvstendigHarHattInntektFraForetak) && (
+                                        <LoadWrapper
+                                            isLoading={inntektsperiodeIsLoading}
+                                            contentRenderer={() => (
+                                                <>
+                                                    {selvstendigBeregnetInntektsårstall && (
+                                                        <SoknadQuestion
+                                                            name={SoknadFormField.selvstendigHarHattInntektFraForetak}
+                                                            legend={txt.selvstendigHarHattInntektFraForetak(
+                                                                selvstendigBeregnetInntektsårstall
+                                                            )}
+                                                            description={
+                                                                selvstendigBeregnetInntektsårstall && (
+                                                                    <SelvstendigInfo.infoInntektÅrstall
+                                                                        inntektÅrstall={
+                                                                            selvstendigBeregnetInntektsårstall
+                                                                        }
+                                                                    />
+                                                                )
+                                                            }
+                                                            showStop={avslag.oppgirHarIkkeHattInntektFraForetak}
+                                                            stopMessage={
+                                                                <SelvstendigInfo.StoppIkkeHattInntektFraForetak
+                                                                    inntektÅrstall={selvstendigBeregnetInntektsårstall}
+                                                                />
+                                                            }
+                                                        />
+                                                    )}
+                                                </>
+                                            )}
+                                        />
+                                    )}
+                                    <SoknadQuestion
                                         name={SoknadFormField.selvstendigInntekt2019}
                                         showStop={
                                             values.selvstendigInntekt2019 !== undefined &&
-                                            avslag.harIkkeHattHistoriskInntekt
+                                            avslag.oppgirNullHistoriskInntekt
                                         }
                                         stopMessage={
                                             <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2019} />
@@ -291,7 +306,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         name={SoknadFormField.selvstendigInntekt2020}
                                         showStop={
                                             values.selvstendigInntekt2020 !== undefined &&
-                                            avslag.harIkkeHattHistoriskInntekt
+                                            avslag.oppgirNullHistoriskInntekt
                                         }
                                         stopMessage={
                                             <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2020} />

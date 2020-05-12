@@ -15,7 +15,6 @@ import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
-import { getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
 import InfoOmSøknadOgFrist from '../info/InfoOmSøknadOgFrist';
 import SelvstendigInfo from '../info/SelvstendigInfo';
@@ -51,6 +50,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         frilanserStopReason,
         frilanserSoknadIsOk,
         selvstendigSoknadIsOk,
+        selvstendigBeregnetInntektsårstall,
     } = values;
 
     const spørOmInntektSomFrilanserForSelvstendig: boolean =
@@ -124,13 +124,10 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     </>
                 )}
             </Box>
-            {selvstendigSoknadIsOk === false && selvstendigStopReason && (
+            {selvstendigSoknadIsOk === false && selvstendigStopReason && selvstendigBeregnetInntektsårstall && (
                 <FormSection title="Selvstendig næringsdrivende">
                     <StopMessage>
-                        {SelvstendigInfo.getMessageForAvslag(
-                            selvstendigStopReason,
-                            getHistoriskInntektÅrstall(soknadEssentials.personligeForetak)
-                        )}
+                        {SelvstendigInfo.getMessageForAvslag(selvstendigStopReason, selvstendigBeregnetInntektsårstall)}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>
                                 Gå tilbake til informasjon om selvstendig næringsdrivende

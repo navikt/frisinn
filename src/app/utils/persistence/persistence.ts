@@ -13,8 +13,8 @@ export interface PersistenceConfig {
 }
 
 const dateStringToDateObjectMapper = (_: string, value: string) => {
-    if (moment(value, moment.ISO_8601).isValid()) {
-        return new Date(value);
+    if (value.length >= 20 && moment(value, moment.ISO_8601).isValid()) {
+        return moment.utc(value).toDate();
     }
     return value;
 };

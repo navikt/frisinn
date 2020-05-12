@@ -12,12 +12,7 @@ import {
 import { PersonligeForetak, SoknadEssentials } from '../types/SoknadEssentials';
 import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { isRunningInDevEnvironment } from './envUtils';
-import {
-    getHistoriskInntektÅrstall,
-    hasValidHistoriskInntekt,
-    selvstendigSkalOppgiInntekt2019,
-    selvstendigSkalOppgiInntekt2020,
-} from './selvstendigUtils';
+import { hasValidHistoriskInntekt } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
@@ -67,17 +62,16 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigInntektstapStartetDato !== undefined &&
+        selvstendigBeregnetInntektsårstall &&
         hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020, selvstendigBeregnetInntektsårstall })
     ) {
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        const årstallHistoriskInntekt = getHistoriskInntektÅrstall(personligeForetak);
-
         const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
             {
                 field: SoknadFormField.selvstendigHarHattInntektFraForetak,
-                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(årstallHistoriskInntekt),
+                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(selvstendigBeregnetInntektsårstall),
                 svar: formatYesOrNoAnswer(selvstendigHarHattInntektFraForetak),
             },
             {
@@ -125,8 +119,8 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const apiData: SelvstendigNæringsdrivendeApiData = {
             inntektstapStartet: formatDateToApiFormat(selvstendigInntektstapStartetDato),
             inntektIPerioden: selvstendigInntektIPerioden,
-            inntekt2019: selvstendigSkalOppgiInntekt2019(personligeForetak) ? selvstendigInntekt2019 : undefined,
-            inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak) ? selvstendigInntekt2020 : undefined,
+            inntekt2019: selvstendigBeregnetInntektsårstall === 2019 ? selvstendigInntekt2019 : undefined,
+            inntekt2020: selvstendigBeregnetInntektsårstall === 2020 ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {
                 period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),

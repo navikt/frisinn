@@ -15,6 +15,7 @@ import {
     FellesStoppYtelseDekkerHeleTapetInnlogget,
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
+import { HistoriskInntektÅrstall } from '../../types/inntektÅrstall';
 
 const rolleNavn = 'selvstendig næringsdrivende';
 
@@ -137,7 +138,10 @@ const infoSelvstendigInntekt2019 = () => (
     </>
 );
 
-const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, inntektÅrstall: number): React.ReactNode => {
+const getMessageForAvslag = (
+    årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
+    inntektÅrstall: HistoriskInntektÅrstall
+): React.ReactNode => {
     switch (årsak) {
         case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirHarIkkeHattInntektFraForetak:
             return <StoppIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />;
@@ -147,7 +151,7 @@ const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, in
             return <StoppForSentInntektstap />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet:
             return <StoppYtelseDekkerHeleTapet />;
-        case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt:
+        case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt:
             return <StoppIngenHistoriskInntekt inntektÅrstall={inntektÅrstall} />;
     }
 };

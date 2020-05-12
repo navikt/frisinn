@@ -8,7 +8,7 @@ export enum SelvstendigNæringdsrivendeAvslagÅrsak {
     'harIkkeHattInntektstapPgaKorona' = 'harIkkeHattInntektstapPgaKorona',
     'søkerIkkeForGyldigTidsrom' = 'søkerIkkeForGyldigTidsrom',
     'harYtelseFraNavSomDekkerTapet' = 'harYtelseFraNavSomDekkerTapet',
-    'harIkkeHattHistoriskInntekt' = 'harIkkeHattHistoriskInntekt',
+    'oppgirNullHistoriskInntekt' = 'oppgirNullHistoriskInntekt',
 }
 
 export interface SelvstendigNæringsdrivendeAvslagStatus {
@@ -16,7 +16,7 @@ export interface SelvstendigNæringsdrivendeAvslagStatus {
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
-    [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: boolean;
 }
 
 const oppgirHarIkkeHattInntektFraForetak = ({ selvstendigHarHattInntektFraForetak }: SelvstendigFormData) =>
@@ -25,7 +25,7 @@ const oppgirHarIkkeHattInntektFraForetak = ({ selvstendigHarHattInntektFraForeta
 const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormData) =>
     selvstendigHarTaptInntektPgaKorona === YesOrNo.NO;
 
-const harIkkeHattHistoriskInntekt = ({
+const oppgirNullHistoriskInntekt = ({
     selvstendigHarHattInntektFraForetak,
     selvstendigInntekt2019,
     selvstendigInntekt2020,
@@ -59,5 +59,5 @@ export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): Selvste
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
-    harIkkeHattHistoriskInntekt: harIkkeHattHistoriskInntekt(payload),
+    oppgirNullHistoriskInntekt: oppgirNullHistoriskInntekt(payload),
 });

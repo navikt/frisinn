@@ -66,8 +66,14 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
         isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
-    [Field.selvstendigHarAvvikletSelskaper]: {
+    [Field.selvstendigInntektIPerioden]: {
         parentQuestion: Field.selvstendigInntektstapStartetDato,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
+        isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
+    },
+
+    [Field.selvstendigHarAvvikletSelskaper]: {
+        parentQuestion: Field.selvstendigInntektIPerioden,
         isIncluded: ({ skalSpørreOmHistoriskeSelskaper, avslag: { søkerIkkeForGyldigTidsrom } }) =>
             skalSpørreOmHistoriskeSelskaper && søkerIkkeForGyldigTidsrom === false,
         isAnswered: ({ selvstendigHarAvvikletSelskaper }) => yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper),
@@ -89,25 +95,22 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
             payload.skalSpørreOmHistoriskeSelskaper ? andreSelskaperIsAnswered(payload) : true,
         isAnswered: ({ selvstendigHarHattInntektFraForetak }) => yesOrNoIsAnswered(selvstendigHarHattInntektFraForetak),
     },
-    [Field.selvstendigInntektIPerioden]: {
-        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
-        isIncluded: ({ avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
-            oppgirHarIkkeHattInntektFraForetak === false,
-        isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
-    },
     [Field.selvstendigInntekt2019]: {
-        parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ selvstendigBeregnetInntektsårstall }) => selvstendigBeregnetInntektsårstall === 2019,
+        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
+        isIncluded: ({ selvstendigBeregnetInntektsårstall, avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
+            oppgirHarIkkeHattInntektFraForetak === false && selvstendigBeregnetInntektsårstall === 2019,
         isAnswered: ({ selvstendigInntekt2019 }) => hasValue(selvstendigInntekt2019),
     },
     [Field.selvstendigInntekt2020]: {
-        parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ selvstendigBeregnetInntektsårstall }) => selvstendigBeregnetInntektsårstall === 2020,
+        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
+        isIncluded: ({ selvstendigBeregnetInntektsårstall, avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
+            oppgirHarIkkeHattInntektFraForetak === false && selvstendigBeregnetInntektsårstall === 2020,
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
-        parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ avslag: { harIkkeHattHistoriskInntekt } }) => harIkkeHattHistoriskInntekt === false,
+        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
+        isIncluded: ({ avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
+            oppgirHarIkkeHattInntektFraForetak === false,
         visibilityFilter: ({ selvstendigBeregnetInntektsårstall, selvstendigInntekt2019, selvstendigInntekt2020 }) =>
             selvstendigBeregnetInntektsårstall === 2019
                 ? hasValue(selvstendigInntekt2019)
@@ -136,8 +139,8 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     [Field.selvstendigHarRegnskapsfører]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
         visibilityFilter: showRegnskapsfører,
-        isIncluded: ({ avslag: { harIkkeHattHistoriskInntekt, harYtelseFraNavSomDekkerTapet } }) =>
-            harIkkeHattHistoriskInntekt === false && harYtelseFraNavSomDekkerTapet === false,
+        isIncluded: ({ avslag: { oppgirNullHistoriskInntekt, harYtelseFraNavSomDekkerTapet } }) =>
+            oppgirNullHistoriskInntekt === false && harYtelseFraNavSomDekkerTapet === false,
         isAnswered: ({ selvstendigHarRegnskapsfører }) => yesOrNoIsAnswered(selvstendigHarRegnskapsfører),
     },
     [Field.selvstendigRegnskapsførerNavn]: {

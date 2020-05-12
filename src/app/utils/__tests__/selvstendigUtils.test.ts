@@ -1,12 +1,6 @@
 import { PersonligeForetak } from '../../types/SoknadEssentials';
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    selvstendigSkalOppgiInntekt2019,
-    selvstendigSkalOppgiInntekt2020,
-    hasValidHistoriskInntekt,
-    getHistoriskInntektÅrstall,
-    harSelskaperRegistrertFør2019,
-} from '../selvstendigUtils';
+import { hasValidHistoriskInntekt, harSelskaperRegistrertFør2019 } from '../selvstendigUtils';
 
 const personligeFortak1998: PersonligeForetak = {
     foretak: [],
@@ -34,34 +28,6 @@ const personligeFortak2020: PersonligeForetak = {
 };
 
 describe('selvstendigUtils', () => {
-    describe('selvstendigSkalOppgiInntekt2019', () => {
-        it('returns false if object is empty', () => {
-            expect(selvstendigSkalOppgiInntekt2019(undefined)).toBeFalsy();
-        });
-        it('returns false if foretak is registered in 2020', () => {
-            expect(selvstendigSkalOppgiInntekt2019(personligeFortak2020)).toBeFalsy();
-        });
-        it('returns true if foretak is registered in 2019', () => {
-            expect(selvstendigSkalOppgiInntekt2019(personligeFortak2019)).toBeTruthy();
-        });
-        it('returns true if foretak is registered before 2019', () => {
-            expect(selvstendigSkalOppgiInntekt2019(personligeFortak1998)).toBeTruthy();
-        });
-    });
-    describe('selvstendigSkalOppgiInntekt2020', () => {
-        it('returns false if object is empty', () => {
-            expect(selvstendigSkalOppgiInntekt2020(undefined)).toBeFalsy();
-        });
-        it('returns true if foretak is registered in 2020', () => {
-            expect(selvstendigSkalOppgiInntekt2020(personligeFortak2020)).toBeTruthy();
-        });
-        it('returns false if foretak is registered in 2019', () => {
-            expect(selvstendigSkalOppgiInntekt2020(personligeFortak2019)).toBeFalsy();
-        });
-        it('returns false if foretak is registered before 2019', () => {
-            expect(selvstendigSkalOppgiInntekt2020(personligeFortak1998)).toBeFalsy();
-        });
-    });
     describe('hasValidHistoriskInntekt', () => {
         it('returns false if year is 2019 and selvstendigInntekt2019 is undefined', () => {
             expect(hasValidHistoriskInntekt({ selvstendigBeregnetInntektsårstall: 2019 })).toBeFalsy();
@@ -113,16 +79,6 @@ describe('selvstendigUtils', () => {
             expect(harSelskaperRegistrertFør2019(personligeFortak2017)).toBeTruthy();
             expect(harSelskaperRegistrertFør2019(personligeFortak2018)).toBeTruthy();
             expect(harSelskaperRegistrertFør2019(personligeFortak1998)).toBeTruthy();
-        });
-    });
-
-    describe('finn årstall som skal brukes for historisk inntekt', () => {
-        describe('når det er ingen historiske selskaper', () => {
-            it('returneres 2019, dersom første registreringdato er før 2019', () => {
-                expect(getHistoriskInntektÅrstall(personligeFortak1998)).toEqual(2019);
-                expect(getHistoriskInntektÅrstall(personligeFortak2017)).toEqual(2019);
-                expect(getHistoriskInntektÅrstall(personligeFortak2018)).toEqual(2019);
-            });
         });
     });
 });
