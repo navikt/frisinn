@@ -17,13 +17,13 @@ import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import { getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
+import InfoOmSøknadOgFrist from '../info/InfoOmSøknadOgFrist';
 import SelvstendigInfo from '../info/SelvstendigInfo';
+import SoknadErrors from '../soknad-errors/SoknadErrors';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
-import SoknadErrors from '../soknad-errors/SoknadErrors';
-import InfoMessage from '../../components/info-message/InfoMessage';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -140,13 +140,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                 </FormSection>
             )}
             <Box>
-                <InfoMessage>
-                    <strong>Du kan kun sende inn søknaden én gang</strong>. Det vil si at hvis du sender inn en søknad
-                    med opplysninger som er feil, kan du ikke sende ny søknad eller trekke den søknaden du har sendt.
-                    <p>
-                        <strong>Det er derfor viktig at du kontrollerer at tallene du legger inn er riktige.</strong>
-                    </p>
-                </InfoMessage>
+                <InfoOmSøknadOgFrist />
             </Box>
 
             {selvstendigSoknadIsOk && selvstendigNæringsdrivende && selvstendigBeregnetTilgjengeligSøknadsperiode && (

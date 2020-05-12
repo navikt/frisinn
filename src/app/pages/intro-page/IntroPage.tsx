@@ -9,9 +9,9 @@ import InformationPoster from 'common/components/information-poster/InformationP
 import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
-import InfoMessage from '../../components/info-message/InfoMessage';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
+import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
@@ -113,17 +113,7 @@ const IntroPage: React.StatelessComponent = () => {
                                     </InformationPoster>
                                 </Box>
                                 <Box margin="xl">
-                                    <InfoMessage>
-                                        <strong>Du kan kun sende inn søknaden én gang</strong>. Det vil si at hvis du
-                                        sender inn en søknad med opplysninger som er feil, kan du ikke sende ny søknad
-                                        eller trekke den søknaden du har sendt.
-                                        <p>
-                                            <strong>
-                                                Det er derfor viktig at du kontrollerer at tallene du legger inn er
-                                                riktige.
-                                            </strong>
-                                        </p>
-                                    </InfoMessage>
+                                    <InfoOmSøknadOgFrist />
                                 </Box>
                                 <Box margin="xl">
                                     <ResponsivePanel>
