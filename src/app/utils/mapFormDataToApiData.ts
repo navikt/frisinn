@@ -58,12 +58,8 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigRevisorTelefon,
         selvstendigRevisorNAVKanTaKontakt,
         selvstendigSoknadIsOk,
-        selvstendigHarAvvikletSelskaper,
-        selvstendigAvvikledeSelskaper,
+        selvstendigBeregnetInntektsårstall,
     } = formData;
-
-    const historiskeSelskaper =
-        selvstendigHarAvvikletSelskaper === YesOrNo.YES ? selvstendigAvvikledeSelskaper : undefined;
     if (
         personligeForetak !== undefined &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
@@ -71,15 +67,12 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigInntektstapStartetDato !== undefined &&
-        hasValidHistoriskInntekt(
-            { selvstendigInntekt2019, selvstendigInntekt2020 },
-            getHistoriskInntektÅrstall(personligeForetak, historiskeSelskaper)
-        )
+        hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020, selvstendigBeregnetInntektsårstall })
     ) {
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        const årstallHistoriskInntekt = getHistoriskInntektÅrstall(personligeForetak, historiskeSelskaper);
+        const årstallHistoriskInntekt = getHistoriskInntektÅrstall(personligeForetak);
 
         const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
             {
@@ -132,12 +125,8 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const apiData: SelvstendigNæringsdrivendeApiData = {
             inntektstapStartet: formatDateToApiFormat(selvstendigInntektstapStartetDato),
             inntektIPerioden: selvstendigInntektIPerioden,
-            inntekt2019: selvstendigSkalOppgiInntekt2019(personligeForetak, historiskeSelskaper)
-                ? selvstendigInntekt2019
-                : undefined,
-            inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak, historiskeSelskaper)
-                ? selvstendigInntekt2020
-                : undefined,
+            inntekt2019: selvstendigSkalOppgiInntekt2019(personligeForetak) ? selvstendigInntekt2019 : undefined,
+            inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak) ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {
                 period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
@@ -172,10 +161,11 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                   selvstendigErFrilanser,
                   selvstendigHarHattInntektSomFrilanserIPerioden,
                   hasValidHistoriskInntekt: personligeForetak
-                      ? hasValidHistoriskInntekt(
-                            { selvstendigInntekt2019, selvstendigInntekt2020 },
-                            getHistoriskInntektÅrstall(personligeForetak, historiskeSelskaper)
-                        )
+                      ? hasValidHistoriskInntekt({
+                            selvstendigInntekt2019,
+                            selvstendigInntekt2020,
+                            selvstendigBeregnetInntektsårstall,
+                        })
                       : 'ingen foretak info',
               };
 

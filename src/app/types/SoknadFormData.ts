@@ -3,6 +3,7 @@ import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
 import { HistoriskFortak } from '../soknad/selvstendig-step/historisk-foretak';
+import { HistoriskInntektÅrstall } from './inntektÅrstall';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -13,6 +14,7 @@ export enum SoknadFormField {
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
     selvstendigHarAvvikletSelskaper = 'selvstendigHarAvvikletSelskaper',
     selvstendigAvvikledeSelskaper = 'selvstendigAvvikledeSelskaper',
+    selvstendigAlleAvvikledeSelskaperErRegistrert = 'selvstendigAlleAvvikledeSelskaperErRegistrert',
     selvstendigHarHattInntektFraForetak = 'selvstendigHarHattInntektFraForetak',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
@@ -31,6 +33,7 @@ export enum SoknadFormField {
     selvstendigRevisorTelefon = 'selvstendigRevisorTelefon',
     selvstendigRevisorNAVKanTaKontakt = 'selvstendigRevisorNAVKanTaKontakt',
     selvstendigBeregnetTilgjengeligSøknadsperiode = 'selvstendigBeregnetTilgjengeligSøknadsperiode',
+    selvstendigBeregnetInntektsårstall = 'selvstendigBeregnetInntektsårstall',
     selvstendigSoknadIsOk = 'selvstendigSoknadIsOk',
     selvstendigStopReason = 'selvstendigStopReason',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
@@ -61,6 +64,7 @@ export interface SoknadFormData {
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
     [SoknadFormField.selvstendigHarAvvikletSelskaper]: YesOrNo;
     [SoknadFormField.selvstendigAvvikledeSelskaper]?: HistoriskFortak[];
+    [SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert]?: YesOrNo;
     [SoknadFormField.selvstendigHarHattInntektFraForetak]: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
@@ -72,6 +76,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigInntekt2019]?: number;
     [SoknadFormField.selvstendigInntekt2020]?: number;
     [SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode]?: DateRange; // Hentes fra api når bruker velger startdato for inntektstap
+    [SoknadFormField.selvstendigBeregnetInntektsårstall]?: HistoriskInntektÅrstall; // Hentes fra api når bruker velger startdato for inntektstap
     [SoknadFormField.selvstendigHarRegnskapsfører]: YesOrNo;
     [SoknadFormField.selvstendigRegnskapsførerNavn]?: string;
     [SoknadFormField.selvstendigRegnskapsførerTelefon]?: string;
@@ -112,9 +117,11 @@ export type SelvstendigFormData = Pick<
     SoknadFormData,
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode
+    | SoknadFormField.selvstendigBeregnetInntektsårstall
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
     | SoknadFormField.selvstendigHarAvvikletSelskaper
     | SoknadFormField.selvstendigAvvikledeSelskaper
+    | SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert
     | SoknadFormField.selvstendigHarHattInntektFraForetak
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato

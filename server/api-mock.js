@@ -75,7 +75,7 @@ const personligeForetak = {
         { organisasjonsnummer: '922753458', navn: 'KEBAB HOUSE DA', registreringsdato: '2020-01-01' },
         { organisasjonsnummer: '922753459', navn: 'PIZZE HYTTE ANS', registreringsdato: '2020-01-01' },
     ],
-    tidligsteRegistreringsdato: '2018-01-01',
+    tidligsteRegistreringsdato: '2020-02-01',
 };
 
 const ingenPersonligeForetak = {
@@ -94,6 +94,29 @@ const getPerioder = (query) => {
         søknadsperiode: {
             fom: moment(firstApplicationDate).format('YYYY-MM-DD'),
             tom: '2020-04-30',
+        },
+    };
+};
+const getInntektsperiode = (query) => {
+    const tapStartDato = moment(query.inntektstapStartet).toDate();
+    const snStartDato = moment(query.startetSomSelvstendigNæringsdrivende).toDate();
+    const tapsår = snStartDato.getFullYear();
+    let fom, tom;
+
+    if (tapsår < 2019) {
+        fom = '2019-01-01';
+        tom = '2019-12-31';
+    } else if (tapsår === 2019) {
+        fom = moment(snStartDato).format('YYYY-MM-DD');
+        tom = '2019-12-31';
+    } else {
+        fom = moment(snStartDato).format('YYYY-MM-DD');
+        tom = moment(tapStartDato).format('YYYY-MM-DD');
+    }
+    return {
+        inntektsperiode: {
+            fom,
+            tom,
         },
     };
 };
@@ -135,6 +158,12 @@ const startExpressServer = () => {
         setTimeout(() => {
             res.send({ ...søkerMock, fornavn: 'Godslig2' });
         }, 200);
+    });
+
+    server.get('/inntektsperiode', (req, res) => {
+        setTimeout(() => {
+            res.send(getInntektsperiode(req.query));
+        }, 1500);
     });
 
     server.get('/perioder', (req, res) => {

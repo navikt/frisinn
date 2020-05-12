@@ -4,7 +4,7 @@ import { hasValue } from '../../validation/fieldValidations';
 import { SelvstendigFormData } from '../../types/SoknadFormData';
 
 export enum SelvstendigNæringdsrivendeAvslagÅrsak {
-    'erIkkeSelvstendigNæringsdrivende' = 'erIkkeSelvstendigNæringsdrivende',
+    'oppgirHarIkkeHattInntektFraForetak' = 'oppgirHarIkkeHattInntektFraForetak',
     'harIkkeHattInntektstapPgaKorona' = 'harIkkeHattInntektstapPgaKorona',
     'søkerIkkeForGyldigTidsrom' = 'søkerIkkeForGyldigTidsrom',
     'harYtelseFraNavSomDekkerTapet' = 'harYtelseFraNavSomDekkerTapet',
@@ -12,52 +12,50 @@ export enum SelvstendigNæringdsrivendeAvslagÅrsak {
 }
 
 export interface SelvstendigNæringsdrivendeAvslagStatus {
-    [SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirHarIkkeHattInntektFraForetak]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt]: boolean;
 }
 
-export type KontrollerSelvstendigSvarPayload = SelvstendigFormData & { inntektÅrstall: number };
-
-const erIkkeSelvstendigNæringsdrivende = ({ selvstendigHarHattInntektFraForetak }: KontrollerSelvstendigSvarPayload) =>
+const oppgirHarIkkeHattInntektFraForetak = ({ selvstendigHarHattInntektFraForetak }: SelvstendigFormData) =>
     selvstendigHarHattInntektFraForetak === YesOrNo.NO;
 
-const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: KontrollerSelvstendigSvarPayload) =>
+const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormData) =>
     selvstendigHarTaptInntektPgaKorona === YesOrNo.NO;
 
 const harIkkeHattHistoriskInntekt = ({
     selvstendigHarHattInntektFraForetak,
     selvstendigInntekt2019,
     selvstendigInntekt2020,
-    inntektÅrstall,
-}: KontrollerSelvstendigSvarPayload): boolean => {
+    selvstendigBeregnetInntektsårstall,
+}: SelvstendigFormData): boolean => {
     return (
         selvstendigHarHattInntektFraForetak === YesOrNo.NO ||
-        hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020 }, inntektÅrstall) === false
+        hasValidHistoriskInntekt({
+            selvstendigInntekt2019,
+            selvstendigInntekt2020,
+            selvstendigBeregnetInntektsårstall,
+        }) === false
     );
 };
 
 const søkerIkkeForGyldigTidsrom = ({
     selvstendigBeregnetTilgjengeligSøknadsperiode,
     selvstendigInntektstapStartetDato,
-}: KontrollerSelvstendigSvarPayload) => {
+}: SelvstendigFormData) => {
     const gyldig =
         hasValue(selvstendigInntektstapStartetDato) && selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined;
     return !gyldig;
 };
 
-const utbetalingFraNAVDekkerHeleTapet = ({
-    selvstendigHarYtelseFraNavSomDekkerTapet,
-}: KontrollerSelvstendigSvarPayload) => {
+const utbetalingFraNAVDekkerHeleTapet = ({ selvstendigHarYtelseFraNavSomDekkerTapet }: SelvstendigFormData) => {
     return selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES;
 };
 
-export const kontrollerSelvstendigSvar = (
-    payload: KontrollerSelvstendigSvarPayload
-): SelvstendigNæringsdrivendeAvslagStatus => ({
-    erIkkeSelvstendigNæringsdrivende: erIkkeSelvstendigNæringsdrivende(payload),
+export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): SelvstendigNæringsdrivendeAvslagStatus => ({
+    oppgirHarIkkeHattInntektFraForetak: oppgirHarIkkeHattInntektFraForetak(payload),
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),

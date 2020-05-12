@@ -36,6 +36,7 @@ export enum ApiEndpoint {
     'soker' = 'soker',
     'soknad' = 'soknad',
     'tilgjengelig' = 'tilgjengelig',
+    'inntektsperiode' = 'inntektsperiode',
 }
 
 const api = {

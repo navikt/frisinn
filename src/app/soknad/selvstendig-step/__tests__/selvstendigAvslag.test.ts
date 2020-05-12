@@ -1,10 +1,7 @@
-import {
-    kontrollerSelvstendigSvar,
-    KontrollerSelvstendigSvarPayload,
-    SelvstendigNæringsdrivendeAvslagStatus,
-} from '../selvstendigAvslag';
+import { kontrollerSelvstendigSvar, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
+import { SelvstendigFormData } from '../../../types/SoknadFormData';
 
 const periode: DateRange = {
     from: apiStringDateToDate('2020-04-01'),
@@ -12,8 +9,8 @@ const periode: DateRange = {
 };
 
 describe('selvstendigAvslag', () => {
-    const payload: KontrollerSelvstendigSvarPayload = {
-        inntektÅrstall: 2019,
+    const payload: SelvstendigFormData = {
+        selvstendigBeregnetInntektsårstall: 2019,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
         selvstendigHarAvvikletSelskaper: YesOrNo.NO,
         selvstendigAvvikledeSelskaper: [],
@@ -37,14 +34,14 @@ describe('selvstendigAvslag', () => {
                 ...payload,
                 selvstendigHarHattInntektFraForetak: YesOrNo.NO,
             });
-            expect(status.erIkkeSelvstendigNæringsdrivende).toBeTruthy();
+            expect(status.oppgirHarIkkeHattInntektFraForetak).toBeTruthy();
         });
         it('returns no error when selvstendigHarHattInntektFraForetak === YES', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
                 selvstendigHarHattInntektFraForetak: YesOrNo.YES,
             });
-            expect(status.erIkkeSelvstendigNæringsdrivende).toBeFalsy();
+            expect(status.oppgirHarIkkeHattInntektFraForetak).toBeFalsy();
         });
     });
     describe('selvstendigHarTaptInntektPgaKorona', () => {
@@ -67,7 +64,7 @@ describe('selvstendigAvslag', () => {
         it('returns error if 2019 inntekt is undefined', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
-                inntektÅrstall: 2019,
+                selvstendigBeregnetInntektsårstall: 2019,
                 selvstendigInntekt2019: undefined,
             });
             expect(status.harIkkeHattHistoriskInntekt).toBeTruthy();
@@ -75,7 +72,7 @@ describe('selvstendigAvslag', () => {
         it('returns error if 2019 inntekt is 0', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
-                inntektÅrstall: 2019,
+                selvstendigBeregnetInntektsårstall: 2019,
                 selvstendigInntekt2019: 0,
             });
             expect(status.harIkkeHattHistoriskInntekt).toBeTruthy();
@@ -83,7 +80,7 @@ describe('selvstendigAvslag', () => {
         it('returns no error if 2019 inntekt is undefined', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
-                inntektÅrstall: 2019,
+                selvstendigBeregnetInntektsårstall: 2019,
                 selvstendigInntekt2019: 1,
             });
             expect(status.harIkkeHattHistoriskInntekt).toBeFalsy();
@@ -93,7 +90,7 @@ describe('selvstendigAvslag', () => {
         it('returns error if 2020 inntekt is undefined', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
-                inntektÅrstall: 2020,
+                selvstendigBeregnetInntektsårstall: 2020,
                 selvstendigInntekt2020: undefined,
             });
             expect(status.harIkkeHattHistoriskInntekt).toBeTruthy();
@@ -101,7 +98,7 @@ describe('selvstendigAvslag', () => {
         it('returns no error if 2020 inntekt is undefined', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
-                inntektÅrstall: 2020,
+                selvstendigBeregnetInntektsårstall: 2020,
                 selvstendigInntekt2020: 1,
             });
             expect(status.harIkkeHattHistoriskInntekt).toBeFalsy();
@@ -109,7 +106,7 @@ describe('selvstendigAvslag', () => {
         it('returns error if 2020 inntekt is 0', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
-                inntektÅrstall: 2020,
+                selvstendigBeregnetInntektsårstall: 2020,
                 selvstendigInntekt2020: 0,
             });
             expect(status.harIkkeHattHistoriskInntekt).toBeTruthy();

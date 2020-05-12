@@ -139,7 +139,7 @@ const infoSelvstendigInntekt2019 = () => (
 
 const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, inntektÅrstall: number): React.ReactNode => {
     switch (årsak) {
-        case SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende:
+        case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirHarIkkeHattInntektFraForetak:
             return <StoppIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
@@ -154,6 +154,8 @@ const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, in
 
 const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
 
+const infoAlleAvvikledeSelskaperErIkkeRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
+
 const SelvstendigInfo = {
     intro,
     StoppForSentInntektstap,
@@ -161,6 +163,7 @@ const SelvstendigInfo = {
     StoppYtelseDekkerHeleTapet,
     StoppIkkeHattInntektFraForetak,
     StoppIngenHistoriskInntekt,
+    infoAlleAvvikledeSelskaperErIkkeRegistrert,
     infoHvordanBeregneInntekt,
     infoInntektÅrstall,
     infoAndreUtbetalingerFraNAV,
