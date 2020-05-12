@@ -130,6 +130,9 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     useEffect(() => {
         if (!isSameDate(startetSomSelvstendigNæringsdrivende, prevStartetSomSelvstendigNæringsdrivende)) {
             setFieldValue(SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert, YesOrNo.UNANSWERED);
+            setFieldValue(SoknadFormField.selvstendigHarHattInntektFraForetak, YesOrNo.UNANSWERED);
+            setFieldValue(SoknadFormField.selvstendigInntekt2019, undefined);
+            setFieldValue(SoknadFormField.selvstendigInntekt2020, undefined);
         }
     }, [startetSomSelvstendigNæringsdrivende]);
 
