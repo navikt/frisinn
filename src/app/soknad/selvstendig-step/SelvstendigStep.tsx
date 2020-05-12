@@ -15,7 +15,7 @@ import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER, isSameDate } from '../../utils/dateUtils';
 import {
-    harSelskaperRegistrertFør2018,
+    harSelskaperRegistrertFør2019,
     hasValidHistoriskInntekt,
     getStartetSomSelvstendigNæringsdrivendeDato,
 } from '../../utils/selvstendigUtils';
@@ -92,7 +92,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;
 
     const avslag = kontrollerSelvstendigSvar(values);
-    const skalSpørreOmHistoriskeSelskaper = harSelskaperRegistrertFør2018(personligeForetak) === false;
+    const skalSpørreOmHistoriskeSelskaper = harSelskaperRegistrertFør2019(personligeForetak) === false;
 
     const payload: SelvstendigFormConfigPayload = {
         ...values,
@@ -191,6 +191,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                 />
                 <SoknadQuestion name={SoknadFormField.selvstendigAvvikledeSelskaper}>
                     <HistoriskForetakListAndDialog<SoknadFormField>
+                        maxDate={selvstendigInntektstapStartetDato}
                         name={SoknadFormField.selvstendigAvvikledeSelskaper}
                     />
                 </SoknadQuestion>

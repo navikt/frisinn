@@ -5,7 +5,7 @@ import {
     selvstendigSkalOppgiInntekt2020,
     hasValidHistoriskInntekt,
     getHistoriskInntektÅrstall,
-    harSelskaperRegistrertFør2018,
+    harSelskaperRegistrertFør2019,
 } from '../selvstendigUtils';
 
 const personligeFortak1998: PersonligeForetak = {
@@ -103,16 +103,16 @@ describe('selvstendigUtils', () => {
 
     describe('harSelskaperRegistrertFør2018', () => {
         it('returns false if personligeForetak is undefined', () => {
-            expect(harSelskaperRegistrertFør2018(undefined)).toBeFalsy();
+            expect(harSelskaperRegistrertFør2019(undefined)).toBeFalsy();
         });
-        it('returns false if personligeForetak is 2018, 2019 or 2020', () => {
-            expect(harSelskaperRegistrertFør2018(personligeFortak2018)).toBeFalsy();
-            expect(harSelskaperRegistrertFør2018(personligeFortak2019)).toBeFalsy();
-            expect(harSelskaperRegistrertFør2018(personligeFortak2020)).toBeFalsy();
+        it('returns false if personligeForetak is 2019 or 2020', () => {
+            expect(harSelskaperRegistrertFør2019(personligeFortak2019)).toBeFalsy();
+            expect(harSelskaperRegistrertFør2019(personligeFortak2020)).toBeFalsy();
         });
-        it('returns true if personligeForetak is 2017 or earlier', () => {
-            expect(harSelskaperRegistrertFør2018(personligeFortak2017)).toBeTruthy();
-            expect(harSelskaperRegistrertFør2018(personligeFortak1998)).toBeTruthy();
+        it('returns true if personligeForetak is 2018 or earlier', () => {
+            expect(harSelskaperRegistrertFør2019(personligeFortak2017)).toBeTruthy();
+            expect(harSelskaperRegistrertFør2019(personligeFortak2018)).toBeTruthy();
+            expect(harSelskaperRegistrertFør2019(personligeFortak1998)).toBeTruthy();
         });
     });
 

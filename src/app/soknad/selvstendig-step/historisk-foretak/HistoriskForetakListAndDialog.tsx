@@ -7,10 +7,11 @@ import { HistoriskFortak } from './types';
 
 interface Props<FieldNames> {
     name: FieldNames;
+    maxDate: Date;
     validate?: FormikValidateFunction;
 }
 
-function HistoriskForetakListAndDialog<FieldNames>({ name, validate }: Props<FieldNames>) {
+function HistoriskForetakListAndDialog<FieldNames>({ name, validate, maxDate }: Props<FieldNames>) {
     const labels: ModalFormAndListLabels = {
         addLabel: 'Legg til tidligere selskap',
         modalTitle: 'Tidligere selskap',
@@ -25,7 +26,7 @@ function HistoriskForetakListAndDialog<FieldNames>({ name, validate }: Props<Fie
                 validate={validate}
                 sortFunc={(a, b) => sortItemsByFom({ fom: a.opprettetDato }, { fom: b.opprettetDato })}
                 formRenderer={({ onSubmit, onCancel, item }) => (
-                    <HistoriskForetakForm foretak={item} onSubmit={onSubmit} onCancel={onCancel} />
+                    <HistoriskForetakForm foretak={item} maxDate={maxDate} onSubmit={onSubmit} onCancel={onCancel} />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
                     <HistoriskForetakList foretak={items} onEdit={onEdit} onDelete={onDelete} />
