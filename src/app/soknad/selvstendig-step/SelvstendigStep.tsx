@@ -13,7 +13,11 @@ import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAv
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import { hasValidHistoriskInntekt, getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
+import {
+    hasValidHistoriskInntekt,
+    getHistoriskInntektÅrstall,
+    harSelskaperRegistrertFør2018,
+} from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
@@ -30,6 +34,7 @@ import {
 } from './selvstendigAvslag';
 import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
 import FrilanserInfo from '../info/FrilanserInfo';
+import HistoriskForetakListAndDialog from './historisk-foretak/HistoriskForetakListAndDialog';
 
 const txt = soknadQuestionText;
 
@@ -62,10 +67,12 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
 
     const inntektÅrstall = getHistoriskInntektÅrstall(personligeForetak);
     const avslag = kontrollerSelvstendigSvar({ ...values, inntektÅrstall });
+    const skalSpørreOmHistoriskeSelskaper = harSelskaperRegistrertFør2018(personligeForetak) === false;
 
     const payload: SelvstendigFormConfigPayload = {
         ...values,
         ...soknadEssentials,
+        skalSpørreOmHistoriskeSelskaper,
         inntektÅrstall,
         avslag,
     };
@@ -123,6 +130,20 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<SelvstendigInfo.StoppIkkeTapPgaKorona />}
                 />
+                {isVisible(SoknadFormField.selvstendigHarAvvikletSelskaper) && (
+                    <>
+                        <SoknadQuestion
+                            name={SoknadFormField.selvstendigHarAvvikletSelskaper}
+                            legend={txt.selvstendigHarAvvikletSelskaper}
+                        />
+                        <SoknadQuestion name={SoknadFormField.selvstendigAvvikledeSelskaper}>
+                            <HistoriskForetakListAndDialog<SoknadFormField>
+                                name={SoknadFormField.selvstendigAvvikledeSelskaper}
+                            />
+                        </SoknadQuestion>
+                    </>
+                )}
+
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigInntektstapStartetDato}
                     showInfo={isValidDateRange(availableDateRange)}

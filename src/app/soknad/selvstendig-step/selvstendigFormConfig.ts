@@ -8,8 +8,13 @@ import { SelvstendigNæringsdrivendeAvslagStatus } from './selvstendigAvslag';
 
 const Field = SoknadFormField;
 
-export type SelvstendigFormConfigPayload = SelvstendigFormData &
-    SoknadEssentials & { inntektÅrstall: number } & { avslag: SelvstendigNæringsdrivendeAvslagStatus };
+interface PayloadExtraInfo {
+    skalSpørreOmHistoriskeSelskaper: boolean;
+    inntektÅrstall: number;
+    avslag: SelvstendigNæringsdrivendeAvslagStatus;
+}
+
+export type SelvstendigFormConfigPayload = SelvstendigFormData & SoknadEssentials & PayloadExtraInfo;
 
 const showRegnskapsfører = (payload: SelvstendigFormConfigPayload): boolean => {
     const {
@@ -35,6 +40,22 @@ const showRegnskapsfører = (payload: SelvstendigFormConfigPayload): boolean => 
     return false;
 };
 
+const andreSelskaperIsAnswered = ({
+    selvstendigHarAvvikletSelskaper,
+    selvstendigAvvikledeSelskaper,
+    skalSpørreOmHistoriskeSelskaper,
+}: SelvstendigFormConfigPayload): boolean => {
+    if (skalSpørreOmHistoriskeSelskaper === false) {
+        return true;
+    }
+    if (yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper) === false) {
+        return false;
+    }
+    return selvstendigHarAvvikletSelskaper === YesOrNo.YES
+        ? (selvstendigAvvikledeSelskaper || []).length > 0
+        : selvstendigHarAvvikletSelskaper === YesOrNo.NO;
+};
+
 const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, SoknadFormField> = {
     [Field.selvstendigHarHattInntektFraForetak]: {
         isAnswered: ({ selvstendigHarHattInntektFraForetak }) => yesOrNoIsAnswered(selvstendigHarHattInntektFraForetak),
@@ -44,8 +65,23 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
         isIncluded: ({ avslag: { erIkkeSelvstendigNæringsdrivende } }) => erIkkeSelvstendigNæringsdrivende === false,
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
     },
+    [Field.selvstendigHarAvvikletSelskaper]: {
+        parentQuestion: Field.selvstendigHarTaptInntektPgaKorona,
+        isIncluded: ({ skalSpørreOmHistoriskeSelskaper, avslag: { harIkkeHattInntektstapPgaKorona } }) =>
+            harIkkeHattInntektstapPgaKorona === false && skalSpørreOmHistoriskeSelskaper,
+        isAnswered: ({ selvstendigHarAvvikletSelskaper }) => yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper),
+    },
+    [Field.selvstendigAvvikledeSelskaper]: {
+        parentQuestion: Field.selvstendigHarAvvikletSelskaper,
+        isIncluded: ({ selvstendigHarAvvikletSelskaper }) => selvstendigHarAvvikletSelskaper === YesOrNo.YES,
+        isAnswered: ({ selvstendigAvvikledeSelskaper }) => (selvstendigAvvikledeSelskaper || []).length > 0,
+    },
     [Field.selvstendigInntektstapStartetDato]: {
         parentQuestion: Field.selvstendigHarTaptInntektPgaKorona,
+        visibilityFilter: (payload) =>
+            payload.skalSpørreOmHistoriskeSelskaper
+                ? andreSelskaperIsAnswered(payload)
+                : yesOrNoIsAnswered(payload.selvstendigHarTaptInntektPgaKorona),
         isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },

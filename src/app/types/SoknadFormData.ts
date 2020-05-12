@@ -2,6 +2,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
+import { HistoriskFortak } from '../soknad/selvstendig-step/historisk-foretak';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -10,6 +11,8 @@ export enum SoknadFormField {
     erSelvstendigNæringsdrivende = 'erSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
+    selvstendigHarAvvikletSelskaper = 'selvstendigHarAvvikletSelskaper',
+    selvstendigAvvikledeSelskaper = 'selvstendigAvvikledeSelskaper',
     selvstendigHarHattInntektFraForetak = 'selvstendigHarHattInntektFraForetak',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
@@ -56,6 +59,8 @@ export interface SoknadFormData {
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
+    [SoknadFormField.selvstendigHarAvvikletSelskaper]: YesOrNo;
+    [SoknadFormField.selvstendigAvvikledeSelskaper]?: HistoriskFortak[];
     [SoknadFormField.selvstendigHarHattInntektFraForetak]: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
@@ -108,6 +113,8 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
+    | SoknadFormField.selvstendigHarAvvikletSelskaper
+    | SoknadFormField.selvstendigAvvikledeSelskaper
     | SoknadFormField.selvstendigHarHattInntektFraForetak
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato

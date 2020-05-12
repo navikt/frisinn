@@ -15,6 +15,8 @@ describe('selvstendigAvslag', () => {
     const payload: KontrollerSelvstendigSvarPayload = {
         inntektÅrstall: 2019,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
+        selvstendigHarAvvikletSelskaper: YesOrNo.NO,
+        selvstendigAvvikledeSelskaper: [],
         selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
         selvstendigHarHattInntektFraForetak: YesOrNo.YES,
         selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
