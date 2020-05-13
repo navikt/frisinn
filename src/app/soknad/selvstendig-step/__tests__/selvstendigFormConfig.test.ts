@@ -48,4 +48,5 @@ describe('selvstendigFormConfig', () => {
         const { isVisible } = SelvstendigFormQuestions.getVisbility(values);
         expect(isVisible(SoknadFormField.selvstendigHarHattInntektFraForetak)).toBeTruthy();
     });
+    /** Usikker på om denne skal skrives */
 });
