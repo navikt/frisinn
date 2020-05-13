@@ -14,7 +14,15 @@ const ApiQuestionsSummary = ({ spørsmålOgSvar }: Props) => {
         <>
             {spørsmålOgSvar.map((s, key) => (
                 <SummaryBlock key={key} header={s.spørsmål}>
-                    {s.svar}
+                    {Array.isArray(s.svar) ? (
+                        <ul className="infoList">
+                            {s.svar.map((svar, index) => (
+                                <li key={index}>{svar}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        s.svar
+                    )}
                 </SummaryBlock>
             ))}
         </>

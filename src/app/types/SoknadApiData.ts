@@ -5,7 +5,7 @@ import { SoknadFormField } from './SoknadFormData';
 export interface ApiSpørsmålOgSvar {
     field: SoknadFormField /* Not used by api, only in tests */;
     spørsmål: string;
-    svar: string;
+    svar: string | string[];
 }
 
 export interface SelvstendigNæringsdrivendeApiData {

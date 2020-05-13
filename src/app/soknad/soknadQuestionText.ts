@@ -50,7 +50,7 @@ export const soknadQuestionText: SoknadQuestionText = {
             dateRange
         )}?`,
     selvstendigHarAvvikletSelskaper: 'Har du hatt selskaper (ENK, DA/ANS), som ble avviklet i perioden 2019-2020?',
-    selvstendigAvvikledeSelskaper: 'Legg til de selskapene som var aktive i perioden 2019-2020',
+    selvstendigAvvikledeSelskaper: 'Selskaper som ble avviklet i perioden 2019-2020',
     selvstendigAlleAvvikledeSelskaperErRegistrert: 'Er alle avviklede selskaper i perioden 2019-2020 lagt til?',
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
     selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,

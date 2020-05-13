@@ -1,4 +1,4 @@
-import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { formatDateToApiFormat, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
@@ -42,6 +42,8 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigInntekt2019,
         selvstendigInntekt2020,
         selvstendigErFrilanser,
+        selvstendigHarAvvikletSelskaper,
+        selvstendigAvvikledeSelskaper,
         selvstendigHarHattInntektSomFrilanserIPerioden,
         selvstendigInntektSomFrilanserIPerioden,
         selvstendigBeregnetTilgjengeligSøknadsperiode,
@@ -70,11 +72,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 
         const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
             {
-                field: SoknadFormField.selvstendigHarHattInntektFraForetak,
-                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(selvstendigBeregnetInntektsårstall),
-                svar: formatYesOrNoAnswer(selvstendigHarHattInntektFraForetak),
-            },
-            {
                 field: SoknadFormField.selvstendigHarTaptInntektPgaKorona,
                 spørsmål: soknadQuestionText.selvstendigHarTaptInntektPgaKorona(
                     selvstendigBeregnetTilgjengeligSøknadsperiode
@@ -82,11 +79,28 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 svar: formatYesOrNoAnswer(selvstendigHarTaptInntektPgaKorona),
             },
             {
+                field: SoknadFormField.selvstendigHarHattInntektFraForetak,
+                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(selvstendigBeregnetInntektsårstall),
+                svar: formatYesOrNoAnswer(selvstendigHarHattInntektFraForetak),
+            },
+            {
                 field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
                 spørsmål: soknadQuestionText.selvstendigHarYtelseFraNavSomDekkerTapet,
                 svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
+        if (selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAvvikledeSelskaper) {
+            const selskaper = selvstendigAvvikledeSelskaper?.map(
+                ({ opprettetDato, avsluttetDato, navn }) =>
+                    `${prettifyDate(opprettetDato)} - ${prettifyDate(avsluttetDato)}: ${navn}`
+            );
+            spørsmålOgSvar.push({
+                field: SoknadFormField.selvstendigAvvikledeSelskaper,
+                spørsmål: soknadQuestionText.selvstendigAvvikledeSelskaper,
+                svar: selskaper,
+            });
+        }
+
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigHarRevisor,
