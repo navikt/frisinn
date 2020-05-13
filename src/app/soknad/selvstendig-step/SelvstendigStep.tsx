@@ -59,6 +59,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigHarAvvikletSelskaper,
         selvstendigAvvikledeSelskaper,
         selvstendigBeregnetInntektsårstall,
+        selvstendigBeregnetTilgjengeligSøknadsperiode,
     } = values;
     const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
 
@@ -70,7 +71,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
 
     const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
         selvstendigInntektstapStartetDato,
-        currentSøknadsperiode
+        currentSøknadsperiode,
+        selvstendigBeregnetTilgjengeligSøknadsperiode
     );
 
     const historiskeForetak =
@@ -87,6 +89,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
             historiskeForetak,
             startetSomSelvstendigNæringsdrivende
         ),
+        currentHistoriskInntektsÅrstall: selvstendigBeregnetInntektsårstall,
     });
 
     const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;

@@ -13,7 +13,7 @@ export interface InntektsperiodeApiResponse {
 }
 
 export interface Inntektsperiode {
-    inntektsperiode: DateRange;
+    inntektsperiode?: DateRange;
     inntektsårstall: HistoriskInntektÅrstall;
 }
 

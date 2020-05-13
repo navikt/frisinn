@@ -3,17 +3,25 @@ import { AxiosError } from 'axios';
 import { getInntektsperiode, Inntektsperiode } from '../api/inntektsperiode';
 import { isSameDate } from '../utils/dateUtils';
 import { usePrevious } from './usePrevious';
+import { HistoriskInntektÅrstall } from '../types/inntektÅrstall';
 
 function useInntektsperiode({
     startetSomSelvstendigNæringsdrivende,
     selvstendigInntektstapStartetDato,
+    currentHistoriskInntektsÅrstall,
 }: {
     startetSomSelvstendigNæringsdrivende: Date;
     selvstendigInntektstapStartetDato: Date;
+    currentHistoriskInntektsÅrstall: HistoriskInntektÅrstall | undefined;
 }) {
     const [inntektsperiode, setInntektsperiode] = useState<Inntektsperiode | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
+    const [firstRender, setFirstRender] = useState(true);
+
+    useEffect(() => {
+        setFirstRender(false);
+    }, []);
 
     const prevStartetSomSelvstendigNæringsdrivende = usePrevious<Date | undefined>(
         startetSomSelvstendigNæringsdrivende
@@ -38,6 +46,12 @@ function useInntektsperiode({
     };
 
     useEffect(() => {
+        if (firstRender && currentHistoriskInntektsÅrstall) {
+            setInntektsperiode({
+                inntektsårstall: currentHistoriskInntektsÅrstall,
+            });
+            return;
+        }
         if (startetSomSelvstendigNæringsdrivende === undefined || selvstendigInntektstapStartetDato === undefined) {
             setInntektsperiode(undefined);
         } else if (

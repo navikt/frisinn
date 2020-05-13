@@ -13,10 +13,19 @@ export const isValidDateRange = (dateRange: AvailableDateRange): dateRange is Da
     return dateRange !== 'NO_AVAILABLE_DATERANGE' && dateRange !== undefined;
 };
 
-function useAvailableSøknadsperiode(selectedDate: Date, currentSøknadsperiode: DateRange) {
+function useAvailableSøknadsperiode(
+    selectedDate: Date,
+    currentSøknadsperiode: DateRange,
+    currentAvailableSøknadsperiode: AvailableDateRange
+) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [availableDateRange, setAvailableDateRange] = useState<AvailableDateRange>(undefined);
     const [isLimitedDateRange, setIsLimitedDateRange] = useState<boolean>(false);
+    const [firstRender, setFirstRender] = useState(true);
+
+    useEffect(() => {
+        setFirstRender(false);
+    }, []);
 
     const prevSelectedDate = usePrevious<Date | undefined>(selectedDate);
 
@@ -37,6 +46,12 @@ function useAvailableSøknadsperiode(selectedDate: Date, currentSøknadsperiode:
     }
 
     useEffect(() => {
+        if (firstRender) {
+            if (currentAvailableSøknadsperiode) {
+                setAvailableDateRange(currentAvailableSøknadsperiode);
+            }
+            return;
+        }
         if (selectedDate === undefined) {
             setAvailableDateRange(undefined);
         } else if (!isSameDate(selectedDate, prevSelectedDate)) {

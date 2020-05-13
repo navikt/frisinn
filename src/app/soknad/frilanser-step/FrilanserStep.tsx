@@ -38,12 +38,14 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+        selvstendigBeregnetTilgjengeligSøknadsperiode,
     } = values;
     const { currentSøknadsperiode } = soknadEssentials;
 
     const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
         frilanserInntektstapStartetDato,
-        currentSøknadsperiode
+        currentSøknadsperiode,
+        selvstendigBeregnetTilgjengeligSøknadsperiode
     );
 
     const isLoading = availableDateRangeIsLoading;
