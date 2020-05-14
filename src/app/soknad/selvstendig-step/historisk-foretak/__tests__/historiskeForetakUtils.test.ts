@@ -15,16 +15,16 @@ describe('historiskeForetakUtils', () => {
         });
     });
     describe('getHistoriskAvsluttetDateRange', () => {
-        it('returns 2019-01-01 as minDate if opprettetDate is undefined', () => {
+        it('returns 2018-01-01 as minDate if opprettetDate is undefined', () => {
             const inntektstapStartDate = apiStringDateToDate('2020-04-02');
             const range = getHistoriskAvsluttetDateRange(inntektstapStartDate, undefined);
-            expect(dateToISOFormattedDateString(range.from)).toEqual('2019-01-01');
+            expect(dateToISOFormattedDateString(range.from)).toEqual('2018-01-01');
         });
-        it('returns 2019-01-01 as minDate if opprettetDate is before 2019-01-01', () => {
+        it('returns 2018-01-01 as minDate if opprettetDate is before 2018-01-01', () => {
             const inntektstapStartDate = apiStringDateToDate('2020-04-02');
             const opprettetDate = apiStringDateToDate('2005-04-02');
             const range = getHistoriskAvsluttetDateRange(inntektstapStartDate, opprettetDate);
-            expect(dateToISOFormattedDateString(range.from)).toEqual('2019-01-01');
+            expect(dateToISOFormattedDateString(range.from)).toEqual('2018-01-01');
         });
         it('returns 2020-03-12 as maxDate if inntektstapStartDate is after 2020-03-12', () => {
             const inntektstapStartDate = apiStringDateToDate('2020-04-02');
