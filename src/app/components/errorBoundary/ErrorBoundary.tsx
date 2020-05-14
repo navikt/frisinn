@@ -46,7 +46,7 @@ class ErrorBoundary extends React.Component<{}, State> {
             if (isKnownIssue) {
                 scope.setLevel(Sentry.Severity.Info);
             }
-            scope.setExtras(errorInfo);
+            scope.setExtras({ errorInfo, error });
             const eventId = Sentry.captureException(error);
             this.setState({ eventId });
         });
