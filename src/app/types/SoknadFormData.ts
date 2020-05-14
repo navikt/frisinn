@@ -2,8 +2,8 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
-import { HistoriskFortak } from '../soknad/selvstendig-step/historisk-foretak';
 import { HistoriskInntektÅrstall } from './inntektÅrstall';
+import { HistoriskFortak } from './HistoriskeForetak';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',

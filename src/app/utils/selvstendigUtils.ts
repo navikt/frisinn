@@ -1,21 +1,7 @@
-import { apiStringDateToDate, sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
-import { HistoriskFortak } from '../soknad/selvstendig-step/historisk-foretak';
 import { PersonligeForetak } from '../types/SoknadEssentials';
 import { SelvstendigFormData } from '../types/SoknadFormData';
-
-export const getStartetSomSelvstendigNæringsdrivendeDato = (
-    foretak: HistoriskFortak[] | undefined,
-    førsteRegistreringsdato: Date
-): Date => {
-    const førsteHistoriskeDato =
-        foretak && foretak.length > 0
-            ? foretak.map((f) => ({ ...f, fom: f.opprettetDato })).sort(sortItemsByFom)[0].opprettetDato
-            : undefined;
-
-    if (førsteHistoriskeDato) return moment.min(moment(førsteHistoriskeDato), moment(førsteRegistreringsdato)).toDate();
-    return førsteRegistreringsdato;
-};
 
 export const hasValidHistoriskInntekt = ({
     selvstendigBeregnetInntektsårstall,

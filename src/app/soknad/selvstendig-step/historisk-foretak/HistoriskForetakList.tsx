@@ -2,7 +2,7 @@ import React from 'react';
 import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
 import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { HistoriskFortak } from './types';
+import { HistoriskFortak } from '../../../types/HistoriskeForetak';
 
 interface Props {
     foretak: HistoriskFortak[];

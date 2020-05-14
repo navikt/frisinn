@@ -2,6 +2,7 @@ import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import api, { ApiEndpoint } from '../api';
 import { HistoriskInntektÅrstall } from '../../types/inntektÅrstall';
+import { HistoriskFortak } from '../../types/HistoriskeForetak';
 
 interface Tidsperiode {
     fom: ApiStringDate;
@@ -17,6 +18,15 @@ export interface Inntektsperiode {
     inntektsårstall: HistoriskInntektÅrstall;
 }
 
+export interface OpphørtPersonligeForetak {
+    navn: string;
+    registreringsdato: ApiStringDate;
+    opphørsdato: ApiStringDate;
+}
+export interface GetInntektsperiodePayload {
+    opphørtePersonligeForetak?: OpphørtPersonligeForetak[];
+}
+
 const parseInntektsperiodeApiResponse = (respons: InntektsperiodeApiResponse): Inntektsperiode => {
     const from = apiStringDateToDate(respons.inntektsperiode.fom);
     const to = apiStringDateToDate(respons.inntektsperiode.tom);
@@ -30,24 +40,22 @@ const parseInntektsperiodeApiResponse = (respons: InntektsperiodeApiResponse): I
 };
 
 export async function getInntektsperiode({
-    selvstendigInntektstapStartetDato,
-    startetSomSelvstendigNæringsdrivende,
+    historiskeForetak = [],
 }: {
-    selvstendigInntektstapStartetDato?: Date;
-    startetSomSelvstendigNæringsdrivende?: Date;
+    historiskeForetak: HistoriskFortak[];
 }): Promise<Inntektsperiode> {
     try {
-        const params = [];
-        if (selvstendigInntektstapStartetDato) {
-            params.push(`inntektstapStartet=${formatDateToApiFormat(selvstendigInntektstapStartetDato)}`);
-        }
-
-        if (startetSomSelvstendigNæringsdrivende) {
-            params.push(
-                `startetSomSelvstendigNæringsdrivende=${formatDateToApiFormat(startetSomSelvstendigNæringsdrivende)}`
-            );
-        }
-        const { data } = await api.get<InntektsperiodeApiResponse>(ApiEndpoint.inntektsperiode, params.join('&'));
+        const payload: GetInntektsperiodePayload = {
+            opphørtePersonligeForetak: historiskeForetak.map((f) => ({
+                navn: f.navn,
+                opphørsdato: formatDateToApiFormat(f.avsluttetDato),
+                registreringsdato: formatDateToApiFormat(f.opprettetDato),
+            })),
+        };
+        const { data } = await api.post<GetInntektsperiodePayload, InntektsperiodeApiResponse>(
+            ApiEndpoint.inntektsperiode,
+            payload
+        );
         return Promise.resolve(parseInntektsperiodeApiResponse(data));
     } catch (error) {
         return Promise.reject(error);

@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { getInntektsperiode, Inntektsperiode } from '../api/inntektsperiode';
-import { isSameDate } from '../utils/dateUtils';
-import { usePrevious } from './usePrevious';
 import { HistoriskInntektÅrstall } from '../types/inntektÅrstall';
+import { HistoriskFortak } from '../types/HistoriskeForetak';
+import { usePrevious } from './usePrevious';
 
 function useInntektsperiode({
-    startetSomSelvstendigNæringsdrivende,
-    selvstendigInntektstapStartetDato,
+    historiskeForetak = [],
     currentHistoriskInntektsÅrstall,
 }: {
-    startetSomSelvstendigNæringsdrivende: Date;
-    selvstendigInntektstapStartetDato: Date;
+    historiskeForetak: HistoriskFortak[];
     currentHistoriskInntektsÅrstall: HistoriskInntektÅrstall | undefined;
 }) {
     const [inntektsperiode, setInntektsperiode] = useState<Inntektsperiode | undefined>();
@@ -23,19 +21,12 @@ function useInntektsperiode({
         setFirstRender(false);
     }, []);
 
-    const prevStartetSomSelvstendigNæringsdrivende = usePrevious<Date | undefined>(
-        startetSomSelvstendigNæringsdrivende
-    );
-
-    const prevSelvstendigInntektstapStartetDato = usePrevious<Date | undefined>(selvstendigInntektstapStartetDato);
-
     const fetch = async () => {
         setError(undefined);
         setIsLoading(true);
         try {
             const inntektsperiode = await getInntektsperiode({
-                selvstendigInntektstapStartetDato,
-                startetSomSelvstendigNæringsdrivende,
+                historiskeForetak,
             });
             setInntektsperiode(inntektsperiode);
         } catch (error) {
@@ -45,6 +36,9 @@ function useInntektsperiode({
         }
     };
 
+    const getForetakCompareString = (foretak: HistoriskFortak[]): string => JSON.stringify({ foretak });
+    const compareString = getForetakCompareString(historiskeForetak);
+    const prevCompareString = usePrevious(getForetakCompareString(historiskeForetak));
     useEffect(() => {
         if (firstRender && currentHistoriskInntektsÅrstall) {
             setInntektsperiode({
@@ -52,15 +46,10 @@ function useInntektsperiode({
             });
             return;
         }
-        if (startetSomSelvstendigNæringsdrivende === undefined || selvstendigInntektstapStartetDato === undefined) {
-            setInntektsperiode(undefined);
-        } else if (
-            isSameDate(prevSelvstendigInntektstapStartetDato, selvstendigInntektstapStartetDato) === false ||
-            isSameDate(prevStartetSomSelvstendigNæringsdrivende, startetSomSelvstendigNæringsdrivende) === false
-        ) {
+        if (compareString !== prevCompareString) {
             fetch();
         }
-    }, [startetSomSelvstendigNæringsdrivende, selvstendigInntektstapStartetDato]);
+    }, [compareString]);
 
     return { inntektsperiode, isLoading, error };
 }

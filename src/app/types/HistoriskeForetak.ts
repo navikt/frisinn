@@ -1,4 +1,4 @@
-import { hasValue } from '../../../validation/fieldValidations';
+import { hasValue } from '../validation/fieldValidations';
 
 export interface HistoriskFortak {
     id: string;

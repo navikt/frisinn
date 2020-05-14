@@ -8,7 +8,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { validateDateInRange } from '../../../validation/fieldValidations';
 import { getHistoriskAvsluttetDateRange, getHistoriskMaksOpprettetDato } from './historiskForetakUtils';
-import { HistoriskFortak, isHistoriskForetak } from './types';
+import { HistoriskFortak, isHistoriskForetak } from '../../../types/HistoriskeForetak';
 
 interface Props {
     maxDate: Date;

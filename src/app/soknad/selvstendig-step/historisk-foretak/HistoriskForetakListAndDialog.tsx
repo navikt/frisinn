@@ -3,7 +3,7 @@ import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import HistoriskForetakForm from './HistoriskForetakForm';
 import HistoriskForetakList from './HistoriskForetakList';
-import { HistoriskFortak } from './types';
+import { HistoriskFortak } from '../../../types/HistoriskeForetak';
 
 interface Props<FieldNames> {
     name: FieldNames;

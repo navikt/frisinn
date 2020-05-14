@@ -98,21 +98,21 @@ const getPerioder = (query) => {
     };
 };
 const getInntektsperiode = (query) => {
-    const tapStartDato = moment(query.inntektstapStartet).toDate();
-    const snStartDato = moment(query.startetSomSelvstendigNæringsdrivende).toDate();
-    const tapsår = snStartDato.getFullYear();
+    // const tapStartDato = moment(query.inntektstapStartet).toDate();
+    // const snStartDato = moment(query.startetSomSelvstendigNæringsdrivende).toDate();
+    // const tapsår = snStartDato.getFullYear();
     let fom, tom;
 
-    if (tapsår < 2019) {
-        fom = '2019-01-01';
-        tom = '2019-12-31';
-    } else if (tapsår === 2019) {
-        fom = moment(snStartDato).format('YYYY-MM-DD');
-        tom = '2019-12-31';
-    } else {
-        fom = moment(snStartDato).format('YYYY-MM-DD');
-        tom = moment(tapStartDato).format('YYYY-MM-DD');
-    }
+    // if (tapsår < 2019) {
+    fom = '2019-01-01';
+    tom = '2019-12-31';
+    // } else if (tapsår === 2019) {
+    //     fom = moment(snStartDato).format('YYYY-MM-DD');
+    //     tom = '2019-12-31';
+    // } else {
+    //     fom = moment(snStartDato).format('YYYY-MM-DD');
+    //     tom = moment(tapStartDato).format('YYYY-MM-DD');
+    // }
     return {
         inntektsperiode: {
             fom,
@@ -160,7 +160,7 @@ const startExpressServer = () => {
         }, 200);
     });
 
-    server.get('/inntektsperiode', (req, res) => {
+    server.post('/inntektsperiode', (req, res) => {
         setTimeout(() => {
             res.send(getInntektsperiode(req.query));
         }, 1500);

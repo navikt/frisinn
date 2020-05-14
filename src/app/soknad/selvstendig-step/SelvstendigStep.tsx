@@ -11,14 +11,11 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
 import useInntektsperiode from '../../hooks/useInntektsperiode';
+import { usePrevious } from '../../hooks/usePrevious';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import {
-    harSelskaperRegistrertFør2019,
-    hasValidHistoriskInntekt,
-    getStartetSomSelvstendigNæringsdrivendeDato,
-} from '../../utils/selvstendigUtils';
+import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
 import FrilanserInfo from '../info/FrilanserInfo';
@@ -37,7 +34,6 @@ import {
     SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
 import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
-import { usePrevious } from '../../hooks/usePrevious';
 
 const txt = soknadQuestionText;
 
@@ -65,7 +61,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     if (personligeForetak === undefined) {
         return <SoknadErrors.MissingApiDataError />;
     }
-    const { foretak = [], tidligsteRegistreringsdato } = personligeForetak;
+    const { foretak = [] } = personligeForetak;
     const antallForetak = foretak.length;
 
     const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
@@ -77,17 +73,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const historiskeForetak =
         selvstendigHarAvvikletSelskaper === YesOrNo.YES ? selvstendigAvvikledeSelskaper || [] : [];
 
-    const startetSomSelvstendigNæringsdrivende = getStartetSomSelvstendigNæringsdrivendeDato(
-        historiskeForetak,
-        tidligsteRegistreringsdato
-    );
-
     const { inntektsperiode, isLoading: inntektsperiodeIsLoading } = useInntektsperiode({
-        selvstendigInntektstapStartetDato,
-        startetSomSelvstendigNæringsdrivende: getStartetSomSelvstendigNæringsdrivendeDato(
-            historiskeForetak,
-            startetSomSelvstendigNæringsdrivende
-        ),
+        historiskeForetak,
         currentHistoriskInntektsÅrstall: selvstendigBeregnetInntektsårstall,
     });
 
