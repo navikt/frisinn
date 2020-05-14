@@ -1,4 +1,4 @@
-import { formatDateToApiFormat, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
@@ -82,17 +82,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
-        if (selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAvvikledeSelskaper) {
-            const selskaper = selvstendigAvvikledeSelskaper?.map(
-                ({ opprettetDato, avsluttetDato, navn }) =>
-                    `${prettifyDate(opprettetDato)} - ${prettifyDate(avsluttetDato)}: ${navn}`
-            );
-            spørsmålOgSvar.push({
-                field: SoknadFormField.selvstendigAvvikledeSelskaper,
-                spørsmål: soknadQuestionText.selvstendigAvvikledeSelskaper,
-                svar: selskaper,
-            });
-        }
 
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             spørsmålOgSvar.push({
@@ -129,6 +118,14 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntekt2019: selvstendigBeregnetInntektsårstall === 2019 ? selvstendigInntekt2019 : undefined,
             inntekt2020: selvstendigBeregnetInntektsårstall === 2020 ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
+            opphørtePersonligeForetak:
+                selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAvvikledeSelskaper
+                    ? selvstendigAvvikledeSelskaper.map((s) => ({
+                          navn: s.navn,
+                          registreringsdato: formatDateToApiFormat(s.opprettetDato),
+                          opphørsdato: formatDateToApiFormat(s.avsluttetDato),
+                      }))
+                    : [],
             info: {
                 period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
             },

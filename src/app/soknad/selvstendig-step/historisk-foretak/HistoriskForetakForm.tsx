@@ -75,14 +75,10 @@ const HistoriskForetakForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
                                     name={FieldName.avsluttetDato}
                                     label="Når ble selskapet avviklet?"
                                     showYearSelector={true}
-                                    dateLimitations={
-                                        opprettetDato
-                                            ? {
-                                                  minDato: avsluttetDateRange.from,
-                                                  maksDato: avsluttetDateRange.to,
-                                              }
-                                            : undefined
-                                    }
+                                    dateLimitations={{
+                                        minDato: avsluttetDateRange.from,
+                                        maksDato: avsluttetDateRange.to,
+                                    }}
                                     dayPickerProps={{
                                         initialMonth: opprettetDato || apiStringDateToDate('2019-01-01'),
                                     }}

@@ -1,6 +1,7 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { Locale } from 'common/types/Locale';
 import { SoknadFormField } from './SoknadFormData';
+import { OpphørtPersonligeForetak } from '../api/inntektsperiode';
 
 export interface ApiSpørsmålOgSvar {
     field: SoknadFormField /* Not used by api, only in tests */;
@@ -21,6 +22,7 @@ export interface SelvstendigNæringsdrivendeApiData {
         navn: string;
         telefon: string;
     };
+    opphørtePersonligeForetak: OpphørtPersonligeForetak[];
     spørsmålOgSvar?: ApiSpørsmålOgSvar[];
 }
 

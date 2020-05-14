@@ -19,7 +19,8 @@ const SelvstendigNæringsdrivendeSummary = ({
         inntektIPeriodenSomFrilanser,
         regnskapsfører,
         info,
-        spørsmålOgSvar: questions,
+        opphørtePersonligeForetak,
+        spørsmålOgSvar,
     },
 }: Props) => (
     <>
@@ -46,12 +47,23 @@ const SelvstendigNæringsdrivendeSummary = ({
                 <KronerSvar verdi={inntektIPeriodenSomFrilanser} />
             </SummaryBlock>
         )}
+        {opphørtePersonligeForetak.length > 0 && (
+            <SummaryBlock header={`Selskaper avviklet i perioden 2018 - 2020`}>
+                <ul className="infoList">
+                    {opphørtePersonligeForetak.map(({ navn, opphørsdato, registreringsdato }, idx) => (
+                        <li key={idx}>
+                            <DatoSvar apiDato={registreringsdato} /> - <DatoSvar apiDato={opphørsdato} />: {navn}
+                        </li>
+                    ))}
+                </ul>
+            </SummaryBlock>
+        )}
         {regnskapsfører && (
             <SummaryBlock header={`Regnskapsfører`}>
                 Navn: {regnskapsfører.navn}. Telefon: {regnskapsfører.telefon}
             </SummaryBlock>
         )}
-        <ApiQuestionsSummary spørsmålOgSvar={questions} />
+        <ApiQuestionsSummary spørsmålOgSvar={spørsmålOgSvar} />
     </>
 );
 

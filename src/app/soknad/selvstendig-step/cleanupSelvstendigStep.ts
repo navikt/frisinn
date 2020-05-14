@@ -15,6 +15,9 @@ export const cleanupSelvstendigStep = (
     if (v.selvstendigInntektstapStartetDato === undefined || avslag.søkerIkkeForGyldigTidsrom) {
         v.selvstendigInntektIPerioden = undefined as any;
     }
+    if (v.selvstendigHarAvvikletSelskaper !== YesOrNo.YES) {
+        v.selvstendigAvvikledeSelskaper = undefined;
+    }
     if (v.selvstendigInntektIPerioden === undefined) {
         v.selvstendigInntekt2019 = undefined as any;
         v.selvstendigInntekt2020 = undefined as any;
