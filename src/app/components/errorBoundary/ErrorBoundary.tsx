@@ -24,6 +24,11 @@ export const isKnownBrowserIssue = (err: Error) => {
                     return true;
                 }
             }
+            if (message === 'ResizeObserver loop limit exceeded') {
+                // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+                // https://github.com/WICG/ResizeObserver/issues/38
+                return true;
+            }
         }
     } catch (e) {}
     return false;
