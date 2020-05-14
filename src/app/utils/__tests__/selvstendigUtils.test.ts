@@ -1,31 +1,5 @@
-import { PersonligeForetak } from '../../types/SoknadEssentials';
-import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { hasValidHistoriskInntekt, harSelskaperRegistrertFør2018 } from '../selvstendigUtils';
-
-const personligeFortak1998: PersonligeForetak = {
-    foretak: [],
-    tidligsteRegistreringsdato: apiStringDateToDate('1998-01-01'),
-};
-
-const personligeFortak2017: PersonligeForetak = {
-    foretak: [],
-    tidligsteRegistreringsdato: apiStringDateToDate('2017-12-31'),
-};
-
-const personligeFortak2018: PersonligeForetak = {
-    foretak: [],
-    tidligsteRegistreringsdato: apiStringDateToDate('2018-01-01'),
-};
-
-const personligeFortak2019: PersonligeForetak = {
-    foretak: [],
-    tidligsteRegistreringsdato: apiStringDateToDate('2019-01-01'),
-};
-
-const personligeFortak2020: PersonligeForetak = {
-    foretak: [],
-    tidligsteRegistreringsdato: apiStringDateToDate('2020-01-01'),
-};
+import { PersonligeForetakMock as pf } from '../../__mock__/personligeForetakMock';
 
 describe('selvstendigUtils', () => {
     describe('hasValidHistoriskInntekt', () => {
@@ -72,13 +46,13 @@ describe('selvstendigUtils', () => {
             expect(harSelskaperRegistrertFør2018(undefined)).toBeFalsy();
         });
         it('returns false if personligeForetak is 2019 or 2020', () => {
-            expect(harSelskaperRegistrertFør2018(personligeFortak2018)).toBeFalsy();
-            expect(harSelskaperRegistrertFør2018(personligeFortak2019)).toBeFalsy();
-            expect(harSelskaperRegistrertFør2018(personligeFortak2020)).toBeFalsy();
+            expect(harSelskaperRegistrertFør2018(pf.personligeFortak2018)).toBeFalsy();
+            expect(harSelskaperRegistrertFør2018(pf.personligeFortak2019)).toBeFalsy();
+            expect(harSelskaperRegistrertFør2018(pf.personligeFortak2020)).toBeFalsy();
         });
         it('returns true if personligeForetak is 2017 or earlier', () => {
-            expect(harSelskaperRegistrertFør2018(personligeFortak2017)).toBeTruthy();
-            expect(harSelskaperRegistrertFør2018(personligeFortak1998)).toBeTruthy();
+            expect(harSelskaperRegistrertFør2018(pf.personligeFortak2017)).toBeTruthy();
+            expect(harSelskaperRegistrertFør2018(pf.personligeFortak1998)).toBeTruthy();
         });
     });
 });

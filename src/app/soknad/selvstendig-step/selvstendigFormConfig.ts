@@ -85,8 +85,8 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     },
     [Field.selvstendigAlleAvvikledeSelskaperErRegistrert]: {
         parentQuestion: Field.selvstendigHarAvvikletSelskaper,
-        isIncluded: ({ selvstendigHarAvvikletSelskaper, selvstendigAvvikledeSelskaper = [] }) =>
-            selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAvvikledeSelskaper.length > 0,
+        visibilityFilter: ({ selvstendigAvvikledeSelskaper = [] }) => selvstendigAvvikledeSelskaper.length > 0,
+        isIncluded: ({ selvstendigHarAvvikletSelskaper = [] }) => selvstendigHarAvvikletSelskaper === YesOrNo.YES,
         isAnswered: ({ selvstendigAlleAvvikledeSelskaperErRegistrert }) =>
             yesOrNoIsAnswered(selvstendigAlleAvvikledeSelskaperErRegistrert),
     },
