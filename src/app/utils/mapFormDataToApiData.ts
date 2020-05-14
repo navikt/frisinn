@@ -34,7 +34,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     const {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-        selvstendigHarHattInntektFraForetak,
         selvstendigHarTaptInntektPgaKorona,
         selvstendigInntektstapStartetDato,
         selvstendigHarYtelseFraNavSomDekkerTapet,
@@ -62,7 +61,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
-        selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigInntektstapStartetDato !== undefined &&
         selvstendigBeregnetInntektsårstall &&
         hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020, selvstendigBeregnetInntektsårstall })
@@ -77,11 +75,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     selvstendigBeregnetTilgjengeligSøknadsperiode
                 ),
                 svar: formatYesOrNoAnswer(selvstendigHarTaptInntektPgaKorona),
-            },
-            {
-                field: SoknadFormField.selvstendigHarHattInntektFraForetak,
-                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(selvstendigBeregnetInntektsårstall),
-                svar: formatYesOrNoAnswer(selvstendigHarHattInntektFraForetak),
             },
             {
                 field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
@@ -163,7 +156,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                   harPersonligeForetak: personligeForetak !== undefined,
                   selvstendigBeregnetTilgjengeligSøknadsperiode,
                   søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-                  selvstendigHarHattInntektFraForetak,
                   selvstendigHarTaptInntektPgaKorona,
                   selvstendigInntektstapStartetDato,
                   selvstendigErFrilanser,

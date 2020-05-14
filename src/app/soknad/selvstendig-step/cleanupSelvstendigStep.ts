@@ -9,9 +9,6 @@ export const cleanupSelvstendigStep = (
     const v: SoknadFormData = {
         ...values,
     };
-    if (v.selvstendigHarHattInntektFraForetak === YesOrNo.NO) {
-        v.selvstendigHarTaptInntektPgaKorona = YesOrNo.UNANSWERED;
-    }
     if (v.selvstendigHarTaptInntektPgaKorona !== YesOrNo.YES) {
         v.selvstendigInntektstapStartetDato = undefined as any;
     }

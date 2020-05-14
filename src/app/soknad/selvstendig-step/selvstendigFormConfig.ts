@@ -90,27 +90,23 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
         isAnswered: ({ selvstendigAlleAvvikledeSelskaperErRegistrert }) =>
             yesOrNoIsAnswered(selvstendigAlleAvvikledeSelskaperErRegistrert),
     },
-    [Field.selvstendigHarHattInntektFraForetak]: {
-        visibilityFilter: (payload) =>
-            payload.skalSpørreOmHistoriskeSelskaper ? andreSelskaperIsAnswered(payload) : true,
-        isAnswered: ({ selvstendigHarHattInntektFraForetak }) => yesOrNoIsAnswered(selvstendigHarHattInntektFraForetak),
-    },
     [Field.selvstendigInntekt2019]: {
-        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
-        isIncluded: ({ selvstendigBeregnetInntektsårstall, avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
-            oppgirHarIkkeHattInntektFraForetak === false && selvstendigBeregnetInntektsårstall === 2019,
+        parentQuestion: Field.selvstendigInntektIPerioden,
+        visibilityFilter: (payload) =>
+            andreSelskaperIsAnswered(payload) && hasValue(payload.selvstendigInntektIPerioden),
+        isIncluded: ({ selvstendigBeregnetInntektsårstall }) => selvstendigBeregnetInntektsårstall === 2019,
         isAnswered: ({ selvstendigInntekt2019 }) => hasValue(selvstendigInntekt2019),
     },
     [Field.selvstendigInntekt2020]: {
-        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
-        isIncluded: ({ selvstendigBeregnetInntektsårstall, avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
-            oppgirHarIkkeHattInntektFraForetak === false && selvstendigBeregnetInntektsårstall === 2020,
+        parentQuestion: Field.selvstendigInntektIPerioden,
+        visibilityFilter: (payload) =>
+            andreSelskaperIsAnswered(payload) && hasValue(payload.selvstendigInntektIPerioden),
+        isIncluded: ({ selvstendigBeregnetInntektsårstall }) => selvstendigBeregnetInntektsårstall === 2020,
         isAnswered: ({ selvstendigInntekt2020 }) => hasValue(selvstendigInntekt2020),
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
-        parentQuestion: Field.selvstendigHarHattInntektFraForetak,
-        isIncluded: ({ avslag: { oppgirHarIkkeHattInntektFraForetak } }) =>
-            oppgirHarIkkeHattInntektFraForetak === false,
+        parentQuestion: Field.selvstendigInntektIPerioden,
+        isIncluded: ({ avslag: { oppgirNullHistoriskInntekt } }) => oppgirNullHistoriskInntekt === false,
         visibilityFilter: ({ selvstendigBeregnetInntektsårstall, selvstendigInntekt2019, selvstendigInntekt2020 }) =>
             selvstendigBeregnetInntektsårstall === 2019
                 ? hasValue(selvstendigInntekt2019)

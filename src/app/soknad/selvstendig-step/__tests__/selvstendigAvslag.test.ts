@@ -15,7 +15,6 @@ describe('selvstendigAvslag', () => {
         selvstendigHarAvvikletSelskaper: YesOrNo.NO,
         selvstendigAvvikledeSelskaper: [],
         selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
-        selvstendigHarHattInntektFraForetak: YesOrNo.YES,
         selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
         selvstendigInntektstapStartetDato: apiStringDateToDate('2020-04-01'),
         selvstendigInntektIPerioden: 0,
@@ -28,22 +27,6 @@ describe('selvstendigAvslag', () => {
         selvstendigInntekt2020: undefined,
         søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
     };
-    describe('erIkkeSelvstendigNæringsdrivende', () => {
-        it('returns error when selvstendigHarHattInntektFraForetak === NO', () => {
-            const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
-                ...payload,
-                selvstendigHarHattInntektFraForetak: YesOrNo.NO,
-            });
-            expect(status.oppgirHarIkkeHattInntektFraForetak).toBeTruthy();
-        });
-        it('returns no error when selvstendigHarHattInntektFraForetak === YES', () => {
-            const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
-                ...payload,
-                selvstendigHarHattInntektFraForetak: YesOrNo.YES,
-            });
-            expect(status.oppgirHarIkkeHattInntektFraForetak).toBeFalsy();
-        });
-    });
     describe('selvstendigHarTaptInntektPgaKorona', () => {
         it('returns error when selvstendigHarTaptInntektPgaKorona === NO', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({

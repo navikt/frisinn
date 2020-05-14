@@ -12,27 +12,21 @@ export enum SelvstendigNæringdsrivendeAvslagÅrsak {
 }
 
 export interface SelvstendigNæringsdrivendeAvslagStatus {
-    [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirHarIkkeHattInntektFraForetak]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: boolean;
 }
 
-const oppgirHarIkkeHattInntektFraForetak = ({ selvstendigHarHattInntektFraForetak }: SelvstendigFormData) =>
-    selvstendigHarHattInntektFraForetak === YesOrNo.NO;
-
 const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormData) =>
     selvstendigHarTaptInntektPgaKorona === YesOrNo.NO;
 
 const oppgirNullHistoriskInntekt = ({
-    selvstendigHarHattInntektFraForetak,
     selvstendigInntekt2019,
     selvstendigInntekt2020,
     selvstendigBeregnetInntektsårstall,
 }: SelvstendigFormData): boolean => {
     return (
-        selvstendigHarHattInntektFraForetak === YesOrNo.NO ||
         hasValidHistoriskInntekt({
             selvstendigInntekt2019,
             selvstendigInntekt2020,
@@ -55,7 +49,6 @@ const utbetalingFraNAVDekkerHeleTapet = ({ selvstendigHarYtelseFraNavSomDekkerTa
 };
 
 export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): SelvstendigNæringsdrivendeAvslagStatus => ({
-    oppgirHarIkkeHattInntektFraForetak: oppgirHarIkkeHattInntektFraForetak(payload),
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),

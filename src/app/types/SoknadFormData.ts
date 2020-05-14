@@ -15,7 +15,6 @@ export enum SoknadFormField {
     selvstendigHarAvvikletSelskaper = 'selvstendigHarAvvikletSelskaper',
     selvstendigAvvikledeSelskaper = 'selvstendigAvvikledeSelskaper',
     selvstendigAlleAvvikledeSelskaperErRegistrert = 'selvstendigAlleAvvikledeSelskaperErRegistrert',
-    selvstendigHarHattInntektFraForetak = 'selvstendigHarHattInntektFraForetak',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
     selvstendigHarYtelseFraNavSomDekkerTapet = 'selvstendigHarYtelseFraNavSomDekkerTapet',
@@ -65,7 +64,6 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigHarAvvikletSelskaper]: YesOrNo;
     [SoknadFormField.selvstendigAvvikledeSelskaper]?: HistoriskFortak[];
     [SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert]?: YesOrNo;
-    [SoknadFormField.selvstendigHarHattInntektFraForetak]: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: YesOrNo;
@@ -122,7 +120,6 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigHarAvvikletSelskaper
     | SoknadFormField.selvstendigAvvikledeSelskaper
     | SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert
-    | SoknadFormField.selvstendigHarHattInntektFraForetak
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato
     | SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet
@@ -158,7 +155,6 @@ export type FrilanserFormData = Pick<
 >;
 
 export const initialSelvstendigValues: Partial<SelvstendigFormData> = {
-    selvstendigHarHattInntektFraForetak: YesOrNo.UNANSWERED,
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     selvstendigInntektstapStartetDato: undefined,
     selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,

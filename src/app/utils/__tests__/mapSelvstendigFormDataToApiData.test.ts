@@ -44,7 +44,6 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
         selvstendigAvvikledeSelskaper: [],
         selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
         selvstendigBeregnetInntektsårstall: 2019,
-        selvstendigHarHattInntektFraForetak: YesOrNo.YES,
         selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
         selvstendigInntektstapStartetDato: apiStringDateToDate('2020-04-01'),
         selvstendigInntektIPerioden: 0,
@@ -58,13 +57,6 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
         søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
     };
     describe('invalid data and answers which leads to søkerIkkeSomSelvstendig', () => {
-        it('returns undefined if selvstendigHarHattInntektFraForetak === NO', () => {
-            const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
-                ...formData,
-                selvstendigHarHattInntektFraForetak: YesOrNo.NO,
-            });
-            expect(apiData).toEqual(undefined);
-        });
         it('returns undefined if selvstendigHarTaptInntektPgaKorona === NO', () => {
             const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
                 ...formData,

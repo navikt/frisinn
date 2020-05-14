@@ -1,10 +1,8 @@
 import { SoknadFormField } from '../types/SoknadFormData';
 import { DateRange } from '../utils/dateUtils';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
-import { HistoriskInntektÅrstall } from '../types/inntektÅrstall';
 
 export interface SoknadQuestionText {
-    [SoknadFormField.selvstendigHarHattInntektFraForetak]: (årstall: HistoriskInntektÅrstall) => string;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
@@ -34,10 +32,6 @@ export interface SoknadQuestionText {
 }
 
 export const soknadQuestionText: SoknadQuestionText = {
-    selvstendigHarHattInntektFraForetak: (årstall: number) =>
-        årstall === 2020
-            ? `Har du hatt inntekt som selvstendig næringsdrivende før 1. mars ${årstall}?`
-            : 'Har du hatt inntekt som selvstendig næringsdrivende i 2019?',
     selvstendigHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
