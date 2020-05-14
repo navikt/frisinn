@@ -43,6 +43,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigErFrilanser,
         selvstendigHarAvvikletSelskaper,
         selvstendigAvvikledeSelskaper,
+        selvstendigAlleAvvikledeSelskaperErRegistrert,
         selvstendigHarHattInntektSomFrilanserIPerioden,
         selvstendigInntektSomFrilanserIPerioden,
         selvstendigBeregnetTilgjengeligSøknadsperiode,
@@ -110,6 +111,13 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
+            if (selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAlleAvvikledeSelskaperErRegistrert) {
+                spørsmålOgSvar.push({
+                    field: SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert,
+                    spørsmål: soknadQuestionText.selvstendigAlleAvvikledeSelskaperErRegistrert,
+                    svar: formatYesOrNoAnswer(selvstendigAlleAvvikledeSelskaperErRegistrert),
+                });
+            }
         }
 
         const apiData: SelvstendigNæringsdrivendeApiData = {
@@ -127,7 +135,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                       }))
                     : [],
             info: {
-                period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
+                periode: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
             },
             regnskapsfører:
                 selvstendigHarRegnskapsfører === YesOrNo.YES &&

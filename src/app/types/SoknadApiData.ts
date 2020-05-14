@@ -16,7 +16,7 @@ export interface SelvstendigNæringsdrivendeApiData {
     inntekt2020?: number;
     inntektIPeriodenSomFrilanser?: number;
     info: {
-        period: string;
+        periode: string;
     };
     regnskapsfører?: {
         navn: string;

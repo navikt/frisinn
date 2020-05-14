@@ -28,8 +28,8 @@ const SelvstendigNæringsdrivendeSummary = ({
         <SummaryBlock header={'Inntektstapet som selvstendig næringsdrivende startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
-        <SummaryBlock header={'Periode det søkes for som selvstendig næringsdrivende'}>{info.period}</SummaryBlock>
-        <SummaryBlock header={`Personinntekt fra næring i perioden ${info.period}`}>
+        <SummaryBlock header={'Periode det søkes for som selvstendig næringsdrivende'}>{info.periode}</SummaryBlock>
+        <SummaryBlock header={`Personinntekt fra næring i perioden ${info.periode}`}>
             <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>
         {inntekt2019 !== undefined && (
@@ -43,7 +43,7 @@ const SelvstendigNæringsdrivendeSummary = ({
             </SummaryBlock>
         )}
         {inntektIPeriodenSomFrilanser !== undefined && (
-            <SummaryBlock header={`Personinntekt for oppdrag som frilanser i perioden ${info.period}`}>
+            <SummaryBlock header={`Personinntekt for oppdrag som frilanser i perioden ${info.periode}`}>
                 <KronerSvar verdi={inntektIPeriodenSomFrilanser} />
             </SummaryBlock>
         )}

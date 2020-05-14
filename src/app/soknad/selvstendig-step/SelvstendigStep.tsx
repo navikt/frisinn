@@ -15,7 +15,7 @@ import { usePrevious } from '../../hooks/usePrevious';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
+import { harSelskaperRegistrertFør2018, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
 import FrilanserInfo from '../info/FrilanserInfo';
@@ -81,7 +81,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;
 
     const avslag = kontrollerSelvstendigSvar(values);
-    const skalSpørreOmHistoriskeSelskaper = harSelskaperRegistrertFør2019(personligeForetak) === false;
+    const skalSpørreOmHistoriskeSelskaper = harSelskaperRegistrertFør2018(personligeForetak) === false;
 
     const payload: SelvstendigFormConfigPayload = {
         ...values,

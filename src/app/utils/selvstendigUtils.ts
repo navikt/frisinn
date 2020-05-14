@@ -14,9 +14,9 @@ export const hasValidHistoriskInntekt = ({
     return selvstendigInntekt2019 !== undefined && selvstendigInntekt2019 > 0;
 };
 
-export const harSelskaperRegistrertFør2019 = (personligeForetak?: PersonligeForetak): boolean => {
+export const harSelskaperRegistrertFør2018 = (personligeForetak?: PersonligeForetak): boolean => {
     if (personligeForetak) {
-        return moment(personligeForetak.tidligsteRegistreringsdato).isBefore(apiStringDateToDate('2019-01-01'), 'year');
+        return moment(personligeForetak.tidligsteRegistreringsdato).isBefore(apiStringDateToDate('2018-01-01'), 'year');
     }
     return false;
 };

@@ -4,11 +4,16 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
+import { HistoriskFortak, isHistoriskForetak } from '../../../types/HistoriskeForetak';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { validateDateInRange } from '../../../validation/fieldValidations';
-import { getHistoriskAvsluttetDateRange, getHistoriskMaksOpprettetDato } from './historiskForetakUtils';
-import { HistoriskFortak, isHistoriskForetak } from '../../../types/HistoriskeForetak';
+import {
+    getHistoriskAvsluttetDateRange,
+    getHistoriskMaksOpprettetDato,
+    historiskForetakMinDate,
+} from './historiskForetakUtils';
 
 interface Props {
     maxDate: Date;
@@ -80,7 +85,10 @@ const HistoriskForetakForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
                                         maksDato: avsluttetDateRange.to,
                                     }}
                                     dayPickerProps={{
-                                        initialMonth: opprettetDato || apiStringDateToDate('2019-01-01'),
+                                        initialMonth:
+                                            moment
+                                                .max(moment(opprettetDato), moment(historiskForetakMinDate))
+                                                .toDate() || apiStringDateToDate('2019-01-01'),
                                     }}
                                     fullscreenOverlay={true}
                                     validate={validateDateInRange(avsluttetDateRange)}
