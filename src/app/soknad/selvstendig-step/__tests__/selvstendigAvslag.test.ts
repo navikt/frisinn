@@ -1,7 +1,7 @@
-import { kontrollerSelvstendigSvar, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
 import { SelvstendigFormData } from '../../../types/SoknadFormData';
+import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
+import { kontrollerSelvstendigSvar, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
 
 const periode: DateRange = {
     from: apiStringDateToDate('2020-04-01'),

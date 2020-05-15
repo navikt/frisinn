@@ -2,7 +2,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
-import { HistoriskInntektÅrstall } from './inntektÅrstall';
+import { HistoriskInntektÅrstall } from './HistoriskInntektÅrstall';
 import { HistoriskFortak } from './HistoriskeForetak';
 
 export enum SoknadFormField {

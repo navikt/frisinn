@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { getInntektsperiode, Inntektsperiode } from '../api/inntektsperiode';
-import { HistoriskInntektÅrstall } from '../types/inntektÅrstall';
 import { HistoriskFortak } from '../types/HistoriskeForetak';
+import { HistoriskInntektÅrstall } from '../types/HistoriskInntektÅrstall';
 import { usePrevious } from './usePrevious';
 
 function useInntektsperiode({

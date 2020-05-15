@@ -6,11 +6,6 @@ import { SoknadEssentials, Person } from '../../../types/SoknadEssentials';
 import { PersonligeForetakMock as pfm } from '../../../__mock__/personligeForetakMock';
 import { SelvstendigNæringsdrivendeAvslagStatus, SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendigAvslag';
 
-// const periode: DateRange = {
-//     from: apiStringDateToDate('2020-04-01'),
-//     to: apiStringDateToDate('2020-04-30'),
-// };
-
 const person: Person = {
     fornavn: 'a',
     etternavn: 'b',
@@ -55,6 +50,7 @@ const avslag: SelvstendigNæringsdrivendeAvslagStatus = {
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: false,
     [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: false,
 };
+
 describe('selvstendigFormConfig', () => {
     const payload: SelvstendigFormConfigPayload = {
         ...initialFormData,

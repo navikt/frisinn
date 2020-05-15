@@ -1,16 +1,15 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import api, { ApiEndpoint } from '../api';
-import { HistoriskInntektÅrstall } from '../../types/inntektÅrstall';
+import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 import { HistoriskFortak } from '../../types/HistoriskeForetak';
 
-interface Tidsperiode {
-    fom: ApiStringDate;
-    tom: ApiStringDate;
+interface InntektsperiodeApiResponse {
+    inntektsperiode: { fom: ApiStringDate; tom: ApiStringDate };
 }
 
-export interface InntektsperiodeApiResponse {
-    inntektsperiode: Tidsperiode;
+interface GetInntektsperiodePayload {
+    opphørtePersonligeForetak?: OpphørtPersonligeForetak[];
 }
 
 export interface Inntektsperiode {
@@ -22,9 +21,6 @@ export interface OpphørtPersonligeForetak {
     navn: string;
     registreringsdato: ApiStringDate;
     opphørsdato: ApiStringDate;
-}
-export interface GetInntektsperiodePayload {
-    opphørtePersonligeForetak?: OpphørtPersonligeForetak[];
 }
 
 const parseInntektsperiodeApiResponse = (respons: InntektsperiodeApiResponse): Inntektsperiode => {

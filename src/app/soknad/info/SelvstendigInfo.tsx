@@ -15,7 +15,7 @@ import {
     FellesStoppYtelseDekkerHeleTapetInnlogget,
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
-import { HistoriskInntektÅrstall } from '../../types/inntektÅrstall';
+import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 
 const rolleNavn = 'selvstendig næringsdrivende';
 
