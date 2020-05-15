@@ -31,7 +31,10 @@ export const cleanupSelvstendigStep = (
     if (v.selvstendigBeregnetInntektsårstall === 2020) {
         v.selvstendigInntekt2019 = undefined as any;
     }
-    if (v.selvstendigInntekt2019 === undefined && v.selvstendigInntekt2020 === undefined) {
+    if (
+        (v.selvstendigInntekt2019 === undefined && v.selvstendigInntekt2020 === undefined) ||
+        avslag.oppgirNullHistoriskInntekt
+    ) {
         v.selvstendigHarYtelseFraNavSomDekkerTapet = YesOrNo.UNANSWERED;
     }
     if (avslag.harYtelseFraNavSomDekkerTapet || v.selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.UNANSWERED) {
