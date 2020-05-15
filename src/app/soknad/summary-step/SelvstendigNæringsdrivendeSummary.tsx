@@ -48,7 +48,7 @@ const SelvstendigNæringsdrivendeSummary = ({
             </SummaryBlock>
         )}
         {opphørtePersonligeForetak && opphørtePersonligeForetak.length > 0 && (
-            <SummaryBlock header={`Selskaper avviklet i perioden 2018 - 2020`}>
+            <SummaryBlock header={`Selskaper avsluttet i perioden 2018 - 2020`}>
                 <ul className="infoList">
                     {opphørtePersonligeForetak.map(({ navn, opphørsdato, registreringsdato }, idx) => (
                         <li key={idx}>

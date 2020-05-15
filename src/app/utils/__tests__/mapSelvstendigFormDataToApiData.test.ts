@@ -40,8 +40,8 @@ const periode: DateRange = {
 describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
     const formData: SelvstendigFormData = {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
-        selvstendigHarAvvikletSelskaper: YesOrNo.NO,
-        selvstendigAvvikledeSelskaper: [],
+        selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
+        selvstendigAvsluttaSelskaper: [],
         selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
         selvstendigBeregnetInntektsårstall: 2019,
         selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,

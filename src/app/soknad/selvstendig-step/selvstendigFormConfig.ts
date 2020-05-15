@@ -9,7 +9,7 @@ import { SelvstendigNæringsdrivendeAvslagStatus } from './selvstendigAvslag';
 const Field = SoknadFormField;
 
 interface PayloadExtraInfo {
-    skalSpørreOmAvvikledeSelskaper: boolean;
+    skalSpørreOmAvsluttaSelskaper: boolean;
     avslag: SelvstendigNæringsdrivendeAvslagStatus;
 }
 
@@ -40,21 +40,21 @@ const showRegnskapsfører = (payload: SelvstendigFormConfigPayload): boolean => 
 };
 
 const andreSelskaperIsAnswered = ({
-    selvstendigHarAvvikletSelskaper,
-    selvstendigAvvikledeSelskaper,
-    skalSpørreOmAvvikledeSelskaper,
-    selvstendigAlleAvvikledeSelskaperErRegistrert,
+    selvstendigHarAvsluttetSelskaper,
+    selvstendigAvsluttaSelskaper,
+    skalSpørreOmAvsluttaSelskaper,
+    selvstendigAlleAvsluttaSelskaperErRegistrert,
 }: SelvstendigFormConfigPayload): boolean => {
-    if (skalSpørreOmAvvikledeSelskaper === false) {
+    if (skalSpørreOmAvsluttaSelskaper === false) {
         return true;
     }
-    if (yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper) === false) {
+    if (yesOrNoIsAnswered(selvstendigHarAvsluttetSelskaper) === false) {
         return false;
     }
-    return selvstendigHarAvvikletSelskaper === YesOrNo.YES
-        ? (selvstendigAvvikledeSelskaper || []).length > 0 &&
-              selvstendigAlleAvvikledeSelskaperErRegistrert === YesOrNo.YES
-        : selvstendigHarAvvikletSelskaper === YesOrNo.NO;
+    return selvstendigHarAvsluttetSelskaper === YesOrNo.YES
+        ? (selvstendigAvsluttaSelskaper || []).length > 0 &&
+              selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.YES
+        : selvstendigHarAvsluttetSelskaper === YesOrNo.NO;
 };
 
 const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, SoknadFormField> = {
@@ -72,23 +72,23 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
 
-    [Field.selvstendigHarAvvikletSelskaper]: {
+    [Field.selvstendigHarAvsluttetSelskaper]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ skalSpørreOmAvvikledeSelskaper, avslag: { søkerIkkeForGyldigTidsrom } }) =>
-            skalSpørreOmAvvikledeSelskaper && søkerIkkeForGyldigTidsrom === false,
-        isAnswered: ({ selvstendigHarAvvikletSelskaper }) => yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper),
+        isIncluded: ({ skalSpørreOmAvsluttaSelskaper, avslag: { søkerIkkeForGyldigTidsrom } }) =>
+            skalSpørreOmAvsluttaSelskaper && søkerIkkeForGyldigTidsrom === false,
+        isAnswered: ({ selvstendigHarAvsluttetSelskaper }) => yesOrNoIsAnswered(selvstendigHarAvsluttetSelskaper),
     },
-    [Field.selvstendigAvvikledeSelskaper]: {
-        parentQuestion: Field.selvstendigHarAvvikletSelskaper,
-        isIncluded: ({ selvstendigHarAvvikletSelskaper }) => selvstendigHarAvvikletSelskaper === YesOrNo.YES,
-        isAnswered: ({ selvstendigAvvikledeSelskaper }) => (selvstendigAvvikledeSelskaper || []).length > 0,
+    [Field.selvstendigAvsluttaSelskaper]: {
+        parentQuestion: Field.selvstendigHarAvsluttetSelskaper,
+        isIncluded: ({ selvstendigHarAvsluttetSelskaper }) => selvstendigHarAvsluttetSelskaper === YesOrNo.YES,
+        isAnswered: ({ selvstendigAvsluttaSelskaper }) => (selvstendigAvsluttaSelskaper || []).length > 0,
     },
-    [Field.selvstendigAlleAvvikledeSelskaperErRegistrert]: {
-        parentQuestion: Field.selvstendigHarAvvikletSelskaper,
-        visibilityFilter: ({ selvstendigAvvikledeSelskaper = [] }) => selvstendigAvvikledeSelskaper.length > 0,
-        isIncluded: ({ selvstendigHarAvvikletSelskaper = [] }) => selvstendigHarAvvikletSelskaper === YesOrNo.YES,
-        isAnswered: ({ selvstendigAlleAvvikledeSelskaperErRegistrert }) =>
-            yesOrNoIsAnswered(selvstendigAlleAvvikledeSelskaperErRegistrert),
+    [Field.selvstendigAlleAvsluttaSelskaperErRegistrert]: {
+        parentQuestion: Field.selvstendigHarAvsluttetSelskaper,
+        visibilityFilter: ({ selvstendigAvsluttaSelskaper = [] }) => selvstendigAvsluttaSelskaper.length > 0,
+        isIncluded: ({ selvstendigHarAvsluttetSelskaper = [] }) => selvstendigHarAvsluttetSelskaper === YesOrNo.YES,
+        isAnswered: ({ selvstendigAlleAvsluttaSelskaperErRegistrert }) =>
+            yesOrNoIsAnswered(selvstendigAlleAvsluttaSelskaperErRegistrert),
     },
     [Field.selvstendigInntekt2019]: {
         parentQuestion: Field.selvstendigInntektIPerioden,

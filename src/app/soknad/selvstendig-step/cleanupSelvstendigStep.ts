@@ -14,12 +14,12 @@ export const cleanupSelvstendigStep = (
     }
     if (v.selvstendigInntektstapStartetDato === undefined || avslag.søkerIkkeForGyldigTidsrom) {
         v.selvstendigInntektIPerioden = undefined as any;
-        v.selvstendigHarAvvikletSelskaper = YesOrNo.UNANSWERED;
+        v.selvstendigHarAvsluttetSelskaper = YesOrNo.UNANSWERED;
         v.selvstendigBeregnetTilgjengeligSøknadsperiode = undefined;
     }
-    if (v.selvstendigHarAvvikletSelskaper !== YesOrNo.YES) {
-        v.selvstendigAvvikledeSelskaper = undefined;
-        v.selvstendigAlleAvvikledeSelskaperErRegistrert = YesOrNo.UNANSWERED;
+    if (v.selvstendigHarAvsluttetSelskaper !== YesOrNo.YES) {
+        v.selvstendigAvsluttaSelskaper = undefined;
+        v.selvstendigAlleAvsluttaSelskaperErRegistrert = YesOrNo.UNANSWERED;
     }
     if (v.selvstendigInntektIPerioden === undefined) {
         v.selvstendigInntekt2019 = undefined as any;

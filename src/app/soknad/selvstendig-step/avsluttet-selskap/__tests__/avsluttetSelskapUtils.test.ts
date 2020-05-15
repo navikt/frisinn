@@ -1,16 +1,16 @@
-import { getAvvikletSelskapMaksOpprettetDato, getAvsluttetDateRange } from '../avvikletSelskapUtils';
+import { getAvsluttetSelskapMaksOpprettetDato, getAvsluttetDateRange } from '../avsluttetSelskapUtils';
 import { apiStringDateToDate, dateToISOFormattedDateString } from '../../../../utils/dateUtils';
 
-describe('avvikletSelskapUtils', () => {
+describe('avsluttetSelskapUtils', () => {
     describe('getHistoriskMaksOpprettetDato', () => {
         it('returns 2020-03-12 if inntektstapStartDatedDate is after that date', () => {
             const inntektstapStartDate = apiStringDateToDate('2020-04-02');
-            const date = getAvvikletSelskapMaksOpprettetDato(inntektstapStartDate);
+            const date = getAvsluttetSelskapMaksOpprettetDato(inntektstapStartDate);
             expect(dateToISOFormattedDateString(date)).toEqual('2020-03-12');
         });
         it('returns inntektstapStartDatedDate - 1 day if the date is before 2020-03-12', () => {
             const inntektstapStartDate = apiStringDateToDate('2020-02-02');
-            const date = getAvvikletSelskapMaksOpprettetDato(inntektstapStartDate);
+            const date = getAvsluttetSelskapMaksOpprettetDato(inntektstapStartDate);
             expect(dateToISOFormattedDateString(date)).toEqual('2020-02-01');
         });
     });

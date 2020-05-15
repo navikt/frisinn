@@ -12,8 +12,8 @@ describe('selvstendigAvslag', () => {
     const payload: SelvstendigFormData = {
         selvstendigBeregnetInntektsårstall: 2019,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
-        selvstendigHarAvvikletSelskaper: YesOrNo.NO,
-        selvstendigAvvikledeSelskaper: [],
+        selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
+        selvstendigAvsluttaSelskaper: [],
         selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
         selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
         selvstendigInntektstapStartetDato: apiStringDateToDate('2020-04-01'),

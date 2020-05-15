@@ -42,9 +42,9 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigInntekt2019,
         selvstendigInntekt2020,
         selvstendigErFrilanser,
-        selvstendigHarAvvikletSelskaper,
-        selvstendigAvvikledeSelskaper,
-        selvstendigAlleAvvikledeSelskaperErRegistrert,
+        selvstendigHarAvsluttetSelskaper,
+        selvstendigAvsluttaSelskaper,
+        selvstendigAlleAvsluttaSelskaperErRegistrert,
         selvstendigHarHattInntektSomFrilanserIPerioden,
         selvstendigInntektSomFrilanserIPerioden,
         selvstendigBeregnetTilgjengeligSøknadsperiode,
@@ -112,11 +112,11 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
-            if (selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAlleAvvikledeSelskaperErRegistrert) {
+            if (selvstendigHarAvsluttetSelskaper === YesOrNo.YES && selvstendigAlleAvsluttaSelskaperErRegistrert) {
                 spørsmålOgSvar.push({
-                    field: SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert,
-                    spørsmål: soknadQuestionText.selvstendigAlleAvvikledeSelskaperErRegistrert,
-                    svar: formatYesOrNoAnswer(selvstendigAlleAvvikledeSelskaperErRegistrert),
+                    field: SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert,
+                    spørsmål: soknadQuestionText.selvstendigAlleAvsluttaSelskaperErRegistrert,
+                    svar: formatYesOrNoAnswer(selvstendigAlleAvsluttaSelskaperErRegistrert),
                 });
             }
         }
@@ -128,10 +128,10 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntekt2020: selvstendigBeregnetInntektsårstall === 2020 ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             opphørtePersonligeForetak:
-                selvstendigHarAvvikletSelskaper === YesOrNo.YES &&
-                selvstendigAvvikledeSelskaper &&
-                isFeatureEnabled(Feature.AVVIKLEDE_SELSKAPER)
-                    ? selvstendigAvvikledeSelskaper.map((s) => ({
+                selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
+                selvstendigAvsluttaSelskaper &&
+                isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER)
+                    ? selvstendigAvsluttaSelskaper.map((s) => ({
                           navn: s.navn,
                           registreringsdato: formatDateToApiFormat(s.opprettetDato),
                           opphørsdato: formatDateToApiFormat(s.avsluttetDato),

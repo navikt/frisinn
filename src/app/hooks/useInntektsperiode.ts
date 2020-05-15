@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { getInntektsperiode, Inntektsperiode } from '../api/inntektsperiode';
-import { AvvikletSelskap } from '../types/AvvikletSelskap';
+import { AvsluttetSelskap } from '../types/AvsluttetSelskap';
 import { HistoriskInntektÅrstall } from '../types/HistoriskInntektÅrstall';
 import { usePrevious } from './usePrevious';
 
 function useInntektsperiode({
-    avvikledeSelskaper = [],
+    avsluttaSelskaper = [],
     currentHistoriskInntektsÅrstall,
 }: {
-    avvikledeSelskaper: AvvikletSelskap[];
+    avsluttaSelskaper: AvsluttetSelskap[];
     currentHistoriskInntektsÅrstall: HistoriskInntektÅrstall | undefined;
 }) {
     const [inntektsperiode, setInntektsperiode] = useState<Inntektsperiode | undefined>();
@@ -26,7 +26,7 @@ function useInntektsperiode({
         setIsLoading(true);
         try {
             const inntektsperiode = await getInntektsperiode({
-                avvikledeSelskaper: avvikledeSelskaper,
+                avsluttaSelskaper: avsluttaSelskaper,
             });
             setInntektsperiode(inntektsperiode);
         } catch (error) {
@@ -36,9 +36,9 @@ function useInntektsperiode({
         }
     };
 
-    const getForetakCompareString = (foretak: AvvikletSelskap[]): string => JSON.stringify({ foretak });
-    const compareString = getForetakCompareString(avvikledeSelskaper);
-    const prevCompareString = usePrevious(getForetakCompareString(avvikledeSelskaper));
+    const getForetakCompareString = (foretak: AvsluttetSelskap[]): string => JSON.stringify({ foretak });
+    const compareString = getForetakCompareString(avsluttaSelskaper);
+    const prevCompareString = usePrevious(getForetakCompareString(avsluttaSelskaper));
     useEffect(() => {
         if (firstRender && currentHistoriskInntektsÅrstall) {
             setInntektsperiode({

@@ -14,8 +14,8 @@ const selvstendigFormData: SelvstendigFormData = {
     søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
     selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
     selvstendigInntektstapStartetDato: apiStringDateToDate('2020-04-01'),
-    selvstendigHarAvvikletSelskaper: YesOrNo.YES,
-    selvstendigAvvikledeSelskaper: [
+    selvstendigHarAvsluttetSelskaper: YesOrNo.YES,
+    selvstendigAvsluttaSelskaper: [
         {
             id: '123',
             navn: 'closed',
@@ -23,7 +23,7 @@ const selvstendigFormData: SelvstendigFormData = {
             opprettetDato: apiStringDateToDate('2010-02-31'),
         },
     ],
-    selvstendigAlleAvvikledeSelskaperErRegistrert: YesOrNo.YES,
+    selvstendigAlleAvsluttaSelskaperErRegistrert: YesOrNo.YES,
     selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
     selvstendigInntektIPerioden: 0,
     selvstendigInntekt2019: 2000,
@@ -67,9 +67,9 @@ describe('cleanupSelvstendigStep', () => {
         const result: SelvstendigFormData = cleanupSelvstendigStep(payload, avslag);
         expect(result.selvstendigInntektstapStartetDato).toBeUndefined();
         expect(result.selvstendigInntektIPerioden).toBeUndefined();
-        expect(result.selvstendigHarAvvikletSelskaper).toEqual(YesOrNo.UNANSWERED);
-        expect(result.selvstendigAvvikledeSelskaper).toBeUndefined();
-        expect(result.selvstendigAlleAvvikledeSelskaperErRegistrert).toEqual(YesOrNo.UNANSWERED);
+        expect(result.selvstendigHarAvsluttetSelskaper).toEqual(YesOrNo.UNANSWERED);
+        expect(result.selvstendigAvsluttaSelskaper).toBeUndefined();
+        expect(result.selvstendigAlleAvsluttaSelskaperErRegistrert).toEqual(YesOrNo.UNANSWERED);
         expect(result.selvstendigInntekt2019).toBeUndefined();
         expect(result.selvstendigInntekt2020).toBeUndefined();
         expect(result.selvstendigBeregnetTilgjengeligSøknadsperiode).toBeUndefined();
@@ -120,25 +120,25 @@ describe('cleanupSelvstendigStep', () => {
         expect(result2020.selvstendigInntekt2019).toBeUndefined();
         expect(result2020.selvstendigInntekt2020).toBeDefined();
     });
-    it(`does not clean avviklede selskaper if ${SoknadFormField.selvstendigHarAvvikletSelskaper} = YES`, () => {
+    it(`does not clean avslutta selskaper if ${SoknadFormField.selvstendigHarAvsluttetSelskaper} = YES`, () => {
         const result: SelvstendigFormData = cleanupSelvstendigStep(
             {
                 ...formValues,
             },
             avslag
         );
-        expect(result.selvstendigAvvikledeSelskaper?.length).toBe(1);
-        expect(result.selvstendigAlleAvvikledeSelskaperErRegistrert).toEqual(YesOrNo.YES);
+        expect(result.selvstendigAvsluttaSelskaper?.length).toBe(1);
+        expect(result.selvstendigAlleAvsluttaSelskaperErRegistrert).toEqual(YesOrNo.YES);
     });
-    it(`does clean avviklede selskaper if ${SoknadFormField.selvstendigHarAvvikletSelskaper} = NO`, () => {
+    it(`does clean avslutta selskaper if ${SoknadFormField.selvstendigHarAvsluttetSelskaper} = NO`, () => {
         const result: SelvstendigFormData = cleanupSelvstendigStep(
             {
                 ...formValues,
-                selvstendigHarAvvikletSelskaper: YesOrNo.NO,
+                selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
             },
             avslag
         );
-        expect(result.selvstendigAvvikledeSelskaper).toBeUndefined();
-        expect(result.selvstendigAlleAvvikledeSelskaperErRegistrert).toEqual(YesOrNo.UNANSWERED);
+        expect(result.selvstendigAvsluttaSelskaper).toBeUndefined();
+        expect(result.selvstendigAlleAvsluttaSelskaperErRegistrert).toEqual(YesOrNo.UNANSWERED);
     });
 });

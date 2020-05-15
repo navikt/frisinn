@@ -6,19 +6,15 @@ import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fi
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { AvvikletSelskap, isAvvikletSelskap } from '../../../types/AvvikletSelskap';
+import { AvsluttetSelskap, isAvsluttetSelskap } from '../../../types/AvsluttetSelskap';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { validateDateInRange } from '../../../validation/fieldValidations';
-import {
-    getAvsluttetDateRange,
-    getAvvikletSelskapMaksOpprettetDato,
-    avvikletSelskapMinAvvikletDate,
-} from './avvikletSelskapUtils';
+import { getAvsluttetDateRange, getAvsluttetSelskapMaksOpprettetDato, minAvsluttetDate } from './avsluttetSelskapUtils';
 
 interface Props {
     maxDate: Date;
-    foretak?: Partial<AvvikletSelskap>;
-    onSubmit: (values: AvvikletSelskap) => void;
+    foretak?: Partial<AvsluttetSelskap>;
+    onSubmit: (values: AvsluttetSelskap) => void;
     onCancel: () => void;
 }
 
@@ -28,17 +24,17 @@ enum FieldName {
     navn = 'navn',
 }
 
-type FormValues = Partial<AvvikletSelskap>;
+type FormValues = Partial<AvsluttetSelskap>;
 
 const Form = getTypedFormComponents<FieldName, FormValues>();
 
-const AvvikletSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, onCancel }: Props) => {
+const AvsluttetSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
-        if (isAvvikletSelskap(formValues)) {
+        if (isAvsluttetSelskap(formValues)) {
             onSubmit(formValues);
         } else {
-            throw new Error('AvvikletSelskap: Formvalues is not a valid AvvikletSelskap on submit.');
+            throw new Error('AvsluttaSelskap: Formvalues is not a valid AvsluttaSelskap on submit.');
         }
     };
 
@@ -48,7 +44,7 @@ const AvvikletSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, o
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={({ values: { opprettetDato } }) => {
-                    const maxOpprettetDato = getAvvikletSelskapMaksOpprettetDato(maxDate);
+                    const maxOpprettetDato = getAvsluttetSelskapMaksOpprettetDato(maxDate);
                     const avsluttetDateRange = getAvsluttetDateRange(maxDate, opprettetDato);
                     return (
                         <Form.Form
@@ -78,7 +74,7 @@ const AvvikletSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, o
                             <FormBlock>
                                 <Form.DatePicker
                                     name={FieldName.avsluttetDato}
-                                    label="Når ble selskapet avviklet?"
+                                    label="Når ble selskapet avsluttet?"
                                     showYearSelector={true}
                                     dateLimitations={{
                                         minDato: avsluttetDateRange.from,
@@ -86,9 +82,8 @@ const AvvikletSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, o
                                     }}
                                     dayPickerProps={{
                                         initialMonth:
-                                            moment
-                                                .max(moment(opprettetDato), moment(avvikletSelskapMinAvvikletDate))
-                                                .toDate() || apiStringDateToDate('2019-01-01'),
+                                            moment.max(moment(opprettetDato), moment(minAvsluttetDate)).toDate() ||
+                                            apiStringDateToDate('2019-01-01'),
                                     }}
                                     fullscreenOverlay={true}
                                     validate={validateDateInRange(avsluttetDateRange)}
@@ -102,4 +97,4 @@ const AvvikletSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, o
     );
 };
 
-export default AvvikletSelskapForm;
+export default AvsluttetSelskapForm;

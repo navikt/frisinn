@@ -27,7 +27,7 @@ import { soknadQuestionText } from '../soknadQuestionText';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import AvvikletSelskapListAndDialog from './avviklet-selskap/AvvikletSelskapListAndDialog';
+import AvsluttetSelskapListAndDialog from './avsluttet-selskap/AvsluttetSelskapListAndDialog';
 import {
     kontrollerSelvstendigSvar,
     SelvstendigNæringdsrivendeAvslagÅrsak,
@@ -52,8 +52,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigHarTaptInntektPgaKorona,
         søkerOmTaptInntektSomFrilanser,
         selvstendigHarYtelseFraNavSomDekkerTapet,
-        selvstendigHarAvvikletSelskaper,
-        selvstendigAvvikledeSelskaper,
+        selvstendigHarAvsluttetSelskaper,
+        selvstendigAvsluttaSelskaper,
         selvstendigBeregnetInntektsårstall,
         selvstendigBeregnetTilgjengeligSøknadsperiode,
     } = values;
@@ -71,24 +71,24 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigBeregnetTilgjengeligSøknadsperiode
     );
 
-    const avvikledeSelskaper =
-        selvstendigHarAvvikletSelskaper === YesOrNo.YES ? selvstendigAvvikledeSelskaper || [] : [];
+    const avsluttaSelskaper =
+        selvstendigHarAvsluttetSelskaper === YesOrNo.YES ? selvstendigAvsluttaSelskaper || [] : [];
 
     const { inntektsperiode, isLoading: inntektsperiodeIsLoading } = useInntektsperiode({
-        avvikledeSelskaper: avvikledeSelskaper,
+        avsluttaSelskaper: avsluttaSelskaper,
         currentHistoriskInntektsÅrstall: selvstendigBeregnetInntektsårstall,
     });
 
     const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;
 
     const avslag = kontrollerSelvstendigSvar(values);
-    const skalSpørreOmAvvikledeSelskaper =
-        isFeatureEnabled(Feature.AVVIKLEDE_SELSKAPER) && harSelskaperRegistrertFør2018(personligeForetak) === false;
+    const skalSpørreOmAvsluttaSelskaper =
+        isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER) && harSelskaperRegistrertFør2018(personligeForetak) === false;
 
     const payload: SelvstendigFormConfigPayload = {
         ...values,
         ...soknadEssentials,
-        skalSpørreOmAvvikledeSelskaper,
+        skalSpørreOmAvsluttaSelskaper,
         avslag,
     };
     const visibility = SelvstendigFormQuestions.getVisbility(payload);
@@ -127,7 +127,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
             return;
         }
         if (selvstendigBeregnetInntektsårstall !== prevSelvstendigBeregnetInntektsårstall) {
-            setFieldValue(SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert, YesOrNo.UNANSWERED);
+            setFieldValue(SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert, YesOrNo.UNANSWERED);
             setFieldValue(SoknadFormField.selvstendigInntekt2019, undefined);
             setFieldValue(SoknadFormField.selvstendigInntekt2020, undefined);
         }
@@ -220,21 +220,21 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         />
                                     </SoknadQuestion>
                                     <SoknadQuestion
-                                        name={SoknadFormField.selvstendigHarAvvikletSelskaper}
-                                        legend={txt.selvstendigHarAvvikletSelskaper}
+                                        name={SoknadFormField.selvstendigHarAvsluttetSelskaper}
+                                        legend={txt.selvstendigHarAvsluttetSelskaper}
                                     />
-                                    <SoknadQuestion name={SoknadFormField.selvstendigAvvikledeSelskaper}>
-                                        <AvvikletSelskapListAndDialog<SoknadFormField>
+                                    <SoknadQuestion name={SoknadFormField.selvstendigAvsluttaSelskaper}>
+                                        <AvsluttetSelskapListAndDialog<SoknadFormField>
                                             maxDate={selvstendigInntektstapStartetDato}
-                                            name={SoknadFormField.selvstendigAvvikledeSelskaper}
+                                            name={SoknadFormField.selvstendigAvsluttaSelskaper}
                                         />
                                     </SoknadQuestion>
 
                                     <SoknadQuestion
-                                        name={SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert}
-                                        legend={txt.selvstendigAlleAvvikledeSelskaperErRegistrert}
-                                        showInfo={values.selvstendigAlleAvvikledeSelskaperErRegistrert === YesOrNo.NO}
-                                        info={<SelvstendigInfo.infoAlleAvvikledeSelskaperErIkkeRegistrert />}
+                                        name={SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert}
+                                        legend={txt.selvstendigAlleAvsluttaSelskaperErRegistrert}
+                                        showInfo={values.selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO}
+                                        info={<SelvstendigInfo.infoAlleAvsluttaSelskaperErIkkeRegistrert />}
                                     />
 
                                     {(isVisible(SoknadFormField.selvstendigInntekt2019) ||

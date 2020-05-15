@@ -158,7 +158,7 @@ const getMessageForAvslag = (
 
 const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
 
-const infoAlleAvvikledeSelskaperErIkkeRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
+const infoAlleAvsluttaSelskaperErIkkeRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
 
 const SelvstendigInfo = {
     intro,
@@ -167,7 +167,7 @@ const SelvstendigInfo = {
     StoppYtelseDekkerHeleTapet,
     StoppIkkeHattInntektFraForetak,
     StoppIngenHistoriskInntekt,
-    infoAlleAvvikledeSelskaperErIkkeRegistrert,
+    infoAlleAvsluttaSelskaperErIkkeRegistrert,
     infoHvordanBeregneInntekt,
     infoInntektÅrstall,
     infoAndreUtbetalingerFraNAV,

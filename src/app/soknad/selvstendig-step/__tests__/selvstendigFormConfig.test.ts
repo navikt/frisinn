@@ -30,8 +30,8 @@ const initialFormData: SelvstendigFormData = {
     søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
     selvstendigBeregnetTilgjengeligSøknadsperiode: undefined,
     selvstendigBeregnetInntektsårstall: undefined,
-    selvstendigHarAvvikletSelskaper: YesOrNo.UNANSWERED,
-    selvstendigAvvikledeSelskaper: [],
+    selvstendigHarAvsluttetSelskaper: YesOrNo.UNANSWERED,
+    selvstendigAvsluttaSelskaper: [],
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     selvstendigInntektstapStartetDato: undefined as any,
     selvstendigInntektIPerioden: undefined as any,
@@ -55,7 +55,7 @@ describe('selvstendigFormConfig', () => {
     const payload: SelvstendigFormConfigPayload = {
         ...initialFormData,
         ...soknadEssentials,
-        skalSpørreOmAvvikledeSelskaper: false,
+        skalSpørreOmAvsluttaSelskaper: false,
         avslag,
     };
     describe('included questions', () => {
@@ -73,9 +73,9 @@ describe('selvstendigFormConfig', () => {
                 expect(isIncluded(SoknadFormField.selvstendigInntekt2020)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.selvstendigInntektSomFrilanserIPerioden)).toBeFalsy();
-                expect(isIncluded(SoknadFormField.selvstendigHarAvvikletSelskaper)).toBeFalsy();
-                expect(isIncluded(SoknadFormField.selvstendigAvvikledeSelskaper)).toBeFalsy();
-                expect(isIncluded(SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarAvsluttetSelskaper)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigAvsluttaSelskaper)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.selvstendigRegnskapsførerNavn)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.selvstendigRegnskapsførerTelefon)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.selvstendigHarRevisor)).toBeFalsy();
@@ -161,28 +161,28 @@ describe('selvstendigFormConfig', () => {
             expect(harRevisor.isIncluded(SoknadFormField.selvstendigRevisorTelefon)).toBeTruthy();
             expect(harRevisor.isIncluded(SoknadFormField.selvstendigRevisorNAVKanTaKontakt)).toBeTruthy();
         });
-        describe(`includes input for avviklede selskaper when skalSpørreOmAvvikledeSelskaper is true`, () => {
+        describe(`includes input for avslutta selskaper when skalSpørreOmAvsluttaSelskaper is true`, () => {
             const { isIncluded } = SelvstendigFormQuestions.getVisbility({
                 ...payload,
-                skalSpørreOmAvvikledeSelskaper: true,
+                skalSpørreOmAvsluttaSelskaper: true,
             });
-            expect(isIncluded(SoknadFormField.selvstendigHarAvvikletSelskaper)).toBeTruthy();
-            describe(`${SoknadFormField.selvstendigHarAvvikletSelskaper} is NO`, () => {
+            expect(isIncluded(SoknadFormField.selvstendigHarAvsluttetSelskaper)).toBeTruthy();
+            describe(`${SoknadFormField.selvstendigHarAvsluttetSelskaper} is NO`, () => {
                 const whenNo = SelvstendigFormQuestions.getVisbility({
                     ...payload,
-                    skalSpørreOmAvvikledeSelskaper: true,
-                    selvstendigHarAvvikletSelskaper: YesOrNo.NO,
+                    skalSpørreOmAvsluttaSelskaper: true,
+                    selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
                 });
-                expect(whenNo.isIncluded(SoknadFormField.selvstendigAvvikledeSelskaper)).toBeFalsy();
+                expect(whenNo.isIncluded(SoknadFormField.selvstendigAvsluttaSelskaper)).toBeFalsy();
             });
-            describe(`${SoknadFormField.selvstendigHarAvvikletSelskaper} is YES`, () => {
+            describe(`${SoknadFormField.selvstendigHarAvsluttetSelskaper} is YES`, () => {
                 const whenYes = SelvstendigFormQuestions.getVisbility({
                     ...payload,
-                    skalSpørreOmAvvikledeSelskaper: true,
-                    selvstendigHarAvvikletSelskaper: YesOrNo.YES,
+                    skalSpørreOmAvsluttaSelskaper: true,
+                    selvstendigHarAvsluttetSelskaper: YesOrNo.YES,
                 });
-                expect(whenYes.isIncluded(SoknadFormField.selvstendigAvvikledeSelskaper)).toBeTruthy();
-                expect(whenYes.isIncluded(SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert)).toBeTruthy();
+                expect(whenYes.isIncluded(SoknadFormField.selvstendigAvsluttaSelskaper)).toBeTruthy();
+                expect(whenYes.isIncluded(SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert)).toBeTruthy();
             });
         });
     });
