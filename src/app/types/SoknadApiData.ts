@@ -22,7 +22,7 @@ export interface SelvstendigNæringsdrivendeApiData {
         navn: string;
         telefon: string;
     };
-    opphørtePersonligeForetak: OpphørtPersonligeForetak[];
+    opphørtePersonligeForetak: OpphørtPersonligeForetak[] | undefined;
     spørsmålOgSvar?: ApiSpørsmålOgSvar[];
 }
 

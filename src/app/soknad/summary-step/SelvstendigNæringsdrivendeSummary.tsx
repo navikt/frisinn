@@ -47,7 +47,7 @@ const SelvstendigNæringsdrivendeSummary = ({
                 <KronerSvar verdi={inntektIPeriodenSomFrilanser} />
             </SummaryBlock>
         )}
-        {opphørtePersonligeForetak.length > 0 && (
+        {opphørtePersonligeForetak && opphørtePersonligeForetak.length > 0 && (
             <SummaryBlock header={`Selskaper avviklet i perioden 2018 - 2020`}>
                 <ul className="infoList">
                     {opphørtePersonligeForetak.map(({ navn, opphørsdato, registreringsdato }, idx) => (

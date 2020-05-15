@@ -136,7 +136,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                           registreringsdato: formatDateToApiFormat(s.opprettetDato),
                           opphørsdato: formatDateToApiFormat(s.avsluttetDato),
                       }))
-                    : [],
+                    : undefined,
             info: {
                 periode: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
             },
