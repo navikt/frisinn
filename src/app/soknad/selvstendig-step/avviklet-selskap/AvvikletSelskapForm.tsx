@@ -6,19 +6,19 @@ import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fi
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { HistoriskFortak, isHistoriskForetak } from '../../../types/HistoriskeForetak';
+import { AvvikletSelskap, isAvvikletSelskap } from '../../../types/AvvikletSelskap';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { validateDateInRange } from '../../../validation/fieldValidations';
 import {
-    getHistoriskAvsluttetDateRange,
-    getHistoriskMaksOpprettetDato,
-    historiskForetakMinDate,
-} from './historiskForetakUtils';
+    getAvsluttetDateRange,
+    getAvvikletSelskapMaksOpprettetDato,
+    avvikletSelskapMinAvvikletDate,
+} from './avvikletSelskapUtils';
 
 interface Props {
     maxDate: Date;
-    foretak?: Partial<HistoriskFortak>;
-    onSubmit: (values: HistoriskFortak) => void;
+    foretak?: Partial<AvvikletSelskap>;
+    onSubmit: (values: AvvikletSelskap) => void;
     onCancel: () => void;
 }
 
@@ -28,17 +28,17 @@ enum FieldName {
     navn = 'navn',
 }
 
-type FormValues = Partial<HistoriskFortak>;
+type FormValues = Partial<AvvikletSelskap>;
 
 const Form = getTypedFormComponents<FieldName, FormValues>();
 
-const HistoriskForetakForm = ({ maxDate, foretak: initialValues = {}, onSubmit, onCancel }: Props) => {
+const AvvikletSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
-        if (isHistoriskForetak(formValues)) {
+        if (isAvvikletSelskap(formValues)) {
             onSubmit(formValues);
         } else {
-            throw new Error('HistoriskForetak: Formvalues is not a valid HistoriskForetak on submit.');
+            throw new Error('AvvikletSelskap: Formvalues is not a valid AvvikletSelskap on submit.');
         }
     };
 
@@ -48,8 +48,8 @@ const HistoriskForetakForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={({ values: { opprettetDato } }) => {
-                    const maxOpprettetDato = getHistoriskMaksOpprettetDato(maxDate);
-                    const avsluttetDateRange = getHistoriskAvsluttetDateRange(maxDate, opprettetDato);
+                    const maxOpprettetDato = getAvvikletSelskapMaksOpprettetDato(maxDate);
+                    const avsluttetDateRange = getAvsluttetDateRange(maxDate, opprettetDato);
                     return (
                         <Form.Form
                             onCancel={onCancel}
@@ -87,7 +87,7 @@ const HistoriskForetakForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
                                     dayPickerProps={{
                                         initialMonth:
                                             moment
-                                                .max(moment(opprettetDato), moment(historiskForetakMinDate))
+                                                .max(moment(opprettetDato), moment(avvikletSelskapMinAvvikletDate))
                                                 .toDate() || apiStringDateToDate('2019-01-01'),
                                     }}
                                     fullscreenOverlay={true}
@@ -102,4 +102,4 @@ const HistoriskForetakForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
     );
 };
 
-export default HistoriskForetakForm;
+export default AvvikletSelskapForm;

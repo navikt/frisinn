@@ -1,9 +1,9 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import HistoriskForetakForm from './HistoriskForetakForm';
-import HistoriskForetakList from './HistoriskForetakList';
-import { HistoriskFortak } from '../../../types/HistoriskeForetak';
+import AvvikletSelskapForm from './AvvikletSelskapForm';
+import AvvikletSelskapList from './AvvikletSelskapList';
+import { AvvikletSelskap } from '../../../types/AvvikletSelskap';
 
 interface Props<FieldNames> {
     name: FieldNames;
@@ -11,7 +11,7 @@ interface Props<FieldNames> {
     validate?: FormikValidateFunction;
 }
 
-function HistoriskForetakListAndDialog<FieldNames>({ name, validate, maxDate }: Props<FieldNames>) {
+function AvvikletSelskapListAndDialog<FieldNames>({ name, validate, maxDate }: Props<FieldNames>) {
     const labels: ModalFormAndListLabels = {
         addLabel: 'Legg til tidligere selskap',
         modalTitle: 'Tidligere selskap',
@@ -19,21 +19,21 @@ function HistoriskForetakListAndDialog<FieldNames>({ name, validate, maxDate }: 
     };
     return (
         <>
-            <FormikModalFormAndList<FieldNames, HistoriskFortak>
+            <FormikModalFormAndList<FieldNames, AvvikletSelskap>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"
                 validate={validate}
                 sortFunc={(a, b) => sortItemsByFom({ fom: a.opprettetDato }, { fom: b.opprettetDato })}
                 formRenderer={({ onSubmit, onCancel, item }) => (
-                    <HistoriskForetakForm foretak={item} maxDate={maxDate} onSubmit={onSubmit} onCancel={onCancel} />
+                    <AvvikletSelskapForm foretak={item} maxDate={maxDate} onSubmit={onSubmit} onCancel={onCancel} />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
-                    <HistoriskForetakList foretak={items} onEdit={onEdit} onDelete={onDelete} />
+                    <AvvikletSelskapList foretak={items} onEdit={onEdit} onDelete={onDelete} />
                 )}
             />
         </>
     );
 }
 
-export default HistoriskForetakListAndDialog;
+export default AvvikletSelskapListAndDialog;

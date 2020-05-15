@@ -9,7 +9,7 @@ import { SelvstendigNæringsdrivendeAvslagStatus } from './selvstendigAvslag';
 const Field = SoknadFormField;
 
 interface PayloadExtraInfo {
-    skalSpørreOmHistoriskeSelskaper: boolean;
+    skalSpørreOmAvvikledeSelskaper: boolean;
     avslag: SelvstendigNæringsdrivendeAvslagStatus;
 }
 
@@ -42,10 +42,10 @@ const showRegnskapsfører = (payload: SelvstendigFormConfigPayload): boolean => 
 const andreSelskaperIsAnswered = ({
     selvstendigHarAvvikletSelskaper,
     selvstendigAvvikledeSelskaper,
-    skalSpørreOmHistoriskeSelskaper,
+    skalSpørreOmAvvikledeSelskaper,
     selvstendigAlleAvvikledeSelskaperErRegistrert,
 }: SelvstendigFormConfigPayload): boolean => {
-    if (skalSpørreOmHistoriskeSelskaper === false) {
+    if (skalSpørreOmAvvikledeSelskaper === false) {
         return true;
     }
     if (yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper) === false) {
@@ -74,8 +74,8 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
 
     [Field.selvstendigHarAvvikletSelskaper]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ skalSpørreOmHistoriskeSelskaper, avslag: { søkerIkkeForGyldigTidsrom } }) =>
-            skalSpørreOmHistoriskeSelskaper && søkerIkkeForGyldigTidsrom === false,
+        isIncluded: ({ skalSpørreOmAvvikledeSelskaper, avslag: { søkerIkkeForGyldigTidsrom } }) =>
+            skalSpørreOmAvvikledeSelskaper && søkerIkkeForGyldigTidsrom === false,
         isAnswered: ({ selvstendigHarAvvikletSelskaper }) => yesOrNoIsAnswered(selvstendigHarAvvikletSelskaper),
     },
     [Field.selvstendigAvvikledeSelskaper]: {

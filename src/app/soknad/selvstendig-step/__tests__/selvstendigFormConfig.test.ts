@@ -55,7 +55,7 @@ describe('selvstendigFormConfig', () => {
     const payload: SelvstendigFormConfigPayload = {
         ...initialFormData,
         ...soknadEssentials,
-        skalSpørreOmHistoriskeSelskaper: false,
+        skalSpørreOmAvvikledeSelskaper: false,
         avslag,
     };
     describe('included questions', () => {
@@ -161,16 +161,16 @@ describe('selvstendigFormConfig', () => {
             expect(harRevisor.isIncluded(SoknadFormField.selvstendigRevisorTelefon)).toBeTruthy();
             expect(harRevisor.isIncluded(SoknadFormField.selvstendigRevisorNAVKanTaKontakt)).toBeTruthy();
         });
-        describe(`includes input for avviklede selskaper when skalSpørreOmHistoriskeSelskaper is true`, () => {
+        describe(`includes input for avviklede selskaper when skalSpørreOmAvvikledeSelskaper is true`, () => {
             const { isIncluded } = SelvstendigFormQuestions.getVisbility({
                 ...payload,
-                skalSpørreOmHistoriskeSelskaper: true,
+                skalSpørreOmAvvikledeSelskaper: true,
             });
             expect(isIncluded(SoknadFormField.selvstendigHarAvvikletSelskaper)).toBeTruthy();
             describe(`${SoknadFormField.selvstendigHarAvvikletSelskaper} is NO`, () => {
                 const whenNo = SelvstendigFormQuestions.getVisbility({
                     ...payload,
-                    skalSpørreOmHistoriskeSelskaper: true,
+                    skalSpørreOmAvvikledeSelskaper: true,
                     selvstendigHarAvvikletSelskaper: YesOrNo.NO,
                 });
                 expect(whenNo.isIncluded(SoknadFormField.selvstendigAvvikledeSelskaper)).toBeFalsy();
@@ -178,7 +178,7 @@ describe('selvstendigFormConfig', () => {
             describe(`${SoknadFormField.selvstendigHarAvvikletSelskaper} is YES`, () => {
                 const whenYes = SelvstendigFormQuestions.getVisbility({
                     ...payload,
-                    skalSpørreOmHistoriskeSelskaper: true,
+                    skalSpørreOmAvvikledeSelskaper: true,
                     selvstendigHarAvvikletSelskaper: YesOrNo.YES,
                 });
                 expect(whenYes.isIncluded(SoknadFormField.selvstendigAvvikledeSelskaper)).toBeTruthy();

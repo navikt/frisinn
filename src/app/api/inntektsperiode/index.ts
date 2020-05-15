@@ -2,7 +2,7 @@ import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import api, { ApiEndpoint } from '../api';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
-import { HistoriskFortak } from '../../types/HistoriskeForetak';
+import { AvvikletSelskap } from '../../types/AvvikletSelskap';
 
 interface InntektsperiodeApiResponse {
     inntektsperiode: { fom: ApiStringDate; tom: ApiStringDate };
@@ -36,13 +36,13 @@ const parseInntektsperiodeApiResponse = (respons: InntektsperiodeApiResponse): I
 };
 
 export async function getInntektsperiode({
-    historiskeForetak = [],
+    avvikledeSelskaper = [],
 }: {
-    historiskeForetak: HistoriskFortak[];
+    avvikledeSelskaper: AvvikletSelskap[];
 }): Promise<Inntektsperiode> {
     try {
         const payload: GetInntektsperiodePayload = {
-            opphørtePersonligeForetak: historiskeForetak.map((f) => ({
+            opphørtePersonligeForetak: avvikledeSelskaper.map((f) => ({
                 navn: f.navn,
                 opphørsdato: formatDateToApiFormat(f.avsluttetDato),
                 registreringsdato: formatDateToApiFormat(f.opprettetDato),

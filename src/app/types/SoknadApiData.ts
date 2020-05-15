@@ -32,7 +32,7 @@ export interface FrilanserApiData {
     inntektIPerioden: number;
     inntektIPeriodenSomSelvstendigNæringsdrivende?: number;
     info: {
-        period: string;
+        periode: string;
     };
     spørsmålOgSvar?: ApiSpørsmålOgSvar[];
 }

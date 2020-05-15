@@ -50,4 +50,6 @@ spec:
           value: {{image}}
         - name: PERSISTENCE
           value: "off"
+        - name: AVVIKLEDE_SELSKAPER
+          value: "off"
 

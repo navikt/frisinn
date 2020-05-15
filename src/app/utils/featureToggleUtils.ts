@@ -1,5 +1,6 @@
 export enum Feature {
     'PERSISTENCE' = 'PERSISTENCE',
+    'AVVIKLEDE_SELSKAPER' = 'AVVIKLEDE_SELSKAPER',
 }
 
 export const isFeatureEnabled = (feature: Feature) => {

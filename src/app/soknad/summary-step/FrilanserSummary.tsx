@@ -26,12 +26,13 @@ const FrilanserSummary = ({
         <SummaryBlock header={'Inntektstapet som frilanser startet'}>
             <DatoSvar apiDato={inntektstapStartet} />
         </SummaryBlock>
-        <SummaryBlock header={`Periode det søkes for som frilanser`}>{info.period}</SummaryBlock>
-        <SummaryBlock header={`Personinntekt for oppdrag i perioden ${info.period}`}>
+        <SummaryBlock header={`Periode det søkes for som frilanser`}>{info.periode}</SummaryBlock>
+        <SummaryBlock header={`Personinntekt for oppdrag i perioden ${info.periode}`}>
             <KronerSvar verdi={inntektIPerioden} />
         </SummaryBlock>
         {inntektIPeriodenSomSelvstendigNæringsdrivende !== undefined && (
-            <SummaryBlock header={`Personinntekt fra næring som selvstendig næringsdrivende i perioden ${info.period}`}>
+            <SummaryBlock
+                header={`Personinntekt fra næring som selvstendig næringsdrivende i perioden ${info.periode}`}>
                 <KronerSvar verdi={inntektIPeriodenSomSelvstendigNæringsdrivende} />
             </SummaryBlock>
         )}

@@ -27,13 +27,14 @@ import { soknadQuestionText } from '../soknadQuestionText';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import HistoriskForetakListAndDialog from './historisk-foretak/HistoriskForetakListAndDialog';
+import AvvikletSelskapListAndDialog from './avviklet-selskap/AvvikletSelskapListAndDialog';
 import {
     kontrollerSelvstendigSvar,
     SelvstendigNæringdsrivendeAvslagÅrsak,
     SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
 import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
+import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 
 const txt = soknadQuestionText;
 
@@ -70,23 +71,24 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigBeregnetTilgjengeligSøknadsperiode
     );
 
-    const historiskeForetak =
+    const avvikledeSelskaper =
         selvstendigHarAvvikletSelskaper === YesOrNo.YES ? selvstendigAvvikledeSelskaper || [] : [];
 
     const { inntektsperiode, isLoading: inntektsperiodeIsLoading } = useInntektsperiode({
-        historiskeForetak,
+        avvikledeSelskaper: avvikledeSelskaper,
         currentHistoriskInntektsÅrstall: selvstendigBeregnetInntektsårstall,
     });
 
     const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;
 
     const avslag = kontrollerSelvstendigSvar(values);
-    const skalSpørreOmHistoriskeSelskaper = harSelskaperRegistrertFør2018(personligeForetak) === false;
+    const skalSpørreOmAvvikledeSelskaper =
+        isFeatureEnabled(Feature.AVVIKLEDE_SELSKAPER) && harSelskaperRegistrertFør2018(personligeForetak) === false;
 
     const payload: SelvstendigFormConfigPayload = {
         ...values,
         ...soknadEssentials,
-        skalSpørreOmHistoriskeSelskaper,
+        skalSpørreOmAvvikledeSelskaper,
         avslag,
     };
     const visibility = SelvstendigFormQuestions.getVisbility(payload);
@@ -222,7 +224,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         legend={txt.selvstendigHarAvvikletSelskaper}
                                     />
                                     <SoknadQuestion name={SoknadFormField.selvstendigAvvikledeSelskaper}>
-                                        <HistoriskForetakListAndDialog<SoknadFormField>
+                                        <AvvikletSelskapListAndDialog<SoknadFormField>
                                             maxDate={selvstendigInntektstapStartetDato}
                                             name={SoknadFormField.selvstendigAvvikledeSelskaper}
                                         />

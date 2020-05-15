@@ -3,7 +3,7 @@ import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
 import { HistoriskInntektÅrstall } from './HistoriskInntektÅrstall';
-import { HistoriskFortak } from './HistoriskeForetak';
+import { AvvikletSelskap } from './AvvikletSelskap';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
@@ -62,7 +62,7 @@ export interface SoknadFormData {
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
     [SoknadFormField.selvstendigHarAvvikletSelskaper]: YesOrNo;
-    [SoknadFormField.selvstendigAvvikledeSelskaper]?: HistoriskFortak[];
+    [SoknadFormField.selvstendigAvvikledeSelskaper]?: AvvikletSelskap[];
     [SoknadFormField.selvstendigAlleAvvikledeSelskaperErRegistrert]?: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;

@@ -2,19 +2,19 @@ import React from 'react';
 import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
 import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { HistoriskFortak } from '../../../types/HistoriskeForetak';
+import { AvvikletSelskap } from '../../../types/AvvikletSelskap';
 
 interface Props {
-    foretak: HistoriskFortak[];
-    onEdit?: (foretak: HistoriskFortak) => void;
-    onDelete?: (foretak: HistoriskFortak) => void;
+    foretak: AvvikletSelskap[];
+    onEdit?: (foretak: AvvikletSelskap) => void;
+    onDelete?: (foretak: AvvikletSelskap) => void;
 }
 
-const HistoriskForetakList = ({ foretak = [], onDelete, onEdit }: Props) => {
-    const getDateTitleString = (f: HistoriskFortak) =>
+const AvvikletSelskapList = ({ foretak = [], onDelete, onEdit }: Props) => {
+    const getDateTitleString = (f: AvvikletSelskap) =>
         `${prettifyDate(f.opprettetDato)} - ${prettifyDate(f.avsluttetDato)}: ${f.navn}`;
 
-    const renderLabel = (uttak: HistoriskFortak): React.ReactNode => {
+    const renderLabel = (uttak: AvvikletSelskap): React.ReactNode => {
         const title = getDateTitleString(uttak);
         return (
             <>
@@ -25,7 +25,7 @@ const HistoriskForetakList = ({ foretak = [], onDelete, onEdit }: Props) => {
     };
 
     return (
-        <ItemList<HistoriskFortak>
+        <ItemList<AvvikletSelskap>
             getItemId={(uttak) => uttak.id}
             getItemTitle={(uttak) => getDateTitleString(uttak)}
             items={foretak.filter((f) => f.id !== undefined)}
@@ -36,4 +36,4 @@ const HistoriskForetakList = ({ foretak = [], onDelete, onEdit }: Props) => {
     );
 };
 
-export default HistoriskForetakList;
+export default AvvikletSelskapList;

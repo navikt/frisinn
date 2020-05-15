@@ -50,4 +50,6 @@ spec:
           value: dev
         - name: PERSISTENCE
           value: "off"
+        - name: AVVIKLEDE_SELSKAPER
+          value: "off"
 

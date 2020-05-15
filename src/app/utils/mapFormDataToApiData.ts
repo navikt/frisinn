@@ -14,6 +14,7 @@ import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField
 import { isRunningInDevEnvironment } from './envUtils';
 import { hasValidHistoriskInntekt } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
+import { isFeatureEnabled, Feature } from './featureToggleUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -127,7 +128,9 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
             inntekt2020: selvstendigBeregnetInntektsårstall === 2020 ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             opphørtePersonligeForetak:
-                selvstendigHarAvvikletSelskaper === YesOrNo.YES && selvstendigAvvikledeSelskaper
+                selvstendigHarAvvikletSelskaper === YesOrNo.YES &&
+                selvstendigAvvikledeSelskaper &&
+                isFeatureEnabled(Feature.AVVIKLEDE_SELSKAPER)
                     ? selvstendigAvvikledeSelskaper.map((s) => ({
                           navn: s.navn,
                           registreringsdato: formatDateToApiFormat(s.opprettetDato),
@@ -221,7 +224,7 @@ export const mapFrilanserFormDataToApiData = (
                     ? frilanserInntektSomSelvstendigIPerioden
                     : undefined,
             info: {
-                period: formatDateRange(frilanserBeregnetTilgjengeligSønadsperiode),
+                periode: formatDateRange(frilanserBeregnetTilgjengeligSønadsperiode),
             },
             spørsmålOgSvar: questions,
         };
