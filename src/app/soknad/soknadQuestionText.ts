@@ -43,7 +43,7 @@ const getAvsluttetPeriodeTekst = (periode: DateRange) => {
     if (fromYear === toYear) {
         return fromYear;
     }
-    return `perioden ${fromYear}-${toYear}`;
+    return `${fromYear}-${toYear}`;
 };
 
 export const soknadQuestionText: SoknadQuestionText = {
@@ -59,11 +59,13 @@ export const soknadQuestionText: SoknadQuestionText = {
             dateRange
         )}?`,
     selvstendigHarAvsluttetSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
-        `Har du hatt selskaper (ENK, DA/ANS), som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}?`,
+        `Har du hatt enkeltpersonforetak (ENK, ANS eller DA), som ble avsluttet i ${getAvsluttetPeriodeTekst(
+            periode
+        )}?`,
     selvstendigAvsluttaSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
-        `Selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}`,
+        `Legg inn selskap som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}`,
     selvstendigAlleAvsluttaSelskaperErRegistrert: (periode: DateRange = defaultAvsluttetDateRange) =>
-        `Er alle selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)} lagt til?`,
+        `Har du lagt inn alle selskap som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}?`,
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
     selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',

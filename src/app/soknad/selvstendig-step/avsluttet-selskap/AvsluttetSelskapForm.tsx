@@ -52,7 +52,7 @@ const AvsluttetSelskapForm = ({ foretak: initialValues = {}, periode, onSubmit, 
                         <Form.Form
                             onCancel={onCancel}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                            <Systemtittel tag="h1">Informasjon om selskap</Systemtittel>
+                            <Systemtittel tag="h1">Informasjon om selskap som er avsluttet</Systemtittel>
                             <FormBlock>
                                 <Form.Input
                                     name={FieldName.navn}

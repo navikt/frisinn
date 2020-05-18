@@ -23,8 +23,8 @@ function AvsluttetSelskapListAndDialog<FieldNames>({
     },
 }: Props<FieldNames>) {
     const labels: ModalFormAndListLabels = {
-        addLabel: 'Legg til tidligere selskap',
-        modalTitle: 'Tidligere selskap',
+        addLabel: 'Legg inn selskap som er avsluttet',
+        modalTitle: 'Informasjon om avsluttet selskap',
         listTitle: soknadQuestionText.selvstendigAvsluttaSelskaper(periode),
     };
     return (
