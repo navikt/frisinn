@@ -32,12 +32,17 @@ const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): Period
 
 async function getPerioder(options?: Options): Promise<Perioder> {
     try {
-        const dateParamName = 'inntektstapStartet';
+        const inntektstapStartetParamName = 'inntektstapStartet';
         const dates = options?.inntektstapStartet?.map((date) => formatDateToApiFormat(date));
-        const { data } = await api.get<PerioderApiResponse>(
-            ApiEndpoint.perioder,
-            dates ? `${dateParamName}=${dates.join(`&${dateParamName}=`)}` : undefined
-        );
+        const params = [];
+
+        if (dates) {
+            params.push(`${inntektstapStartetParamName}=${dates.join(`&${inntektstapStartetParamName}=`)}`);
+        }
+        if (options?.startetSøknad) {
+            params.push(`startetSøknad=${options.startetSøknad.toISOString()}`);
+        }
+        const { data } = await api.get<PerioderApiResponse>(ApiEndpoint.perioder, params.join('&'));
         return Promise.resolve(parsePerioderApiResponse(data));
     } catch (error) {
         return Promise.reject(error);

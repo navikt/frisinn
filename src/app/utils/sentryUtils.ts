@@ -9,6 +9,7 @@ export enum SentryEventName {
     'apiRequestFailed' = 'apiRequestFailed',
     'invalidSelvstendigAndFrilansApiData' = 'invalidSelvstendigAndFrilansApiData',
     'soknadSentSuccessfully' = 'soknadSentSuccessfully',
+    'mapSoknadFailed' = 'mapSoknadFailed',
 }
 
 interface CustomError extends Error {

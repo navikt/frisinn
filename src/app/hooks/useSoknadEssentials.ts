@@ -3,12 +3,13 @@ import { AxiosError } from 'axios';
 import { getSøknadsperiode } from '../api/perioder';
 import { getPersonligeForetak } from '../api/personlige-foretak';
 import { getSoker } from '../api/soker';
+import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
-import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
+    const [startetSøknadTidspunkt, setStartetSøknadTidspunkt] = useState<Date>(new Date());
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
     const [isRedirectingToLogin, setIsRedirectingToLogin] = useState<boolean | undefined>();
@@ -40,7 +41,19 @@ function useSoknadEssentials() {
         }
     };
 
-    return { soknadEssentials, isRedirectingToLogin, isLoading, error, fetch };
+    const resetStartetSøknadTidspunkt = () => {
+        setStartetSøknadTidspunkt(new Date());
+    };
+
+    return {
+        soknadEssentials,
+        startetSøknadTidspunkt,
+        resetStartetSøknadTidspunkt,
+        isRedirectingToLogin,
+        isLoading,
+        error,
+        fetch,
+    };
 }
 
 export default useSoknadEssentials;

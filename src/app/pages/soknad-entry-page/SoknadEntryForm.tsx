@@ -7,7 +7,6 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
-import moment from 'moment';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
@@ -71,13 +70,6 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         <SoknadFormComponents.Form
             onValidSubmit={onStart}
             includeButtons={false}
-            cleanup={(values) => {
-                const v: SoknadFormData = {
-                    ...values,
-                    startetSøknadTidspunkt: moment().utc().toDate(),
-                };
-                return v;
-            }}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <SoknadQuestion

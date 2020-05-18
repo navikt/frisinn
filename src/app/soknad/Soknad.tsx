@@ -22,22 +22,32 @@ export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 const Soknad = () => {
     const [initializing, setInitializing] = useState<boolean>(true);
     const [initialFormValues, setInitialFormValues] = useState<Partial<SoknadFormData>>({});
+
     const essentials = useSoknadEssentials();
-    const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
-    const alderCheck = useAccessCheck(alderAccessCheck());
+    const maksEnSoknadPerPeriodeCheck = useAccessCheck(
+        maksEnSoknadPerPeriodeAccessCheck(essentials.startetSøknadTidspunkt)
+    );
+    const alderCheck = useAccessCheck(alderAccessCheck(essentials.startetSøknadTidspunkt));
     const tempStorage = useTemporaryStorage();
     const history = useHistory();
 
     const { isLoading: tempStorageIsLoading } = tempStorage;
-    const { result: maksEnEoknadResult } = maksEnSoknadPerPeriodeCheck;
+    const { result: maksEnSøknadResult } = maksEnSoknadPerPeriodeCheck;
     const { result: alderResult } = alderCheck;
+
+    const getResettedInitialValues = (): Partial<SoknadFormData> => ({
+        startetSøknadTidspunkt: essentials.startetSøknadTidspunkt,
+    });
 
     async function resetSoknad(redirectToFrontpage = true) {
         if (tempStorage && tempStorage.storageData?.formData) {
             await tempStorage.purge();
         }
         if (redirectToFrontpage) {
-            setInitialFormValues({});
+            console.log(essentials.startetSøknadTidspunkt);
+            essentials.resetStartetSøknadTidspunkt();
+            console.log(essentials.startetSøknadTidspunkt);
+            setInitialFormValues(getResettedInitialValues());
             navigateToSoknadFrontpage(history);
         }
     }
@@ -61,6 +71,8 @@ const Soknad = () => {
             } else {
                 navigateToSoknadFrontpage(history);
             }
+        } else {
+            setInitialFormValues(getResettedInitialValues());
         }
         setInitializing(false);
     };
@@ -72,11 +84,11 @@ const Soknad = () => {
             soknadEssentials &&
             tempStorageIsLoading === false &&
             alderResult !== undefined &&
-            maksEnEoknadResult !== undefined
+            maksEnSøknadResult !== undefined
         ) {
             allDataLoaded();
         }
-    }, [tempStorageIsLoading, alderResult, maksEnEoknadResult, soknadEssentials]);
+    }, [tempStorageIsLoading, alderResult, maksEnSøknadResult, soknadEssentials]);
 
     useEffect(() => {
         essentials.fetch();

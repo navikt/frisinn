@@ -6,3 +6,7 @@ export const isForbidden = (error: AxiosError): boolean =>
 
 export const isUnauthorized = (error: AxiosError): boolean =>
     error !== undefined && error.response !== undefined && error.response.status === HttpStatus.UNAUTHORIZED;
+
+export const getStartedSøknadRequestParam = (date?: Date): string | undefined => {
+    return date ? `startedSøknad=${date.toISOString()}` : undefined;
+};

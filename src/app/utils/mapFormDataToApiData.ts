@@ -13,7 +13,7 @@ import { PersonligeForetak, SoknadEssentials } from '../types/SoknadEssentials';
 import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { isRunningInDevEnvironment } from './envUtils';
 import { hasValidHistoriskInntekt } from './selvstendigUtils';
-import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
+import { SentryEventName, triggerSentryCustomError, triggerSentryError } from './sentryUtils';
 import { isFeatureEnabled, Feature } from './featureToggleUtils';
 import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
@@ -262,18 +262,23 @@ export const mapFormDataToApiData = (
     formData: SoknadFormData,
     språk: Locale
 ): SoknadApiData | undefined => {
-    const { harBekreftetOpplysninger, harForståttRettigheterOgPlikter } = formData;
-
-    const apiData: SoknadApiData = {
-        språk: (språk as any) === 'en' ? 'nn' : språk,
-        harBekreftetOpplysninger,
-        harForståttRettigheterOgPlikter,
-        selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(
-            soknadEssentials.personligeForetak,
-            formData
-        ),
-        frilanser: mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData),
-    };
-
-    return apiData;
+    const { harBekreftetOpplysninger, harForståttRettigheterOgPlikter, startetSøknadTidspunkt } = formData;
+    let apiData: SoknadApiData | undefined;
+    try {
+        apiData = {
+            språk: (språk as any) === 'en' ? 'nn' : språk,
+            harBekreftetOpplysninger,
+            harForståttRettigheterOgPlikter,
+            startetSøknad: startetSøknadTidspunkt ? startetSøknadTidspunkt.toISOString() : 'undefined',
+            selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(
+                soknadEssentials.personligeForetak,
+                formData
+            ),
+            frilanser: mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData),
+        };
+    } catch (e) {
+        triggerSentryError(SentryEventName.mapSoknadFailed, e);
+    } finally {
+        return apiData;
+    }
 };

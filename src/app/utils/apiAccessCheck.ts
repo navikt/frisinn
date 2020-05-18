@@ -2,6 +2,7 @@ import { sjekkKrav } from '../api/krav';
 import { AccessCheck, AccessCheckResult } from '../types/AccessCheck';
 import { ApiKrav } from '../types/ApiKrav';
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { getStartedSøknadRequestParam } from './apiUtils';
 
 export async function apiAccessCheck(krav: ApiKrav, params?: string): Promise<AccessCheckResult> {
     try {
@@ -22,10 +23,10 @@ export async function apiAccessCheck(krav: ApiKrav, params?: string): Promise<Ac
     }
 }
 
-export const alderAccessCheck = (): AccessCheck => {
+export const alderAccessCheck = (startedSøknad: Date): AccessCheck => {
     return {
         name: ApiKrav.alder,
-        check: () => apiAccessCheck(ApiKrav.alder),
+        check: () => apiAccessCheck(ApiKrav.alder, getStartedSøknadRequestParam(startedSøknad)),
     };
 };
 export const apenAlderAccessCheck = (fdato?: Date): AccessCheck => {
@@ -44,9 +45,10 @@ export const apenAlderAccessCheck = (fdato?: Date): AccessCheck => {
     };
 };
 
-export const maksEnSoknadPerPeriodeAccessCheck = (): AccessCheck => {
+export const maksEnSoknadPerPeriodeAccessCheck = (startedSøknad?: Date): AccessCheck => {
     return {
         name: ApiKrav.maksEnSoknadPerPeriodeAccessCheck,
-        check: () => apiAccessCheck(ApiKrav.maksEnSoknadPerPeriodeAccessCheck),
+        check: () =>
+            apiAccessCheck(ApiKrav.maksEnSoknadPerPeriodeAccessCheck, getStartedSøknadRequestParam(startedSøknad)),
     };
 };

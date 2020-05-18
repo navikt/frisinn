@@ -37,8 +37,11 @@ export interface FrilanserApiData {
     spørsmålOgSvar?: ApiSpørsmålOgSvar[];
 }
 
+type UTCDateString = string; // Datestring formatted in UTC format. E.g. 2013-02-04T22:44:30.652Z
+
 export interface SoknadApiData {
     språk: Locale;
+    startetSøknad: UTCDateString;
     harForståttRettigheterOgPlikter: boolean;
     harBekreftetOpplysninger: boolean;
     selvstendigNæringsdrivende?: SelvstendigNæringsdrivendeApiData;
