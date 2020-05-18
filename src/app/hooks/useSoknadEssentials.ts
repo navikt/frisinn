@@ -5,6 +5,7 @@ import { getPersonligeForetak } from '../api/personlige-foretak';
 import { getSoker } from '../api/soker';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
+import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
@@ -24,6 +25,9 @@ function useSoknadEssentials() {
                 person,
                 currentSøknadsperiode,
                 personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
+                avsluttetSelskapDateRange: personligeForetak
+                    ? getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato)
+                    : undefined,
             });
         } catch (error) {
             if (isForbidden(error) || isUnauthorized(error)) {
