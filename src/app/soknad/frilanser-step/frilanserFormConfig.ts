@@ -10,7 +10,7 @@ const Field = SoknadFormField;
 
 type FrilanserFormData = Pick<
     SoknadFormData,
-    | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
+    | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
     | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende

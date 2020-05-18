@@ -38,14 +38,14 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-        selvstendigBeregnetTilgjengeligSøknadsperiode,
+        frilanserBeregnetTilgjengeligSøknadsperiode,
     } = values;
     const { currentSøknadsperiode } = soknadEssentials;
 
     const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
         frilanserInntektstapStartetDato,
         currentSøknadsperiode,
-        selvstendigBeregnetTilgjengeligSøknadsperiode
+        frilanserBeregnetTilgjengeligSøknadsperiode
     );
 
     const isLoading = availableDateRangeIsLoading;
@@ -70,7 +70,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
 
     useEffect(() => {
         setFieldValue(
-            SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode,
+            SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode,
             isValidDateRange(availableDateRange) ? availableDateRange : undefined
         );
         setFieldValue(SoknadFormField.frilanserSoknadIsOk, frilanserSoknadIsOk);
