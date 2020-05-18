@@ -206,13 +206,13 @@ export const mapFrilanserFormDataToApiData = (
         frilanserInntektstapStartetDato,
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
-        frilanserBeregnetTilgjengeligSønadsperiode,
+        frilanserBeregnetTilgjengeligSøknadsperiode,
         søkerOmTaptInntektSomFrilanser,
         frilanserSoknadIsOk,
     } = formData;
     if (
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
-        frilanserBeregnetTilgjengeligSønadsperiode &&
+        frilanserBeregnetTilgjengeligSøknadsperiode &&
         frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO
     ) {
         const questions: ApiSpørsmålOgSvar[] = [];
@@ -232,7 +232,7 @@ export const mapFrilanserFormDataToApiData = (
                     ? frilanserInntektSomSelvstendigIPerioden
                     : undefined,
             info: {
-                periode: formatDateRange(frilanserBeregnetTilgjengeligSønadsperiode),
+                periode: formatDateRange(frilanserBeregnetTilgjengeligSøknadsperiode),
             },
             spørsmålOgSvar: questions,
         };
@@ -246,7 +246,7 @@ export const mapFrilanserFormDataToApiData = (
               }
             : {
                   frilanserHarTaptInntektPgaKorona,
-                  frilanserBeregnetTilgjengeligSønadsperiode,
+                  frilanserBeregnetTilgjengeligSøknadsperiode,
                   frilanserHarYtelseFraNavSomDekkerTapet,
               };
         triggerSentryCustomError(

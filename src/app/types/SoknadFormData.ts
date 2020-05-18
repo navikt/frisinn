@@ -50,7 +50,7 @@ export enum SoknadFormField {
     bekrefterSelvstendigFrilanserInntektIPerioden = 'bekrefterSelvstendigFrilanserInntektIPerioden',
     bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
     bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
-    frilanserBeregnetTilgjengeligSønadsperiode = 'frilanserBeregnetTilgjengeligSønadsperiode',
+    frilanserBeregnetTilgjengeligSøknadsperiode = 'frilanserBeregnetTilgjengeligSøknadsperiode',
     frilanserSoknadIsOk = 'frilanserSoknadIsOk',
     frilanserStopReason = 'frilanserStopReason',
 }
@@ -94,7 +94,7 @@ export interface SoknadFormData {
     [SoknadFormField.frilanserErSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
-    [SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode]?: DateRange;
+    [SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode]?: DateRange;
     [SoknadFormField.frilanserSoknadIsOk]?: boolean;
     [SoknadFormField.frilanserStopReason]?: FrilanserAvslagÅrsak;
     [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
@@ -152,7 +152,7 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
     | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
-    | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
+    | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.frilanserSoknadIsOk
 >;
 

@@ -27,7 +27,7 @@ import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
-    const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSønadsperiode } = values;
+    const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSøknadsperiode } = values;
 
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
@@ -209,7 +209,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                 </FormSection>
             )}
             {frilanser &&
-                frilanserBeregnetTilgjengeligSønadsperiode &&
+                frilanserBeregnetTilgjengeligSøknadsperiode &&
                 isVisible(SoknadFormField.bekrefterFrilansinntektIPerioden) && (
                     <>
                         <FormSection title="Inntekt som frilanser">
@@ -220,7 +220,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                                 tittel={
                                     <>
                                         Personinntekt fra oppdrag i perioden{' '}
-                                        <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
+                                        <DateRangeView dateRange={frilanserBeregnetTilgjengeligSøknadsperiode} />
                                     </>
                                 }
                                 sum={frilanser.inntektIPerioden}
@@ -235,7 +235,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                                     tittel={
                                         <>
                                             Personinntekt fra næring i perioden{' '}
-                                            <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
+                                            <DateRangeView dateRange={frilanserBeregnetTilgjengeligSøknadsperiode} />
                                         </>
                                     }
                                     sum={frilanser.inntektIPeriodenSomSelvstendigNæringsdrivende}
