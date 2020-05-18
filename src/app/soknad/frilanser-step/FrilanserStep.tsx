@@ -38,15 +38,16 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-        selvstendigBeregnetTilgjengeligSøknadsperiode,
+        frilanserBeregnetTilgjengeligSønadsperiode,
     } = values;
     const { currentSøknadsperiode } = soknadEssentials;
 
-    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
-        frilanserInntektstapStartetDato,
+    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode({
+        inntektstapStartDato: frilanserInntektstapStartetDato,
         currentSøknadsperiode,
-        selvstendigBeregnetTilgjengeligSøknadsperiode
-    );
+        currentAvailableSøknadsperiode: frilanserBeregnetTilgjengeligSønadsperiode,
+        startetSøknad: values.startetSøknadTidspunkt,
+    });
 
     const isLoading = availableDateRangeIsLoading;
     const avslag = kontrollerFrilanserSvar(values);

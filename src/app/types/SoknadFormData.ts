@@ -8,7 +8,7 @@ import { AvsluttetSelskap } from './AvsluttetSelskap';
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
-    startetSoknadTidspunkt = 'startetSoknadTidspunkt',
+    startetSøknadTidspunkt = 'startetSøknadTidspunkt',
     kontonummerErRiktig = 'kontonummerErRiktig',
     erSelvstendigNæringsdrivende = 'erSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
@@ -58,7 +58,7 @@ export enum SoknadFormField {
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
-    [SoknadFormField.startetSoknadTidspunkt]: Date;
+    [SoknadFormField.startetSøknadTidspunkt]: Date;
     [SoknadFormField.kontonummerErRiktig]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;

@@ -7,6 +7,11 @@ interface PeriodeTidsperiode {
     tom: ApiStringDate;
 }
 
+interface Options {
+    startetSøknad?: Date;
+    inntektstapStartet: Date[];
+}
+
 export interface PerioderApiResponse {
     søknadsperiode: PeriodeTidsperiode;
 }
@@ -25,10 +30,10 @@ const parsePerioderApiResponse = (søknadsperioder: PerioderApiResponse): Period
     return ranges;
 };
 
-export async function getPerioder(inntektstapStartet?: Date[]): Promise<Perioder> {
+async function getPerioder(options?: Options): Promise<Perioder> {
     try {
         const dateParamName = 'inntektstapStartet';
-        const dates = inntektstapStartet?.map((date) => formatDateToApiFormat(date));
+        const dates = options?.inntektstapStartet?.map((date) => formatDateToApiFormat(date));
         const { data } = await api.get<PerioderApiResponse>(
             ApiEndpoint.perioder,
             dates ? `${dateParamName}=${dates.join(`&${dateParamName}=`)}` : undefined
@@ -39,9 +44,9 @@ export async function getPerioder(inntektstapStartet?: Date[]): Promise<Perioder
     }
 }
 
-export async function getSøknadsperiode(inntektstapStartet?: Date[]): Promise<DateRange> {
+export async function getSøknadsperiode(options?: Options): Promise<DateRange> {
     try {
-        const perioder = await getPerioder(inntektstapStartet);
+        const perioder = await getPerioder(options);
         return Promise.resolve(perioder.søknadsperiode);
     } catch (error) {
         return Promise.reject(error);

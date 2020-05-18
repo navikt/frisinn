@@ -74,7 +74,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
             cleanup={(values) => {
                 const v: SoknadFormData = {
                     ...values,
-                    startetSoknadTidspunkt: moment().utc().toDate(),
+                    startetSøknadTidspunkt: moment().utc().toDate(),
                 };
                 return v;
             }}

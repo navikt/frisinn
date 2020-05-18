@@ -65,11 +65,12 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const { foretak = [] } = personligeForetak;
     const antallForetak = foretak.length;
 
-    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
-        selvstendigInntektstapStartetDato,
+    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode({
+        inntektstapStartDato: selvstendigInntektstapStartetDato,
         currentSøknadsperiode,
-        selvstendigBeregnetTilgjengeligSøknadsperiode
-    );
+        currentAvailableSøknadsperiode: selvstendigBeregnetTilgjengeligSøknadsperiode,
+        startetSøknad: values.startetSøknadTidspunkt,
+    });
 
     const avsluttaSelskaper =
         selvstendigHarAvsluttetSelskaper === YesOrNo.YES ? selvstendigAvsluttaSelskaper || [] : [];
