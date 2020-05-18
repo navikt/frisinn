@@ -24,4 +24,5 @@ export interface SoknadEssentials {
     person: Person;
     currentSøknadsperiode: DateRange;
     personligeForetak?: PersonligeForetak;
+    avsluttetSelskapDateRange: DateRange | undefined;
 }

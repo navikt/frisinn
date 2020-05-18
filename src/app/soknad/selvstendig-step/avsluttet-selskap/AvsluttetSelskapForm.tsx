@@ -7,13 +7,13 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { AvsluttetSelskap, isAvsluttetSelskap } from '../../../types/AvsluttetSelskap';
-import { apiStringDateToDate } from '../../../utils/dateUtils';
+import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
 import { validateDateInRange } from '../../../validation/fieldValidations';
-import { getAvsluttetDateRange, getAvsluttetSelskapMaksOpprettetDato, minAvsluttetDate } from './avsluttetSelskapUtils';
+import { minAvsluttetDate } from './avsluttetSelskapUtils';
 
 interface Props {
-    maxDate: Date;
     foretak?: Partial<AvsluttetSelskap>;
+    periode: DateRange;
     onSubmit: (values: AvsluttetSelskap) => void;
     onCancel: () => void;
 }
@@ -28,7 +28,7 @@ type FormValues = Partial<AvsluttetSelskap>;
 
 const Form = getTypedFormComponents<FieldName, FormValues>();
 
-const AvsluttetSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, onCancel }: Props) => {
+const AvsluttetSelskapForm = ({ foretak: initialValues = {}, periode, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isAvsluttetSelskap(formValues)) {
@@ -44,8 +44,10 @@ const AvsluttetSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={({ values: { opprettetDato } }) => {
-                    const maxOpprettetDato = getAvsluttetSelskapMaksOpprettetDato(maxDate);
-                    const avsluttetDateRange = getAvsluttetDateRange(maxDate, opprettetDato);
+                    const avsluttetDateRange: DateRange = {
+                        from: opprettetDato || periode.from,
+                        to: periode.to,
+                    };
                     return (
                         <Form.Form
                             onCancel={onCancel}
@@ -63,7 +65,7 @@ const AvsluttetSelskapForm = ({ maxDate, foretak: initialValues = {}, onSubmit, 
                                 <Form.DatePicker
                                     name={FieldName.opprettetDato}
                                     label="Når ble selskapet opprettet?"
-                                    dateLimitations={{ maksDato: maxOpprettetDato }}
+                                    dateLimitations={{ maksDato: periode.to }}
                                     showYearSelector={true}
                                     dayPickerProps={{ initialMonth: apiStringDateToDate('2018-08-01') }}
                                     fullscreenOverlay={true}

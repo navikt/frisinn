@@ -1,15 +1,16 @@
 import { SoknadFormField } from '../types/SoknadFormData';
 import { DateRange } from '../utils/dateUtils';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
+import { minAvsluttetDate, maxAvsluttetDate } from './selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 export interface SoknadQuestionText {
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
-    [SoknadFormField.selvstendigHarAvsluttetSelskaper]: string;
-    [SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert]: string;
-    [SoknadFormField.selvstendigAvsluttaSelskaper]: string;
+    [SoknadFormField.selvstendigHarAvsluttetSelskaper]: (periode?: DateRange) => string;
+    [SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert]: (periode?: DateRange) => string;
+    [SoknadFormField.selvstendigAvsluttaSelskaper]: (periode?: DateRange) => string;
     [SoknadFormField.selvstendigInntekt2019]: string;
     [SoknadFormField.selvstendigInntekt2020]: string;
     [SoknadFormField.selvstendigErFrilanser]: string;
@@ -31,6 +32,20 @@ export interface SoknadQuestionText {
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
 }
 
+const defaultAvsluttetDateRange: DateRange = {
+    from: minAvsluttetDate,
+    to: maxAvsluttetDate,
+};
+
+const getAvsluttetPeriodeTekst = (periode: DateRange) => {
+    const fromYear = periode.from.getFullYear();
+    const toYear = periode.to.getFullYear();
+    if (fromYear === toYear) {
+        return fromYear;
+    }
+    return `perioden ${fromYear}-${toYear}`;
+};
+
 export const soknadQuestionText: SoknadQuestionText = {
     selvstendigHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(
@@ -43,9 +58,12 @@ export const soknadQuestionText: SoknadQuestionText = {
         `Hvilken personinntekt har du hatt fra næring, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
         )}?`,
-    selvstendigHarAvsluttetSelskaper: 'Har du hatt selskaper (ENK, DA/ANS), som ble avsluttet i perioden 2018-2020?',
-    selvstendigAvsluttaSelskaper: 'Selskaper som ble avsluttet i perioden 2018-2020',
-    selvstendigAlleAvsluttaSelskaperErRegistrert: 'Er alle selskaper som ble avsluttet i perioden 2018-2020 lagt til?',
+    selvstendigHarAvsluttetSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
+        `Har du hatt selskaper (ENK, DA/ANS), som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}?`,
+    selvstendigAvsluttaSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
+        `Selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}`,
+    selvstendigAlleAvsluttaSelskaperErRegistrert: (periode: DateRange = defaultAvsluttetDateRange) =>
+        `'Er alle selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)} lagt til?`,
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
     selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',

@@ -15,6 +15,7 @@ import { usePrevious } from '../../hooks/usePrevious';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
+import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
@@ -26,15 +27,14 @@ import SoknadQuestion from '../SoknadQuestion';
 import { soknadQuestionText } from '../soknadQuestionText';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
-import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
 import AvsluttetSelskapListAndDialog from './avsluttet-selskap/AvsluttetSelskapListAndDialog';
+import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
 import {
     kontrollerSelvstendigSvar,
     SelvstendigNæringdsrivendeAvslagÅrsak,
     SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
 import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
-import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 
 const txt = soknadQuestionText;
 
@@ -57,7 +57,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         selvstendigBeregnetInntektsårstall,
         selvstendigBeregnetTilgjengeligSøknadsperiode,
     } = values;
-    const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
+    const { currentSøknadsperiode, personligeForetak, avsluttetSelskapDateRange } = soknadEssentials;
 
     if (personligeForetak === undefined) {
         return <SoknadErrors.MissingApiDataError />;
@@ -222,18 +222,21 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                     </SoknadQuestion>
                                     <SoknadQuestion
                                         name={SoknadFormField.selvstendigHarAvsluttetSelskaper}
-                                        legend={txt.selvstendigHarAvsluttetSelskaper}
+                                        legend={txt.selvstendigHarAvsluttetSelskaper(avsluttetSelskapDateRange)}
                                     />
                                     <SoknadQuestion name={SoknadFormField.selvstendigAvsluttaSelskaper}>
                                         <AvsluttetSelskapListAndDialog<SoknadFormField>
                                             maxDate={selvstendigInntektstapStartetDato}
+                                            periode={avsluttetSelskapDateRange}
                                             name={SoknadFormField.selvstendigAvsluttaSelskaper}
                                         />
                                     </SoknadQuestion>
 
                                     <SoknadQuestion
                                         name={SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert}
-                                        legend={txt.selvstendigAlleAvsluttaSelskaperErRegistrert}
+                                        legend={txt.selvstendigAlleAvsluttaSelskaperErRegistrert(
+                                            avsluttetSelskapDateRange
+                                        )}
                                         showInfo={values.selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO}
                                         info={<SelvstendigInfo.infoAlleAvsluttaSelskaperErIkkeRegistrert />}
                                     />

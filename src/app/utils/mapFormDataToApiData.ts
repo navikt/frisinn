@@ -15,6 +15,7 @@ import { isRunningInDevEnvironment } from './envUtils';
 import { hasValidHistoriskInntekt } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
 import { isFeatureEnabled, Feature } from './featureToggleUtils';
+import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -112,10 +113,17 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
-            if (selvstendigHarAvsluttetSelskaper === YesOrNo.YES && selvstendigAlleAvsluttaSelskaperErRegistrert) {
+            const avsluttetSelskapPeriode = getPeriodeForAvsluttaSelskaper(
+                personligeForetak.tidligsteRegistreringsdato
+            );
+            if (
+                selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
+                selvstendigAlleAvsluttaSelskaperErRegistrert &&
+                avsluttetSelskapPeriode
+            ) {
                 spørsmålOgSvar.push({
                     field: SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert,
-                    spørsmål: soknadQuestionText.selvstendigAlleAvsluttaSelskaperErRegistrert,
+                    spørsmål: soknadQuestionText.selvstendigAlleAvsluttaSelskaperErRegistrert(avsluttetSelskapPeriode),
                     svar: formatYesOrNoAnswer(selvstendigAlleAvsluttaSelskaperErRegistrert),
                 });
             }

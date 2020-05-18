@@ -5,6 +5,7 @@ import { apiStringDateToDate } from '../../../utils/dateUtils';
 import { SoknadEssentials, Person } from '../../../types/SoknadEssentials';
 import { PersonligeForetakMock as pfm } from '../../../__mock__/personligeForetakMock';
 import { SelvstendigNæringsdrivendeAvslagStatus, SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendigAvslag';
+import { getPeriodeForAvsluttaSelskaper } from '../avsluttet-selskap/avsluttetSelskapUtils';
 
 const person: Person = {
     fornavn: 'a',
@@ -17,12 +18,13 @@ const person: Person = {
 const personligeForetak = pfm.personligeFortak2019;
 
 const soknadEssentials: SoknadEssentials = {
+    person,
+    personligeForetak,
     currentSøknadsperiode: {
         from: apiStringDateToDate('2020-04-01'),
         to: apiStringDateToDate('2020-04-30'),
     },
-    person,
-    personligeForetak,
+    avsluttetSelskapDateRange: getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato),
 };
 
 const initialFormData: SelvstendigFormData = {

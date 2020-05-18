@@ -1,21 +1,31 @@
 import React from 'react';
-import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import { AvsluttetSelskap } from '../../../types/AvsluttetSelskap';
+import { soknadQuestionText } from '../../soknadQuestionText';
 import AvsluttetSelskapForm from './AvsluttetSelskapForm';
 import AvsluttetSelskapList from './AvsluttetSelskapList';
-import { AvsluttetSelskap } from '../../../types/AvsluttetSelskap';
+import { maxAvsluttetDate, minAvsluttetDate } from './avsluttetSelskapUtils';
 
 interface Props<FieldNames> {
     name: FieldNames;
     maxDate: Date;
+    periode?: DateRange;
     validate?: FormikValidateFunction;
 }
 
-function AvsluttetSelskapListAndDialog<FieldNames>({ name, validate, maxDate }: Props<FieldNames>) {
+function AvsluttetSelskapListAndDialog<FieldNames>({
+    name,
+    validate,
+    periode = {
+        from: minAvsluttetDate,
+        to: maxAvsluttetDate,
+    },
+}: Props<FieldNames>) {
     const labels: ModalFormAndListLabels = {
         addLabel: 'Legg til tidligere selskap',
         modalTitle: 'Tidligere selskap',
-        listTitle: 'Tidligere selskap',
+        listTitle: soknadQuestionText.selvstendigAvsluttaSelskaper(periode),
     };
     return (
         <>
@@ -26,7 +36,7 @@ function AvsluttetSelskapListAndDialog<FieldNames>({ name, validate, maxDate }: 
                 validate={validate}
                 sortFunc={(a, b) => sortItemsByFom({ fom: a.opprettetDato }, { fom: b.opprettetDato })}
                 formRenderer={({ onSubmit, onCancel, item }) => (
-                    <AvsluttetSelskapForm foretak={item} maxDate={maxDate} onSubmit={onSubmit} onCancel={onCancel} />
+                    <AvsluttetSelskapForm foretak={item} periode={periode} onSubmit={onSubmit} onCancel={onCancel} />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
                     <AvsluttetSelskapList foretak={items} onEdit={onEdit} onDelete={onDelete} />

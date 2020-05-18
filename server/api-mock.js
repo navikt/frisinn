@@ -72,7 +72,7 @@ const perioderMock2 = {
 
 const personligeForetak = {
     personligeForetak: [{ organisasjonsnummer: '996532912', navn: 'DELT ANSVARLIG', registreringsdato: '2018-12-31' }],
-    tidligsteRegistreringsdato: '2018-12-31',
+    tidligsteRegistreringsdato: '2020-03-01',
 };
 
 const ingenPersonligeForetak = {
