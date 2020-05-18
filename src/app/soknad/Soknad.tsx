@@ -44,11 +44,11 @@ const Soknad = () => {
             await tempStorage.purge();
         }
         if (redirectToFrontpage) {
-            console.log(essentials.startetSøknadTidspunkt);
             essentials.resetStartetSøknadTidspunkt();
-            console.log(essentials.startetSøknadTidspunkt);
             setInitialFormValues(getResettedInitialValues());
-            navigateToSoknadFrontpage(history);
+            setTimeout(() => {
+                navigateToSoknadFrontpage(history);
+            });
         }
     }
     const { soknadEssentials } = essentials;
