@@ -7,23 +7,23 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
+import moment from 'moment';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
-import FormComponents from '../../soknad/SoknadFormComponents';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import Guide from '../../components/guide/Guide';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
+import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import EndreKontonummer from '../../information/EndreKontonummer';
+import SoknadFormComponents from '../../soknad/SoknadFormComponents';
+import SoknadQuestion from '../../soknad/SoknadQuestion';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { stringToSpacedCharString } from '../../utils/accessibility';
 import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
-import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
-import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import EntryQuestion from './EntryFormQuestion';
-import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
-import { stringToSpacedCharString } from '../../utils/accessibility';
-import SoknadQuestion from '../../soknad/SoknadQuestion';
+import { SoknadEntryFormQuestions } from './soknadEntryFormConfig';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -68,9 +68,16 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
     });
 
     return (
-        <FormComponents.Form
+        <SoknadFormComponents.Form
             onValidSubmit={onStart}
             includeButtons={false}
+            cleanup={(values) => {
+                const v: SoknadFormData = {
+                    ...values,
+                    startetSoknadTidspunkt: moment().utc().toDate(),
+                };
+                return v;
+            }}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <SoknadQuestion
@@ -86,13 +93,13 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                     stopMessage={<EndreKontonummer />}
                 />
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}>
-                    <FormComponents.YesOrNoQuestion
+                    <SoknadFormComponents.YesOrNoQuestion
                         legend={`Skal du søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
                         name={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}
                     />
                 </EntryQuestion>
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomFrilanser}>
-                    <FormComponents.YesOrNoQuestion
+                    <SoknadFormComponents.YesOrNoQuestion
                         legend="Skal du søke om kompensasjon for tapt inntekt som frilanser?"
                         name={SoknadFormField.søkerOmTaptInntektSomFrilanser}
                     />
@@ -138,7 +145,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
 
                 {canContinue && (
                     <FormBlock>
-                        <FormComponents.ConfirmationCheckbox
+                        <SoknadFormComponents.ConfirmationCheckbox
                             label={intlHelper(intl, 'samtykke.tekst')}
                             name={SoknadFormField.harForståttRettigheterOgPlikter}
                             validate={validateSamtykke}>
@@ -152,7 +159,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                                     ),
                                 }}
                             />
-                        </FormComponents.ConfirmationCheckbox>
+                        </SoknadFormComponents.ConfirmationCheckbox>
                         <Box textAlignCenter={true} margin="xl">
                             <Hovedknapp>{intlHelper(intl, 'start')}</Hovedknapp>
                             <FormBlock>
@@ -180,7 +187,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
                     <BehandlingAvPersonopplysningerContent />
                 </InfoDialog>
             </QuestionVisibilityContext.Provider>
-        </FormComponents.Form>
+        </SoknadFormComponents.Form>
     );
 };
 

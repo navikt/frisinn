@@ -121,7 +121,14 @@ const startExpressServer = () => {
     const port = process.env.PORT || 8089;
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
+
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
+
+    server.get('/tid', (req, res) =>
+        res.send({
+            tidspunkt: '2020-05-16T07:42:50.840Z',
+        })
+    );
 
     server.get('/soker-not-logged-in', (req, res) => {
         res.sendStatus(401);
