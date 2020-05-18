@@ -9,6 +9,7 @@ export enum SelvstendigNæringdsrivendeAvslagÅrsak {
     'søkerIkkeForGyldigTidsrom' = 'søkerIkkeForGyldigTidsrom',
     'harYtelseFraNavSomDekkerTapet' = 'harYtelseFraNavSomDekkerTapet',
     'oppgirNullHistoriskInntekt' = 'oppgirNullHistoriskInntekt',
+    'ikkeAlleAvsluttaSelskaperErRegistrert' = 'ikkeAlleAvsluttaSelskaperErRegistrert',
 }
 
 export interface SelvstendigNæringsdrivendeAvslagStatus {
@@ -16,6 +17,7 @@ export interface SelvstendigNæringsdrivendeAvslagStatus {
     [SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert]: boolean;
 }
 
 const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormData) =>
@@ -48,9 +50,14 @@ const utbetalingFraNAVDekkerHeleTapet = ({ selvstendigHarYtelseFraNavSomDekkerTa
     return selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES;
 };
 
+const valgtIkkeAlleSelskaperErRegistrert = ({ selvstendigAlleAvsluttaSelskaperErRegistrert }: SelvstendigFormData) => {
+    return selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO;
+};
+
 export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): SelvstendigNæringsdrivendeAvslagStatus => ({
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
     oppgirNullHistoriskInntekt: oppgirNullHistoriskInntekt(payload),
+    ikkeAlleAvsluttaSelskaperErRegistrert: valgtIkkeAlleSelskaperErRegistrert(payload),
 });

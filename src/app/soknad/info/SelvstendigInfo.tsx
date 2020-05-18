@@ -75,6 +75,8 @@ const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall: numb
     );
 };
 
+const StoppIkkeAlleAvsluttaSelskaperErRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
+
 const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
         Inntekten du skal opplyse om er personinntekt for næring, og som gjelder for perioden{' '}
@@ -153,12 +155,12 @@ const getMessageForAvslag = (
             return <StoppYtelseDekkerHeleTapet />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt:
             return <StoppIngenHistoriskInntekt inntektÅrstall={inntektÅrstall} />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert:
+            return <StoppIkkeAlleAvsluttaSelskaperErRegistrert />;
     }
 };
 
 const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
-
-const infoAlleAvsluttaSelskaperErIkkeRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
 
 const SelvstendigInfo = {
     intro,
@@ -167,7 +169,7 @@ const SelvstendigInfo = {
     StoppYtelseDekkerHeleTapet,
     StoppIkkeHattInntektFraForetak,
     StoppIngenHistoriskInntekt,
-    infoAlleAvsluttaSelskaperErIkkeRegistrert,
+    StoppIkkeAlleAvsluttaSelskaperErRegistrert,
     infoHvordanBeregneInntekt,
     infoInntektÅrstall,
     infoAndreUtbetalingerFraNAV,

@@ -135,6 +135,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
         }
     }, [selvstendigBeregnetInntektsårstall]);
 
+    const visInfoOmAtAlleSelskaperMåRegistreres = values.selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO;
+
     return (
         <SoknadStep
             id={StepID.SELVSTENDIG}
@@ -148,6 +150,9 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
             }}
             showSubmitButton={
                 !isLoading &&
+                (selvstendigHarAvsluttetSelskaper === YesOrNo.YES
+                    ? avslag.ikkeAlleAvsluttaSelskaperErRegistrert === false
+                    : true) &&
                 (hasValidSelvstendigFormData ||
                     (allQuestionsAreAnswered && søkerOmTaptInntektSomFrilanser === YesOrNo.YES))
             }>
@@ -232,14 +237,13 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                             name={SoknadFormField.selvstendigAvsluttaSelskaper}
                                         />
                                     </SoknadQuestion>
-
                                     <SoknadQuestion
                                         name={SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert}
                                         legend={txt.selvstendigAlleAvsluttaSelskaperErRegistrert(
                                             avsluttetSelskapDateRange
                                         )}
-                                        showInfo={values.selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO}
-                                        info={<SelvstendigInfo.infoAlleAvsluttaSelskaperErIkkeRegistrert />}
+                                        showStop={visInfoOmAtAlleSelskaperMåRegistreres}
+                                        stopMessage={<SelvstendigInfo.StoppIkkeAlleAvsluttaSelskaperErRegistrert />}
                                     />
 
                                     {(isVisible(SoknadFormField.selvstendigInntekt2019) ||

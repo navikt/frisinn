@@ -107,10 +107,12 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
         isIncluded: ({ avslag: { oppgirNullHistoriskInntekt } }) => oppgirNullHistoriskInntekt === false,
-        visibilityFilter: ({ selvstendigBeregnetInntektsårstall, selvstendigInntekt2019, selvstendigInntekt2020 }) =>
-            selvstendigBeregnetInntektsårstall === 2019
+        visibilityFilter: (payload) => {
+            const { selvstendigBeregnetInntektsårstall, selvstendigInntekt2019, selvstendigInntekt2020 } = payload;
+            return andreSelskaperIsAnswered(payload) && selvstendigBeregnetInntektsårstall === 2019
                 ? hasValue(selvstendigInntekt2019)
-                : hasValue(selvstendigInntekt2020),
+                : hasValue(selvstendigInntekt2020);
+        },
         isAnswered: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(selvstendigHarYtelseFraNavSomDekkerTapet),
     },

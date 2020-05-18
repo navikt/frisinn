@@ -63,7 +63,7 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigAvsluttaSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
         `Selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}`,
     selvstendigAlleAvsluttaSelskaperErRegistrert: (periode: DateRange = defaultAvsluttetDateRange) =>
-        `'Er alle selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)} lagt til?`,
+        `Er alle selskaper som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)} lagt til?`,
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
     selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',
