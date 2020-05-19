@@ -32,6 +32,7 @@ import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
+import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -110,9 +111,11 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                     </div>
                                 </Box>
                                 <Box>
-                                    <SummaryBlock header="Startet på søknad">
-                                        <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
-                                    </SummaryBlock>
+                                    {isFeatureEnabled(Feature.STARTET_PAA_SOKNAD) && (
+                                        <SummaryBlock header="Startet på søknad">
+                                            <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
+                                        </SummaryBlock>
+                                    )}
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">
                                         <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
                                     </SummaryBlock>
