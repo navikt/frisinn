@@ -22,12 +22,14 @@ type FrilanserFormData = Pick<
 >;
 
 export type FrilanserFormConfigPayload = Partial<FrilanserFormData> &
+    Pick<SoknadFormData, SoknadFormField.selvstendigStopReason> &
     SoknadEssentials & { avslag: FrilanserAvslagStatus };
 
 const skalSpørreOmSelvstendig = ({
     personligeForetak,
     søkerOmTaptInntektSomSelvstendigNæringsdrivende,
     erSelvstendigNæringsdrivende,
+    selvstendigStopReason,
     avslag,
 }: FrilanserFormConfigPayload) => {
     if (avslag.utebetalingFraNAVDekkerHeleInntektstapet === true) {
@@ -36,7 +38,7 @@ const skalSpørreOmSelvstendig = ({
     if (personligeForetak === undefined) {
         return erSelvstendigNæringsdrivende === YesOrNo.YES;
     }
-    return søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO;
+    return søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO || selvstendigStopReason !== undefined;
 };
 
 const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadFormField> = {

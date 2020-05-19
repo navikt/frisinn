@@ -6,6 +6,7 @@ import { PersonligeForetakMock as pfm } from '../../../__mock__/personligeForeta
 import { getPeriodeForAvsluttaSelskaper } from '../../selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { FrilanserAvslagStatus, FrilanserAvslagÅrsak } from '../frilanserAvslag';
 import { FrilanserFormConfigPayload, FrilanserFormQuestions } from '../frilanserFormConfig';
+import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../../selvstendig-step/selvstendigAvslag';
 
 const person: Person = {
     fornavn: 'a',
@@ -65,7 +66,7 @@ describe('frilanserFormConfig', () => {
                 expect(isIncluded(SoknadFormField.frilanserInntektSomSelvstendigIPerioden)).toBeFalsy();
             });
         });
-        describe('onlyFrilanser', () => {
+        describe('when user is onlyFrilanser', () => {
             it(`includes ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}`, () => {
                 const { isIncluded } = FrilanserFormQuestions.getVisbility({
                     ...payload,
@@ -81,13 +82,31 @@ describe('frilanserFormConfig', () => {
                 });
                 expect(isIncluded(SoknadFormField.frilanserInntektSomSelvstendigIPerioden)).toBeFalsy();
             });
-            it(`does include ${SoknadFormField.frilanserInntektSomSelvstendigIPerioden} when  ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden} = no`, () => {
+            it(`does include ${SoknadFormField.frilanserInntektSomSelvstendigIPerioden} when ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden} = no`, () => {
                 const { isIncluded } = FrilanserFormQuestions.getVisbility({
                     ...payload,
                     søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.NO,
                     frilanserHarHattInntektSomSelvstendigIPerioden: YesOrNo.YES,
                 });
                 expect(isIncluded(SoknadFormField.frilanserInntektSomSelvstendigIPerioden)).toBeTruthy();
+            });
+        });
+        describe(`when user is selvstendig and frilanser`, () => {
+            it(`includes ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden} when ${SoknadFormField.selvstendigStopReason} is defined`, () => {
+                const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
+                    selvstendigStopReason: SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona,
+                });
+                expect(isIncluded(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden)).toBeTruthy();
+            });
+            it(`does not include ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden} when ${SoknadFormField.selvstendigStopReason} is undefined`, () => {
+                const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
+                    selvstendigStopReason: undefined,
+                });
+                expect(isIncluded(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden)).toBeFalsy();
             });
         });
     });
