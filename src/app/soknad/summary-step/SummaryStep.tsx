@@ -33,6 +33,7 @@ import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
 import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -40,16 +41,26 @@ interface Props {
     onSoknadSent: () => void;
 }
 
+interface SendSoknadStatus {
+    sendCounter: number;
+    showErrorMessage: boolean;
+}
+
 const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSoknadSent, soknadEssentials }: Props) => {
     const intl = useIntl();
     const { values } = useFormikContext<SoknadFormData>();
     const history = useHistory();
     const tempStorage = useTemporaryStorage();
+    const [sendStatus, setSendSoknadStatus] = useState<SendSoknadStatus>({
+        sendCounter: 0,
+        showErrorMessage: false,
+    });
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
     async function send(data: SoknadApiData) {
         try {
+            setSendSoknadStatus({ sendCounter: sendStatus.sendCounter + 1, showErrorMessage: false });
             await sendSoknad(data);
             await tempStorage.purge();
             onSoknadSent();
@@ -57,8 +68,15 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
                 relocateToLoginPage();
             } else {
-                triggerSentryError(SentryEventName.sendSoknadFailed, error);
-                navigateToErrorPage(history);
+                if (sendStatus.sendCounter === 2) {
+                    triggerSentryError(SentryEventName.sendSoknadFailed, error);
+                    navigateToErrorPage(history);
+                } else {
+                    setSendSoknadStatus({
+                        ...sendStatus,
+                        showErrorMessage: true,
+                    });
+                }
             }
         }
     }
@@ -151,6 +169,9 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                 <>
                     <CounsellorPanel>Det oppstod en feil med informasjonen i søknaden din</CounsellorPanel>
                 </>
+            )}
+            {sendStatus.showErrorMessage && (
+                <AlertStripeFeil>Det oppstod en feil under innsending. Vennligst prøv på nytt.</AlertStripeFeil>
             )}
         </SoknadStep>
     );

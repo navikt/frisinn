@@ -34,7 +34,7 @@ export enum ApiEndpoint {
     'perioder' = 'perioder',
     'personligeForetak' = 'personlige-foretak',
     'soker' = 'soker',
-    'soknad' = 'soknad',
+    'soknad' = 'soknad-err',
     'tilgjengelig' = 'tilgjengelig',
     'inntektsperiode' = 'inntektsperiode',
     'tidspunkt' = 'tidspunkt',

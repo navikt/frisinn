@@ -236,6 +236,12 @@ const startExpressServer = () => {
         res.sendStatus(200);
     });
 
+    server.post('/soknad-err', (req, res) => {
+        const body = req.body;
+        console.log('[POST] body', body);
+        res.sendStatus(501);
+    });
+
     server.post('/soknad-logget-ut', (req, res) => {
         res.sendStatus(401);
     });
