@@ -15,3 +15,5 @@ export const relocateToErrorPage = () => window.location.assign(getRouteUrl(rout
 export const navigateTo = (route: string, history: History) => history.push(route);
 export const navigateToSoknadFrontpage = (history: History) => history.push(GlobalRoutes.SOKNAD);
 export const navigateToErrorPage = (history: History) => history.push(routeConfig.ERROR);
+
+export const isOnSoknadFrontpage = (location: Location) => location.pathname === getRouteUrl(routeConfig.SOKNAD);

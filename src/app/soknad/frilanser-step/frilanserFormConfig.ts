@@ -12,7 +12,6 @@ type FrilanserFormData = Pick<
     SoknadFormData,
     | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
-    | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
     | SoknadFormField.frilanserInntektstapStartetDato
@@ -26,11 +25,7 @@ export type FrilanserFormConfigPayload = Partial<FrilanserFormData> &
     SoknadEssentials & { avslag: FrilanserAvslagStatus };
 
 const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadFormField> = {
-    [Field.frilanserErNyetablert]: {
-        isAnswered: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
-    },
     [Field.frilanserHarTaptInntektPgaKorona]: {
-        isIncluded: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
     [Field.frilanserInntektstapStartetDato]: {

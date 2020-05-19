@@ -61,13 +61,6 @@ const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak): React.ReactNode => 
     }
 };
 
-const infoErNyetablert = () => (
-    <ExpandableInfo title="Hva menes med dette?">
-        Hvis du også har vært frilanser før 1. mars 2019, men ikke har hatt inntekt etter 2017, kan du svare ja på dette
-        spørsmålet.
-    </ExpandableInfo>
-);
-
 const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
 
 const FrilanserInfo = {
@@ -77,7 +70,6 @@ const FrilanserInfo = {
     infoHvordanBeregneInntekt,
     infoAndreUtbetalingerFraNAV,
     infoTaptInntektPgaKorona,
-    infoErNyetablert,
     getMessageForAvslag,
     infoNårStartetInntektstapet,
 };

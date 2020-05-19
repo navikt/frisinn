@@ -23,10 +23,10 @@ export async function apiAccessCheck(krav: ApiKrav, params?: string): Promise<Ac
     }
 }
 
-export const alderAccessCheck = (startedSøknad: Date): AccessCheck => {
+export const alderAccessCheck = (): AccessCheck => {
     return {
         name: ApiKrav.alder,
-        check: () => apiAccessCheck(ApiKrav.alder, getStartedSøknadRequestParam(startedSøknad)),
+        check: (startedSøknad?: Date) => apiAccessCheck(ApiKrav.alder, getStartedSøknadRequestParam(startedSøknad)),
     };
 };
 export const apenAlderAccessCheck = (fdato?: Date): AccessCheck => {
@@ -45,10 +45,10 @@ export const apenAlderAccessCheck = (fdato?: Date): AccessCheck => {
     };
 };
 
-export const maksEnSoknadPerPeriodeAccessCheck = (startedSøknad?: Date): AccessCheck => {
+export const maksEnSoknadPerPeriodeAccessCheck = (): AccessCheck => {
     return {
         name: ApiKrav.maksEnSoknadPerPeriodeAccessCheck,
-        check: () =>
+        check: (startedSøknad?: Date) =>
             apiAccessCheck(ApiKrav.maksEnSoknadPerPeriodeAccessCheck, getStartedSøknadRequestParam(startedSøknad)),
     };
 };

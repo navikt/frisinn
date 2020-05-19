@@ -7,11 +7,11 @@ function useAccessCheck(accessCheck: AccessCheck) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
 
-    const check = async () => {
+    const check = async (startetSøknadTimestamp?: Date) => {
         setError(undefined);
         try {
             setIsLoading(true);
-            const checkResult = await accessCheck.check();
+            const checkResult = await accessCheck.check(startetSøknadTimestamp);
             if (checkResult.error) {
                 setError(checkResult.error);
             }

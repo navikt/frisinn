@@ -110,11 +110,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                 </Guide>
 
                 <SoknadQuestion
-                    name={SoknadFormField.frilanserErNyetablert}
-                    description={<FrilanserInfo.infoErNyetablert />}
-                />
-
-                <SoknadQuestion
                     name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
                     legend={soknadQuestionText.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
                     description={<FrilanserInfo.infoTaptInntektPgaKorona />}

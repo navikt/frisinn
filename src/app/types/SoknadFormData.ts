@@ -37,7 +37,6 @@ export enum SoknadFormField {
     selvstendigSoknadIsOk = 'selvstendigSoknadIsOk',
     selvstendigStopReason = 'selvstendigStopReason',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
-    frilanserErNyetablert = 'frilanserErNyetablert',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserHarYtelseFraNavSomDekkerTapet = 'frilanserHarYtelseFraNavSomDekkerTapet',
     frilanserInntektIPerioden = 'frilanserInntektIPerioden',
@@ -87,7 +86,6 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigSoknadIsOk]?: boolean;
     [SoknadFormField.selvstendigStopReason]?: SelvstendigNæringdsrivendeAvslagÅrsak;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
-    [SoknadFormField.frilanserErNyetablert]: YesOrNo;
     [SoknadFormField.frilanserInntektstapStartetDato]: Date;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: YesOrNo;
     [SoknadFormField.frilanserInntektIPerioden]: number;
@@ -146,7 +144,6 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
-    | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.frilanserInntektIPerioden
     | SoknadFormField.frilanserInntektstapStartetDato
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
@@ -177,7 +174,6 @@ export const initialSelvstendigValues: Partial<SelvstendigFormData> = {
 
 export const initialFrilanserValues: Partial<FrilanserFormData> = {
     frilanserHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
-    frilanserErNyetablert: YesOrNo.UNANSWERED,
     frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,
     frilanserHarHattInntektSomSelvstendigIPerioden: YesOrNo.UNANSWERED,
     frilanserInntektSomSelvstendigIPerioden: undefined,

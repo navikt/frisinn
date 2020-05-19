@@ -5,7 +5,6 @@ import { FrilanserApiData } from '../../types/SoknadApiData';
 import DatoSvar from './DatoSvar';
 import KronerSvar from './KronerSvar';
 import ApiQuestionsSummary from '../../components/api-questions-summary/ApiQuestionsSummary';
-import JaNeiSvar from './JaNeiSvar';
 
 interface Props {
     apiData: FrilanserApiData;
@@ -17,7 +16,6 @@ const FrilanserSummary = ({
         inntektstapStartet,
         inntektIPeriodenSomSelvstendigNæringsdrivende,
         info,
-        erNyetablert,
         spørsmålOgSvar: questions,
     },
 }: Props) => (
@@ -36,9 +34,6 @@ const FrilanserSummary = ({
                 <KronerSvar verdi={inntektIPeriodenSomSelvstendigNæringsdrivende} />
             </SummaryBlock>
         )}
-        <SummaryBlock header={'Startet som frilanser etter 1. september 2019'}>
-            <JaNeiSvar harSvartJa={erNyetablert} />
-        </SummaryBlock>
         <ApiQuestionsSummary spørsmålOgSvar={questions} />
     </>
 );

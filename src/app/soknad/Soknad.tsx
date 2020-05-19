@@ -10,12 +10,15 @@ import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { alderAccessCheck, maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
-import { navigateTo, navigateToSoknadFrontpage } from '../utils/navigationUtils';
+import { navigateTo, navigateToSoknadFrontpage, relocateToSoknad, isOnSoknadFrontpage } from '../utils/navigationUtils';
 import { getSoknadRoute } from '../utils/routeUtils';
 import SoknadErrors from './soknad-errors/SoknadErrors';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { isStorageDataValid } from './SoknadTempStorage';
+import useOsloTime from '../hooks/useOsloTime';
+import routeConfig, { getRouteUrl } from '../config/routeConfig';
+import { usePrevious } from '../hooks/usePrevious';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -23,11 +26,11 @@ const Soknad = () => {
     const [initializing, setInitializing] = useState<boolean>(true);
     const [initialFormValues, setInitialFormValues] = useState<Partial<SoknadFormData>>({});
 
+    const osloTime = useOsloTime();
+    const { timestamp: osloTimestamp, isLoading: osloTimeIsLoading } = osloTime;
     const essentials = useSoknadEssentials();
-    const maksEnSoknadPerPeriodeCheck = useAccessCheck(
-        maksEnSoknadPerPeriodeAccessCheck(essentials.startetSøknadTidspunkt)
-    );
-    const alderCheck = useAccessCheck(alderAccessCheck(essentials.startetSøknadTidspunkt));
+    const maksEnSoknadPerPeriodeCheck = useAccessCheck(maksEnSoknadPerPeriodeAccessCheck());
+    const alderCheck = useAccessCheck(alderAccessCheck());
     const tempStorage = useTemporaryStorage();
     const history = useHistory();
 
@@ -35,20 +38,12 @@ const Soknad = () => {
     const { result: maksEnSøknadResult } = maksEnSoknadPerPeriodeCheck;
     const { result: alderResult } = alderCheck;
 
-    const getResettedInitialValues = (): Partial<SoknadFormData> => ({
-        startetSøknadTidspunkt: essentials.startetSøknadTidspunkt,
-    });
-
     async function resetSoknad(redirectToFrontpage = true) {
-        if (tempStorage && tempStorage.storageData?.formData) {
-            await tempStorage.purge();
-        }
+        await tempStorage.purge();
         if (redirectToFrontpage) {
-            essentials.resetStartetSøknadTidspunkt();
-            setInitialFormValues(getResettedInitialValues());
-            setTimeout(() => {
-                navigateToSoknadFrontpage(history);
-            });
+            if (location.pathname !== getRouteUrl(routeConfig.SOKNAD)) {
+                relocateToSoknad();
+            }
         }
     }
     const { soknadEssentials } = essentials;
@@ -57,6 +52,12 @@ const Soknad = () => {
         essentials.error !== undefined ||
         alderCheck.error !== undefined ||
         maksEnSoknadPerPeriodeCheck.error !== undefined;
+
+    const resetInitialFormValues = () => {
+        setInitialFormValues({
+            startetSøknadTidspunkt: osloTimestamp,
+        });
+    };
 
     const allDataLoaded = (): void => {
         const { storageData } = tempStorage;
@@ -69,10 +70,14 @@ const Soknad = () => {
                     navigateTo(lastStepRoute, history);
                 }
             } else {
-                navigateToSoknadFrontpage(history);
+                resetInitialFormValues();
+                if (isOnSoknadFrontpage(location) === false) {
+                    console.log('navigate');
+                    navigateToSoknadFrontpage(history);
+                }
             }
         } else {
-            setInitialFormValues(getResettedInitialValues());
+            resetInitialFormValues();
         }
         setInitializing(false);
     };
@@ -82,19 +87,31 @@ const Soknad = () => {
             initializing === true &&
             !hasError &&
             soknadEssentials &&
+            osloTimestamp &&
+            osloTimeIsLoading === false &&
             tempStorageIsLoading === false &&
             alderResult !== undefined &&
             maksEnSøknadResult !== undefined
         ) {
             allDataLoaded();
         }
-    }, [tempStorageIsLoading, alderResult, maksEnSøknadResult, soknadEssentials]);
+    }, [tempStorageIsLoading, alderResult, maksEnSøknadResult, soknadEssentials, osloTimeIsLoading, osloTimestamp]);
+
+    const prevOsloTimestamp = usePrevious(osloTimestamp);
+    useEffect(() => {
+        if (
+            (osloTimestamp && prevOsloTimestamp === undefined) ||
+            (prevOsloTimestamp && osloTimestamp && prevOsloTimestamp.toDateString() !== osloTimestamp.toDateString())
+        ) {
+            essentials.fetch();
+            tempStorage.fetch();
+            alderCheck.check(osloTimestamp);
+            maksEnSoknadPerPeriodeCheck.check(osloTimestamp);
+        }
+    }, [osloTimestamp]);
 
     useEffect(() => {
-        essentials.fetch();
-        tempStorage.fetch();
-        alderCheck.check();
-        maksEnSoknadPerPeriodeCheck.check();
+        osloTime.triggerFetch();
     }, []);
 
     useEffect(() => {
@@ -133,12 +150,11 @@ const Soknad = () => {
                         <SoknadFormComponents.FormikWrapper
                             initialValues={initialFormValues}
                             onSubmit={() => null}
-                            renderForm={(formik) => {
+                            renderForm={() => {
                                 return (
                                     <SoknadRoutes
                                         soknadEssentials={soknadEssentials}
                                         resetSoknad={() => {
-                                            formik.resetForm();
                                             resetSoknad();
                                         }}
                                     />

@@ -200,7 +200,6 @@ export const mapFrilanserFormDataToApiData = (
 ): FrilanserApiData | undefined => {
     const {
         frilanserHarTaptInntektPgaKorona,
-        frilanserErNyetablert,
         frilanserInntektIPerioden,
         frilanserHarYtelseFraNavSomDekkerTapet,
         frilanserInntektstapStartetDato,
@@ -225,7 +224,6 @@ export const mapFrilanserFormDataToApiData = (
         }
         return {
             inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
-            erNyetablert: frilanserErNyetablert === YesOrNo.YES,
             inntektIPerioden: frilanserInntektIPerioden,
             inntektIPeriodenSomSelvstendigNæringsdrivende:
                 frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES

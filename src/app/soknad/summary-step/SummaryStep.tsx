@@ -7,13 +7,16 @@ import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-p
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
+import moment from 'moment';
 import { Undertittel } from 'nav-frontend-typografi';
 import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
+import DateTimeView from '../../components/date-time-view/DateTimeView';
 import Guide from '../../components/guide/Guide';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import GlobalRoutes from '../../config/routeConfig';
+import useTemporaryStorage from '../../hooks/useTempStorage';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
@@ -29,7 +32,6 @@ import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
-import useTemporaryStorage from '../../hooks/useTempStorage';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -108,6 +110,9 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                     </div>
                                 </Box>
                                 <Box>
+                                    <SummaryBlock header="Startet på søknad">
+                                        <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
+                                    </SummaryBlock>
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">
                                         <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
                                     </SummaryBlock>

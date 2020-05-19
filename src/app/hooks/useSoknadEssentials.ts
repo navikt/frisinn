@@ -9,7 +9,6 @@ import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
-    const [startetSøknadTidspunkt, setStartetSøknadTidspunkt] = useState<Date>(new Date());
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | undefined>();
     const [isRedirectingToLogin, setIsRedirectingToLogin] = useState<boolean | undefined>();
@@ -41,14 +40,8 @@ function useSoknadEssentials() {
         }
     };
 
-    const resetStartetSøknadTidspunkt = () => {
-        setStartetSøknadTidspunkt(new Date());
-    };
-
     return {
         soknadEssentials,
-        startetSøknadTidspunkt,
-        resetStartetSøknadTidspunkt,
         isRedirectingToLogin,
         isLoading,
         error,

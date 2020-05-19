@@ -2,7 +2,7 @@ const os = require('os');
 const fs = require('fs');
 const express = require('express');
 const _ = require('lodash');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const server = express();
 
 server.use(express.json());
@@ -94,26 +94,11 @@ const getPerioder = (query) => {
         },
     };
 };
-const getInntektsperiode = (query) => {
-    // const tapStartDato = moment(query.inntektstapStartet).toDate();
-    // const snStartDato = moment(query.startetSomSelvstendigNæringsdrivende).toDate();
-    // const tapsår = snStartDato.getFullYear();
-    let fom, tom;
-
-    // if (tapsår < 2019) {
-    fom = '2019-01-01';
-    tom = '2019-12-31';
-    // } else if (tapsår === 2019) {
-    //     fom = moment(snStartDato).format('YYYY-MM-DD');
-    //     tom = '2019-12-31';
-    // } else {
-    //     fom = moment(snStartDato).format('YYYY-MM-DD');
-    //     tom = moment(tapStartDato).format('YYYY-MM-DD');
-    // }
+const getInntektsperiode = () => {
     return {
         inntektsperiode: {
-            fom,
-            tom,
+            fom: '2019-01-01',
+            tom: '2019-12-31',
         },
     };
 };
@@ -124,11 +109,15 @@ const startExpressServer = () => {
 
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
-    server.get('/tid', (req, res) =>
-        res.send({
-            tidspunkt: '2020-05-16T07:42:50.840Z',
-        })
-    );
+    server.get('/tidspunkt', (req, res) => {
+        const m = moment().tz('Europe/Oslo');
+        setTimeout(() => {
+            res.send({
+                'Europe/Oslo': m.format(),
+                UTC: m.utc().format(),
+            });
+        }, 500);
+    });
 
     server.get('/soker-not-logged-in', (req, res) => {
         res.sendStatus(401);

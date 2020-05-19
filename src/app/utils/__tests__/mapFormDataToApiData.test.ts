@@ -32,7 +32,6 @@ describe('mapFrilanserFormDataToApiData', () => {
         frilanserInntektstapStartetDato: apiStringDateToDate('2020-04-01'),
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
         søkerOmTaptInntektSomFrilanser: YesOrNo.YES,
-        frilanserErNyetablert: YesOrNo.NO,
         frilanserHarTaptInntektPgaKorona: YesOrNo.YES,
         frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
         frilanserHarHattInntektSomSelvstendigIPerioden: YesOrNo.UNANSWERED,
