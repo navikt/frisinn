@@ -50,7 +50,8 @@ interface SendSoknadStatus {
 const getAnonymizedSoknadData = (
     soknadEssentials: SoknadEssentials,
     values: SoknadFormData,
-    apiData: SoknadApiData
+    apiData: SoknadApiData,
+    sendCounter: number
 ): string => {
     try {
         const { avsluttetSelskapDateRange, currentSøknadsperiode, personligeForetak } = soknadEssentials;
@@ -58,6 +59,7 @@ const getAnonymizedSoknadData = (
         const { selvstendigNæringsdrivende } = apiData;
 
         const data = {
+            sendCounter,
             avsluttetSelskapDateRange,
             currentSøknadsperiode,
             foretak: personligeForetak ? personligeForetak.foretak.map((f) => f.registreringsdato) : undefined,
@@ -107,7 +109,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                 } else {
                     triggerSentryCustomError(
                         SentryEventName.sendSoknadFailed,
-                        getAnonymizedSoknadData(soknadEssentials, values, data)
+                        getAnonymizedSoknadData(soknadEssentials, values, data, sendCounter)
                     );
                     setSendSoknadStatus({
                         sendCounter,
