@@ -1,7 +1,7 @@
 import { SoknadFormField } from '../types/SoknadFormData';
+import { formatDateRange } from '../utils/dateRangeUtils';
 import { DateRange } from '../utils/dateUtils';
-import { formatDateRange } from '../components/date-range-view/DateRangeView';
-import { minAvsluttetDate, maxAvsluttetDate } from './selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
+import { maxAvsluttetDate, minAvsluttetDate } from './selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 export interface SoknadQuestionText {
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
@@ -37,12 +37,7 @@ const defaultAvsluttetDateRange: DateRange = {
 };
 
 const getAvsluttetPeriodeTekst = (periode: DateRange) => {
-    const fromYear = periode.from.getFullYear();
-    const toYear = periode.to.getFullYear();
-    if (fromYear === toYear) {
-        return fromYear;
-    }
-    return `${fromYear}-${toYear}`;
+    return formatDateRange(periode, undefined, true);
 };
 
 export const soknadQuestionText: SoknadQuestionText = {
