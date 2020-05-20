@@ -1,7 +1,7 @@
 import { SoknadFormField } from '../types/SoknadFormData';
 import { DateRange } from '../utils/dateUtils';
-import { formatDateRange } from '../components/date-range-view/DateRangeView';
 import { minAvsluttetDate, maxAvsluttetDate } from './selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
+import { formatDateRange } from '../utils/dateRangeUtils';
 
 export interface SoknadQuestionText {
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;

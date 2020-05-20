@@ -21,7 +21,8 @@
         "start-no-decorator": "node ./src/build/scripts/start-dev-no-decorator.js",
         "start-server-local": "npm-run-all -s rm:dist build -p dev-api server-test:local",
         "start": "node ./src/build/scripts/start-dev.js",
-        "test": "jest --maxWorkers=2 --config ./jest/jest.config.js"
+        "test": "jest --maxWorkers=2 --config ./jest/jest.config.js",
+        "test2": "jest --maxWorkers=2 --config ./jest/jest.config.js --collectCoverage=true"
     },
     "jest": {
         "testEnvironment": "node"

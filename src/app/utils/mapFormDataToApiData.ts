@@ -1,7 +1,6 @@
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
-import { formatDateRange } from '../components/date-range-view/DateRangeView';
 import { soknadQuestionText } from '../soknad/soknadQuestionText';
 import {
     ApiSpørsmålOgSvar,
@@ -16,6 +15,7 @@ import { hasValidHistoriskInntekt } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError, triggerSentryError } from './sentryUtils';
 import { isFeatureEnabled, Feature } from './featureToggleUtils';
 import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
+import { formatDateRange } from './dateRangeUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
