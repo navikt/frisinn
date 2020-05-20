@@ -19,6 +19,7 @@ import SoknadErrors from './soknad-errors/SoknadErrors';
 import soknadTempStorage from './SoknadTempStorage';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
+import ArbeidstakerStep from './arbeidstaker-step/ArbeidstakerStap';
 
 interface Props {
     resetSoknad: () => void;
@@ -65,6 +66,14 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
+                    />
+                );
+            case StepID.ARBEIDSTAKER:
+                return (
+                    <ArbeidstakerStep
+                        resetSoknad={resetSoknad}
+                        soknadEssentials={soknadEssentials}
+                        onValidSubmit={() => navigateToNextStepFrom(StepID.ARBEIDSTAKER)}
                     />
                 );
             case StepID.BEKREFT_INNTEKT:
