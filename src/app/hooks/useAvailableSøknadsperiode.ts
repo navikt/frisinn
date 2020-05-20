@@ -13,19 +13,34 @@ export const isValidDateRange = (dateRange: AvailableDateRange): dateRange is Da
     return dateRange !== 'NO_AVAILABLE_DATERANGE' && dateRange !== undefined;
 };
 
-function useAvailableSøknadsperiode(selectedDate: Date, currentSøknadsperiode: DateRange) {
+function useAvailableSøknadsperiode({
+    inntektstapStartDato,
+    currentSøknadsperiode,
+    currentAvailableSøknadsperiode,
+    startetSøknad,
+}: {
+    inntektstapStartDato: Date;
+    currentSøknadsperiode: DateRange;
+    currentAvailableSøknadsperiode: AvailableDateRange;
+    startetSøknad: Date;
+}) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [availableDateRange, setAvailableDateRange] = useState<AvailableDateRange>(undefined);
     const [isLimitedDateRange, setIsLimitedDateRange] = useState<boolean>(false);
+    const [firstRender, setFirstRender] = useState(true);
 
-    const prevSelectedDate = usePrevious<Date | undefined>(selectedDate);
+    useEffect(() => {
+        setFirstRender(false);
+    }, []);
+
+    const prevSelectedDate = usePrevious<Date | undefined>(inntektstapStartDato);
 
     async function fetchStorage(date: Date) {
         setIsLoading(true);
         setAvailableDateRange(undefined);
         setIsLimitedDateRange(false);
         try {
-            const availableSøknadsperiode = await getSøknadsperiode([date]);
+            const availableSøknadsperiode = await getSøknadsperiode({ inntektstapStartet: [date], startetSøknad });
             setAvailableDateRange(availableSøknadsperiode);
             setIsLimitedDateRange(moment(availableSøknadsperiode.from).isAfter(currentSøknadsperiode.from));
         } catch (error) {
@@ -37,13 +52,19 @@ function useAvailableSøknadsperiode(selectedDate: Date, currentSøknadsperiode:
     }
 
     useEffect(() => {
-        if (selectedDate === undefined) {
+        if (firstRender) {
+            if (currentAvailableSøknadsperiode) {
+                setAvailableDateRange(currentAvailableSøknadsperiode);
+            }
+            return;
+        }
+        if (inntektstapStartDato === undefined) {
             setAvailableDateRange(undefined);
-        } else if (!isSameDate(selectedDate, prevSelectedDate)) {
-            const dateToUse = moment.max(moment(currentSøknadsperiode.from), moment(selectedDate)).toDate();
+        } else if (!isSameDate(inntektstapStartDato, prevSelectedDate)) {
+            const dateToUse = moment.max(moment(currentSøknadsperiode.from), moment(inntektstapStartDato)).toDate();
             fetchStorage(dateToUse);
         }
-    }, [selectedDate]);
+    }, [inntektstapStartDato]);
 
     return { availableDateRange, isLimitedDateRange, isLoading };
 }

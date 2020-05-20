@@ -7,13 +7,16 @@ import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-p
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
+import moment from 'moment';
 import { Undertittel } from 'nav-frontend-typografi';
 import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
+import DateTimeView from '../../components/date-time-view/DateTimeView';
 import Guide from '../../components/guide/Guide';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import GlobalRoutes from '../../config/routeConfig';
+import useTemporaryStorage from '../../hooks/useTempStorage';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
@@ -29,7 +32,9 @@ import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
-import useTemporaryStorage from '../../hooks/useTempStorage';
+import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -37,16 +42,27 @@ interface Props {
     onSoknadSent: () => void;
 }
 
+interface SendSoknadStatus {
+    sendCounter: number;
+    showErrorMessage: boolean;
+}
+
 const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSoknadSent, soknadEssentials }: Props) => {
     const intl = useIntl();
     const { values } = useFormikContext<SoknadFormData>();
     const history = useHistory();
     const tempStorage = useTemporaryStorage();
+    const [sendStatus, setSendSoknadStatus] = useState<SendSoknadStatus>({
+        sendCounter: 0,
+        showErrorMessage: false,
+    });
 
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
     async function send(data: SoknadApiData) {
+        const sendCounter = sendStatus.sendCounter + 1;
         try {
+            setSendSoknadStatus({ sendCounter, showErrorMessage: false });
             await sendSoknad(data);
             await tempStorage.purge();
             onSoknadSent();
@@ -54,8 +70,16 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
                 relocateToLoginPage();
             } else {
-                triggerSentryError(SentryEventName.sendSoknadFailed, error);
-                navigateToErrorPage(history);
+                if (sendCounter === 3) {
+                    triggerSentryError(SentryEventName.sendSoknadFailed, error);
+                    navigateToErrorPage(history);
+                } else {
+                    setSendSoknadStatus({
+                        sendCounter,
+                        showErrorMessage: true,
+                    });
+                    setSendingInProgress(false);
+                }
             }
         }
     }
@@ -108,6 +132,11 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                     </div>
                                 </Box>
                                 <Box>
+                                    {isFeatureEnabled(Feature.STARTET_PAA_SOKNAD) && (
+                                        <SummaryBlock header="Startet på søknad">
+                                            <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
+                                        </SummaryBlock>
+                                    )}
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">
                                         <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
                                     </SummaryBlock>
@@ -143,6 +172,18 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                 <>
                     <CounsellorPanel>Det oppstod en feil med informasjonen i søknaden din</CounsellorPanel>
                 </>
+            )}
+            {sendStatus.showErrorMessage && sendingInProgress === false && (
+                <FormBlock>
+                    {sendStatus.sendCounter === 1 && (
+                        <AlertStripeFeil>Det oppstod en feil under innsending. Vennligst prøv på nytt.</AlertStripeFeil>
+                    )}
+                    {sendStatus.sendCounter === 2 && (
+                        <AlertStripeFeil>
+                            Det oppstod fortsatt en feil under innsending. Vennligst vent litt og prøv på nytt.
+                        </AlertStripeFeil>
+                    )}
+                </FormBlock>
             )}
         </SoknadStep>
     );

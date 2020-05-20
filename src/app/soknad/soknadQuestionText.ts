@@ -1,13 +1,16 @@
 import { SoknadFormField } from '../types/SoknadFormData';
 import { DateRange } from '../utils/dateUtils';
 import { formatDateRange } from '../components/date-range-view/DateRangeView';
+import { minAvsluttetDate, maxAvsluttetDate } from './selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 export interface SoknadQuestionText {
-    [SoknadFormField.selvstendigHarHattInntektFraForetak]: (årstall: number) => string;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
+    [SoknadFormField.selvstendigHarAvsluttetSelskaper]: (periode?: DateRange) => string;
+    [SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert]: (periode?: DateRange) => string;
+    [SoknadFormField.selvstendigAvsluttaSelskaper]: (periode?: DateRange) => string;
     [SoknadFormField.selvstendigInntekt2019]: string;
     [SoknadFormField.selvstendigInntekt2020]: string;
     [SoknadFormField.selvstendigErFrilanser]: string;
@@ -21,7 +24,6 @@ export interface SoknadQuestionText {
     [SoknadFormField.selvstendigRevisorTelefon]: string;
     [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]: string;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
-    [SoknadFormField.frilanserErNyetablert]: string;
     [SoknadFormField.frilanserInntektstapStartetDato]: string;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
     [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
@@ -29,11 +31,21 @@ export interface SoknadQuestionText {
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
 }
 
+const defaultAvsluttetDateRange: DateRange = {
+    from: minAvsluttetDate,
+    to: maxAvsluttetDate,
+};
+
+const getAvsluttetPeriodeTekst = (periode: DateRange) => {
+    const fromYear = periode.from.getFullYear();
+    const toYear = periode.to.getFullYear();
+    if (fromYear === toYear) {
+        return fromYear;
+    }
+    return `${fromYear}-${toYear}`;
+};
+
 export const soknadQuestionText: SoknadQuestionText = {
-    selvstendigHarHattInntektFraForetak: (årstall: number) =>
-        årstall === 2020
-            ? `Har du hatt inntekt som selvstendig næringsdrivende før 1. mars ${årstall}?`
-            : 'Har du hatt inntekt som selvstendig næringsdrivende i 2019?',
     selvstendigHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
@@ -45,6 +57,14 @@ export const soknadQuestionText: SoknadQuestionText = {
         `Hvilken personinntekt har du hatt fra næring, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
         )}?`,
+    selvstendigHarAvsluttetSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
+        `Har du hatt enkeltpersonforetak (ENK, ANS eller DA), som ble avsluttet i ${getAvsluttetPeriodeTekst(
+            periode
+        )}?`,
+    selvstendigAvsluttaSelskaper: (periode: DateRange = defaultAvsluttetDateRange) =>
+        `Legg inn selskap som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}`,
+    selvstendigAlleAvsluttaSelskaperErRegistrert: (periode: DateRange = defaultAvsluttetDateRange) =>
+        `Har du lagt inn alle selskap som ble avsluttet i ${getAvsluttetPeriodeTekst(periode)}?`,
     selvstendigInntekt2019: 'Hvilken personinntekt fra næring har du totalt tatt ut i 2019?',
     selvstendigInntekt2020: `Hvilken personinntekt fra næring har du totalt tatt ut i januar og februar 2020?`,
     selvstendigErFrilanser: 'Er du frilanser?',
@@ -63,7 +83,6 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigRevisorNAVKanTaKontakt: 'Gir du NAV fullmakt til å innhente opplysninger fra revisor?',
     frilanserHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som frilanser i perioden ${formatDateRange(dateRange)}, som følge av koronautbruddet?`,
-    frilanserErNyetablert: 'Startet du å jobbe som frilanser etter 1. mars 2019?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',

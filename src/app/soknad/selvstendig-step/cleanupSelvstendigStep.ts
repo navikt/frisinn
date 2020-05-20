@@ -9,24 +9,38 @@ export const cleanupSelvstendigStep = (
     const v: SoknadFormData = {
         ...values,
     };
-    if (v.selvstendigHarHattInntektFraForetak === YesOrNo.NO) {
-        v.selvstendigHarTaptInntektPgaKorona = YesOrNo.UNANSWERED;
-    }
     if (v.selvstendigHarTaptInntektPgaKorona !== YesOrNo.YES) {
         v.selvstendigInntektstapStartetDato = undefined as any;
     }
     if (v.selvstendigInntektstapStartetDato === undefined || avslag.søkerIkkeForGyldigTidsrom) {
         v.selvstendigInntektIPerioden = undefined as any;
+        v.selvstendigHarAvsluttetSelskaper = YesOrNo.UNANSWERED;
+        v.selvstendigBeregnetTilgjengeligSøknadsperiode = undefined;
+    }
+    if (v.selvstendigHarAvsluttetSelskaper !== YesOrNo.YES) {
+        v.selvstendigAvsluttaSelskaper = undefined;
+        v.selvstendigAlleAvsluttaSelskaperErRegistrert = YesOrNo.UNANSWERED;
     }
     if (v.selvstendigInntektIPerioden === undefined) {
         v.selvstendigInntekt2019 = undefined as any;
         v.selvstendigInntekt2020 = undefined as any;
     }
-    if (v.selvstendigInntekt2019 === undefined && v.selvstendigInntekt2020 === undefined) {
+    if (v.selvstendigBeregnetInntektsårstall === 2019) {
+        v.selvstendigInntekt2020 = undefined as any;
+    }
+    if (v.selvstendigBeregnetInntektsårstall === 2020) {
+        v.selvstendigInntekt2019 = undefined as any;
+    }
+    if (
+        (v.selvstendigInntekt2019 === undefined && v.selvstendigInntekt2020 === undefined) ||
+        avslag.oppgirNullHistoriskInntekt
+    ) {
         v.selvstendigHarYtelseFraNavSomDekkerTapet = YesOrNo.UNANSWERED;
     }
-    if (avslag.harYtelseFraNavSomDekkerTapet) {
+    if (avslag.harYtelseFraNavSomDekkerTapet || v.selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.UNANSWERED) {
+        v.selvstendigHarRegnskapsfører = YesOrNo.UNANSWERED;
         v.selvstendigErFrilanser = YesOrNo.UNANSWERED;
+        v.selvstendigHarRevisor = YesOrNo.UNANSWERED;
         v.selvstendigHarRegnskapsfører = YesOrNo.UNANSWERED;
     }
     if (v.selvstendigErFrilanser !== YesOrNo.YES) {
@@ -43,7 +57,7 @@ export const cleanupSelvstendigStep = (
     if (v.selvstendigHarRevisor !== YesOrNo.YES) {
         v.selvstendigRevisorNavn = undefined;
         v.selvstendigRevisorTelefon = undefined;
-        v.selvstendigRevisorNAVKanTaKontakt = undefined;
+        v.selvstendigRevisorNAVKanTaKontakt = YesOrNo.UNANSWERED;
     }
     return v;
 };

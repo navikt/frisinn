@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/sif-common-core/lib/utils/localeUtils';
 import * as Sentry from '@sentry/browser';
 import { detect } from 'detect-browser';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
 import ApplicationWrapper from './components/application-wrapper/ApplicationWrapper';
@@ -28,6 +28,7 @@ require('../../node_modules/moment/locale/nn.js');
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 moment.locale(localeFromSessionStorage);
+moment.tz.setDefault('Europe/Oslo');
 
 Sentry.init({
     dsn: 'https://64c0ee4a1a8b4212b685764604cce997@sentry.gc.nav.no/29',

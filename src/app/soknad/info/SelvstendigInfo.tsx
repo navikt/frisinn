@@ -15,6 +15,7 @@ import {
     FellesStoppYtelseDekkerHeleTapetInnlogget,
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
+import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 
 const rolleNavn = 'selvstendig næringsdrivende';
 
@@ -73,6 +74,8 @@ const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall: numb
         </>
     );
 };
+
+const StoppIkkeAlleAvsluttaSelskaperErRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
 
 const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
@@ -137,9 +140,12 @@ const infoSelvstendigInntekt2019 = () => (
     </>
 );
 
-const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, inntektÅrstall: number): React.ReactNode => {
+const getMessageForAvslag = (
+    årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
+    inntektÅrstall: HistoriskInntektÅrstall
+): React.ReactNode => {
     switch (årsak) {
-        case SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende:
+        case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirHarIkkeHattInntektFraForetak:
             return <StoppIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
@@ -147,8 +153,10 @@ const getMessageForAvslag = (årsak: SelvstendigNæringdsrivendeAvslagÅrsak, in
             return <StoppForSentInntektstap />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet:
             return <StoppYtelseDekkerHeleTapet />;
-        case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt:
+        case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt:
             return <StoppIngenHistoriskInntekt inntektÅrstall={inntektÅrstall} />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert:
+            return <StoppIkkeAlleAvsluttaSelskaperErRegistrert />;
     }
 };
 
@@ -161,6 +169,7 @@ const SelvstendigInfo = {
     StoppYtelseDekkerHeleTapet,
     StoppIkkeHattInntektFraForetak,
     StoppIngenHistoriskInntekt,
+    StoppIkkeAlleAvsluttaSelskaperErRegistrert,
     infoHvordanBeregneInntekt,
     infoInntektÅrstall,
     infoAndreUtbetalingerFraNAV,

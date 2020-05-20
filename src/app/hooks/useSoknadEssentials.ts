@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { getSøknadsperiode } from '../api/perioder';
 import { getPersonligeForetak } from '../api/personlige-foretak';
 import { getSoker } from '../api/soker';
+import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 
@@ -24,6 +25,9 @@ function useSoknadEssentials() {
                 person,
                 currentSøknadsperiode,
                 personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
+                avsluttetSelskapDateRange: personligeForetak
+                    ? getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato)
+                    : undefined,
             });
         } catch (error) {
             if (isForbidden(error) || isUnauthorized(error)) {
@@ -36,7 +40,13 @@ function useSoknadEssentials() {
         }
     };
 
-    return { soknadEssentials, isRedirectingToLogin, isLoading, error, fetch };
+    return {
+        soknadEssentials,
+        isRedirectingToLogin,
+        isLoading,
+        error,
+        fetch,
+    };
 }
 
 export default useSoknadEssentials;

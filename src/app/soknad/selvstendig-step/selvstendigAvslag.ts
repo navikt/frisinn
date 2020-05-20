@@ -4,62 +4,60 @@ import { hasValue } from '../../validation/fieldValidations';
 import { SelvstendigFormData } from '../../types/SoknadFormData';
 
 export enum SelvstendigNæringdsrivendeAvslagÅrsak {
-    'erIkkeSelvstendigNæringsdrivende' = 'erIkkeSelvstendigNæringsdrivende',
+    'oppgirHarIkkeHattInntektFraForetak' = 'oppgirHarIkkeHattInntektFraForetak',
     'harIkkeHattInntektstapPgaKorona' = 'harIkkeHattInntektstapPgaKorona',
     'søkerIkkeForGyldigTidsrom' = 'søkerIkkeForGyldigTidsrom',
     'harYtelseFraNavSomDekkerTapet' = 'harYtelseFraNavSomDekkerTapet',
-    'harIkkeHattHistoriskInntekt' = 'harIkkeHattHistoriskInntekt',
+    'oppgirNullHistoriskInntekt' = 'oppgirNullHistoriskInntekt',
+    'ikkeAlleAvsluttaSelskaperErRegistrert' = 'ikkeAlleAvsluttaSelskaperErRegistrert',
 }
 
 export interface SelvstendigNæringsdrivendeAvslagStatus {
-    [SelvstendigNæringdsrivendeAvslagÅrsak.erIkkeSelvstendigNæringsdrivende]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
-    [SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattHistoriskInntekt]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert]: boolean;
 }
 
-export type KontrollerSelvstendigSvarPayload = SelvstendigFormData & { inntektÅrstall: number };
-
-const erIkkeSelvstendigNæringsdrivende = ({ selvstendigHarHattInntektFraForetak }: KontrollerSelvstendigSvarPayload) =>
-    selvstendigHarHattInntektFraForetak === YesOrNo.NO;
-
-const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: KontrollerSelvstendigSvarPayload) =>
+const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormData) =>
     selvstendigHarTaptInntektPgaKorona === YesOrNo.NO;
 
-const harIkkeHattHistoriskInntekt = ({
-    selvstendigHarHattInntektFraForetak,
+const oppgirNullHistoriskInntekt = ({
     selvstendigInntekt2019,
     selvstendigInntekt2020,
-    inntektÅrstall,
-}: KontrollerSelvstendigSvarPayload): boolean => {
+    selvstendigBeregnetInntektsårstall,
+}: SelvstendigFormData): boolean => {
     return (
-        selvstendigHarHattInntektFraForetak === YesOrNo.NO ||
-        hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020 }, inntektÅrstall) === false
+        hasValidHistoriskInntekt({
+            selvstendigInntekt2019,
+            selvstendigInntekt2020,
+            selvstendigBeregnetInntektsårstall,
+        }) === false
     );
 };
 
 const søkerIkkeForGyldigTidsrom = ({
     selvstendigBeregnetTilgjengeligSøknadsperiode,
     selvstendigInntektstapStartetDato,
-}: KontrollerSelvstendigSvarPayload) => {
+}: SelvstendigFormData) => {
     const gyldig =
         hasValue(selvstendigInntektstapStartetDato) && selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined;
     return !gyldig;
 };
 
-const utbetalingFraNAVDekkerHeleTapet = ({
-    selvstendigHarYtelseFraNavSomDekkerTapet,
-}: KontrollerSelvstendigSvarPayload) => {
+const utbetalingFraNAVDekkerHeleTapet = ({ selvstendigHarYtelseFraNavSomDekkerTapet }: SelvstendigFormData) => {
     return selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.YES;
 };
 
-export const kontrollerSelvstendigSvar = (
-    payload: KontrollerSelvstendigSvarPayload
-): SelvstendigNæringsdrivendeAvslagStatus => ({
-    erIkkeSelvstendigNæringsdrivende: erIkkeSelvstendigNæringsdrivende(payload),
+const valgtIkkeAlleSelskaperErRegistrert = ({ selvstendigAlleAvsluttaSelskaperErRegistrert }: SelvstendigFormData) => {
+    return selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO;
+};
+
+export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): SelvstendigNæringsdrivendeAvslagStatus => ({
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
-    harIkkeHattHistoriskInntekt: harIkkeHattHistoriskInntekt(payload),
+    oppgirNullHistoriskInntekt: oppgirNullHistoriskInntekt(payload),
+    ikkeAlleAvsluttaSelskaperErRegistrert: valgtIkkeAlleSelskaperErRegistrert(payload),
 });

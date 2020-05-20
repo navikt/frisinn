@@ -12,13 +12,10 @@ import {
 import { PersonligeForetak, SoknadEssentials } from '../types/SoknadEssentials';
 import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { isRunningInDevEnvironment } from './envUtils';
-import {
-    getHistoriskInntektÅrstall,
-    hasValidHistoriskInntekt,
-    selvstendigSkalOppgiInntekt2019,
-    selvstendigSkalOppgiInntekt2020,
-} from './selvstendigUtils';
-import { SentryEventName, triggerSentryCustomError } from './sentryUtils';
+import { hasValidHistoriskInntekt } from './selvstendigUtils';
+import { SentryEventName, triggerSentryCustomError, triggerSentryError } from './sentryUtils';
+import { isFeatureEnabled, Feature } from './featureToggleUtils';
+import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -39,7 +36,6 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     const {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-        selvstendigHarHattInntektFraForetak,
         selvstendigHarTaptInntektPgaKorona,
         selvstendigInntektstapStartetDato,
         selvstendigHarYtelseFraNavSomDekkerTapet,
@@ -47,6 +43,9 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigInntekt2019,
         selvstendigInntekt2020,
         selvstendigErFrilanser,
+        selvstendigHarAvsluttetSelskaper,
+        selvstendigAvsluttaSelskaper,
+        selvstendigAlleAvsluttaSelskaperErRegistrert,
         selvstendigHarHattInntektSomFrilanserIPerioden,
         selvstendigInntektSomFrilanserIPerioden,
         selvstendigBeregnetTilgjengeligSøknadsperiode,
@@ -58,31 +57,21 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigRevisorTelefon,
         selvstendigRevisorNAVKanTaKontakt,
         selvstendigSoknadIsOk,
+        selvstendigBeregnetInntektsårstall,
     } = formData;
-
     if (
         personligeForetak !== undefined &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
-        selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
         selvstendigInntektstapStartetDato !== undefined &&
-        hasValidHistoriskInntekt(
-            { selvstendigInntekt2019, selvstendigInntekt2020 },
-            getHistoriskInntektÅrstall(personligeForetak)
-        )
+        selvstendigBeregnetInntektsårstall &&
+        hasValidHistoriskInntekt({ selvstendigInntekt2019, selvstendigInntekt2020, selvstendigBeregnetInntektsårstall })
     ) {
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        const årstallHistoriskInntekt = getHistoriskInntektÅrstall(personligeForetak);
-
         const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
-            {
-                field: SoknadFormField.selvstendigHarHattInntektFraForetak,
-                spørsmål: soknadQuestionText.selvstendigHarHattInntektFraForetak(årstallHistoriskInntekt),
-                svar: formatYesOrNoAnswer(selvstendigHarHattInntektFraForetak),
-            },
             {
                 field: SoknadFormField.selvstendigHarTaptInntektPgaKorona,
                 spørsmål: soknadQuestionText.selvstendigHarTaptInntektPgaKorona(
@@ -96,6 +85,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
             },
         ];
+
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             spørsmålOgSvar.push({
                 field: SoknadFormField.selvstendigHarRevisor,
@@ -123,16 +113,40 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
+            const avsluttetSelskapPeriode = getPeriodeForAvsluttaSelskaper(
+                personligeForetak.tidligsteRegistreringsdato
+            );
+            if (
+                selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
+                selvstendigAlleAvsluttaSelskaperErRegistrert &&
+                avsluttetSelskapPeriode
+            ) {
+                spørsmålOgSvar.push({
+                    field: SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert,
+                    spørsmål: soknadQuestionText.selvstendigAlleAvsluttaSelskaperErRegistrert(avsluttetSelskapPeriode),
+                    svar: formatYesOrNoAnswer(selvstendigAlleAvsluttaSelskaperErRegistrert),
+                });
+            }
         }
 
         const apiData: SelvstendigNæringsdrivendeApiData = {
             inntektstapStartet: formatDateToApiFormat(selvstendigInntektstapStartetDato),
             inntektIPerioden: selvstendigInntektIPerioden,
-            inntekt2019: selvstendigSkalOppgiInntekt2019(personligeForetak) ? selvstendigInntekt2019 : undefined,
-            inntekt2020: selvstendigSkalOppgiInntekt2020(personligeForetak) ? selvstendigInntekt2020 : undefined,
+            inntekt2019: selvstendigBeregnetInntektsårstall === 2019 ? selvstendigInntekt2019 : undefined,
+            inntekt2020: selvstendigBeregnetInntektsårstall === 2020 ? selvstendigInntekt2020 : undefined,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
+            opphørtePersonligeForetak:
+                selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
+                selvstendigAvsluttaSelskaper &&
+                isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER)
+                    ? selvstendigAvsluttaSelskaper.map((s) => ({
+                          navn: s.navn,
+                          registreringsdato: formatDateToApiFormat(s.opprettetDato),
+                          opphørsdato: formatDateToApiFormat(s.avsluttetDato),
+                      }))
+                    : undefined,
             info: {
-                period: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
+                periode: formatDateRange(selvstendigBeregnetTilgjengeligSøknadsperiode),
             },
             regnskapsfører:
                 selvstendigHarRegnskapsfører === YesOrNo.YES &&
@@ -158,16 +172,16 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                   harPersonligeForetak: personligeForetak !== undefined,
                   selvstendigBeregnetTilgjengeligSøknadsperiode,
                   søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-                  selvstendigHarHattInntektFraForetak,
                   selvstendigHarTaptInntektPgaKorona,
                   selvstendigInntektstapStartetDato,
                   selvstendigErFrilanser,
                   selvstendigHarHattInntektSomFrilanserIPerioden,
                   hasValidHistoriskInntekt: personligeForetak
-                      ? hasValidHistoriskInntekt(
-                            { selvstendigInntekt2019, selvstendigInntekt2020 },
-                            getHistoriskInntektÅrstall(personligeForetak)
-                        )
+                      ? hasValidHistoriskInntekt({
+                            selvstendigInntekt2019,
+                            selvstendigInntekt2020,
+                            selvstendigBeregnetInntektsårstall,
+                        })
                       : 'ingen foretak info',
               };
 
@@ -186,19 +200,18 @@ export const mapFrilanserFormDataToApiData = (
 ): FrilanserApiData | undefined => {
     const {
         frilanserHarTaptInntektPgaKorona,
-        frilanserErNyetablert,
         frilanserInntektIPerioden,
         frilanserHarYtelseFraNavSomDekkerTapet,
         frilanserInntektstapStartetDato,
         frilanserHarHattInntektSomSelvstendigIPerioden,
         frilanserInntektSomSelvstendigIPerioden,
-        frilanserBeregnetTilgjengeligSønadsperiode,
+        frilanserBeregnetTilgjengeligSøknadsperiode,
         søkerOmTaptInntektSomFrilanser,
         frilanserSoknadIsOk,
     } = formData;
     if (
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
-        frilanserBeregnetTilgjengeligSønadsperiode &&
+        frilanserBeregnetTilgjengeligSøknadsperiode &&
         frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO
     ) {
         const questions: ApiSpørsmålOgSvar[] = [];
@@ -211,14 +224,13 @@ export const mapFrilanserFormDataToApiData = (
         }
         return {
             inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
-            erNyetablert: frilanserErNyetablert === YesOrNo.YES,
             inntektIPerioden: frilanserInntektIPerioden,
             inntektIPeriodenSomSelvstendigNæringsdrivende:
                 frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES
                     ? frilanserInntektSomSelvstendigIPerioden
                     : undefined,
             info: {
-                period: formatDateRange(frilanserBeregnetTilgjengeligSønadsperiode),
+                periode: formatDateRange(frilanserBeregnetTilgjengeligSøknadsperiode),
             },
             spørsmålOgSvar: questions,
         };
@@ -232,7 +244,7 @@ export const mapFrilanserFormDataToApiData = (
               }
             : {
                   frilanserHarTaptInntektPgaKorona,
-                  frilanserBeregnetTilgjengeligSønadsperiode,
+                  frilanserBeregnetTilgjengeligSøknadsperiode,
                   frilanserHarYtelseFraNavSomDekkerTapet,
               };
         triggerSentryCustomError(
@@ -248,18 +260,23 @@ export const mapFormDataToApiData = (
     formData: SoknadFormData,
     språk: Locale
 ): SoknadApiData | undefined => {
-    const { harBekreftetOpplysninger, harForståttRettigheterOgPlikter } = formData;
-
-    const apiData: SoknadApiData = {
-        språk: (språk as any) === 'en' ? 'nn' : språk,
-        harBekreftetOpplysninger,
-        harForståttRettigheterOgPlikter,
-        selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(
-            soknadEssentials.personligeForetak,
-            formData
-        ),
-        frilanser: mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData),
-    };
-
-    return apiData;
+    const { harBekreftetOpplysninger, harForståttRettigheterOgPlikter, startetSøknadTidspunkt } = formData;
+    let apiData: SoknadApiData | undefined;
+    try {
+        apiData = {
+            språk: (språk as any) === 'en' ? 'nn' : språk,
+            harBekreftetOpplysninger,
+            harForståttRettigheterOgPlikter,
+            startetSøknad: startetSøknadTidspunkt ? startetSøknadTidspunkt.toISOString() : 'undefined',
+            selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(
+                soknadEssentials.personligeForetak,
+                formData
+            ),
+            frilanser: mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData),
+        };
+    } catch (e) {
+        triggerSentryError(SentryEventName.mapSoknadFailed, e);
+    } finally {
+        return apiData;
+    }
 };

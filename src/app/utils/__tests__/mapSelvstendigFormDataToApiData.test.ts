@@ -40,8 +40,10 @@ const periode: DateRange = {
 describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
     const formData: SelvstendigFormData = {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
+        selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
+        selvstendigAvsluttaSelskaper: [],
         selvstendigBeregnetTilgjengeligSøknadsperiode: periode,
-        selvstendigHarHattInntektFraForetak: YesOrNo.YES,
+        selvstendigBeregnetInntektsårstall: 2019,
         selvstendigHarTaptInntektPgaKorona: YesOrNo.YES,
         selvstendigInntektstapStartetDato: apiStringDateToDate('2020-04-01'),
         selvstendigInntektIPerioden: 0,
@@ -55,13 +57,6 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
         søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
     };
     describe('invalid data and answers which leads to søkerIkkeSomSelvstendig', () => {
-        it('returns undefined if selvstendigHarHattInntektFraForetak === NO', () => {
-            const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
-                ...formData,
-                selvstendigHarHattInntektFraForetak: YesOrNo.NO,
-            });
-            expect(apiData).toEqual(undefined);
-        });
         it('returns undefined if selvstendigHarTaptInntektPgaKorona === NO', () => {
             const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
                 ...formData,
@@ -96,6 +91,7 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
             const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2020, {
                 ...formData,
                 selvstendigInntekt2020,
+                selvstendigBeregnetInntektsårstall: 2020,
             });
             expect(apiData).toEqual(undefined);
         });
@@ -117,6 +113,7 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
             const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2019, {
                 ...formData,
                 selvstendigInntekt2019: 20000,
+                selvstendigBeregnetInntektsårstall: 2019,
             });
             expect(apiData?.inntekt2019).toBeDefined();
         });
@@ -124,6 +121,7 @@ describe('mapSelvstendigNæringsdrivendeFormDataToApiData', () => {
             const apiData = mapSelvstendigNæringsdrivendeFormDataToApiData(personligeForetak2020, {
                 ...formData,
                 selvstendigInntekt2020: 20000,
+                selvstendigBeregnetInntektsårstall: 2020,
             });
             expect(apiData?.inntekt2020).toBeDefined();
         });
