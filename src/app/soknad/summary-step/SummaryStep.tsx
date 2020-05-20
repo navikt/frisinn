@@ -34,6 +34,7 @@ import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSum
 import SpacedCharString from './SpacedCharString';
 import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -59,8 +60,9 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
     const [sendingInProgress, setSendingInProgress] = useState(false);
 
     async function send(data: SoknadApiData) {
+        const sendCounter = sendStatus.sendCounter + 1;
         try {
-            setSendSoknadStatus({ sendCounter: sendStatus.sendCounter + 1, showErrorMessage: false });
+            setSendSoknadStatus({ sendCounter, showErrorMessage: false });
             await sendSoknad(data);
             await tempStorage.purge();
             onSoknadSent();
@@ -68,14 +70,15 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
             if (apiUtils.isForbidden(error) || apiUtils.isUnauthorized(error)) {
                 relocateToLoginPage();
             } else {
-                if (sendStatus.sendCounter === 2) {
+                if (sendCounter === 3) {
                     triggerSentryError(SentryEventName.sendSoknadFailed, error);
                     navigateToErrorPage(history);
                 } else {
                     setSendSoknadStatus({
-                        ...sendStatus,
+                        sendCounter,
                         showErrorMessage: true,
                     });
+                    setSendingInProgress(false);
                 }
             }
         }
@@ -170,8 +173,17 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                     <CounsellorPanel>Det oppstod en feil med informasjonen i søknaden din</CounsellorPanel>
                 </>
             )}
-            {sendStatus.showErrorMessage && (
-                <AlertStripeFeil>Det oppstod en feil under innsending. Vennligst prøv på nytt.</AlertStripeFeil>
+            {sendStatus.showErrorMessage && sendingInProgress === false && (
+                <FormBlock>
+                    {sendStatus.sendCounter === 1 && (
+                        <AlertStripeFeil>Det oppstod en feil under innsending. Vennligst prøv på nytt.</AlertStripeFeil>
+                    )}
+                    {sendStatus.sendCounter === 2 && (
+                        <AlertStripeFeil>
+                            Det oppstod fortsatt en feil under innsending. Vennligst vent litt og prøv på nytt.
+                        </AlertStripeFeil>
+                    )}
+                </FormBlock>
             )}
         </SoknadStep>
     );
