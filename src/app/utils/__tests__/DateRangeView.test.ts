@@ -29,7 +29,7 @@ describe('dateRangeView', () => {
                 from: apiStringDateToDate('2010-01-02'),
                 to: apiStringDateToDate('2020-01-02'),
             };
-            expect(formatDateRange(dr, undefined, true)).toEqual('2010 - 2020');
+            expect(formatDateRange(dr, undefined, true)).toEqual('2010-2020');
         });
         it('returns one year when the years are equal', () => {
             const dr: DateRange = {

@@ -7,7 +7,7 @@ export const formatDateRange = (dateRange: DateRange, extendedFormat = true, onl
         if (fromYear === toYear) {
             return `${fromYear}`;
         }
-        return `${fromYear} - ${toYear}`;
+        return `${fromYear}-${toYear}`;
     }
     return extendedFormat
         ? `${prettifyDateFull(dateRange.from)} - ${prettifyDateFull(dateRange.to)}`
