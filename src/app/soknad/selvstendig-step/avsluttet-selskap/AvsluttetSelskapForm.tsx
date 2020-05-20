@@ -10,6 +10,7 @@ import { AvsluttetSelskap, isAvsluttetSelskap } from '../../../types/AvsluttetSe
 import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
 import { validateDateInRange } from '../../../validation/fieldValidations';
 import { minAvsluttetDate } from './avsluttetSelskapUtils';
+import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 
 interface Props {
     foretak?: Partial<AvsluttetSelskap>;
@@ -70,6 +71,17 @@ const AvsluttetSelskapForm = ({ foretak: initialValues = {}, periode, onSubmit, 
                                     dayPickerProps={{ initialMonth: apiStringDateToDate('2018-08-01') }}
                                     fullscreenOverlay={true}
                                     validate={validateRequiredField}
+                                    description={
+                                        <ExpandableInfo title="Hvilken dato skal jeg legge inn her?">
+                                            Hvis du har et enkeltpersonsforetak (ENK), skal du legge inn datoen du
+                                            registrerte foretaket.
+                                            <p>
+                                                Hvis du har et ansvarlig selskap (ANS/DA), skal du legge inn datoen
+                                                selskapet ble registrert. Dersom du fikk en rolle i selskapet på et
+                                                senere tidspunkt, er det denne datoen du skal legge inn.
+                                            </p>
+                                        </ExpandableInfo>
+                                    }
                                 />
                             </FormBlock>
 
@@ -89,6 +101,12 @@ const AvsluttetSelskapForm = ({ foretak: initialValues = {}, periode, onSubmit, 
                                     }}
                                     fullscreenOverlay={true}
                                     validate={validateDateInRange(avsluttetDateRange)}
+                                    description={
+                                        <ExpandableInfo title="Jeg har sluttet i et ansvarlig selskap (ANS/DA), men selskapet er aktivt">
+                                            Når du ikke lenger er med i et aktivt ANS/DA-selskap, legger du inn datoen
+                                            din rolle i selskapet ble avsluttet.
+                                        </ExpandableInfo>
+                                    }
                                 />
                             </FormBlock>
                         </Form.Form>
