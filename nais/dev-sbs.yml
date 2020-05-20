@@ -51,7 +51,7 @@ spec:
         - name: PERSISTENCE
           value: "off"
         - name: AVSLUTTA_SELSKAPER
-          value: "off"
+          value: "on"
         - name: STARTET_PAA_SOKNAD
           value: "off"
 
