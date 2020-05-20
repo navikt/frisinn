@@ -23,7 +23,7 @@ import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import * as apiUtils from '../../utils/apiUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { navigateToErrorPage, relocateToLoginPage } from '../../utils/navigationUtils';
-import { SentryEventName, triggerSentryError } from '../../utils/sentryUtils';
+import { SentryEventName, triggerSentryCustomError } from '../../utils/sentryUtils';
 import { validateBekrefterOpplysninger } from '../../validation/fieldValidations';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
@@ -46,6 +46,40 @@ interface SendSoknadStatus {
     sendCounter: number;
     showErrorMessage: boolean;
 }
+
+const getAnonymizedSoknadData = (
+    soknadEssentials: SoknadEssentials,
+    values: SoknadFormData,
+    apiData: SoknadApiData,
+    sendCounter: number
+): string => {
+    try {
+        const { avsluttetSelskapDateRange, currentSøknadsperiode, personligeForetak } = soknadEssentials;
+        const { selvstendigAvsluttaSelskaper, selvstendigBeregnetInntektsårstall } = values;
+        const { selvstendigNæringsdrivende } = apiData;
+
+        const data = {
+            sendCounter,
+            avsluttetSelskapDateRange,
+            currentSøknadsperiode,
+            foretak: personligeForetak ? personligeForetak.foretak.map((f) => f.registreringsdato) : undefined,
+            selvstendigBeregnetInntektsårstall,
+            avsluttetSoknad: selvstendigAvsluttaSelskaper
+                ? selvstendigAvsluttaSelskaper.map((s) => ({ opprettet: s.opprettetDato, avsluttet: s.avsluttetDato }))
+                : undefined,
+            avsluttetApi:
+                selvstendigNæringsdrivende && selvstendigNæringsdrivende.opphørtePersonligeForetak
+                    ? selvstendigNæringsdrivende.opphørtePersonligeForetak.map((s) => ({
+                          opprettet: s.opphørsdato,
+                          avsluttet: s.registreringsdato,
+                      }))
+                    : undefined,
+        };
+        return JSON.stringify(data);
+    } catch (err) {
+        return 'undefined';
+    }
+};
 
 const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSoknadSent, soknadEssentials }: Props) => {
     const intl = useIntl();
@@ -71,9 +105,12 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                 relocateToLoginPage();
             } else {
                 if (sendCounter === 3) {
-                    triggerSentryError(SentryEventName.sendSoknadFailed, error);
                     navigateToErrorPage(history);
                 } else {
+                    triggerSentryCustomError(
+                        SentryEventName.sendSoknadFailed,
+                        getAnonymizedSoknadData(soknadEssentials, values, data, sendCounter)
+                    );
                     setSendSoknadStatus({
                         sendCounter,
                         showErrorMessage: true,
