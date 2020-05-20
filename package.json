@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "@formatjs/intl-pluralrules": "^1.5.9",
-        "@formatjs/intl-relativetimeformat": "^4.5.9",
+        "@formatjs/intl-relativetimeformat": "^4.5.16",
         "@navikt/fnrvalidator": "^1.1.0",
         "@navikt/sif-common-core": "^3.3.5",
         "@navikt/sif-common-formik": "^7.1.6",
