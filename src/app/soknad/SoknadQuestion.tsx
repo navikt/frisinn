@@ -11,7 +11,7 @@ import StopMessage from '../components/stop-message/StopMessage';
 import { SoknadFormField } from '../types/SoknadFormData';
 import { soknadQuestionText } from './soknadQuestionText';
 
-interface Props extends FormikYesOrNoQuestionProps<SoknadFormField> {
+interface Props extends Omit<FormikYesOrNoQuestionProps<SoknadFormField>, 'info'> {
     showStop?: boolean;
     description?: React.ReactNode;
     stopMessage?: React.ReactNode;

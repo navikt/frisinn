@@ -38,13 +38,16 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+        frilanserBeregnetTilgjengeligSøknadsperiode,
     } = values;
     const { currentSøknadsperiode } = soknadEssentials;
 
-    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
-        frilanserInntektstapStartetDato,
-        currentSøknadsperiode
-    );
+    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode({
+        inntektstapStartDato: frilanserInntektstapStartetDato,
+        currentSøknadsperiode,
+        currentAvailableSøknadsperiode: frilanserBeregnetTilgjengeligSøknadsperiode,
+        startetSøknad: values.startetSøknadTidspunkt,
+    });
 
     const isLoading = availableDateRangeIsLoading;
     const avslag = kontrollerFrilanserSvar(values);
@@ -68,7 +71,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
 
     useEffect(() => {
         setFieldValue(
-            SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode,
+            SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode,
             isValidDateRange(availableDateRange) ? availableDateRange : undefined
         );
         setFieldValue(SoknadFormField.frilanserSoknadIsOk, frilanserSoknadIsOk);
@@ -105,11 +108,6 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                         (åpnes i nytt vindu).
                     </p>
                 </Guide>
-
-                <SoknadQuestion
-                    name={SoknadFormField.frilanserErNyetablert}
-                    description={<FrilanserInfo.infoErNyetablert />}
-                />
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserHarTaptInntektPgaKorona}

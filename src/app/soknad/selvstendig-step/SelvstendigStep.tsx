@@ -10,18 +10,24 @@ import StopMessage from '../../components/stop-message/StopMessage';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
 import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
+import useInntektsperiode from '../../hooks/useInntektsperiode';
+import { usePrevious } from '../../hooks/usePrevious';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import { hasValidHistoriskInntekt, getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
+import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
+import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
+import FrilanserInfo from '../info/FrilanserInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
+import SoknadErrors from '../soknad-errors/SoknadErrors';
 import FormComponents from '../SoknadFormComponents';
 import SoknadQuestion from '../SoknadQuestion';
 import { soknadQuestionText } from '../soknadQuestionText';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
+import AvsluttetSelskapListAndDialog from './avsluttet-selskap/AvsluttetSelskapListAndDialog';
 import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
 import {
     kontrollerSelvstendigSvar,
@@ -29,7 +35,6 @@ import {
     SelvstendigNæringsdrivendeAvslagStatus,
 } from './selvstendigAvslag';
 import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
-import FrilanserInfo from '../info/FrilanserInfo';
 
 const txt = soknadQuestionText;
 
@@ -44,29 +49,48 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
     const {
         selvstendigInntektstapStartetDato,
-        selvstendigHarHattInntektFraForetak,
         selvstendigHarTaptInntektPgaKorona,
         søkerOmTaptInntektSomFrilanser,
         selvstendigHarYtelseFraNavSomDekkerTapet,
+        selvstendigHarAvsluttetSelskaper,
+        selvstendigAvsluttaSelskaper,
+        selvstendigBeregnetInntektsårstall,
+        selvstendigBeregnetTilgjengeligSøknadsperiode,
     } = values;
-    const { currentSøknadsperiode, personligeForetak } = soknadEssentials;
-    const { foretak = [] } = personligeForetak || {};
+    const { currentSøknadsperiode, personligeForetak, avsluttetSelskapDateRange } = soknadEssentials;
+
+    if (personligeForetak === undefined) {
+        return <SoknadErrors.MissingApiDataError />;
+    }
+    const { foretak = [] } = personligeForetak;
     const antallForetak = foretak.length;
 
-    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode(
-        selvstendigInntektstapStartetDato,
-        currentSøknadsperiode
-    );
+    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode({
+        inntektstapStartDato: selvstendigInntektstapStartetDato,
+        currentSøknadsperiode,
+        currentAvailableSøknadsperiode: selvstendigBeregnetTilgjengeligSøknadsperiode,
+        startetSøknad: values.startetSøknadTidspunkt,
+    });
 
-    const isLoading = availableDateRangeIsLoading;
+    const avsluttaSelskaper =
+        selvstendigHarAvsluttetSelskaper === YesOrNo.YES ? selvstendigAvsluttaSelskaper || [] : [];
 
-    const inntektÅrstall = getHistoriskInntektÅrstall(personligeForetak);
-    const avslag = kontrollerSelvstendigSvar({ ...values, inntektÅrstall });
+    const { inntektsperiode, isLoading: inntektsperiodeIsLoading } = useInntektsperiode({
+        avsluttaSelskaper: avsluttaSelskaper,
+        currentHistoriskInntektsÅrstall: selvstendigBeregnetInntektsårstall,
+    });
+
+    const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;
+
+    const avslag = kontrollerSelvstendigSvar(values);
+
+    const skalSpørreOmAvsluttaSelskaper =
+        isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER) && harSelskaperRegistrertFør2019(personligeForetak) === false;
 
     const payload: SelvstendigFormConfigPayload = {
         ...values,
         ...soknadEssentials,
-        inntektÅrstall,
+        skalSpørreOmAvsluttaSelskaper,
         avslag,
     };
     const visibility = SelvstendigFormQuestions.getVisbility(payload);
@@ -76,8 +100,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const hasValidSelvstendigFormData: boolean =
         allQuestionsAreAnswered &&
         isValidDateRange(availableDateRange) &&
-        hasValidHistoriskInntekt(values, inntektÅrstall) &&
-        selvstendigHarHattInntektFraForetak === YesOrNo.YES &&
+        hasValidHistoriskInntekt(values) &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
 
@@ -87,6 +110,32 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
             isValidDateRange(availableDateRange) ? availableDateRange : undefined
         );
     }, [availableDateRange]);
+
+    useEffect(() => {
+        setFieldValue(
+            SoknadFormField.selvstendigBeregnetInntektsårstall,
+            inntektsperiode ? inntektsperiode.inntektsårstall : undefined
+        );
+    }, [inntektsperiode]);
+
+    const prevSelvstendigBeregnetInntektsårstall = usePrevious(selvstendigBeregnetInntektsårstall);
+    useEffect(() => {
+        if (
+            inntektsperiodeIsLoading === true ||
+            selvstendigBeregnetInntektsårstall === undefined ||
+            prevSelvstendigBeregnetInntektsårstall === undefined
+        ) {
+            // Ikke reset når bruker kommer tilbake til steg
+            return;
+        }
+        if (selvstendigBeregnetInntektsårstall !== prevSelvstendigBeregnetInntektsårstall) {
+            setFieldValue(SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert, YesOrNo.UNANSWERED);
+            setFieldValue(SoknadFormField.selvstendigInntekt2019, undefined);
+            setFieldValue(SoknadFormField.selvstendigInntekt2020, undefined);
+        }
+    }, [selvstendigBeregnetInntektsårstall]);
+
+    const visInfoOmAtAlleSelskaperMåRegistreres = values.selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO;
 
     return (
         <SoknadStep
@@ -101,6 +150,9 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
             }}
             showSubmitButton={
                 !isLoading &&
+                (selvstendigHarAvsluttetSelskaper === YesOrNo.YES
+                    ? avslag.ikkeAlleAvsluttaSelskaperErRegistrert === false
+                    : true) &&
                 (hasValidSelvstendigFormData ||
                     (allQuestionsAreAnswered && søkerOmTaptInntektSomFrilanser === YesOrNo.YES))
             }>
@@ -109,13 +161,6 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                     <SelvstendigInfo.intro antallForetak={antallForetak} foretak={foretak} />
                 </Guide>
 
-                <SoknadQuestion
-                    name={SoknadFormField.selvstendigHarHattInntektFraForetak}
-                    legend={txt.selvstendigHarHattInntektFraForetak(inntektÅrstall)}
-                    description={<SelvstendigInfo.infoInntektÅrstall inntektÅrstall={inntektÅrstall} />}
-                    showStop={avslag.erIkkeSelvstendigNæringsdrivende}
-                    stopMessage={<SelvstendigInfo.StoppIkkeHattInntektFraForetak inntektÅrstall={inntektÅrstall} />}
-                />
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigHarTaptInntektPgaKorona}
                     legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
@@ -146,9 +191,10 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                         useErrorBoundary={true}
                     />
                 </SoknadQuestion>
-                {selvstendigHarTaptInntektPgaKorona === YesOrNo.YES && (
+
+                {isVisible(SoknadFormField.selvstendigInntektIPerioden) && (
                     <LoadWrapper
-                        isLoading={isLoading}
+                        isLoading={availableDateRangeIsLoading}
                         contentRenderer={() => {
                             if (availableDateRange === undefined) {
                                 return null;
@@ -181,46 +227,84 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                                         />
                                     </SoknadQuestion>
                                     <SoknadQuestion
-                                        name={SoknadFormField.selvstendigInntekt2019}
-                                        showStop={
-                                            values.selvstendigInntekt2019 !== undefined &&
-                                            avslag.harIkkeHattHistoriskInntekt
-                                        }
-                                        stopMessage={
-                                            <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2019} />
-                                        }>
-                                        <FormComponents.Input
-                                            name={SoknadFormField.selvstendigInntekt2019}
-                                            type="number"
-                                            bredde="S"
-                                            maxLength={8}
-                                            max={MAX_INNTEKT}
-                                            label={txt.selvstendigInntekt2019}
-                                            description={<SelvstendigInfo.infoSelvstendigInntekt2019 />}
-                                            validate={validateAll([
-                                                validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
-                                            ])}
+                                        name={SoknadFormField.selvstendigHarAvsluttetSelskaper}
+                                        legend={txt.selvstendigHarAvsluttetSelskaper(avsluttetSelskapDateRange)}
+                                    />
+                                    <SoknadQuestion name={SoknadFormField.selvstendigAvsluttaSelskaper}>
+                                        <AvsluttetSelskapListAndDialog<SoknadFormField>
+                                            maxDate={selvstendigInntektstapStartetDato}
+                                            periode={avsluttetSelskapDateRange}
+                                            name={SoknadFormField.selvstendigAvsluttaSelskaper}
                                         />
                                     </SoknadQuestion>
                                     <SoknadQuestion
-                                        name={SoknadFormField.selvstendigInntekt2020}
-                                        showStop={
-                                            values.selvstendigInntekt2020 !== undefined &&
-                                            avslag.harIkkeHattHistoriskInntekt
-                                        }
-                                        stopMessage={
-                                            <SelvstendigInfo.StoppIngenHistoriskInntekt inntektÅrstall={2020} />
-                                        }>
-                                        <FormComponents.Input
-                                            name={SoknadFormField.selvstendigInntekt2020}
-                                            type="number"
-                                            bredde="S"
-                                            maxLength={8}
-                                            max={MAX_INNTEKT}
-                                            label={txt.selvstendigInntekt2020}
-                                            validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                                        name={SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert}
+                                        legend={txt.selvstendigAlleAvsluttaSelskaperErRegistrert(
+                                            avsluttetSelskapDateRange
+                                        )}
+                                        showStop={visInfoOmAtAlleSelskaperMåRegistreres}
+                                        stopMessage={<SelvstendigInfo.StoppIkkeAlleAvsluttaSelskaperErRegistrert />}
+                                    />
+
+                                    {(isVisible(SoknadFormField.selvstendigInntekt2019) ||
+                                        isVisible(SoknadFormField.selvstendigInntekt2020)) && (
+                                        <LoadWrapper
+                                            isLoading={inntektsperiodeIsLoading}
+                                            contentRenderer={() => (
+                                                <>
+                                                    <SoknadQuestion
+                                                        name={SoknadFormField.selvstendigInntekt2019}
+                                                        showStop={
+                                                            values.selvstendigInntekt2019 !== undefined &&
+                                                            avslag.oppgirNullHistoriskInntekt
+                                                        }
+                                                        stopMessage={
+                                                            <SelvstendigInfo.StoppIngenHistoriskInntekt
+                                                                inntektÅrstall={2019}
+                                                            />
+                                                        }>
+                                                        <FormComponents.Input
+                                                            name={SoknadFormField.selvstendigInntekt2019}
+                                                            type="number"
+                                                            bredde="S"
+                                                            maxLength={8}
+                                                            max={MAX_INNTEKT}
+                                                            label={txt.selvstendigInntekt2019}
+                                                            description={<SelvstendigInfo.infoSelvstendigInntekt2019 />}
+                                                            validate={validateAll([
+                                                                validateRequiredNumber({ min: 0, max: MAX_INNTEKT }),
+                                                            ])}
+                                                        />
+                                                    </SoknadQuestion>
+                                                    <SoknadQuestion
+                                                        name={SoknadFormField.selvstendigInntekt2020}
+                                                        showStop={
+                                                            values.selvstendigInntekt2020 !== undefined &&
+                                                            avslag.oppgirNullHistoriskInntekt
+                                                        }
+                                                        stopMessage={
+                                                            <SelvstendigInfo.StoppIngenHistoriskInntekt
+                                                                inntektÅrstall={2020}
+                                                            />
+                                                        }>
+                                                        <FormComponents.Input
+                                                            name={SoknadFormField.selvstendigInntekt2020}
+                                                            type="number"
+                                                            bredde="S"
+                                                            maxLength={8}
+                                                            max={MAX_INNTEKT}
+                                                            label={txt.selvstendigInntekt2020}
+                                                            validate={validateRequiredNumber({
+                                                                min: 0,
+                                                                max: MAX_INNTEKT,
+                                                            })}
+                                                        />
+                                                    </SoknadQuestion>
+                                                </>
+                                            )}
                                         />
-                                    </SoknadQuestion>
+                                    )}
+
                                     {isVisible(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet) && (
                                         <FormSection title="Andre utbetalinger fra NAV ">
                                             <SoknadQuestion

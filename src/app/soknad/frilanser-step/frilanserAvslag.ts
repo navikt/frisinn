@@ -16,8 +16,8 @@ export interface FrilanserAvslagStatus {
 const harIkkeHattInntektstapPgaKorona = ({ frilanserHarTaptInntektPgaKorona }: FrilanserFormData) =>
     frilanserHarTaptInntektPgaKorona === YesOrNo.NO;
 
-const søkerIkkeForGyldigTidsrom = ({ frilanserBeregnetTilgjengeligSønadsperiode }: FrilanserFormData) => {
-    return frilanserBeregnetTilgjengeligSønadsperiode === undefined;
+const søkerIkkeForGyldigTidsrom = ({ frilanserBeregnetTilgjengeligSøknadsperiode }: FrilanserFormData) => {
+    return frilanserBeregnetTilgjengeligSøknadsperiode === undefined;
 };
 
 const utbetalingFraNAVDekkerHeleTapet = ({ frilanserHarYtelseFraNavSomDekkerTapet }: FrilanserFormData) => {

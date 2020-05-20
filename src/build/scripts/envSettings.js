@@ -10,6 +10,8 @@ function createEnvSettingsFile(settingsFile) {
                 PUBLIC_PATH: '${process.env.PUBLIC_PATH}',
                 UTILGJENGELIG: '${process.env.UTILGJENGELIG}',
                 PERSISTENCE: '${process.env.PERSISTENCE}',
+                AVSLUTTA_SELSKAPER: '${process.env.AVSLUTTA_SELSKAPER}',
+                STARTET_PAA_SOKNAD: '${process.env.STARTET_PAA_SOKNAD}',
                 APP_VERSION: '${process.env.APP_VERSION}',
             };`
         );

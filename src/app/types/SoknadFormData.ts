@@ -2,15 +2,20 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../soknad/selvstendig-step/selvstendigAvslag';
 import { FrilanserAvslagÅrsak } from '../soknad/frilanser-step/frilanserAvslag';
+import { HistoriskInntektÅrstall } from './HistoriskInntektÅrstall';
+import { AvsluttetSelskap } from './AvsluttetSelskap';
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
+    startetSøknadTidspunkt = 'startetSøknadTidspunkt',
     kontonummerErRiktig = 'kontonummerErRiktig',
     erSelvstendigNæringsdrivende = 'erSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
-    selvstendigHarHattInntektFraForetak = 'selvstendigHarHattInntektFraForetak',
+    selvstendigHarAvsluttetSelskaper = 'selvstendigHarAvsluttetSelskaper',
+    selvstendigAvsluttaSelskaper = 'selvstendigAvsluttaSelskaper',
+    selvstendigAlleAvsluttaSelskaperErRegistrert = 'selvstendigAlleAvsluttaSelskaperErRegistrert',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
     selvstendigHarYtelseFraNavSomDekkerTapet = 'selvstendigHarYtelseFraNavSomDekkerTapet',
@@ -28,10 +33,10 @@ export enum SoknadFormField {
     selvstendigRevisorTelefon = 'selvstendigRevisorTelefon',
     selvstendigRevisorNAVKanTaKontakt = 'selvstendigRevisorNAVKanTaKontakt',
     selvstendigBeregnetTilgjengeligSøknadsperiode = 'selvstendigBeregnetTilgjengeligSøknadsperiode',
+    selvstendigBeregnetInntektsårstall = 'selvstendigBeregnetInntektsårstall',
     selvstendigSoknadIsOk = 'selvstendigSoknadIsOk',
     selvstendigStopReason = 'selvstendigStopReason',
     frilanserHarTaptInntektPgaKorona = 'frilanserHarTaptInntektPgaKorona',
-    frilanserErNyetablert = 'frilanserErNyetablert',
     frilanserInntektstapStartetDato = 'frilanserInntektstapStartetDato',
     frilanserHarYtelseFraNavSomDekkerTapet = 'frilanserHarYtelseFraNavSomDekkerTapet',
     frilanserInntektIPerioden = 'frilanserInntektIPerioden',
@@ -44,7 +49,7 @@ export enum SoknadFormField {
     bekrefterSelvstendigFrilanserInntektIPerioden = 'bekrefterSelvstendigFrilanserInntektIPerioden',
     bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
     bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
-    frilanserBeregnetTilgjengeligSønadsperiode = 'frilanserBeregnetTilgjengeligSønadsperiode',
+    frilanserBeregnetTilgjengeligSøknadsperiode = 'frilanserBeregnetTilgjengeligSøknadsperiode',
     frilanserSoknadIsOk = 'frilanserSoknadIsOk',
     frilanserStopReason = 'frilanserStopReason',
 }
@@ -52,11 +57,14 @@ export enum SoknadFormField {
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
+    [SoknadFormField.startetSøknadTidspunkt]: Date;
     [SoknadFormField.kontonummerErRiktig]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
-    [SoknadFormField.selvstendigHarHattInntektFraForetak]: YesOrNo;
+    [SoknadFormField.selvstendigHarAvsluttetSelskaper]: YesOrNo;
+    [SoknadFormField.selvstendigAvsluttaSelskaper]?: AvsluttetSelskap[];
+    [SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert]?: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: YesOrNo;
@@ -67,6 +75,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigInntekt2019]?: number;
     [SoknadFormField.selvstendigInntekt2020]?: number;
     [SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode]?: DateRange; // Hentes fra api når bruker velger startdato for inntektstap
+    [SoknadFormField.selvstendigBeregnetInntektsårstall]?: HistoriskInntektÅrstall; // Hentes fra api når bruker velger startdato for inntektstap
     [SoknadFormField.selvstendigHarRegnskapsfører]: YesOrNo;
     [SoknadFormField.selvstendigRegnskapsførerNavn]?: string;
     [SoknadFormField.selvstendigRegnskapsførerTelefon]?: string;
@@ -77,14 +86,13 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigSoknadIsOk]?: boolean;
     [SoknadFormField.selvstendigStopReason]?: SelvstendigNæringdsrivendeAvslagÅrsak;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: YesOrNo;
-    [SoknadFormField.frilanserErNyetablert]: YesOrNo;
     [SoknadFormField.frilanserInntektstapStartetDato]: Date;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: YesOrNo;
     [SoknadFormField.frilanserInntektIPerioden]: number;
     [SoknadFormField.frilanserErSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]?: YesOrNo;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]?: number;
-    [SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode]?: DateRange;
+    [SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode]?: DateRange;
     [SoknadFormField.frilanserSoknadIsOk]?: boolean;
     [SoknadFormField.frilanserStopReason]?: FrilanserAvslagÅrsak;
     [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
@@ -107,8 +115,11 @@ export type SelvstendigFormData = Pick<
     SoknadFormData,
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode
+    | SoknadFormField.selvstendigBeregnetInntektsårstall
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
-    | SoknadFormField.selvstendigHarHattInntektFraForetak
+    | SoknadFormField.selvstendigHarAvsluttetSelskaper
+    | SoknadFormField.selvstendigAvsluttaSelskaper
+    | SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato
     | SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet
@@ -133,18 +144,16 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.søkerOmTaptInntektSomFrilanser
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
-    | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.frilanserInntektIPerioden
     | SoknadFormField.frilanserInntektstapStartetDato
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
     | SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
-    | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
+    | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.frilanserSoknadIsOk
 >;
 
 export const initialSelvstendigValues: Partial<SelvstendigFormData> = {
-    selvstendigHarHattInntektFraForetak: YesOrNo.UNANSWERED,
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     selvstendigInntektstapStartetDato: undefined,
     selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,
@@ -165,7 +174,6 @@ export const initialSelvstendigValues: Partial<SelvstendigFormData> = {
 
 export const initialFrilanserValues: Partial<FrilanserFormData> = {
     frilanserHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
-    frilanserErNyetablert: YesOrNo.UNANSWERED,
     frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,
     frilanserHarHattInntektSomSelvstendigIPerioden: YesOrNo.UNANSWERED,
     frilanserInntektSomSelvstendigIPerioden: undefined,

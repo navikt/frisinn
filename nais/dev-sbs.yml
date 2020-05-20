@@ -39,7 +39,7 @@ spec:
         enabled: false
     env:
         - name: APPRES_CMS_URL
-          value: http://appres.nav.no
+          value: https://appres.nav.no
         - name: API_URL
           value: https://frisinn-api-q.nav.no
         - name: PUBLIC_PATH
@@ -49,5 +49,9 @@ spec:
         - name: APP_VERSION
           value: dev
         - name: PERSISTENCE
+          value: "off"
+        - name: AVSLUTTA_SELSKAPER
+          value: "off"
+        - name: STARTET_PAA_SOKNAD
           value: "off"
 

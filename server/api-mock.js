@@ -2,7 +2,7 @@ const os = require('os');
 const fs = require('fs');
 const express = require('express');
 const _ = require('lodash');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const server = express();
 
 server.use(express.json());
@@ -71,11 +71,8 @@ const perioderMock2 = {
 };
 
 const personligeForetak = {
-    personligeForetak: [
-        { organisasjonsnummer: '922753458', navn: 'KEBAB HOUSE DA', registreringsdato: '2020-01-01' },
-        { organisasjonsnummer: '922753459', navn: 'PIZZE HYTTE ANS', registreringsdato: '2020-01-01' },
-    ],
-    tidligsteRegistreringsdato: '2020-01-01',
+    personligeForetak: [{ organisasjonsnummer: '996532912', navn: 'DELT ANSVARLIG', registreringsdato: '2018-12-31' }],
+    tidligsteRegistreringsdato: '2020-03-01',
 };
 
 const ingenPersonligeForetak = {
@@ -97,11 +94,30 @@ const getPerioder = (query) => {
         },
     };
 };
+const getInntektsperiode = () => {
+    return {
+        inntektsperiode: {
+            fom: '2019-01-01',
+            tom: '2019-12-31',
+        },
+    };
+};
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
+
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
+
+    server.get('/tidspunkt', (req, res) => {
+        const m = moment().tz('Europe/Oslo');
+        setTimeout(() => {
+            res.send({
+                'Europe/Oslo': m.format(),
+                UTC: m.utc().format(),
+            });
+        }, 500);
+    });
 
     server.get('/soker-not-logged-in', (req, res) => {
         res.sendStatus(401);
@@ -135,6 +151,12 @@ const startExpressServer = () => {
         setTimeout(() => {
             res.send({ ...søkerMock, fornavn: 'Godslig2' });
         }, 200);
+    });
+
+    server.post('/inntektsperiode', (req, res) => {
+        setTimeout(() => {
+            res.send(getInntektsperiode(req.query));
+        }, 1500);
     });
 
     server.get('/perioder', (req, res) => {
@@ -212,6 +234,12 @@ const startExpressServer = () => {
         const body = req.body;
         console.log('[POST] body', body);
         res.sendStatus(200);
+    });
+
+    server.post('/soknad-err', (req, res) => {
+        const body = req.body;
+        console.log('[POST] body', body);
+        res.sendStatus(501);
     });
 
     server.post('/soknad-logget-ut', (req, res) => {

@@ -10,9 +10,8 @@ const Field = SoknadFormField;
 
 type FrilanserFormData = Pick<
     SoknadFormData,
-    | SoknadFormField.frilanserBeregnetTilgjengeligSønadsperiode
+    | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
-    | SoknadFormField.frilanserErNyetablert
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
     | SoknadFormField.frilanserInntektstapStartetDato
@@ -23,49 +22,57 @@ type FrilanserFormData = Pick<
 >;
 
 export type FrilanserFormConfigPayload = Partial<FrilanserFormData> &
+    Pick<SoknadFormData, SoknadFormField.selvstendigStopReason> &
     SoknadEssentials & { avslag: FrilanserAvslagStatus };
 
+const skalSpørreOmSelvstendig = ({
+    personligeForetak,
+    søkerOmTaptInntektSomSelvstendigNæringsdrivende,
+    erSelvstendigNæringsdrivende,
+    selvstendigStopReason,
+    avslag,
+}: FrilanserFormConfigPayload) => {
+    if (avslag.utebetalingFraNAVDekkerHeleInntektstapet === true) {
+        return false;
+    }
+    if (personligeForetak === undefined) {
+        return erSelvstendigNæringsdrivende === YesOrNo.YES;
+    }
+    return søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO || selvstendigStopReason !== undefined;
+};
+
 const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadFormField> = {
-    [Field.frilanserErNyetablert]: {
-        isAnswered: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
-    },
     [Field.frilanserHarTaptInntektPgaKorona]: {
-        isIncluded: ({ frilanserErNyetablert }) => yesOrNoIsAnswered(frilanserErNyetablert),
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
     [Field.frilanserInntektstapStartetDato]: {
-        isIncluded: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
+        parentQuestion: Field.frilanserHarTaptInntektPgaKorona,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
     [Field.frilanserInntektIPerioden]: {
-        isIncluded: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
+        parentQuestion: Field.frilanserInntektstapStartetDato,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
+            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
         isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.frilanserInntektIPerioden,
-        isIncluded: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
+        visibilityFilter: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
+            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
     [Field.frilanserHarHattInntektSomSelvstendigIPerioden]: {
-        visibilityFilter: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
-            frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO,
-        isIncluded: ({
-            personligeForetak,
-            søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-            erSelvstendigNæringsdrivende,
-        }) => {
-            if (personligeForetak === undefined) {
-                return erSelvstendigNæringsdrivende === YesOrNo.YES;
-            }
-            return søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO;
-        },
+        parentQuestion: Field.frilanserHarYtelseFraNavSomDekkerTapet,
+        isIncluded: skalSpørreOmSelvstendig,
         isAnswered: ({ frilanserHarHattInntektSomSelvstendigIPerioden }) =>
             yesOrNoIsAnswered(frilanserHarHattInntektSomSelvstendigIPerioden),
     },
     [Field.frilanserInntektSomSelvstendigIPerioden]: {
-        isIncluded: ({ frilanserHarHattInntektSomSelvstendigIPerioden }) =>
-            frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES,
+        isIncluded: (payload) =>
+            skalSpørreOmSelvstendig(payload) && payload.frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES,
         isAnswered: ({ frilanserInntektSomSelvstendigIPerioden }) => hasValue(frilanserInntektSomSelvstendigIPerioden),
     },
 };

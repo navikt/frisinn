@@ -15,7 +15,6 @@ import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
-import { getHistoriskInntektÅrstall } from '../../utils/selvstendigUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
 import InfoOmSøknadOgFrist from '../info/InfoOmSøknadOgFrist';
 import SelvstendigInfo from '../info/SelvstendigInfo';
@@ -28,7 +27,7 @@ import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
-    const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSønadsperiode } = values;
+    const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSøknadsperiode } = values;
 
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
@@ -51,6 +50,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         frilanserStopReason,
         frilanserSoknadIsOk,
         selvstendigSoknadIsOk,
+        selvstendigBeregnetInntektsårstall,
     } = values;
 
     const spørOmInntektSomFrilanserForSelvstendig: boolean =
@@ -124,13 +124,10 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                     </>
                 )}
             </Box>
-            {selvstendigSoknadIsOk === false && selvstendigStopReason && (
+            {selvstendigSoknadIsOk === false && selvstendigStopReason && selvstendigBeregnetInntektsårstall && (
                 <FormSection title="Selvstendig næringsdrivende">
                     <StopMessage>
-                        {SelvstendigInfo.getMessageForAvslag(
-                            selvstendigStopReason,
-                            getHistoriskInntektÅrstall(soknadEssentials.personligeForetak)
-                        )}
+                        {SelvstendigInfo.getMessageForAvslag(selvstendigStopReason, selvstendigBeregnetInntektsårstall)}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>
                                 Gå tilbake til informasjon om selvstendig næringsdrivende
@@ -212,7 +209,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                 </FormSection>
             )}
             {frilanser &&
-                frilanserBeregnetTilgjengeligSønadsperiode &&
+                frilanserBeregnetTilgjengeligSøknadsperiode &&
                 isVisible(SoknadFormField.bekrefterFrilansinntektIPerioden) && (
                     <>
                         <FormSection title="Inntekt som frilanser">
@@ -223,7 +220,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                                 tittel={
                                     <>
                                         Personinntekt fra oppdrag i perioden{' '}
-                                        <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
+                                        <DateRangeView dateRange={frilanserBeregnetTilgjengeligSøknadsperiode} />
                                     </>
                                 }
                                 sum={frilanser.inntektIPerioden}
@@ -238,7 +235,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                                     tittel={
                                         <>
                                             Personinntekt fra næring i perioden{' '}
-                                            <DateRangeView dateRange={frilanserBeregnetTilgjengeligSønadsperiode} />
+                                            <DateRangeView dateRange={frilanserBeregnetTilgjengeligSøknadsperiode} />
                                         </>
                                     }
                                     sum={frilanser.inntektIPeriodenSomSelvstendigNæringsdrivende}

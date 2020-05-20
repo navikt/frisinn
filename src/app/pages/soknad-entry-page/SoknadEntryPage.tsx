@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
+import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Guide from '../../components/guide/Guide';
+import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import EndreKontonummer from '../../information/EndreKontonummer';
-import { SoknadEssentials } from '../../types/SoknadEssentials';
-import SoknadEntryForm from './SoknadEntryForm';
 import { ResetSoknadFunction } from '../../soknad/Soknad';
-import { useIntl } from 'react-intl';
+import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { createDocumentPageTitle } from '../../utils/documentPageTitle';
+import SoknadEntryForm from './SoknadEntryForm';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -25,6 +26,7 @@ const SoknadEntryPage = ({
     soknadEssentials: {
         person: { kontonummer },
         personligeForetak,
+        currentSøknadsperiode,
     },
     resetSoknad,
 }: Props) => {
@@ -43,9 +45,11 @@ const SoknadEntryPage = ({
                 <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
                     <Box margin="l">
                         <Undertittel tag="h1">
-                            Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet
+                            Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet, i perioden{' '}
+                            <DateRangeView dateRange={currentSøknadsperiode} />
                         </Undertittel>
                     </Box>
+                    <Box margin="l"></Box>
                     <Box margin="m">
                         <p>
                             Denne søknaden gjelder for deg som helt eller delvis har tapt inntekt som selvstendig
