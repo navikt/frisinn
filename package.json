@@ -87,7 +87,7 @@
         "react-dom": "^16.12.0",
         "react-intl": "^3.12.0",
         "react-modal": "^3.10.1",
-        "react-router-dom": "^5.1.2",
+        "react-router-dom": "^5.2.0",
         "react-simple-timefield": "^3.0.0",
         "snyk": "^1.291.0",
         "use-media": "^1.4.0"
