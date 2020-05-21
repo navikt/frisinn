@@ -31,7 +31,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
-    if (!apiValues || (apiValues.selvstendigNæringsdrivende === undefined && apiValues.frilanser === undefined)) {
+    if (!apiValues || apiValues.harForståttRettigheterOgPlikter !== true) {
         return (
             <SoknadErrorPage>
                 <SoknadErrors.MissingApiDataError />
@@ -125,9 +125,11 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                 )}
             </Box>
 
-            <Box>
-                <InfoOmSøknadOgFrist />
-            </Box>
+            {(frilanserSoknadIsOk === true || selvstendigSoknadIsOk === true) && (
+                <Box>
+                    <InfoOmSøknadOgFrist />
+                </Box>
+            )}
 
             {selvstendigSoknadIsOk === false && selvstendigStopReason && selvstendigBeregnetInntektsårstall && (
                 <FormSection title="Selvstendig næringsdrivende">
