@@ -68,7 +68,8 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     },
     [Field.selvstendigInntektIPerioden]: {
         parentQuestion: Field.selvstendigInntektstapStartetDato,
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
+            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
 
@@ -106,7 +107,12 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
-        isIncluded: ({ avslag: { oppgirNullHistoriskInntekt } }) => oppgirNullHistoriskInntekt === false,
+        isIncluded: ({
+            avslag: { oppgirNullHistoriskInntekt, harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom },
+        }) =>
+            oppgirNullHistoriskInntekt === false &&
+            harIkkeHattInntektstapPgaKorona === false &&
+            søkerIkkeForGyldigTidsrom === false,
         visibilityFilter: (payload) => {
             const { selvstendigBeregnetInntektsårstall, selvstendigInntekt2019, selvstendigInntekt2020 } = payload;
             return andreSelskaperIsAnswered(payload) && selvstendigBeregnetInntektsårstall === 2019
@@ -137,8 +143,18 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     [Field.selvstendigHarRegnskapsfører]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
         visibilityFilter: showRegnskapsfører,
-        isIncluded: ({ avslag: { oppgirNullHistoriskInntekt, harYtelseFraNavSomDekkerTapet } }) =>
-            oppgirNullHistoriskInntekt === false && harYtelseFraNavSomDekkerTapet === false,
+        isIncluded: ({
+            avslag: {
+                oppgirNullHistoriskInntekt,
+                harYtelseFraNavSomDekkerTapet,
+                harIkkeHattInntektstapPgaKorona,
+                søkerIkkeForGyldigTidsrom,
+            },
+        }) =>
+            oppgirNullHistoriskInntekt === false &&
+            harYtelseFraNavSomDekkerTapet === false &&
+            søkerIkkeForGyldigTidsrom === false &&
+            harIkkeHattInntektstapPgaKorona === false,
         isAnswered: ({ selvstendigHarRegnskapsfører }) => yesOrNoIsAnswered(selvstendigHarRegnskapsfører),
     },
     [Field.selvstendigRegnskapsførerNavn]: {

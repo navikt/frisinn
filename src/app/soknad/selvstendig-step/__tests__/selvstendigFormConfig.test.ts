@@ -206,5 +206,51 @@ describe('selvstendigFormConfig', () => {
                 });
             });
         });
+        describe('when avslag', () => {
+            it(`does not include default following questions when ${SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona} === true`, () => {
+                const { isIncluded } = SelvstendigFormQuestions.getVisbility({
+                    ...payload,
+                    avslag: { ...payload.avslag, harIkkeHattInntektstapPgaKorona: true },
+                });
+                expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektIPerioden)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarRegnskapsfører)).toBeFalsy();
+            });
+            it(`does not include default following questions when ${SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom} === true`, () => {
+                const { isIncluded } = SelvstendigFormQuestions.getVisbility({
+                    ...payload,
+                    avslag: { ...payload.avslag, søkerIkkeForGyldigTidsrom: true },
+                });
+                expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektIPerioden)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarRegnskapsfører)).toBeFalsy();
+            });
+            it(`does not include default following questions when ${SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt} === true`, () => {
+                const { isIncluded } = SelvstendigFormQuestions.getVisbility({
+                    ...payload,
+                    avslag: { ...payload.avslag, oppgirNullHistoriskInntekt: true },
+                });
+                expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektIPerioden)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarRegnskapsfører)).toBeFalsy();
+            });
+            it(`does not include default following questions when ${SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet} === true`, () => {
+                const { isIncluded } = SelvstendigFormQuestions.getVisbility({
+                    ...payload,
+                    avslag: { ...payload.avslag, harYtelseFraNavSomDekkerTapet: true },
+                });
+                expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektIPerioden)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigHarRegnskapsfører)).toBeFalsy();
+            });
+        });
     });
 });

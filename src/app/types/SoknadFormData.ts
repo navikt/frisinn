@@ -137,6 +137,7 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigRevisorTelefon
     | SoknadFormField.selvstendigRevisorNAVKanTaKontakt
     | SoknadFormField.selvstendigSoknadIsOk
+    | SoknadFormField.selvstendigStopReason
 >;
 
 export type FrilanserFormData = Pick<

@@ -176,7 +176,9 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
                             inntektstapStartetDato={selvstendigInntektstapStartetDato}
                             availableDateRange={availableDateRange}
                         />
-                    }>
+                    }
+                    showStop={availableDateRange !== undefined && avslag.søkerIkkeForGyldigTidsrom}
+                    stopMessage={<SelvstendigInfo.StoppForSentInntektstap />}>
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}
