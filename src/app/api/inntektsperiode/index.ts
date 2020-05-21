@@ -3,6 +3,7 @@ import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/s
 import api, { ApiEndpoint } from '../api';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 import { AvsluttetSelskap } from '../../types/AvsluttetSelskap';
+import { SentryEventName, triggerSentryMessage } from '../../utils/sentryUtils';
 
 interface InntektsperiodeApiResponse {
     inntektsperiode: { fom: ApiStringDate; tom: ApiStringDate };
@@ -26,13 +27,15 @@ export interface OpphørtPersonligeForetak {
 const parseInntektsperiodeApiResponse = (respons: InntektsperiodeApiResponse): Inntektsperiode => {
     const from = apiStringDateToDate(respons.inntektsperiode.fom);
     const to = apiStringDateToDate(respons.inntektsperiode.tom);
-    return {
+    const inntektsperiode: Inntektsperiode = {
         inntektsperiode: {
             from,
             to,
         },
         inntektsårstall: from.getFullYear() === 2019 ? 2019 : 2020,
     };
+    triggerSentryMessage(SentryEventName.getInntektsperiodeLog, JSON.stringify({ respons, inntektsperiode }));
+    return inntektsperiode;
 };
 
 export async function getInntektsperiode({
