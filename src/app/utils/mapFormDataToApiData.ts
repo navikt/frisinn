@@ -176,6 +176,9 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                   selvstendigInntektstapStartetDato,
                   selvstendigErFrilanser,
                   selvstendigHarHattInntektSomFrilanserIPerioden,
+                  selvstendigBeregnetInntektsårstall,
+                  selvstendigInntekt2019,
+                  selvstendigInntekt2020,
                   hasValidHistoriskInntekt: personligeForetak
                       ? hasValidHistoriskInntekt({
                             selvstendigInntekt2019,
