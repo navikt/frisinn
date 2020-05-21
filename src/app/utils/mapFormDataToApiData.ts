@@ -188,7 +188,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         /** Something is amiss - logg */
         triggerSentryCustomError(
             SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,
-            payload
+            JSON.stringify(payload)
         );
     }
     return undefined;
@@ -249,7 +249,7 @@ export const mapFrilanserFormDataToApiData = (
               };
         triggerSentryCustomError(
             SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,
-            payload
+            JSON.stringify(payload)
         );
     }
     return undefined;
