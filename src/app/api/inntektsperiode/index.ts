@@ -1,11 +1,12 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
-import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import api, { ApiEndpoint } from '../api';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 import { AvsluttetSelskap } from '../../types/AvsluttetSelskap';
-import { SentryEventName, triggerSentryMessage } from '../../utils/sentryUtils';
+import { SentryEventName, triggerSentryMessage, triggerSentryCustomError } from '../../utils/sentryUtils';
+import { parseInntektsperiodeApiResponse } from './inntektsperiodeUtils';
 
-interface InntektsperiodeApiResponse {
+export interface InntektsperiodeApiResponse {
     inntektsperiode: { fom: ApiStringDate; tom: ApiStringDate };
 }
 
@@ -14,7 +15,6 @@ interface GetInntektsperiodePayload {
 }
 
 export interface Inntektsperiode {
-    inntektsperiode?: DateRange;
     inntektsårstall: HistoriskInntektÅrstall;
 }
 
@@ -23,20 +23,6 @@ export interface OpphørtPersonligeForetak {
     registreringsdato: ApiStringDate;
     opphørsdato: ApiStringDate;
 }
-
-const parseInntektsperiodeApiResponse = (respons: InntektsperiodeApiResponse): Inntektsperiode => {
-    const from = apiStringDateToDate(respons.inntektsperiode.fom);
-    const to = apiStringDateToDate(respons.inntektsperiode.tom);
-    const inntektsperiode: Inntektsperiode = {
-        inntektsperiode: {
-            from,
-            to,
-        },
-        inntektsårstall: from.getFullYear() === 2019 ? 2019 : 2020,
-    };
-    triggerSentryMessage(SentryEventName.getInntektsperiodeLog, JSON.stringify({ respons, inntektsperiode }));
-    return inntektsperiode;
-};
 
 export async function getInntektsperiode({
     avsluttaSelskaper = [],
@@ -55,7 +41,14 @@ export async function getInntektsperiode({
             ApiEndpoint.inntektsperiode,
             payload
         );
-        return Promise.resolve(parseInntektsperiodeApiResponse(data));
+        const inntektsperiode = parseInntektsperiodeApiResponse(data);
+        if (inntektsperiode) {
+            triggerSentryMessage(SentryEventName.getInntektsperiodeLog, JSON.stringify({ data, inntektsperiode }));
+            return Promise.resolve(inntektsperiode);
+        } else {
+            triggerSentryCustomError(SentryEventName.getInntektsperiodeLog, JSON.stringify({ data, inntektsperiode }));
+        }
+        return Promise.reject('Could not parse inntektsårstall');
     } catch (error) {
         return Promise.reject(error);
     }

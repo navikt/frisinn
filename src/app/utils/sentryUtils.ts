@@ -52,13 +52,13 @@ export const triggerSentryMessage = (eventName: SentryEventName, payload?: strin
     });
 };
 
-export const triggerSentryCustomError = (eventName: SentryEventName, payload?: string | any) => {
+export const triggerSentryCustomError = (eventName: SentryEventName, payload?: string) => {
     Sentry.withScope((scope) => {
         scope.setTag('eventName', eventName);
         scope.setLevel(Severity.Error);
         const evt: SentryEvent = {
             message: eventName,
-            extra: { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined },
+            extra: { payload: payload ? payload : undefined },
         };
         Sentry.captureEvent(evt);
     });
