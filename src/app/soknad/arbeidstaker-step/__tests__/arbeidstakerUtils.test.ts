@@ -86,7 +86,8 @@ describe('arbeidstakerUtils', () => {
                 arbeidstakerHarHattInntektIPerioden: YesOrNo.NO,
                 arbeidstakerInntektIPerioden: 2000,
             };
-            expect(cleanupArbeidstakerStep(values as SoknadFormData)).toBeUndefined();
+            const { arbeidstakerInntektIPerioden } = cleanupArbeidstakerStep(values as SoknadFormData) || {};
+            expect(arbeidstakerInntektIPerioden).toBeUndefined();
         });
         it(`does not delete ${SoknadFormField.arbeidstakerInntektIPerioden} when ${SoknadFormField.arbeidstakerHarHattInntektIPerioden} === YES`, () => {
             const values: Partial<SoknadFormData> = {
