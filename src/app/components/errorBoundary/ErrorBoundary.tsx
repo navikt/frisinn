@@ -1,10 +1,18 @@
 import * as React from 'react';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import Page from '@navikt/sif-common-core/lib/components/page/Page';
+import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import * as Sentry from '@sentry/browser';
 import { detect } from 'detect-browser';
+import { Ingress } from 'nav-frontend-typografi';
+import ErrorGuide from '../error-guide/ErrorGuide';
 
 interface State {
     eventId: string | null;
 }
+
+let errorCount = 0;
+let clearErrorCountTimeoutId: number | undefined;
 
 export const isKnownBrowserIssue = (err: Error) => {
     const browser = detect();
@@ -41,18 +49,45 @@ class ErrorBoundary extends React.Component<{}, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: object) {
+        errorCount++;
         const isKnownIssue = error && isKnownBrowserIssue(error);
         Sentry.withScope((scope) => {
             if (isKnownIssue) {
                 scope.setLevel(Sentry.Severity.Info);
             }
-            scope.setExtras({ errorInfo, error });
+            scope.setExtras({ errorInfo, error, errorCount });
             const eventId = Sentry.captureException(error);
             this.setState({ eventId });
         });
+        if (clearErrorCountTimeoutId === undefined) {
+            clearErrorCountTimeoutId = window.setTimeout(() => {
+                errorCount = 0;
+                console.log('reset error counter');
+            }, 15000);
+        }
     }
 
     render() {
+        if (errorCount > 5) {
+            return (
+                <Page
+                    title={'Det oppstod en feil'}
+                    topContentRenderer={() => (
+                        <>
+                            <StepBanner text="Midlertidig kompensasjon for selvstendig næringsdrivende og frilansere" />
+                        </>
+                    )}>
+                    <Box margin="xxxl">
+                        <ErrorGuide title="Noe gikk galt ...">
+                            <Ingress>
+                                Beklager, her har det dessverre skjedd en feil. Dersom feilen fortsetter, prøv igjen
+                                litt senere.
+                            </Ingress>
+                        </ErrorGuide>
+                    </Box>
+                </Page>
+            );
+        }
         return this.props.children;
     }
 }
