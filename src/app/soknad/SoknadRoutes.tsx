@@ -138,7 +138,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
                 path="*"
                 render={() => {
                     if (isRunningInDevEnvironment()) {
-                        triggerSentryCustomError(SentryEventName.noMatchingSoknadRoute, { values });
+                        triggerSentryCustomError(SentryEventName.noMatchingSoknadRoute, JSON.stringify({ values }));
                     }
                     return (
                         <SoknadErrorPage>

@@ -7,7 +7,12 @@ const server = express();
 
 server.use(express.json());
 server.use((req, res, next) => {
-    const allowedOrigins = ['http://host.docker.internal:8080', 'http://localhost:8080', 'http://web:8080'];
+    const allowedOrigins = [
+        'http://host.docker.internal:8080',
+        'http://localhost:8080',
+        'http://web:8080',
+        'http://192.168.0.115:8080',
+    ];
     const requestOrigin = req.headers.origin;
     if (allowedOrigins.indexOf(requestOrigin) >= 0) {
         res.set('Access-Control-Allow-Origin', requestOrigin);
@@ -97,8 +102,8 @@ const getPerioder = (query) => {
 const getInntektsperiode = () => {
     return {
         inntektsperiode: {
-            fom: '2019-01-01',
-            tom: '2019-12-31',
+            fom: '2020-01-01',
+            tom: '2020-12-31',
         },
     };
 };

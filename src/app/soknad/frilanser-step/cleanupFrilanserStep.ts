@@ -18,6 +18,9 @@ export const cleanupFrilanserStep = (values: SoknadFormData, avslag: FrilanserAv
     if (avslag.utebetalingFraNAVDekkerHeleInntektstapet) {
         v.frilanserHarHattInntektSomSelvstendigIPerioden = YesOrNo.UNANSWERED;
     }
+    if (values.selvstendigSoknadIsOk) {
+        v.frilanserHarHattInntektSomSelvstendigIPerioden = YesOrNo.UNANSWERED;
+    }
     if (v.frilanserHarHattInntektSomSelvstendigIPerioden !== YesOrNo.YES) {
         v.frilanserInntektSomSelvstendigIPerioden = undefined as any;
     }

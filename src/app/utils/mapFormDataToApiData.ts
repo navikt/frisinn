@@ -176,6 +176,9 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                   selvstendigInntektstapStartetDato,
                   selvstendigErFrilanser,
                   selvstendigHarHattInntektSomFrilanserIPerioden,
+                  selvstendigBeregnetInntektsårstall,
+                  selvstendigInntekt2019,
+                  selvstendigInntekt2020,
                   hasValidHistoriskInntekt: personligeForetak
                       ? hasValidHistoriskInntekt({
                             selvstendigInntekt2019,
@@ -188,7 +191,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         /** Something is amiss - logg */
         triggerSentryCustomError(
             SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,
-            payload
+            JSON.stringify(payload)
         );
     }
     return undefined;
@@ -249,7 +252,7 @@ export const mapFrilanserFormDataToApiData = (
               };
         triggerSentryCustomError(
             SentryEventName.mapSelvstendigNæringsdrivendeFormDataToApiDataReturnsUndefined,
-            payload
+            JSON.stringify(payload)
         );
     }
     return undefined;
@@ -260,7 +263,13 @@ export const mapFormDataToApiData = (
     formData: SoknadFormData,
     språk: Locale
 ): SoknadApiData | undefined => {
-    const { harBekreftetOpplysninger, harForståttRettigheterOgPlikter, startetSøknadTidspunkt } = formData;
+    const {
+        harBekreftetOpplysninger,
+        harForståttRettigheterOgPlikter,
+        startetSøknadTidspunkt,
+        selvstendigStopReason,
+        frilanserStopReason,
+    } = formData;
     let apiData: SoknadApiData | undefined;
     try {
         apiData = {
@@ -268,11 +277,14 @@ export const mapFormDataToApiData = (
             harBekreftetOpplysninger,
             harForståttRettigheterOgPlikter,
             startetSøknad: startetSøknadTidspunkt ? startetSøknadTidspunkt.toISOString() : 'undefined',
-            selvstendigNæringsdrivende: mapSelvstendigNæringsdrivendeFormDataToApiData(
-                soknadEssentials.personligeForetak,
-                formData
-            ),
-            frilanser: mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData),
+            selvstendigNæringsdrivende:
+                selvstendigStopReason === undefined
+                    ? mapSelvstendigNæringsdrivendeFormDataToApiData(soknadEssentials.personligeForetak, formData)
+                    : undefined,
+            frilanser:
+                frilanserStopReason === undefined
+                    ? mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData)
+                    : undefined,
         };
     } catch (e) {
         triggerSentryError(SentryEventName.mapSoknadFailed, e);

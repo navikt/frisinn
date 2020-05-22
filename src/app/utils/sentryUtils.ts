@@ -10,6 +10,8 @@ export enum SentryEventName {
     'invalidSelvstendigAndFrilansApiData' = 'invalidSelvstendigAndFrilansApiData',
     'soknadSentSuccessfully' = 'soknadSentSuccessfully',
     'mapSoknadFailed' = 'mapSoknadFailed',
+    'getInntektsperiodeError' = 'getInntektsperiodeError',
+    'getInntektsperiodeLog' = 'getInntektsperiodeLog',
 }
 
 interface CustomError extends Error {
@@ -25,40 +27,38 @@ export const triggerSentryEvent = (
     Sentry.withScope((scope) => {
         scope.setTag('eventName', eventName);
         scope.setLevel(level);
-        if (level === Severity.Error) {
+        if (level === Severity.Error || level === Severity.Log) {
             const err: CustomError = {
                 name: eventName,
                 message,
                 payload,
             };
             Sentry.captureException(err);
+            return;
         }
         Sentry.captureMessage(`${eventName}: ${message}`);
     });
 };
 
-export const triggerSentryMessage = (eventName: SentryEventName, payload?: string | any) => {
+export const triggerSentryMessage = (eventName: SentryEventName, payload?: string) => {
     Sentry.withScope((scope) => {
         scope.setTag('eventName', eventName);
         scope.setLevel(Severity.Info);
-        const extra = { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined };
-        const extraString = extra ? JSON.stringify(payload) : undefined;
-
         const evt: SentryEvent = {
             message: eventName,
-            extra: extraString ? JSON.parse(extraString) : undefined,
+            extra: { payload: payload ? payload : undefined },
         };
         Sentry.captureEvent(evt);
     });
 };
 
-export const triggerSentryCustomError = (eventName: SentryEventName, payload?: string | any) => {
+export const triggerSentryCustomError = (eventName: SentryEventName, payload?: string) => {
     Sentry.withScope((scope) => {
         scope.setTag('eventName', eventName);
         scope.setLevel(Severity.Error);
         const evt: SentryEvent = {
             message: eventName,
-            extra: { payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined },
+            extra: { payload: payload ? payload : undefined },
         };
         Sentry.captureEvent(evt);
     });
