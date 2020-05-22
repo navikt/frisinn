@@ -42,10 +42,6 @@ class ErrorBoundary extends React.Component<{}, State> {
 
     componentDidCatch(error: Error | null, errorInfo: object) {
         const isKnownIssue = error && isKnownBrowserIssue(error);
-        console.group('Hey');
-        console.log(error);
-        console.log(errorInfo);
-        debugger;
         Sentry.withScope((scope) => {
             if (isKnownIssue) {
                 scope.setLevel(Sentry.Severity.Info);
