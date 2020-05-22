@@ -1,8 +1,8 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { getSoknadRoute } from '../utils/routeUtils';
-import { isFeatureEnabled, Feature } from '../utils/featureToggleUtils';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',

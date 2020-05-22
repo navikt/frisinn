@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
-import { SoknadFormField, ArbeidstakerFormData } from '../../types/SoknadFormData';
+import { ArbeidstakerFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { hasValue } from '../../validation/fieldValidations';
 

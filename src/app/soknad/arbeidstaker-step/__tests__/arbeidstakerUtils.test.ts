@@ -1,11 +1,11 @@
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
+import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
 import {
+    cleanupArbeidstakerStep,
     getInntektsperiodeForArbeidsinntekt,
     GetInntektsperiodeForArbeidsinntektPayload,
-    cleanupArbeidstakerStep,
 } from '../arbeidstakerUtils';
-import { DateRange, apiStringDateToDate } from '../../../utils/dateUtils';
-import { SoknadFormField, SoknadFormData } from '../../../types/SoknadFormData';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 const selvstendigDateRange: DateRange = {
     from: apiStringDateToDate('2020-04-04'),

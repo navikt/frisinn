@@ -1,7 +1,7 @@
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import moment from 'moment';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { DateRange } from '../../utils/dateUtils';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export type GetInntektsperiodeForArbeidsinntektPayload = Pick<
     SoknadFormData,

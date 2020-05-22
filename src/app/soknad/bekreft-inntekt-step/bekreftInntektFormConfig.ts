@@ -1,9 +1,9 @@
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { SoknadFormField, SoknadFormData } from '../../types/SoknadFormData';
-import { SoknadApiData } from '../../types/SoknadApiData';
-import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
+import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import { SoknadApiData } from '../../types/SoknadApiData';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
+import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 
 type BekreftInntektFormData = SoknadFormData;
 
