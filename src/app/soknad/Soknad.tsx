@@ -72,7 +72,6 @@ const Soknad = () => {
             } else {
                 resetInitialFormValues();
                 if (isOnSoknadFrontpage(location) === false) {
-                    console.log('navigate');
                     navigateToSoknadFrontpage(history);
                 }
             }

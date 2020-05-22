@@ -19,7 +19,7 @@ export const isKnownBrowserIssue = (err: Error) => {
                 }
             }
             if (os === 'Windows 10' && name === 'edge' && version?.match(/(^17.|^18.)\w+/)) {
-                if (err.name === 'Ugyldig kallende objekt') {
+                if (err.name === 'Ugyldig kallende objekt' || err.name === 'Invalid calling object') {
                     // Fokus issue for edge 17 og 18 - stopper ikke utfylling
                     return true;
                 }
