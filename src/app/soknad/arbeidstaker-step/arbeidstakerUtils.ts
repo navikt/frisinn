@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { DateRange } from '../../utils/dateUtils';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export type GetInntektsperiodeForArbeidsinntektPayload = Pick<
     SoknadFormData,
@@ -55,4 +56,13 @@ export const getInntektsperiodeForArbeidsinntekt = (
         return frilanserBeregnetTilgjengeligSøknadsperiode;
     }
     return undefined;
+};
+
+export const cleanupArbeidstakerStep = (values: SoknadFormData) => {
+    const v = { ...values };
+    const { arbeidstakerHarHattInntektIPerioden } = values;
+    if (arbeidstakerHarHattInntektIPerioden === YesOrNo.NO) {
+        v.arbeidstakerInntektIPerioden = undefined;
+    }
+    return v;
 };

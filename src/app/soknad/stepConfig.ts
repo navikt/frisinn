@@ -44,7 +44,10 @@ const getAvailableStep = (values?: SoknadFormData): StepID[] => {
     if (values?.søkerOmTaptInntektSomFrilanser === YesOrNo.YES) {
         steps.push(StepID.FRILANSER);
     }
-    if (isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT)) {
+    if (
+        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+        (values?.selvstendigSoknadIsOk || values?.frilanserSoknadIsOk)
+    ) {
         steps.push(StepID.ARBEIDSTAKER);
     }
     steps.push(StepID.BEKREFT_INNTEKT);

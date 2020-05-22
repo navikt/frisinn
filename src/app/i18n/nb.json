@@ -61,6 +61,10 @@
     "step.frilanser.stepTitle": "Frilanser",
     "step.frilanser.nextButtonLabel": "Fortsett",
 
+    "step.arbeidstaker.pageTitle": "Inntekt som arbeidstaker",
+    "step.arbeidstaker.stepTitle": "Inntekt som arbeidstaker",
+    "step.arbeidstaker.nextButtonLabel": "Fortsett",
+
     "step.bekreftInntekt.pageTitle": "Sjekk tallene du har lagt inn",
     "step.bekreftInntekt.stepTitle": "Sjekk at tallene du har lagt inn stemmer før du går videre",
     "step.bekreftInntekt.nextButtonLabel": "Fortsett",

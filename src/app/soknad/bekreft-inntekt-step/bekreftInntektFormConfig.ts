@@ -3,6 +3,7 @@ import { SoknadFormField, SoknadFormData } from '../../types/SoknadFormData';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 
 type BekreftInntektFormData = SoknadFormData;
 
@@ -19,6 +20,22 @@ const selvstendigOk = (values: BekreftInntektPayload): boolean => {
         selvstendigNæringsdrivende === undefined ||
         (bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
             (bekrefterSelvstendigInntektI2019 === YesOrNo.YES || bekrefterSelvstendigInntektI2020 === YesOrNo.YES))
+    );
+};
+
+const frilanserIsOk = (values: BekreftInntektPayload): boolean => {
+    const {
+        apiValues: { frilanser },
+        bekrefterFrilansinntektIPerioden,
+        bekrefterFrilanserSelvstendigInntektIPerioden,
+        frilanserHarHattInntektSomSelvstendigIPerioden,
+    } = values;
+    return (
+        frilanser === undefined ||
+        (bekrefterFrilansinntektIPerioden === YesOrNo.YES &&
+            frilanserHarHattInntektSomSelvstendigIPerioden !== YesOrNo.YES) ||
+        (frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES &&
+            bekrefterFrilanserSelvstendigInntektIPerioden === YesOrNo.YES)
     );
 };
 
@@ -72,6 +89,15 @@ const bekreftInntektFormConfig: QuestionConfig<BekreftInntektPayload, SoknadForm
             bekrefterFrilansinntektIPerioden === YesOrNo.YES,
         isAnswered: ({ bekrefterFrilanserSelvstendigInntektIPerioden }) =>
             yesOrNoIsAnswered(bekrefterFrilanserSelvstendigInntektIPerioden),
+    },
+    [SoknadFormField.bekrefterArbeidstakerinntektIPerioden]: {
+        isIncluded: (payload) =>
+            selvstendigOk(payload) &&
+            frilanserIsOk(payload) &&
+            isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+            payload.arbeidstakerHarHattInntektIPerioden === YesOrNo.YES,
+        isAnswered: ({ bekrefterArbeidstakerinntektIPerioden }) =>
+            yesOrNoIsAnswered(bekrefterArbeidstakerinntektIPerioden),
     },
 };
 

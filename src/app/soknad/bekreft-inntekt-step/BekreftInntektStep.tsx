@@ -15,6 +15,7 @@ import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
+import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
 import InfoOmSøknadOgFrist from '../info/InfoOmSøknadOgFrist';
 import SelvstendigInfo from '../info/SelvstendigInfo';
@@ -23,6 +24,7 @@ import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
+import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 
 const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -38,7 +40,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             </SoknadErrorPage>
         );
     }
-    const { selvstendigNæringsdrivende, frilanser } = apiValues;
+    const { selvstendigNæringsdrivende, frilanser, inntektIPeriodenSomArbeidstaker } = apiValues;
 
     const {
         bekrefterFrilansinntektIPerioden,
@@ -46,6 +48,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         bekrefterSelvstendigInntektI2019,
         bekrefterSelvstendigInntektI2020,
         bekrefterSelvstendigFrilanserInntektIPerioden,
+        bekrefterArbeidstakerinntektIPerioden,
         selvstendigStopReason,
         frilanserStopReason,
         frilanserSoknadIsOk,
@@ -69,8 +72,16 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
     const frilansBekreftet = frilanser ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true;
 
+    const arbeidstakerinntektBekreftet =
+        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) && apiValues.inntektIPeriodenSomArbeidstaker !== undefined
+            ? bekrefterArbeidstakerinntektIPerioden === YesOrNo.YES
+            : true;
+
     const showSubmitButton =
-        frilansBekreftet === true && selvstendigBekreftet === true && (frilanserSoknadIsOk || selvstendigSoknadIsOk);
+        frilansBekreftet === true &&
+        selvstendigBekreftet === true &&
+        (frilanserSoknadIsOk || selvstendigSoknadIsOk) &&
+        arbeidstakerinntektBekreftet === true;
 
     useEffect(() => {
         setValues({
@@ -80,8 +91,11 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             bekrefterSelvstendigInntektI2019: YesOrNo.UNANSWERED,
             bekrefterSelvstendigInntektIPerioden: YesOrNo.UNANSWERED,
             bekrefterSelvstendigFrilanserInntektIPerioden: YesOrNo.UNANSWERED,
+            bekrefterArbeidstakerinntektIPerioden: YesOrNo.UNANSWERED,
         });
     }, []);
+
+    const inntektsperiodeSomArbeidstaker = getInntektsperiodeForArbeidsinntekt(values);
 
     const { isVisible } = BekreftInntektFormQuestions.getVisbility({
         ...values,
@@ -247,6 +261,23 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                         )}
                     </>
                 )}
+
+            {isVisible(SoknadFormField.bekrefterArbeidstakerinntektIPerioden) && inntektsperiodeSomArbeidstaker && (
+                <FormSection title="Inntekt som arbeidstaker">
+                    <BekreftSumRad
+                        values={values}
+                        editStepID={StepID.ARBEIDSTAKER}
+                        field={SoknadFormField.bekrefterArbeidstakerinntektIPerioden}
+                        tittel={
+                            <>
+                                Inntekt som arbeidstaker i perioden{' '}
+                                <DateRangeView dateRange={inntektsperiodeSomArbeidstaker} />
+                            </>
+                        }
+                        sum={inntektIPeriodenSomArbeidstaker}
+                    />
+                </FormSection>
+            )}
         </SoknadStep>
     );
 };

@@ -12,6 +12,7 @@ import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateTo, relocateToReceiptPage } from '../utils/navigationUtils';
 import { getNextStepRoute, getSoknadRoute } from '../utils/routeUtils';
 import { SentryEventName, triggerSentryCustomError } from '../utils/sentryUtils';
+import ArbeidstakerStep from './arbeidstaker-step/ArbeidstakerStep';
 import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
 import FrilanserStep from './frilanser-step/FrilanserStep';
 import SelvstendigStep from './selvstendig-step/SelvstendigStep';
@@ -19,7 +20,6 @@ import SoknadErrors from './soknad-errors/SoknadErrors';
 import soknadTempStorage from './SoknadTempStorage';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
-import ArbeidstakerStep from './arbeidstaker-step/ArbeidstakerStap';
 
 interface Props {
     resetSoknad: () => void;

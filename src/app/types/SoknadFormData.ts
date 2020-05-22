@@ -43,15 +43,18 @@ export enum SoknadFormField {
     frilanserErSelvstendigNæringsdrivende = 'frilanserErSelvstendigNæringsdrivende',
     frilanserHarHattInntektSomSelvstendigIPerioden = 'frilanserHarHattInntektSomSelvstendigIPerioden',
     frilanserInntektSomSelvstendigIPerioden = 'frilanserInntektSomSelvstendigIPerioden',
+    frilanserBeregnetTilgjengeligSøknadsperiode = 'frilanserBeregnetTilgjengeligSøknadsperiode',
+    frilanserSoknadIsOk = 'frilanserSoknadIsOk',
+    frilanserStopReason = 'frilanserStopReason',
+    arbeidstakerHarHattInntektIPerioden = 'arbeidstakerHarHattInntektIPerioden',
+    arbeidstakerInntektIPerioden = 'arbeidstakerInntektIPerioden',
     bekrefterSelvstendigInntektIPerioden = 'bekrefterSelvstendigInntektIPerioden',
     bekrefterSelvstendigInntektI2019 = 'bekrefterSelvstendigInntektI2019',
     bekrefterSelvstendigInntektI2020 = 'bekrefterSelvstendigInntektI2020',
     bekrefterSelvstendigFrilanserInntektIPerioden = 'bekrefterSelvstendigFrilanserInntektIPerioden',
     bekrefterFrilansinntektIPerioden = 'bekrefterFrilansinntektIPerioden',
     bekrefterFrilanserSelvstendigInntektIPerioden = 'bekrefterFrilanserSelvstendigInntektIPerioden',
-    frilanserBeregnetTilgjengeligSøknadsperiode = 'frilanserBeregnetTilgjengeligSøknadsperiode',
-    frilanserSoknadIsOk = 'frilanserSoknadIsOk',
-    frilanserStopReason = 'frilanserStopReason',
+    bekrefterArbeidstakerinntektIPerioden = 'bekrefterArbeidstakerinntektIPerioden',
 }
 
 export interface SoknadFormData {
@@ -95,12 +98,16 @@ export interface SoknadFormData {
     [SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode]?: DateRange;
     [SoknadFormField.frilanserSoknadIsOk]?: boolean;
     [SoknadFormField.frilanserStopReason]?: FrilanserAvslagÅrsak;
+    [SoknadFormField.arbeidstakerHarHattInntektIPerioden]?: YesOrNo;
+    [SoknadFormField.arbeidstakerInntektIPerioden]?: number;
     [SoknadFormField.bekrefterSelvstendigInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2019]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigInntektI2020]?: YesOrNo;
     [SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterFrilansinntektIPerioden]?: YesOrNo;
     [SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden]?: YesOrNo;
+    [SoknadFormField.bekrefterFrilanserSelvstendigInntektIPerioden]?: YesOrNo;
+    [SoknadFormField.bekrefterArbeidstakerinntektIPerioden]?: YesOrNo;
 }
 
 export const initialSoknadFormData: Partial<SoknadFormData> = {
@@ -152,6 +159,11 @@ export type FrilanserFormData = Pick<
     | SoknadFormField.frilanserInntektSomSelvstendigIPerioden
     | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
     | SoknadFormField.frilanserSoknadIsOk
+>;
+
+export type ArbeidstakerFormData = Pick<
+    SoknadFormData,
+    SoknadFormField.arbeidstakerHarHattInntektIPerioden | SoknadFormField.arbeidstakerInntektIPerioden
 >;
 
 export const initialSelvstendigValues: Partial<SelvstendigFormData> = {

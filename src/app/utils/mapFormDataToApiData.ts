@@ -258,6 +258,19 @@ export const mapFrilanserFormDataToApiData = (
     return undefined;
 };
 
+export const mapArbeidstakerinntektIPerioden = (formData: SoknadFormData): number | undefined => {
+    const { arbeidstakerInntektIPerioden, arbeidstakerHarHattInntektIPerioden } = formData;
+    if (
+        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+        arbeidstakerHarHattInntektIPerioden === YesOrNo.YES &&
+        arbeidstakerInntektIPerioden !== undefined &&
+        arbeidstakerInntektIPerioden > 0
+    ) {
+        return arbeidstakerInntektIPerioden;
+    }
+    return undefined;
+};
+
 export const mapFormDataToApiData = (
     soknadEssentials: SoknadEssentials,
     formData: SoknadFormData,
@@ -285,6 +298,7 @@ export const mapFormDataToApiData = (
                 frilanserStopReason === undefined
                     ? mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData)
                     : undefined,
+            inntektIPeriodenSomArbeidstaker: mapArbeidstakerinntektIPerioden(formData),
         };
     } catch (e) {
         triggerSentryError(SentryEventName.mapSoknadFailed, e);

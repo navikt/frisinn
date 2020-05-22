@@ -1,6 +1,11 @@
-import { getInntektsperiodeForArbeidsinntekt, GetInntektsperiodeForArbeidsinntektPayload } from '../arbeidstakerUtils';
+import {
+    getInntektsperiodeForArbeidsinntekt,
+    GetInntektsperiodeForArbeidsinntektPayload,
+    cleanupArbeidstakerStep,
+} from '../arbeidstakerUtils';
 import { DateRange, apiStringDateToDate } from '../../../utils/dateUtils';
-import { SoknadFormField } from '../../../types/SoknadFormData';
+import { SoknadFormField, SoknadFormData } from '../../../types/SoknadFormData';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 const selvstendigDateRange: DateRange = {
     from: apiStringDateToDate('2020-04-04'),
@@ -73,5 +78,23 @@ describe('arbeidstakerUtils', () => {
             to: frilansDateRange.to,
         };
         expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
+    });
+
+    describe('cleanupArbeidstakerStep', () => {
+        it(`deletes ${SoknadFormField.arbeidstakerInntektIPerioden} when ${SoknadFormField.arbeidstakerHarHattInntektIPerioden} === NO`, () => {
+            const values: Partial<SoknadFormData> = {
+                arbeidstakerHarHattInntektIPerioden: YesOrNo.NO,
+                arbeidstakerInntektIPerioden: 2000,
+            };
+            expect(cleanupArbeidstakerStep(values as SoknadFormData)).toBeUndefined();
+        });
+        it(`does not delete ${SoknadFormField.arbeidstakerInntektIPerioden} when ${SoknadFormField.arbeidstakerHarHattInntektIPerioden} === YES`, () => {
+            const values: Partial<SoknadFormData> = {
+                arbeidstakerHarHattInntektIPerioden: YesOrNo.YES,
+                arbeidstakerInntektIPerioden: 2000,
+            };
+            const { arbeidstakerInntektIPerioden } = cleanupArbeidstakerStep(values as SoknadFormData) || {};
+            expect(arbeidstakerInntektIPerioden).toEqual(2000);
+        });
     });
 });

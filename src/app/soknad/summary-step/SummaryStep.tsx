@@ -35,6 +35,9 @@ import SpacedCharString from './SpacedCharString';
 import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import KronerSvar from './KronerSvar';
+import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
+import { formatDateRange } from '../../utils/dateRangeUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -129,6 +132,8 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
         return <Redirect to={GlobalRoutes.SOKNAD} />;
     }
 
+    const inntektsperiodeSomArbeidstaker = getInntektsperiodeForArbeidsinntekt(values);
+
     return (
         <SoknadStep
             id={StepID.SUMMARY}
@@ -193,6 +198,19 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                         <FrilanserSummary apiData={apiValues.frilanser} />
                                     </Box>
                                 )}
+                                {isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+                                    apiValues.inntektIPeriodenSomArbeidstaker !== undefined &&
+                                    inntektsperiodeSomArbeidstaker && (
+                                        <Box margin={'xxl'}>
+                                            <Undertittel className="sectionTitle">Arbeidstaker</Undertittel>
+                                            <SummaryBlock
+                                                header={`Inntekt som arbeidstaker i perioden ${formatDateRange(
+                                                    inntektsperiodeSomArbeidstaker
+                                                )}`}>
+                                                <KronerSvar verdi={apiValues.inntektIPeriodenSomArbeidstaker} />
+                                            </SummaryBlock>
+                                        </Box>
+                                    )}
                             </ResponsivePanel>
                         </Box>
                     </Box>
