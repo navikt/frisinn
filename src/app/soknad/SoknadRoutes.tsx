@@ -15,11 +15,12 @@ import { SentryEventName, triggerSentryCustomError } from '../utils/sentryUtils'
 import ArbeidstakerStep from './arbeidstaker-step/ArbeidstakerStep';
 import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
 import FrilanserStep from './frilanser-step/FrilanserStep';
-import SelvstendigStep from './selvstendig-step/SelvstendigStep';
+import SelvstendigForstegangStep from './selvstendig-step/forstegang/SelvstendigForstegangStep';
 import SoknadErrors from './soknad-errors/SoknadErrors';
 import soknadTempStorage from './SoknadTempStorage';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
+import SelvstendigAndregangStep from './selvstendig-step/andregang/SelvstendigAndregangStep';
 
 interface Props {
     resetSoknad: () => void;
@@ -32,6 +33,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
     const { values } = useFormikContext<SoknadFormData>();
     const stepConfig = getStepConfig(values);
     const soknadSteps = Object.keys(stepConfig) as Array<StepID>;
+    const { harSøktSomSelvstendigNæringsdrivende } = soknadEssentials.tidligerePerioder;
 
     const navigateToNextStepFrom = (stepID: StepID) => {
         if (values) {
@@ -53,8 +55,17 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
     const renderSoknadStep = (stepID: StepID) => {
         switch (stepID) {
             case StepID.SELVSTENDIG:
+                if (harSøktSomSelvstendigNæringsdrivende) {
+                    return (
+                        <SelvstendigAndregangStep
+                            resetSoknad={resetSoknad}
+                            soknadEssentials={soknadEssentials}
+                            onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
+                        />
+                    );
+                }
                 return (
-                    <SelvstendigStep
+                    <SelvstendigForstegangStep
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}

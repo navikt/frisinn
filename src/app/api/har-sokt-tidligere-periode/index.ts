@@ -7,10 +7,13 @@ interface HarSoktTidligereApiRespons {
     harSøktSomFrilanser: boolean;
 }
 
-export async function getHarSoktTidligerePeriode(): Promise<TidligerePerioder | undefined> {
+export async function getHarSoktTidligerePeriode(): Promise<TidligerePerioder> {
     try {
         if (isFeatureEnabled(Feature.ANDREGANGSSOKNAD) === false) {
-            return Promise.resolve(undefined);
+            return Promise.resolve({
+                harSøktSomFrilanser: false,
+                harSøktSomSelvstendigNæringsdrivende: false,
+            });
         }
         const { data } = await api.get<HarSoktTidligereApiRespons>(ApiEndpoint.harSoktTidligerePeriode);
         return Promise.resolve(data);

@@ -235,8 +235,8 @@ const startExpressServer = () => {
     server.get('/krav/maks-en-soknad-per-periode', (req, res) => {
         setTimeout(() => {
             res.send({
-                innfrirKrav: true,
-                beskrivelse: 'Søkeren har ikke søkt for periode 2020-03-14/2020-04-30, og kan søke nå',
+                innfrirKrav: false,
+                beskrivelse: 'Søkeren har allerede søkt for periode 2020-03-14/2020-04-30, og kan ikke søke nå',
             });
         }, 1000);
     });

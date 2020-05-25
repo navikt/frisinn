@@ -30,5 +30,5 @@ export interface SoknadEssentials {
     currentSøknadsperiode: DateRange;
     personligeForetak?: PersonligeForetak;
     avsluttetSelskapDateRange: DateRange | undefined;
-    tidligerePerioder?: TidligerePerioder;
+    tidligerePerioder: TidligerePerioder;
 }

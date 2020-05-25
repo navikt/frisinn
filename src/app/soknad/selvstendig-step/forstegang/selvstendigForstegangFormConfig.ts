@@ -1,10 +1,10 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-import { SoknadEssentials } from '../../types/SoknadEssentials';
-import { SoknadFormField, SelvstendigFormData } from '../../types/SoknadFormData';
-import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
-import { hasValue } from '../../validation/fieldValidations';
-import { SelvstendigNæringsdrivendeAvslagStatus } from './selvstendigAvslag';
+import { SoknadEssentials } from '../../../types/SoknadEssentials';
+import { SoknadFormField, SelvstendigFormData } from '../../../types/SoknadFormData';
+import { yesOrNoIsAnswered } from '../../../utils/yesOrNoUtils';
+import { hasValue } from '../../../validation/fieldValidations';
+import { SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
 
 const Field = SoknadFormField;
 
@@ -13,9 +13,9 @@ interface PayloadExtraInfo {
     avslag: SelvstendigNæringsdrivendeAvslagStatus;
 }
 
-export type SelvstendigFormConfigPayload = SelvstendigFormData & SoknadEssentials & PayloadExtraInfo;
+export type SelvstendigForstegangFormConfigPayload = SelvstendigFormData & SoknadEssentials & PayloadExtraInfo;
 
-const showRegnskapsfører = (payload: SelvstendigFormConfigPayload): boolean => {
+const showRegnskapsfører = (payload: SelvstendigForstegangFormConfigPayload): boolean => {
     const {
         selvstendigErFrilanser,
         selvstendigHarHattInntektSomFrilanserIPerioden,
@@ -44,7 +44,7 @@ const andreSelskaperIsAnswered = ({
     selvstendigAvsluttaSelskaper,
     skalSpørreOmAvsluttaSelskaper,
     selvstendigAlleAvsluttaSelskaperErRegistrert,
-}: SelvstendigFormConfigPayload): boolean => {
+}: SelvstendigForstegangFormConfigPayload): boolean => {
     if (skalSpørreOmAvsluttaSelskaper === false) {
         return true;
     }
@@ -57,13 +57,13 @@ const andreSelskaperIsAnswered = ({
         : selvstendigHarAvsluttetSelskaper === YesOrNo.NO;
 };
 
-const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, SoknadFormField> = {
+const SelvstendigForstegangFormConfig: QuestionConfig<SelvstendigForstegangFormConfigPayload, SoknadFormField> = {
     [Field.selvstendigHarTaptInntektPgaKorona]: {
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
     },
     [Field.selvstendigInntektstapStartetDato]: {
         parentQuestion: Field.selvstendigHarTaptInntektPgaKorona,
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
+        isIncluded: (payload) => payload.avslag.harIkkeHattInntektstapPgaKorona === false,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Field.selvstendigInntektIPerioden]: {
@@ -194,4 +194,6 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigFormConfigPayload, Soknad
     },
 };
 
-export const SelvstendigFormQuestions = Questions<SelvstendigFormConfigPayload, SoknadFormField>(SelvstendigFormConfig);
+export const SelvstendigFormQuestions = Questions<SelvstendigForstegangFormConfigPayload, SoknadFormField>(
+    SelvstendigForstegangFormConfig
+);

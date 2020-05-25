@@ -14,6 +14,7 @@ function createEnvSettingsFile(settingsFile) {
                 STARTET_PAA_SOKNAD: '${process.env.STARTET_PAA_SOKNAD}',
                 ARBEIDSTAKERINNTEKT: '${process.env.ARBEIDSTAKERINNTEKT}',
                 ANDREGANGSSOKNAD: '${process.env.ANDREGANGSSOKNAD}',
+                SIMULER_JUNI: '${process.env.SIMULER_JUNI}',
                 APP_VERSION: '${process.env.APP_VERSION}',
             };`
         );

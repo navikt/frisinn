@@ -25,6 +25,10 @@ const soknadEssentials: SoknadEssentials = {
         from: apiStringDateToDate('2020-04-01'),
         to: apiStringDateToDate('2020-04-30'),
     },
+    tidligerePerioder: {
+        harSøktSomSelvstendigNæringsdrivende: false,
+        harSøktSomFrilanser: false,
+    },
     avsluttetSelskapDateRange: getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato),
 };
 

@@ -145,7 +145,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
                 </Box>
             )}
 
-            {selvstendigSoknadIsOk === false && selvstendigStopReason && selvstendigBeregnetInntektsårstall && (
+            {selvstendigSoknadIsOk === false && selvstendigStopReason && (
                 <FormSection title="Selvstendig næringsdrivende">
                     <StopMessage>
                         {SelvstendigInfo.getMessageForAvslag(selvstendigStopReason, selvstendigBeregnetInntektsårstall)}

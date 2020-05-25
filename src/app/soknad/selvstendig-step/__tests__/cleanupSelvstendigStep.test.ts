@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { SelvstendigFormData, SoknadFormField, SoknadFormData } from '../../../types/SoknadFormData';
 import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
-import { cleanupSelvstendigStep } from '../cleanupSelvstendigStep';
+import { cleanupSelvstendigForstegangStep } from '../forstegang/cleanupSelvstendigForstegangStep';
 import { SelvstendigNæringdsrivendeAvslagÅrsak, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
 
 const periode: DateRange = {
@@ -65,7 +65,7 @@ describe('cleanupSelvstendigStep', () => {
             ...formValues,
             selvstendigHarTaptInntektPgaKorona: YesOrNo.NO,
         };
-        const result: SelvstendigFormData = cleanupSelvstendigStep(payload, avslag);
+        const result: SelvstendigFormData = cleanupSelvstendigForstegangStep(payload, avslag);
         expect(result.selvstendigInntektstapStartetDato).toBeUndefined();
         expect(result.selvstendigInntektIPerioden).toBeUndefined();
         expect(result.selvstendigHarAvsluttetSelskaper).toEqual(YesOrNo.UNANSWERED);
@@ -87,7 +87,7 @@ describe('cleanupSelvstendigStep', () => {
         expect(result.selvstendigRevisorNAVKanTaKontakt).toEqual(YesOrNo.UNANSWERED);
     });
     it(`does not clean more than necessary for normal data`, () => {
-        const result: SelvstendigFormData = cleanupSelvstendigStep(minValidPayload, avslag);
+        const result: SelvstendigFormData = cleanupSelvstendigForstegangStep(minValidPayload, avslag);
         expect(result).toBeDefined();
         expect(result.selvstendigHarTaptInntektPgaKorona).toEqual(YesOrNo.YES);
         expect(result.selvstendigInntektstapStartetDato).toBeDefined();
@@ -96,7 +96,7 @@ describe('cleanupSelvstendigStep', () => {
         expect(result.selvstendigHarYtelseFraNavSomDekkerTapet).toEqual(YesOrNo.NO);
     });
     it(`does clean correct income when historsikt inntekt årstall === 2019`, () => {
-        const result2019: SelvstendigFormData = cleanupSelvstendigStep(
+        const result2019: SelvstendigFormData = cleanupSelvstendigForstegangStep(
             {
                 ...minValidPayload,
                 selvstendigBeregnetInntektsårstall: 2019,
@@ -109,7 +109,7 @@ describe('cleanupSelvstendigStep', () => {
         expect(result2019.selvstendigInntekt2020).toBeUndefined();
     });
     it(`does clean correct income when historsikt inntekt årstall === 2020`, () => {
-        const result2020: SelvstendigFormData = cleanupSelvstendigStep(
+        const result2020: SelvstendigFormData = cleanupSelvstendigForstegangStep(
             {
                 ...minValidPayload,
                 selvstendigBeregnetInntektsårstall: 2020,
@@ -122,7 +122,7 @@ describe('cleanupSelvstendigStep', () => {
         expect(result2020.selvstendigInntekt2020).toBeDefined();
     });
     it(`does not clean avslutta selskaper if ${SoknadFormField.selvstendigHarAvsluttetSelskaper} = YES`, () => {
-        const result: SelvstendigFormData = cleanupSelvstendigStep(
+        const result: SelvstendigFormData = cleanupSelvstendigForstegangStep(
             {
                 ...formValues,
             },
@@ -132,7 +132,7 @@ describe('cleanupSelvstendigStep', () => {
         expect(result.selvstendigAlleAvsluttaSelskaperErRegistrert).toEqual(YesOrNo.YES);
     });
     it(`does clean avslutta selskaper if ${SoknadFormField.selvstendigHarAvsluttetSelskaper} = NO`, () => {
-        const result: SelvstendigFormData = cleanupSelvstendigStep(
+        const result: SelvstendigFormData = cleanupSelvstendigForstegangStep(
             {
                 ...formValues,
                 selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
