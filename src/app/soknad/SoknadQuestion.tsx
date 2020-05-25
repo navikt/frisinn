@@ -33,6 +33,9 @@ const SoknadQuestion = ({
     children,
     margin,
 }: Props) => {
+    if (typeof legend === 'function') {
+        console.error('SoknadQuestion: Invalid legend prop - cannot be a function');
+    }
     return (
         <QuestionVisibilityBlock<SoknadFormField> fieldName={name}>
             <FormBlock margin={margin}>

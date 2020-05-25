@@ -52,6 +52,8 @@ spec:
           value: "off"
         - name: AVSLUTTA_SELSKAPER
           value: "on"
-        - name: STARTET_PAA_SOKNAD
+        - name: ARBEIDSTAKERINNTEKT
           value: "off"
+        - name: STARTET_PAA_SOKNAD
+          value: "on"
 

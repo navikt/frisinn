@@ -12,6 +12,7 @@ import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateTo, relocateToReceiptPage } from '../utils/navigationUtils';
 import { getNextStepRoute, getSoknadRoute } from '../utils/routeUtils';
 import { SentryEventName, triggerSentryCustomError } from '../utils/sentryUtils';
+import ArbeidstakerStep from './arbeidstaker-step/ArbeidstakerStep';
 import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
 import FrilanserStep from './frilanser-step/FrilanserStep';
 import SelvstendigStep from './selvstendig-step/SelvstendigStep';
@@ -65,6 +66,14 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
+                    />
+                );
+            case StepID.ARBEIDSTAKER:
+                return (
+                    <ArbeidstakerStep
+                        resetSoknad={resetSoknad}
+                        soknadEssentials={soknadEssentials}
+                        onValidSubmit={() => navigateToNextStepFrom(StepID.ARBEIDSTAKER)}
                     />
                 );
             case StepID.BEKREFT_INNTEKT:

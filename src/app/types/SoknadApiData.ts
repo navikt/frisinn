@@ -45,4 +45,5 @@ export interface SoknadApiData {
     harBekreftetOpplysninger: boolean;
     selvstendigNæringsdrivende?: SelvstendigNæringsdrivendeApiData;
     frilanser?: FrilanserApiData;
+    inntektIPeriodenSomArbeidstaker?: number;
 }

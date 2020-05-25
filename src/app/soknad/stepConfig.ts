@@ -1,11 +1,13 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { getSoknadRoute } from '../utils/routeUtils';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',
     'FRILANSER' = 'frilanser',
+    'ARBEIDSTAKER' = 'arbeidstaker',
     'BEKREFT_INNTEKT' = 'bekreftInntekt',
     'SUMMARY' = 'oppsummering',
 }
@@ -41,6 +43,12 @@ const getAvailableStep = (values?: SoknadFormData): StepID[] => {
     }
     if (values?.søkerOmTaptInntektSomFrilanser === YesOrNo.YES) {
         steps.push(StepID.FRILANSER);
+    }
+    if (
+        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+        (values?.selvstendigSoknadIsOk || values?.frilanserSoknadIsOk)
+    ) {
+        steps.push(StepID.ARBEIDSTAKER);
     }
     steps.push(StepID.BEKREFT_INNTEKT);
     steps.push(StepID.SUMMARY);

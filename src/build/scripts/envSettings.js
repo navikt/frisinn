@@ -12,6 +12,7 @@ function createEnvSettingsFile(settingsFile) {
                 PERSISTENCE: '${process.env.PERSISTENCE}',
                 AVSLUTTA_SELSKAPER: '${process.env.AVSLUTTA_SELSKAPER}',
                 STARTET_PAA_SOKNAD: '${process.env.STARTET_PAA_SOKNAD}',
+                ARBEIDSTAKERINNTEKT: '${process.env.ARBEIDSTAKERINNTEKT}',
                 APP_VERSION: '${process.env.APP_VERSION}',
             };`
         );
