@@ -8,6 +8,7 @@ import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-p
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
+import debounce from 'lodash.debounce';
 import moment from 'moment';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -124,6 +125,8 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
         }
     }
 
+    const triggerSend = debounce(send, 250);
+
     const apiValues = mapFormDataToApiData(soknadEssentials, values, intl.locale as Locale);
     const hasValidApiData = apiValues?.selvstendigNæringsdrivende !== undefined || apiValues?.frilanser !== undefined;
     const { person } = soknadEssentials;
@@ -144,7 +147,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                         setSendingInProgress(true);
                         setTimeout(() => {
                             // Prevent double click send
-                            send(apiValues);
+                            triggerSend(apiValues);
                         });
                     });
                 }
