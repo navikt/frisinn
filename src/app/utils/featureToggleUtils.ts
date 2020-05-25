@@ -3,6 +3,7 @@ export enum Feature {
     'AVSLUTTA_SELSKAPER' = 'AVSLUTTA_SELSKAPER',
     'STARTET_PAA_SOKNAD' = 'STARTET_PAA_SOKNAD',
     'ARBEIDSTAKERINNTEKT' = 'ARBEIDSTAKERINNTEKT',
+    'ANDREGANGSSOKNAD' = 'ANDREGANGSSOKNAD',
 }
 
 export const isFeatureEnabled = (feature: Feature) => {

@@ -158,10 +158,16 @@ const startExpressServer = () => {
         }, 200);
     });
 
+    server.get('/har-sokt-tidligere-periode', (req, res) => {
+        setTimeout(() => {
+            res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: false });
+        }, 1500);
+    });
+
     server.post('/inntektsperiode', (req, res) => {
         setTimeout(() => {
             res.send(getInntektsperiode(req.query));
-        }, 1500);
+        }, 10);
     });
 
     server.get('/perioder', (req, res) => {

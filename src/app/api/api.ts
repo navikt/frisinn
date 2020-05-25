@@ -38,6 +38,7 @@ export enum ApiEndpoint {
     'tilgjengelig' = 'tilgjengelig',
     'inntektsperiode' = 'inntektsperiode',
     'tidspunkt' = 'tidspunkt',
+    'harSoktTidligerePeriode' = 'har-sokt-tidligere-periode',
 }
 
 const api = {

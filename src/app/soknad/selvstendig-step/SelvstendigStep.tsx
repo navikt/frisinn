@@ -17,7 +17,7 @@ import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
-import { MAX_INNTEKT, validateAll, validatePhoneNumber, hasValue } from '../../validation/fieldValidations';
+import { hasValue, MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../validation/fieldValidations';
 import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
 import FrilanserInfo from '../info/FrilanserInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
