@@ -68,7 +68,7 @@ const perioderMock = {
     },
 };
 
-const perioderMock2 = {
+const perioderMockMai = {
     søknadsperiode: {
         fom: '2020-05-01',
         tom: '2020-05-31',
@@ -181,13 +181,19 @@ const startExpressServer = () => {
         }, 220);
     });
 
+    server.get('/perioder-juni', (req, res) => {
+        setTimeout(() => {
+            res.send(perioderMockMai);
+        }, 220);
+    });
+
     server.get('/perioder2', (req, res) => {
         setTimeout(() => {
             if (req.query && req.query.inntektstapStartet) {
                 const perioder = getPerioder(req.query);
                 res.send(perioder);
             } else {
-                res.send(perioderMock2);
+                res.send(perioderMockMai);
             }
         }, 220);
     });

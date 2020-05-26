@@ -1,4 +1,4 @@
-import { DateRange, apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
 
 export * from '@navikt/sif-common-core/lib/utils/dateUtils';
@@ -21,6 +21,10 @@ export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): 
 
 export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {
     return moment(søknadsperiode.to).add(1, 'month').endOf('month').toDate();
+};
+
+export const erÅpnetForAndreganggsøknad = (søknadsperiode: DateRange): boolean => {
+    return moment(søknadsperiode.to).isAfter(apiStringDateToDate('2020-04-30'));
 };
 
 export const getMonthName = (date: Date): string => {
