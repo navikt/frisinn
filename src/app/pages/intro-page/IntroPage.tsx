@@ -93,8 +93,7 @@ const IntroPage: React.StatelessComponent = () => {
                                             <p>
                                                 Ordningen trådte i kraft 14. mars 2020. I søknaden oppgir du fra når
                                                 inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
-                                                inntektstap. Det betyr at om inntektstapet ditt startet 14. mars kan du
-                                                søke om kompensasjon fra 30. mars 2020.
+                                                inntektstap.
                                             </p>
                                             <p>
                                                 Du må søke etterskuddsvis måned for måned. Hvis du har inntektstap i
@@ -113,7 +112,7 @@ const IntroPage: React.StatelessComponent = () => {
                                     </InformationPoster>
                                 </Box>
                                 <Box margin="xl">
-                                    <InfoOmSøknadOgFrist />
+                                    <InfoOmSøknadOgFrist søknadsperiode={soknadsperiodeFetcher.soknadsperiode} />
                                 </Box>
                                 <Box margin="xl">
                                     <ResponsivePanel>

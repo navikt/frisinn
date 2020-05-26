@@ -9,6 +9,10 @@ jest.mock('../envUtils', () => ({
     isRunningInDevEnvironment: () => true,
 }));
 
+jest.mock('../featureToggleUtils', () => ({
+    isFeatureEnabled: () => true,
+}));
+
 const registreringsdato2019 = apiStringDateToDate('2019-01-1');
 const personligeForetak2019: PersonligeForetak = {
     foretak: [

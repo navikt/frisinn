@@ -18,3 +18,11 @@ export const isSameDate = (date1: Date | undefined, date2: Date | undefined): bo
 export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): Date => {
     return moment(dateRange.to).endOf('day').subtract(15, 'days').toDate();
 };
+
+export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {
+    return moment(søknadsperiode.to).add(1, 'month').endOf('month').toDate();
+};
+
+export const getMonthName = (date: Date): string => {
+    return moment(date).format('MMMM');
+};
