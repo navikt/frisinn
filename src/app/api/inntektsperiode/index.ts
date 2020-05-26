@@ -3,7 +3,7 @@ import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUti
 import api, { ApiEndpoint } from '../api';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 import { AvsluttetSelskap } from '../../types/AvsluttetSelskap';
-import { SentryEventName, triggerSentryMessage, triggerSentryCustomError } from '../../utils/sentryUtils';
+import { SentryEventName, triggerSentryCustomError } from '../../utils/sentryUtils';
 import { parseInntektsperiodeApiResponse } from './inntektsperiodeUtils';
 
 export interface InntektsperiodeApiResponse {
@@ -43,7 +43,6 @@ export async function getInntektsperiode({
         );
         const inntektsperiode = parseInntektsperiodeApiResponse(data);
         if (inntektsperiode) {
-            triggerSentryMessage(SentryEventName.getInntektsperiodeLog, JSON.stringify({ data, inntektsperiode }));
             return Promise.resolve(inntektsperiode);
         } else {
             triggerSentryCustomError(SentryEventName.getInntektsperiodeLog, JSON.stringify({ data, inntektsperiode }));
