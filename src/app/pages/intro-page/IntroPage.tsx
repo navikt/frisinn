@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Knapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
+import { RadioPanelGruppe } from 'nav-frontend-skjema';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Box from 'common/components/box/Box';
 import InformationPoster from 'common/components/information-poster/InformationPoster';
@@ -10,8 +12,10 @@ import Page from 'common/components/page/Page';
 import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
+import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
+import { erÅpnetForAndregangssøknad } from '../../utils/dateUtils';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
@@ -25,15 +29,19 @@ export interface IntroResultProps {
 
 const IntroPage: React.StatelessComponent = () => {
     const [introResult, setIntroResult] = useState<IntroResultProps | undefined>();
+    const [harSøktFør, setHarIkkeSøktFør] = useState<YesOrNo>(YesOrNo.UNANSWERED);
 
     const intl = useIntl();
     const soknadsperiodeFetcher = useSoknadsperiode();
+    const { soknadsperiode } = soknadsperiodeFetcher;
 
     const hasError =
         soknadsperiodeFetcher.isLoading === false &&
         (soknadsperiodeFetcher === undefined ||
             soknadsperiodeFetcher.soknadsperiode === undefined ||
             soknadsperiodeFetcher?.error !== undefined);
+
+    const includeHarSøktFør = soknadsperiode ? erÅpnetForAndregangssøknad(soknadsperiode) : false;
 
     return (
         <Page
@@ -57,7 +65,7 @@ const IntroPage: React.StatelessComponent = () => {
                             relocateToErrorPage();
                             return null;
                         }
-                        if (!soknadsperiodeFetcher.soknadsperiode) {
+                        if (!soknadsperiode) {
                             return null;
                         }
                         return (
@@ -112,40 +120,79 @@ const IntroPage: React.StatelessComponent = () => {
                                     </InformationPoster>
                                 </Box>
                                 <Box margin="xl">
-                                    <InfoOmSøknadOgFrist søknadsperiode={soknadsperiodeFetcher.soknadsperiode} />
+                                    <InfoOmSøknadOgFrist søknadsperiode={soknadsperiode} />
                                 </Box>
+
                                 <Box margin="xl">
                                     <ResponsivePanel>
-                                        <Undertittel className="sectionTitle">Sjekk om du kan søke</Undertittel>
-                                        <p>
-                                            For å kunne søke kompensasjon for tapt inntekt gjennom denne ordningen, må
-                                            du
-                                        </p>
-                                        <ul className="infoList">
-                                            <li>være fylt 18 år</li>
-                                            <li>ikke ha fylt 67 år</li>
-                                            <li>ha tapt inntekt (ikke tapte oppdrag) som følge av koronasituasjonen</li>
-                                            <li>
-                                                ikke motta annen utbetaling fra NAV som kompenserer det samme
-                                                inntektstapet
-                                                <ul>
+                                        {includeHarSøktFør && (
+                                            <Box padBottom="xl">
+                                                <RadioPanelGruppe
+                                                    className={'twoColumnPanelGruppe'}
+                                                    checked={harSøktFør}
+                                                    name="harSøktFør"
+                                                    onChange={(_, value: YesOrNo) => {
+                                                        setHarIkkeSøktFør(value);
+                                                    }}
+                                                    legend="Har du søkt om denne kompensasjonen tidligere?"
+                                                    description="Du kan svare ja om du har søkt og ikke fått svar enda, eller fått avslag."
+                                                    radios={[
+                                                        {
+                                                            value: YesOrNo.YES,
+                                                            label: 'Ja',
+                                                        },
+                                                        {
+                                                            value: YesOrNo.NO,
+                                                            label: 'Nei',
+                                                        },
+                                                    ]}
+                                                />
+                                                {harSøktFør === YesOrNo.YES && (
+                                                    <Box textAlignCenter={true} margin="xl">
+                                                        <Lenke href={getRouteUrl(GlobalRoutes.SOKNAD)}>
+                                                            Gå til søknadsskjema
+                                                        </Lenke>
+                                                    </Box>
+                                                )}
+                                            </Box>
+                                        )}
+                                        {(includeHarSøktFør === false || harSøktFør === YesOrNo.NO) && (
+                                            <Box>
+                                                <Undertittel className="sectionTitle">Sjekk om du kan søke</Undertittel>
+                                                <p>
+                                                    For å kunne søke kompensasjon for tapt inntekt gjennom denne
+                                                    ordningen, må du
+                                                </p>
+                                                <ul className="infoList">
+                                                    <li>være fylt 18 år</li>
+                                                    <li>ikke ha fylt 67 år</li>
                                                     <li>
-                                                        Hvis du er frilanser og mottar dagpenger, eller forskudd på
-                                                        dagpenger, kan du ikke søke om denne kompensasjonen
+                                                        ha tapt inntekt (ikke tapte oppdrag) som følge av
+                                                        koronasituasjonen
+                                                    </li>
+                                                    <li>
+                                                        ikke motta annen utbetaling fra NAV som kompenserer det samme
+                                                        inntektstapet
+                                                        <ul>
+                                                            <li>
+                                                                Hvis du er frilanser og mottar dagpenger, eller forskudd
+                                                                på dagpenger, kan du ikke søke om denne kompensasjonen
+                                                            </li>
+                                                        </ul>
                                                     </li>
                                                 </ul>
-                                            </li>
-                                        </ul>
-                                        <p>
-                                            Vi vil nå stille deg noen spørsmål som avgjør om du kan søke, og om du kan
-                                            ha rett på denne kompensasjonen.
-                                        </p>
-                                        <Box padBottom="xl">
-                                            <IntroForm
-                                                onValidSubmit={(values) => setIntroResult(values)}
-                                                soknadsperiode={soknadsperiodeFetcher.soknadsperiode}
-                                            />
-                                        </Box>
+                                                <p>
+                                                    Vi vil nå stille deg noen spørsmål som avgjør om du kan søke, og om
+                                                    du kan ha rett på denne kompensasjonen.
+                                                </p>
+                                                <Box padBottom="xl">
+                                                    <IntroForm
+                                                        onValidSubmit={(values) => setIntroResult(values)}
+                                                        soknadsperiode={soknadsperiode}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                        )}
                                     </ResponsivePanel>
                                 </Box>
                             </>
