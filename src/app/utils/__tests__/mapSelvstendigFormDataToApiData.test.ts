@@ -11,7 +11,6 @@ jest.mock('../envUtils', () => ({
 
 jest.mock('../featureToggleUtils', () => ({
     isFeatureEnabled: () => true,
-    isJuni: true,
 }));
 
 const registreringsdato2019 = apiStringDateToDate('2019-01-1');
