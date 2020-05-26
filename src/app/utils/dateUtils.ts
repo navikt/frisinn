@@ -23,7 +23,7 @@ export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => 
     return moment(søknadsperiode.to).add(1, 'month').endOf('month').toDate();
 };
 
-export const erÅpnetForAndreganggsøknad = (søknadsperiode: DateRange): boolean => {
+export const erÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
     return moment(søknadsperiode.from).isAfter(apiStringDateToDate('2020-04-30'), 'day');
 };
 

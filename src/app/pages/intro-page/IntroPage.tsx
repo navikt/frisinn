@@ -15,7 +15,7 @@ import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSoknadsperiode from '../../hooks/useSoknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
-import { erÅpnetForAndreganggsøknad } from '../../utils/dateUtils';
+import { erÅpnetForAndregangssøknad } from '../../utils/dateUtils';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
@@ -41,7 +41,7 @@ const IntroPage: React.StatelessComponent = () => {
             soknadsperiodeFetcher.soknadsperiode === undefined ||
             soknadsperiodeFetcher?.error !== undefined);
 
-    const includeHarSøktFør = soknadsperiode ? erÅpnetForAndreganggsøknad(soknadsperiode) : false;
+    const includeHarSøktFør = soknadsperiode ? erÅpnetForAndregangssøknad(soknadsperiode) : false;
 
     return (
         <Page

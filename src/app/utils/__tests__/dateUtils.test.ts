@@ -2,7 +2,7 @@ import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/s
 import {
     getSisteGyldigeDagForInntektstapIPeriode,
     getSøknadsfristForPeriode,
-    erÅpnetForAndreganggsøknad,
+    erÅpnetForAndregangssøknad,
 } from '../dateUtils';
 
 describe('dateUtils', () => {
@@ -44,16 +44,16 @@ describe('dateUtils', () => {
         });
     });
 
-    describe('erÅpnetForAndreganggsøknad', () => {
+    describe('erÅpnetForAndregangssøknad', () => {
         it('returns false if søknadsperiode is before may 2020', () => {
             expect(
-                erÅpnetForAndreganggsøknad({
+                erÅpnetForAndregangssøknad({
                     from: apiStringDateToDate('2020-04-01'),
                     to: apiStringDateToDate('2020-04-30'),
                 })
             ).toBeFalsy();
             expect(
-                erÅpnetForAndreganggsøknad({
+                erÅpnetForAndregangssøknad({
                     from: apiStringDateToDate('2019-04-01'),
                     to: apiStringDateToDate('2019-04-30'),
                 })
@@ -64,7 +64,7 @@ describe('dateUtils', () => {
                 from: apiStringDateToDate('2020-05-01'),
                 to: apiStringDateToDate('2020-05-31'),
             };
-            expect(erÅpnetForAndreganggsøknad(periode)).toBeTruthy();
+            expect(erÅpnetForAndregangssøknad(periode)).toBeTruthy();
         });
     });
 });
