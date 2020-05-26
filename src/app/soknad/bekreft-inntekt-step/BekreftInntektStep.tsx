@@ -141,7 +141,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
             {(frilanserSoknadIsOk === true || selvstendigSoknadIsOk === true) && (
                 <Box>
-                    <InfoOmSøknadOgFrist />
+                    <InfoOmSøknadOgFrist søknadsperiode={soknadEssentials.currentSøknadsperiode} />
                 </Box>
             )}
 
