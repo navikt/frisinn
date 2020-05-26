@@ -1,4 +1,7 @@
-import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from '../selvstendigFormConfig';
+import {
+    SelvstendigForstegangFormConfigPayload,
+    SelvstendigFormQuestions,
+} from '../forstegang/selvstendigForstegangFormConfig';
 import { SelvstendigFormData, SoknadFormField } from '../../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { apiStringDateToDate } from '../../../utils/dateUtils';
@@ -23,6 +26,10 @@ const soknadEssentials: SoknadEssentials = {
     currentSøknadsperiode: {
         from: apiStringDateToDate('2020-04-01'),
         to: apiStringDateToDate('2020-04-30'),
+    },
+    tidligerePerioder: {
+        harSøktSomFrilanser: false,
+        harSøktSomSelvstendigNæringsdrivende: false,
     },
     avsluttetSelskapDateRange: getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato),
 };
@@ -55,7 +62,7 @@ const avslag: SelvstendigNæringsdrivendeAvslagStatus = {
 };
 
 describe('selvstendigFormConfig', () => {
-    const payload: SelvstendigFormConfigPayload = {
+    const payload: SelvstendigForstegangFormConfigPayload = {
         ...initialFormData,
         ...soknadEssentials,
         skalSpørreOmAvsluttaSelskaper: false,

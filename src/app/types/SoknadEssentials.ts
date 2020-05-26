@@ -20,9 +20,15 @@ export interface PersonligeForetak {
     tidligsteRegistreringsdato: Date;
 }
 
+export interface TidligerePerioder {
+    harSøktSomSelvstendigNæringsdrivende: boolean;
+    harSøktSomFrilanser: boolean;
+}
+
 export interface SoknadEssentials {
     person: Person;
     currentSøknadsperiode: DateRange;
     personligeForetak?: PersonligeForetak;
     avsluttetSelskapDateRange: DateRange | undefined;
+    tidligerePerioder: TidligerePerioder;
 }

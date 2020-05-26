@@ -19,6 +19,7 @@ import { isStorageDataValid } from './SoknadTempStorage';
 import useOsloTime from '../hooks/useOsloTime';
 import routeConfig, { getRouteUrl } from '../config/routeConfig';
 import { usePrevious } from '../hooks/usePrevious';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -90,7 +91,7 @@ const Soknad = () => {
             osloTimeIsLoading === false &&
             tempStorageIsLoading === false &&
             alderResult !== undefined &&
-            maksEnSøknadResult !== undefined
+            (maksEnSøknadResult !== undefined || isFeatureEnabled(Feature.SIMULER_JUNI))
         ) {
             allDataLoaded();
         }
@@ -137,7 +138,10 @@ const Soknad = () => {
                         </NoAccessPage>
                     );
                 }
-                if (maksEnSoknadPerPeriodeCheck.result?.passes === false) {
+                if (
+                    maksEnSoknadPerPeriodeCheck.result?.passes === false &&
+                    isFeatureEnabled(Feature.SIMULER_JUNI) === false
+                ) {
                     return (
                         <NoAccessPage title="Du kan ikke sende inn søknad">
                             {maksEnSoknadPerPeriodeCheck.result.info}

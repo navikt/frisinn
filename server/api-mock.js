@@ -158,10 +158,16 @@ const startExpressServer = () => {
         }, 200);
     });
 
+    server.get('/har-sokt-tidligere-periode', (req, res) => {
+        setTimeout(() => {
+            res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: false });
+        }, 1500);
+    });
+
     server.post('/inntektsperiode', (req, res) => {
         setTimeout(() => {
             res.send(getInntektsperiode(req.query));
-        }, 1500);
+        }, 10);
     });
 
     server.get('/perioder', (req, res) => {
@@ -229,8 +235,8 @@ const startExpressServer = () => {
     server.get('/krav/maks-en-soknad-per-periode', (req, res) => {
         setTimeout(() => {
             res.send({
-                innfrirKrav: true,
-                beskrivelse: 'Søkeren har ikke søkt for periode 2020-03-14/2020-04-30, og kan søke nå',
+                innfrirKrav: false,
+                beskrivelse: 'Søkeren har allerede søkt for periode 2020-03-14/2020-04-30, og kan ikke søke nå',
             });
         }, 1000);
     });

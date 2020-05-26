@@ -6,6 +6,7 @@ import { getSoker } from '../api/soker';
 import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
+import { getHarSoktTidligerePeriode } from '../api/har-sokt-tidligere-periode';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
@@ -21,6 +22,8 @@ function useSoknadEssentials() {
             const person = await getSoker();
             const currentSøknadsperiode = await getSøknadsperiode();
             const personligeForetak = await getPersonligeForetak();
+            const tidligerePerioder = await getHarSoktTidligerePeriode();
+
             setSoknadEssentials({
                 person,
                 currentSøknadsperiode,
@@ -28,6 +31,7 @@ function useSoknadEssentials() {
                 avsluttetSelskapDateRange: personligeForetak
                     ? getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato)
                     : undefined,
+                tidligerePerioder,
             });
         } catch (error) {
             if (isForbidden(error) || isUnauthorized(error)) {

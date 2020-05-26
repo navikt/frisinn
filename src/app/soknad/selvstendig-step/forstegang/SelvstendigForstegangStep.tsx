@@ -4,48 +4,37 @@ import { validateRequiredField, validateRequiredNumber } from '@navikt/sif-commo
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';
-import Guide from '../../components/guide/Guide';
-import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
-import StopMessage from '../../components/stop-message/StopMessage';
-import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
-import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
-import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
-import useInntektsperiode from '../../hooks/useInntektsperiode';
-import { usePrevious } from '../../hooks/usePrevious';
-import FormSection from '../../pages/intro-page/FormSection';
-import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
-import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
-import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
-import { MAX_INNTEKT, validateAll, validatePhoneNumber, hasValue } from '../../validation/fieldValidations';
-import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
-import FrilanserInfo from '../info/FrilanserInfo';
-import SelvstendigInfo from '../info/SelvstendigInfo';
-import SoknadErrors from '../soknad-errors/SoknadErrors';
-import FormComponents from '../SoknadFormComponents';
-import SoknadQuestion from '../SoknadQuestion';
-import { soknadQuestionText } from '../soknadQuestionText';
-import SoknadStep from '../SoknadStep';
-import { StepConfigProps, StepID } from '../stepConfig';
-import AvsluttetSelskapListAndDialog from './avsluttet-selskap/AvsluttetSelskapListAndDialog';
-import { cleanupSelvstendigStep } from './cleanupSelvstendigStep';
-import {
-    kontrollerSelvstendigSvar,
-    SelvstendigNæringdsrivendeAvslagÅrsak,
-    SelvstendigNæringsdrivendeAvslagStatus,
-} from './selvstendigAvslag';
-import { SelvstendigFormConfigPayload, SelvstendigFormQuestions } from './selvstendigFormConfig';
+import Guide from '../../../components/guide/Guide';
+import LoadWrapper from '../../../components/load-wrapper/LoadWrapper';
+import StopMessage from '../../../components/stop-message/StopMessage';
+import VeilederSVG from '../../../components/veileder-svg/VeilederSVG';
+import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
+import useAvailableSøknadsperiode, { isValidDateRange } from '../../../hooks/useAvailableSøknadsperiode';
+import useInntektsperiode from '../../../hooks/useInntektsperiode';
+import { usePrevious } from '../../../hooks/usePrevious';
+import FormSection from '../../../pages/intro-page/FormSection';
+import { SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
+import { MIN_DATE_PERIODEVELGER } from '../../../utils/dateUtils';
+import { Feature, isFeatureEnabled } from '../../../utils/featureToggleUtils';
+import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../../utils/selvstendigUtils';
+import { hasValue, MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../../validation/fieldValidations';
+import AvailableDateRangeInfo from '../../info/AvailableDateRangeInfo';
+import FrilanserInfo from '../../info/FrilanserInfo';
+import SelvstendigInfo from '../../info/SelvstendigInfo';
+import SoknadErrors from '../../soknad-errors/SoknadErrors';
+import FormComponents from '../../SoknadFormComponents';
+import SoknadQuestion from '../../SoknadQuestion';
+import { soknadQuestionText } from '../../soknadQuestionText';
+import SoknadStep from '../../SoknadStep';
+import { StepConfigProps, StepID } from '../../stepConfig';
+import AvsluttetSelskapListAndDialog from '../avsluttet-selskap/AvsluttetSelskapListAndDialog';
+import { getAvslagÅrsak, kontrollerSelvstendigSvar } from '../selvstendigAvslag';
+import { cleanupSelvstendigForstegangStep } from './cleanupSelvstendigForstegangStep';
+import { SelvstendigFormQuestions, SelvstendigForstegangFormConfigPayload } from './selvstendigForstegangFormConfig';
 
 const txt = soknadQuestionText;
 
-const getStopReason = (
-    status: SelvstendigNæringsdrivendeAvslagStatus
-): SelvstendigNæringdsrivendeAvslagÅrsak | undefined => {
-    const feil = Object.keys(status).filter((key) => status[key] === true);
-    return feil ? (feil[0] as SelvstendigNæringdsrivendeAvslagÅrsak) : undefined;
-};
-
-const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
+const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
     const {
         selvstendigInntektstapStartetDato,
@@ -87,7 +76,7 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     const skalSpørreOmAvsluttaSelskaper =
         isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER) && harSelskaperRegistrertFør2019(personligeForetak) === false;
 
-    const payload: SelvstendigFormConfigPayload = {
+    const payload: SelvstendigForstegangFormConfigPayload = {
         ...values,
         ...soknadEssentials,
         skalSpørreOmAvsluttaSelskaper,
@@ -145,8 +134,8 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
             stepCleanup={(values) => {
                 const v = { ...values };
                 v.selvstendigSoknadIsOk = hasValidSelvstendigFormData;
-                v.selvstendigStopReason = hasValidSelvstendigFormData ? undefined : getStopReason(avslag);
-                return cleanupSelvstendigStep(v, avslag);
+                v.selvstendigStopReason = hasValidSelvstendigFormData ? undefined : getAvslagÅrsak(avslag);
+                return cleanupSelvstendigForstegangStep(v, avslag);
             }}
             showSubmitButton={
                 !isLoading &&
@@ -446,4 +435,4 @@ const SelvstendigStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepC
     );
 };
 
-export default SelvstendigStep;
+export default SelvstendigForstegangStep;

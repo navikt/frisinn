@@ -47,7 +47,7 @@ const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle=
 
 const StoppYtelseDekkerHeleTapet = () => <FellesStoppYtelseDekkerHeleTapetInnlogget rolle={rolleNavn} />;
 
-const StoppIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
+const StoppIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall?: number }) => {
     return inntektÅrstall === 2020 ? (
         <>
             Du kan ikke søke om kompensasjon for tapt inntekt, uten at du har tatt ut inntekt fra selskapet før 1. mars
@@ -61,7 +61,7 @@ const StoppIkkeHattInntektFraForetak = ({ inntektÅrstall }: { inntektÅrstall: 
     );
 };
 
-const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall: number }) => {
+const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall?: number }) => {
     return inntektÅrstall === 2020 ? (
         <>
             Du kan ikke søke om kompensasjon for tapt inntekt, uten at du har tatt ut inntekt fra selskapet før 1. mars
@@ -69,8 +69,8 @@ const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall: numb
         </>
     ) : (
         <>
-            For å kunne søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, må du ha tatt ut inntekt
-            i 2019
+            Du kan ikke søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende, uten at du har tatt ut
+            inntekt fra selskapet i 2019.
         </>
     );
 };
@@ -142,7 +142,7 @@ const infoSelvstendigInntekt2019 = () => (
 
 const getMessageForAvslag = (
     årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
-    inntektÅrstall: HistoriskInntektÅrstall
+    inntektÅrstall?: HistoriskInntektÅrstall
 ): React.ReactNode => {
     switch (årsak) {
         case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirHarIkkeHattInntektFraForetak:

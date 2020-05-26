@@ -1,8 +1,8 @@
-import { SoknadFormData } from '../../types/SoknadFormData';
+import { SoknadFormData } from '../../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { SelvstendigNæringsdrivendeAvslagStatus } from './selvstendigAvslag';
+import { SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
 
-export const cleanupSelvstendigStep = (
+export const cleanupSelvstendigForstegangStep = (
     values: SoknadFormData,
     avslag: SelvstendigNæringsdrivendeAvslagStatus
 ): SoknadFormData => {

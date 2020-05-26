@@ -61,3 +61,18 @@ export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): Selvste
     oppgirNullHistoriskInntekt: oppgirNullHistoriskInntekt(payload),
     ikkeAlleAvsluttaSelskaperErRegistrert: valgtIkkeAlleSelskaperErRegistrert(payload),
 });
+
+export const kontrollerSelvstendigAndregangsSvar = (
+    payload: SelvstendigFormData
+): Partial<SelvstendigNæringsdrivendeAvslagStatus> => ({
+    harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
+    søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
+    harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
+});
+
+export const getAvslagÅrsak = (
+    status: Partial<SelvstendigNæringsdrivendeAvslagStatus>
+): SelvstendigNæringdsrivendeAvslagÅrsak | undefined => {
+    const feil = Object.keys(status).filter((key) => status[key] === true);
+    return feil ? (feil[0] as SelvstendigNæringdsrivendeAvslagÅrsak) : undefined;
+};
