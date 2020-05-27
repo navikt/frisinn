@@ -21,17 +21,22 @@ function useSoknadEssentials() {
         try {
             const person = await getSoker();
             const currentSøknadsperiode = await getSøknadsperiode();
-            const personligeForetak = await getPersonligeForetak();
             const tidligerePerioder = await getHarSoktTidligerePeriode();
+            const personligeForetak = await getPersonligeForetak(
+                tidligerePerioder.harSøktSomSelvstendigNæringsdrivende
+            );
+            const isSelvstendigNæringsdrivende =
+                personligeForetak !== undefined || tidligerePerioder.harSøktSomSelvstendigNæringsdrivende;
 
             setSoknadEssentials({
                 person,
                 currentSøknadsperiode,
-                personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
+                personligeForetak: personligeForetak,
                 avsluttetSelskapDateRange: personligeForetak
                     ? getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato)
                     : undefined,
                 tidligerePerioder,
+                isSelvstendigNæringsdrivende,
             });
         } catch (error) {
             if (isForbidden(error) || isUnauthorized(error)) {

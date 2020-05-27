@@ -25,7 +25,7 @@ const SoknadEntryPage = ({
     onStart,
     soknadEssentials: {
         person: { kontonummer },
-        personligeForetak,
+        isSelvstendigNæringsdrivende,
         currentSøknadsperiode,
     },
     resetSoknad,
@@ -84,7 +84,7 @@ const SoknadEntryPage = ({
                         <SoknadEntryForm
                             onStart={onStart}
                             kontonummer={kontonummer}
-                            isSelvstendig={personligeForetak !== undefined}
+                            isSelvstendigNæringsdrivende={isSelvstendigNæringsdrivende}
                         />
                     </FormBlock>
                 )}

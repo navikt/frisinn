@@ -28,6 +28,7 @@ export interface TidligerePerioder {
 export interface SoknadEssentials {
     person: Person;
     currentSøknadsperiode: DateRange;
+    isSelvstendigNæringsdrivende: boolean;
     personligeForetak?: PersonligeForetak;
     avsluttetSelskapDateRange: DateRange | undefined;
     tidligerePerioder: TidligerePerioder;

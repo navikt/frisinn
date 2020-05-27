@@ -29,13 +29,13 @@ const txt = soknadQuestionText;
 const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
     const { søkerOmTaptInntektSomFrilanser, selvstendigHarYtelseFraNavSomDekkerTapet } = values;
-    const { personligeForetak } = soknadEssentials;
+    const {
+        tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
+    } = soknadEssentials;
 
-    if (personligeForetak === undefined) {
+    if (harSøktSomSelvstendigNæringsdrivende === false) {
         return <SoknadErrors.MissingApiDataError />;
     }
-    const { foretak = [] } = personligeForetak;
-    const antallForetak = foretak.length;
     const { currentSøknadsperiode } = soknadEssentials;
     const { selvstendigInntektstapStartetDato, selvstendigBeregnetTilgjengeligSøknadsperiode } = values;
 
@@ -86,7 +86,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
-                    <SelvstendigInfo.intro antallForetak={antallForetak} foretak={foretak} />
+                    <SelvstendigInfo.introAndregangssøknad />
                 </Guide>
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigHarTaptInntektPgaKorona}

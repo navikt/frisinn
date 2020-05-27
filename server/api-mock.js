@@ -154,8 +154,8 @@ const startExpressServer = () => {
 
     server.get('/har-sokt-tidligere-periode', (req, res) => {
         setTimeout(() => {
-            res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: false });
-        }, 1500);
+            res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: true });
+        }, 200);
     });
 
     server.post('/inntektsperiode', (req, res) => {

@@ -40,6 +40,16 @@ const intro = ({ antallForetak, foretak }: { antallForetak: number; foretak: For
         </>
     );
 };
+const introAndregangssøknad = () => {
+    return (
+        <>
+            <p>
+                Du skal oppgi inntektene samlet for alle selskapene, selv om du kanskje bare har tapt inntekt i det noen
+                av selskapene.
+            </p>
+        </>
+    );
+};
 
 const StoppForSentInntektstap = () => <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} />;
 
@@ -164,6 +174,7 @@ const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
 
 const SelvstendigInfo = {
     intro,
+    introAndregangssøknad,
     StoppForSentInntektstap,
     StoppIkkeTapPgaKorona,
     StoppYtelseDekkerHeleTapet,

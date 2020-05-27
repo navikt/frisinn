@@ -61,7 +61,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigBeregnetInntektsårstall,
     } = formData;
     if (
-        personligeForetak !== undefined &&
+        (personligeForetak !== undefined || harSøktTidligere) &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
@@ -119,19 +119,23 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
-            const avsluttetSelskapPeriode = getPeriodeForAvsluttaSelskaper(
-                personligeForetak.tidligsteRegistreringsdato
-            );
-            if (
-                selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
-                selvstendigAlleAvsluttaSelskaperErRegistrert &&
-                avsluttetSelskapPeriode
-            ) {
-                spørsmålOgSvar.push({
-                    field: SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert,
-                    spørsmål: soknadQuestionText.selvstendigAlleAvsluttaSelskaperErRegistrert(avsluttetSelskapPeriode),
-                    svar: formatYesOrNoAnswer(selvstendigAlleAvsluttaSelskaperErRegistrert),
-                });
+            if (personligeForetak && harSøktTidligere === false) {
+                const avsluttetSelskapPeriode = getPeriodeForAvsluttaSelskaper(
+                    personligeForetak.tidligsteRegistreringsdato
+                );
+                if (
+                    selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
+                    selvstendigAlleAvsluttaSelskaperErRegistrert &&
+                    avsluttetSelskapPeriode
+                ) {
+                    spørsmålOgSvar.push({
+                        field: SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert,
+                        spørsmål: soknadQuestionText.selvstendigAlleAvsluttaSelskaperErRegistrert(
+                            avsluttetSelskapPeriode
+                        ),
+                        svar: formatYesOrNoAnswer(selvstendigAlleAvsluttaSelskaperErRegistrert),
+                    });
+                }
             }
         }
 

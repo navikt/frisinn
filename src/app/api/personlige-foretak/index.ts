@@ -31,7 +31,10 @@ const parsePersonligeForetakApiResponse = (data: PersonligeForetakApiResponse): 
     };
 };
 
-export async function getPersonligeForetak(): Promise<PersonligeForetak> {
+export async function getPersonligeForetak(harSøktTidligere: boolean): Promise<PersonligeForetak | undefined> {
+    if (harSøktTidligere) {
+        return Promise.resolve(undefined);
+    }
     try {
         const { data } = await api.get<PersonligeForetakApiResponse>(ApiEndpoint.personligeForetak);
         return Promise.resolve(parsePersonligeForetakApiResponse(data));
