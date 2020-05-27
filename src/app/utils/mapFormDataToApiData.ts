@@ -33,7 +33,7 @@ const formatYesOrNoAnswer = (answer: YesOrNo): string => {
 export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
     personligeForetak: PersonligeForetak | undefined,
     formData: SelvstendigFormData,
-    harSøktTidligere?: boolean
+    harSøktTidligere: boolean
 ): SelvstendigNæringsdrivendeApiData | undefined => {
     const {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
@@ -61,7 +61,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigBeregnetInntektsårstall,
     } = formData;
     if (
-        (personligeForetak !== undefined || harSøktTidligere) &&
+        (personligeForetak !== undefined || harSøktTidligere === true) &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
@@ -311,7 +311,7 @@ export const mapFormDataToApiData = (
                     ? mapSelvstendigNæringsdrivendeFormDataToApiData(
                           soknadEssentials.personligeForetak,
                           formData,
-                          soknadEssentials.tidligerePerioder?.harSøktSomSelvstendigNæringsdrivende
+                          soknadEssentials.tidligerePerioder?.harSøktSomSelvstendigNæringsdrivende === true
                       )
                     : undefined,
             frilanser:
