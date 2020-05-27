@@ -4,14 +4,18 @@ import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
+import { TidligerePerioder } from '../../types/SoknadEssentials';
 
 type BekreftInntektFormData = SoknadFormData;
 
-type BekreftInntektPayload = Partial<BekreftInntektFormData> & { apiValues: SoknadApiData };
+type BekreftInntektPayload = Partial<BekreftInntektFormData> & { apiValues: SoknadApiData } & {
+    tidligerePerioder: TidligerePerioder;
+};
 
 const selvstendigOk = (values: BekreftInntektPayload): boolean => {
     const {
         apiValues: { selvstendigNæringsdrivende },
+        tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
         bekrefterSelvstendigInntektIPerioden,
         bekrefterSelvstendigInntektI2019,
         bekrefterSelvstendigInntektI2020,
@@ -19,7 +23,9 @@ const selvstendigOk = (values: BekreftInntektPayload): boolean => {
     return (
         selvstendigNæringsdrivende === undefined ||
         (bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
-            (bekrefterSelvstendigInntektI2019 === YesOrNo.YES || bekrefterSelvstendigInntektI2020 === YesOrNo.YES))
+            (bekrefterSelvstendigInntektI2019 === YesOrNo.YES ||
+                bekrefterSelvstendigInntektI2020 === YesOrNo.YES ||
+                harSøktSomSelvstendigNæringsdrivende))
     );
 };
 
@@ -46,17 +52,25 @@ const bekreftInntektFormConfig: QuestionConfig<BekreftInntektPayload, SoknadForm
             yesOrNoIsAnswered(bekrefterSelvstendigInntektIPerioden),
     },
     [SoknadFormField.bekrefterSelvstendigInntektI2019]: {
-        isIncluded: ({ bekrefterSelvstendigInntektIPerioden, apiValues: { selvstendigNæringsdrivende } }) =>
+        isIncluded: ({
+            bekrefterSelvstendigInntektIPerioden,
+            apiValues: { selvstendigNæringsdrivende },
+            tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
+        }) =>
             bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
             selvstendigNæringsdrivende !== undefined &&
-            selvstendigNæringsdrivende.inntekt2019 !== undefined,
+            (harSøktSomSelvstendigNæringsdrivende || selvstendigNæringsdrivende.inntekt2019 !== undefined),
         isAnswered: ({ bekrefterSelvstendigInntektI2019 }) => yesOrNoIsAnswered(bekrefterSelvstendigInntektI2019),
     },
     [SoknadFormField.bekrefterSelvstendigInntektI2020]: {
-        isIncluded: ({ bekrefterSelvstendigInntektIPerioden, apiValues: { selvstendigNæringsdrivende } }) =>
+        isIncluded: ({
+            bekrefterSelvstendigInntektIPerioden,
+            apiValues: { selvstendigNæringsdrivende },
+            tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
+        }) =>
             bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
             selvstendigNæringsdrivende !== undefined &&
-            selvstendigNæringsdrivende.inntekt2020 !== undefined,
+            (harSøktSomSelvstendigNæringsdrivende || selvstendigNæringsdrivende.inntekt2019 !== undefined),
         isAnswered: ({ bekrefterSelvstendigInntektI2020 }) => yesOrNoIsAnswered(bekrefterSelvstendigInntektI2020),
     },
     [SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden]: {
@@ -65,11 +79,14 @@ const bekreftInntektFormConfig: QuestionConfig<BekreftInntektPayload, SoknadForm
             bekrefterSelvstendigInntektI2019,
             bekrefterSelvstendigInntektI2020,
             apiValues: { selvstendigNæringsdrivende, frilanser },
+            tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
         }) =>
             frilanser === undefined &&
             selvstendigNæringsdrivende !== undefined &&
             bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
-            (bekrefterSelvstendigInntektI2019 === YesOrNo.YES || bekrefterSelvstendigInntektI2020 === YesOrNo.YES) &&
+            (bekrefterSelvstendigInntektI2019 === YesOrNo.YES ||
+                bekrefterSelvstendigInntektI2020 === YesOrNo.YES ||
+                harSøktSomSelvstendigNæringsdrivende) &&
             selvstendigNæringsdrivende.inntektIPeriodenSomFrilanser !== undefined,
         isAnswered: ({ bekrefterSelvstendigFrilanserInntektIPerioden }) =>
             yesOrNoIsAnswered(bekrefterSelvstendigFrilanserInntektIPerioden),

@@ -61,14 +61,14 @@ const søkerMock = {
     kontonummer: '17246746060',
 };
 
-const perioderMock = {
+const perioderApril = {
     søknadsperiode: {
         fom: '2020-03-14',
         tom: '2020-04-30',
     },
 };
 
-const perioderMockMai = {
+const perioderMai = {
     søknadsperiode: {
         fom: '2020-05-01',
         tom: '2020-05-31',
@@ -152,12 +152,6 @@ const startExpressServer = () => {
         }, 200);
     });
 
-    server.get('/soker2', (req, res) => {
-        setTimeout(() => {
-            res.send({ ...søkerMock, fornavn: 'Godslig2' });
-        }, 200);
-    });
-
     server.get('/har-sokt-tidligere-periode', (req, res) => {
         setTimeout(() => {
             res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: false });
@@ -172,29 +166,7 @@ const startExpressServer = () => {
 
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
-            if (req.query && req.query.inntektstapStartet) {
-                const perioder = getPerioder(req.query);
-                res.send(perioder);
-            } else {
-                res.send(perioderMock);
-            }
-        }, 220);
-    });
-
-    server.get('/perioder-juni', (req, res) => {
-        setTimeout(() => {
-            res.send(perioderMockMai);
-        }, 220);
-    });
-
-    server.get('/perioder2', (req, res) => {
-        setTimeout(() => {
-            if (req.query && req.query.inntektstapStartet) {
-                const perioder = getPerioder(req.query);
-                res.send(perioder);
-            } else {
-                res.send(perioderMockMai);
-            }
+            res.send(perioderMai);
         }, 220);
     });
 

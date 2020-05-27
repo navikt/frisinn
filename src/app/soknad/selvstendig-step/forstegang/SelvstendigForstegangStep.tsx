@@ -9,7 +9,7 @@ import LoadWrapper from '../../../components/load-wrapper/LoadWrapper';
 import StopMessage from '../../../components/stop-message/StopMessage';
 import VeilederSVG from '../../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
-import useAvailableSøknadsperiode, { isValidDateRange } from '../../../hooks/useAvailableSøknadsperiode';
+import useTilgjengeligSøkeperiode, { isValidDateRange } from '../../../hooks/useTilgjengeligSøkeperiode';
 import useInntektsperiode from '../../../hooks/useInntektsperiode';
 import { usePrevious } from '../../../hooks/usePrevious';
 import FormSection from '../../../pages/intro-page/FormSection';
@@ -18,7 +18,7 @@ import { MIN_DATE_PERIODEVELGER } from '../../../utils/dateUtils';
 import { Feature, isFeatureEnabled } from '../../../utils/featureToggleUtils';
 import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../../utils/selvstendigUtils';
 import { hasValue, MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../../validation/fieldValidations';
-import AvailableDateRangeInfo from '../../info/AvailableDateRangeInfo';
+import TilgjengeligSøkeperiodeInfo from '../../info/TilgjengeligSøkeperiodeInfo';
 import FrilanserInfo from '../../info/FrilanserInfo';
 import SelvstendigInfo from '../../info/SelvstendigInfo';
 import SoknadErrors from '../../soknad-errors/SoknadErrors';
@@ -54,7 +54,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
     const { foretak = [] } = personligeForetak;
     const antallForetak = foretak.length;
 
-    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode({
+    const { tilgjengeligSøkeperiode, isLoading: tilgjengeligSøkeperiodeIsLoading } = useTilgjengeligSøkeperiode({
         inntektstapStartDato: selvstendigInntektstapStartetDato,
         currentSøknadsperiode,
         currentAvailableSøknadsperiode: selvstendigBeregnetTilgjengeligSøknadsperiode,
@@ -69,7 +69,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
         currentHistoriskInntektsÅrstall: selvstendigBeregnetInntektsårstall,
     });
 
-    const isLoading = availableDateRangeIsLoading || inntektsperiodeIsLoading;
+    const isLoading = tilgjengeligSøkeperiodeIsLoading || inntektsperiodeIsLoading;
 
     const avslag = kontrollerSelvstendigSvar(values);
 
@@ -88,7 +88,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
 
     const hasValidSelvstendigFormData: boolean =
         allQuestionsAreAnswered &&
-        isValidDateRange(availableDateRange) &&
+        isValidDateRange(tilgjengeligSøkeperiode) &&
         hasValidHistoriskInntekt(values) &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
         selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
@@ -96,9 +96,9 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
     useEffect(() => {
         setFieldValue(
             SoknadFormField.selvstendigBeregnetTilgjengeligSøknadsperiode,
-            isValidDateRange(availableDateRange) ? availableDateRange : undefined
+            isValidDateRange(tilgjengeligSøkeperiode) ? tilgjengeligSøkeperiode : undefined
         );
-    }, [availableDateRange]);
+    }, [tilgjengeligSøkeperiode]);
 
     useEffect(() => {
         setFieldValue(
@@ -159,17 +159,18 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                 />
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigInntektstapStartetDato}
-                    showInfo={isValidDateRange(availableDateRange)}
+                    showInfo={isValidDateRange(tilgjengeligSøkeperiode)}
                     infoMessage={
-                        <AvailableDateRangeInfo
+                        <TilgjengeligSøkeperiodeInfo
                             inntektstapStartetDato={selvstendigInntektstapStartetDato}
-                            availableDateRange={availableDateRange}
+                            tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
                         />
                     }
                     showStop={
-                        availableDateRangeIsLoading === false &&
+                        tilgjengeligSøkeperiodeIsLoading === false &&
                         hasValue(selvstendigInntektstapStartetDato) &&
-                        (avslag.søkerIkkeForGyldigTidsrom === true || availableDateRange === 'NO_AVAILABLE_DATERANGE')
+                        (avslag.søkerIkkeForGyldigTidsrom === true ||
+                            tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE')
                     }
                     stopMessage={<SelvstendigInfo.StoppForSentInntektstap />}>
                     <FormComponents.DatePicker
@@ -189,12 +190,12 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
 
                 {isVisible(SoknadFormField.selvstendigInntektIPerioden) && (
                     <LoadWrapper
-                        isLoading={availableDateRangeIsLoading}
+                        isLoading={tilgjengeligSøkeperiodeIsLoading}
                         contentRenderer={() => {
-                            if (availableDateRange === undefined) {
+                            if (tilgjengeligSøkeperiode === undefined) {
                                 return null;
                             }
-                            if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
+                            if (tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
                                         <SelvstendigInfo.StoppForSentInntektstap />
@@ -208,14 +209,14 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                         description={<SelvstendigInfo.infoAndreUtbetalingerFraNAV />}>
                                         <FormComponents.Input
                                             name={SoknadFormField.selvstendigInntektIPerioden}
-                                            label={txt.selvstendigInntektIPerioden(availableDateRange)}
+                                            label={txt.selvstendigInntektIPerioden(tilgjengeligSøkeperiode)}
                                             type="number"
                                             bredde="S"
                                             maxLength={8}
                                             max={MAX_INNTEKT}
                                             description={
                                                 <SelvstendigInfo.infoHvordanBeregneInntekt
-                                                    periode={availableDateRange}
+                                                    periode={tilgjengeligSøkeperiode}
                                                 />
                                             }
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
@@ -316,7 +317,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                             <SoknadQuestion
                                                 name={SoknadFormField.selvstendigHarHattInntektSomFrilanserIPerioden}
                                                 legend={txt.selvstendigHarHattInntektSomFrilanserIPerioden(
-                                                    availableDateRange
+                                                    tilgjengeligSøkeperiode
                                                 )}
                                             />
                                             <SoknadQuestion
@@ -328,12 +329,12 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                                     maxLength={8}
                                                     max={MAX_INNTEKT}
                                                     label={txt.selvstendigInntektSomFrilanserIPerioden(
-                                                        availableDateRange
+                                                        tilgjengeligSøkeperiode
                                                     )}
                                                     validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                                     description={
                                                         <FrilanserInfo.infoHvordanBeregneInntekt
-                                                            periode={availableDateRange}
+                                                            periode={tilgjengeligSøkeperiode}
                                                         />
                                                     }
                                                 />

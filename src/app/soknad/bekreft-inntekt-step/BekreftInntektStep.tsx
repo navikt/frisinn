@@ -30,6 +30,9 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
     const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSøknadsperiode } = values;
+    const {
+        tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
+    } = soknadEssentials;
 
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
@@ -64,7 +67,9 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
     const selvstendigBekreftet = selvstendigNæringsdrivende
         ? bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
-          (bekrefterSelvstendigInntektI2020 === YesOrNo.YES || bekrefterSelvstendigInntektI2019 === YesOrNo.YES) &&
+          (bekrefterSelvstendigInntektI2020 === YesOrNo.YES ||
+              bekrefterSelvstendigInntektI2019 === YesOrNo.YES ||
+              harSøktSomSelvstendigNæringsdrivende) &&
           (spørOmInntektSomFrilanserForSelvstendig
               ? bekrefterSelvstendigFrilanserInntektIPerioden === YesOrNo.YES
               : true)
@@ -100,6 +105,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
     const { isVisible } = BekreftInntektFormQuestions.getVisbility({
         ...values,
         apiValues,
+        tidligerePerioder: soknadEssentials.tidligerePerioder,
     });
 
     return (

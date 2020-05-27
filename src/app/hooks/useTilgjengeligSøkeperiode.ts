@@ -7,13 +7,13 @@ import { usePrevious } from './usePrevious';
 
 export type NO_AVAILABLE_DATERANGE = 'NO_AVAILABLE_DATERANGE';
 
-export type AvailableDateRange = DateRange | NO_AVAILABLE_DATERANGE | undefined;
+export type TilgjengeligSøkeperiode = DateRange | NO_AVAILABLE_DATERANGE | undefined;
 
-export const isValidDateRange = (dateRange: AvailableDateRange): dateRange is DateRange => {
+export const isValidDateRange = (dateRange: TilgjengeligSøkeperiode): dateRange is DateRange => {
     return dateRange !== 'NO_AVAILABLE_DATERANGE' && dateRange !== undefined;
 };
 
-function useAvailableSøknadsperiode({
+function useTilgjengeligSøkeperiode({
     inntektstapStartDato,
     currentSøknadsperiode,
     currentAvailableSøknadsperiode,
@@ -21,12 +21,11 @@ function useAvailableSøknadsperiode({
 }: {
     inntektstapStartDato: Date;
     currentSøknadsperiode: DateRange;
-    currentAvailableSøknadsperiode: AvailableDateRange;
+    currentAvailableSøknadsperiode: TilgjengeligSøkeperiode;
     startetSøknad: Date;
 }) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [availableDateRange, setAvailableDateRange] = useState<AvailableDateRange>(undefined);
-    const [isLimitedDateRange, setIsLimitedDateRange] = useState<boolean>(false);
+    const [tilgjengeligSøkeperiode, setTilgjengeligSøkeperiode] = useState<TilgjengeligSøkeperiode>(undefined);
     const [firstRender, setFirstRender] = useState(true);
 
     useEffect(() => {
@@ -37,15 +36,12 @@ function useAvailableSøknadsperiode({
 
     async function fetchStorage(date: Date) {
         setIsLoading(true);
-        setAvailableDateRange(undefined);
-        setIsLimitedDateRange(false);
+        setTilgjengeligSøkeperiode(undefined);
         try {
             const availableSøknadsperiode = await getSøknadsperiode({ inntektstapStartet: [date], startetSøknad });
-            setAvailableDateRange(availableSøknadsperiode);
-            setIsLimitedDateRange(moment(availableSøknadsperiode.from).isAfter(currentSøknadsperiode.from));
+            setTilgjengeligSøkeperiode(availableSøknadsperiode);
         } catch (error) {
-            setAvailableDateRange('NO_AVAILABLE_DATERANGE');
-            setIsLimitedDateRange(false);
+            setTilgjengeligSøkeperiode('NO_AVAILABLE_DATERANGE');
         } finally {
             setIsLoading(false);
         }
@@ -54,19 +50,19 @@ function useAvailableSøknadsperiode({
     useEffect(() => {
         if (firstRender) {
             if (currentAvailableSøknadsperiode) {
-                setAvailableDateRange(currentAvailableSøknadsperiode);
+                setTilgjengeligSøkeperiode(currentAvailableSøknadsperiode);
             }
             return;
         }
         if (inntektstapStartDato === undefined) {
-            setAvailableDateRange(undefined);
+            setTilgjengeligSøkeperiode(undefined);
         } else if (!isSameDate(inntektstapStartDato, prevSelectedDate)) {
             const dateToUse = moment.max(moment(currentSøknadsperiode.from), moment(inntektstapStartDato)).toDate();
             fetchStorage(dateToUse);
         }
     }, [inntektstapStartDato]);
 
-    return { availableDateRange, isLimitedDateRange, isLoading };
+    return { tilgjengeligSøkeperiode, isLoading };
 }
 
-export default useAvailableSøknadsperiode;
+export default useTilgjengeligSøkeperiode;
