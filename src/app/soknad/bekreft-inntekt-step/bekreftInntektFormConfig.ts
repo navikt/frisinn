@@ -70,7 +70,7 @@ const bekreftInntektFormConfig: QuestionConfig<BekreftInntektPayload, SoknadForm
         }) =>
             bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
             selvstendigNæringsdrivende !== undefined &&
-            (harSøktSomSelvstendigNæringsdrivende || selvstendigNæringsdrivende.inntekt2019 !== undefined),
+            (harSøktSomSelvstendigNæringsdrivende || selvstendigNæringsdrivende.inntekt2020 !== undefined),
         isAnswered: ({ bekrefterSelvstendigInntektI2020 }) => yesOrNoIsAnswered(bekrefterSelvstendigInntektI2020),
     },
     [SoknadFormField.bekrefterSelvstendigFrilanserInntektIPerioden]: {
