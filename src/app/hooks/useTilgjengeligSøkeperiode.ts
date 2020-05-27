@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
 import { getSøknadsperiode } from '../api/perioder';
-import { isSameDate } from '../utils/dateUtils';
+import { isSameDate, erÅpnetForAndregangssøknad } from '../utils/dateUtils';
 import { usePrevious } from './usePrevious';
+import { KORONA_DATE } from '../utils/koronaUtils';
 
 export type NO_AVAILABLE_DATERANGE = 'NO_AVAILABLE_DATERANGE';
 
@@ -57,7 +58,9 @@ function useTilgjengeligSøkeperiode({
         if (inntektstapStartDato === undefined) {
             setTilgjengeligSøkeperiode(undefined);
         } else if (!isSameDate(inntektstapStartDato, prevSelectedDate)) {
-            const dateToUse = moment.max(moment(currentSøknadsperiode.from), moment(inntektstapStartDato)).toDate();
+            const dateToUse = erÅpnetForAndregangssøknad(currentSøknadsperiode)
+                ? moment.max(moment(KORONA_DATE), moment(inntektstapStartDato)).toDate()
+                : moment.max(moment(currentSøknadsperiode.from), moment(inntektstapStartDato)).toDate();
             fetchStorage(dateToUse);
         }
     }, [inntektstapStartDato]);
