@@ -57,5 +57,5 @@ spec:
         - name: STARTET_PAA_SOKNAD
           value: "on"
         - name: ANDREGANGSSOKNAD
-          value: "ON"
+          value: "on"
 
