@@ -26,7 +26,8 @@ function useSoknadEssentials() {
                 tidligerePerioder.harSøktSomSelvstendigNæringsdrivende
             );
             const isSelvstendigNæringsdrivende =
-                personligeForetak !== undefined || tidligerePerioder.harSøktSomSelvstendigNæringsdrivende;
+                (personligeForetak !== undefined && personligeForetak.foretak.length > 0) ||
+                tidligerePerioder.harSøktSomSelvstendigNæringsdrivende;
 
             setSoknadEssentials({
                 person,
