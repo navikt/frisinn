@@ -30,7 +30,7 @@ const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | u
     return feil ? (feil[0] as FrilanserAvslagÅrsak) : undefined;
 };
 
-const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
+const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
 
     const {
@@ -82,6 +82,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
+            stepConfig={stepConfig}
             stepCleanup={(values) => {
                 const v = { ...values };
                 v.frilanserSoknadIsOk = frilanserSoknadIsOk;

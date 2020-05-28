@@ -4,8 +4,8 @@ import moment from 'moment';
 import { getSøknadsperiode } from '../api/perioder';
 import { isSameDate } from '../utils/dateUtils';
 import { KORONA_DATE } from '../utils/koronaUtils';
-import { erÅpnetForAndregangssøknad } from '../utils/soknadsperiodeUtils';
 import { usePrevious } from './usePrevious';
+import Søknadsperioden from '../utils/søknadsperioden';
 
 export type NO_AVAILABLE_DATERANGE = 'NO_AVAILABLE_DATERANGE';
 
@@ -59,7 +59,7 @@ function useTilgjengeligSøkeperiode({
         if (inntektstapStartDato === undefined) {
             setTilgjengeligSøkeperiode(undefined);
         } else if (!isSameDate(inntektstapStartDato, prevSelectedDate)) {
-            const dateToUse = erÅpnetForAndregangssøknad(currentSøknadsperiode)
+            const dateToUse = Søknadsperioden(currentSøknadsperiode).erÅpnetForAndregangssøknad
                 ? moment.max(moment(KORONA_DATE), moment(inntektstapStartDato)).toDate()
                 : moment.max(moment(currentSøknadsperiode.from), moment(inntektstapStartDato)).toDate();
             fetchStorage(dateToUse);

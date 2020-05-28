@@ -1,8 +1,7 @@
 import api, { ApiEndpoint } from '../api';
 import { TidligerePerioder } from '../../types/SoknadEssentials';
 import { DateRange } from '../../utils/dateUtils';
-import { isFeatureEnabled, Feature } from '../../utils/featureToggleUtils';
-import { erÅpnetForAndregangssøknad } from '../../utils/soknadsperiodeUtils';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 interface HarSoktTidligereApiRespons {
     harSøktSomSelvstendigNæringsdrivende: boolean;
@@ -11,10 +10,10 @@ interface HarSoktTidligereApiRespons {
 
 export async function getHarSoktTidligerePeriode(søknadsperiode: DateRange): Promise<TidligerePerioder> {
     try {
-        if (
-            erÅpnetForAndregangssøknad(søknadsperiode) === false ||
-            isFeatureEnabled(Feature.ANDREGANGSSOKNAD) === false
-        ) {
+        if (søknadsperiode === undefined) {
+            throw new Error('søknadsperiode is undefined');
+        }
+        if (Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad === false) {
             return Promise.resolve({
                 harSøktSomFrilanser: false,
                 harSøktSomSelvstendigNæringsdrivende: false,

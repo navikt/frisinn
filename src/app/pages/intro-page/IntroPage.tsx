@@ -16,10 +16,10 @@ import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSøknadsperiode from '../../hooks/useSøknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
-import { erÅpnetForAndregangssøknad } from '../../utils/soknadsperiodeUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
 import IntroFormInfo from './intro-form/IntroFormInfo';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 const bem = bemUtils('introPage');
 
@@ -42,7 +42,9 @@ const IntroPage: React.StatelessComponent = () => {
             currentSøknadsperiodeFetcher.søknadsperiode === undefined ||
             currentSøknadsperiodeFetcher?.error !== undefined);
 
-    const includeHarSøktFør = currentSøknadsperiode ? erÅpnetForAndregangssøknad(currentSøknadsperiode) : false;
+    const includeHarSøktFør = currentSøknadsperiode
+        ? Søknadsperioden(currentSøknadsperiode).erÅpnetForAndregangssøknad
+        : false;
 
     return (
         <Page

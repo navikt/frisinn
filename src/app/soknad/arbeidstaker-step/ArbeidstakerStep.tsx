@@ -17,7 +17,7 @@ import { StepConfigProps, StepID } from '../stepConfig';
 import { ArbeidstakerFormConfigPayload, ArbeidstakerFormQuestions } from './arbeidstakerFormConfig';
 import { cleanupArbeidstakerStep, getInntektsperiodeForArbeidsinntekt } from './arbeidstakerUtils';
 
-const ArbeidstakerStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
+const ArbeidstakerStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values } = useFormikContext<SoknadFormData>();
 
     const payload: ArbeidstakerFormConfigPayload = {
@@ -34,6 +34,7 @@ const ArbeidstakerStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: Step
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
             stepCleanup={cleanupArbeidstakerStep}
+            stepConfig={stepConfig}
             showSubmitButton={visibility.areAllQuestionsAnswered()}>
             {inntektsperiodeSomArbeidstaker === undefined ? (
                 <StopMessage>

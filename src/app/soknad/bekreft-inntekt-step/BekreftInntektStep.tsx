@@ -13,7 +13,6 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import FormSection from '../../pages/intro-page/FormSection';
 import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
@@ -25,8 +24,9 @@ import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
-const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
+const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
     const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSøknadsperiode } = values;
@@ -76,9 +76,9 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         : true;
 
     const frilansBekreftet = frilanser ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true;
-
+    const { arbeidstakerinntektErAktiv } = Søknadsperioden(soknadEssentials.currentSøknadsperiode);
     const arbeidstakerinntektBekreftet =
-        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) && apiValues.inntektIPeriodenSomArbeidstaker !== undefined
+        arbeidstakerinntektErAktiv && apiValues.inntektIPeriodenSomArbeidstaker !== undefined
             ? bekrefterArbeidstakerinntektIPerioden === YesOrNo.YES
             : true;
 
@@ -106,6 +106,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
         ...values,
         apiValues,
         tidligerePerioder: soknadEssentials.tidligerePerioder,
+        arbeidstakerinntektErAktiv: arbeidstakerinntektErAktiv,
     });
 
     return (
@@ -113,6 +114,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             id={StepID.BEKREFT_INNTEKT}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
+            stepConfig={stepConfig}
             showSubmitButton={showSubmitButton}>
             <Box padBottom="l" margin="xxxl">
                 {(frilanserSoknadIsOk || selvstendigSoknadIsOk) && (

@@ -33,7 +33,7 @@ import { SelvstendigFormQuestions, SelvstendigForstegangFormConfigPayload } from
 
 const txt = soknadQuestionText;
 
-const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssentials }: StepConfigProps) => {
+const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssentials, stepConfig }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
     const {
         selvstendigInntektstapStartetDato,
@@ -129,6 +129,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
             id={StepID.SELVSTENDIG}
             resetSoknad={resetSoknad}
             onValidFormSubmit={onValidSubmit}
+            stepConfig={stepConfig}
             stepCleanup={(values) => {
                 const v = { ...values };
                 v.selvstendigSoknadIsOk = hasValidSelvstendigFormData;

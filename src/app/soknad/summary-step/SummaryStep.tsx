@@ -25,7 +25,6 @@ import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import * as apiUtils from '../../utils/apiUtils';
 import { formatDateRange } from '../../utils/dateRangeUtils';
-import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { navigateToErrorPage, relocateToLoginPage } from '../../utils/navigationUtils';
 import { SentryEventName, triggerSentryCustomError } from '../../utils/sentryUtils';
@@ -33,15 +32,17 @@ import { validateBekrefterOpplysninger } from '../../validation/fieldValidations
 import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
-import { StepID } from '../stepConfig';
+import { StepID, StepConfigInterface } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import KronerSvar from './KronerSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
+    stepConfig: StepConfigInterface;
     resetSoknad: () => void;
     onSoknadSent: () => void;
 }
@@ -85,7 +86,12 @@ const getAnonymizedSoknadData = (
     }
 };
 
-const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSoknadSent, soknadEssentials }: Props) => {
+const OppsummeringStep: React.StatelessComponent<Props> = ({
+    resetSoknad,
+    onSoknadSent,
+    soknadEssentials,
+    stepConfig,
+}: Props) => {
     const intl = useIntl();
     const { values } = useFormikContext<SoknadFormData>();
     const history = useHistory();
@@ -141,6 +147,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
         <SoknadStep
             id={StepID.SUMMARY}
             resetSoknad={resetSoknad}
+            stepConfig={stepConfig}
             onValidFormSubmit={() => {
                 if (apiValues) {
                     setTimeout(() => {
@@ -199,7 +206,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                         <FrilanserSummary apiData={apiValues.frilanser} />
                                     </Box>
                                 )}
-                                {isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+                                {Søknadsperioden(soknadEssentials.currentSøknadsperiode).arbeidstakerinntektErAktiv &&
                                     apiValues.inntektIPeriodenSomArbeidstaker !== undefined &&
                                     inntektsperiodeSomArbeidstaker && (
                                         <Box margin={'xxl'}>

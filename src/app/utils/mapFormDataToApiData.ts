@@ -1,4 +1,4 @@
-import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { formatDateToApiFormat, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { soknadQuestionText } from '../soknad/soknadQuestionText';
@@ -13,9 +13,9 @@ import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField
 import { isRunningInDevEnvironment } from './envUtils';
 import { hasValidHistoriskInntekt } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError, triggerSentryError } from './sentryUtils';
-import { isFeatureEnabled, Feature } from './featureToggleUtils';
 import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { formatDateRange } from './dateRangeUtils';
+import Søknadsperioden from './søknadsperioden';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -272,10 +272,14 @@ export const mapFrilanserFormDataToApiData = (
     return undefined;
 };
 
-export const mapArbeidstakerinntektIPerioden = (formData: SoknadFormData): number | undefined => {
+export const mapArbeidstakerinntektIPerioden = (
+    formData: SoknadFormData,
+    søknadsperiode: DateRange
+): number | undefined => {
     const { arbeidstakerInntektIPerioden, arbeidstakerHarHattInntektIPerioden } = formData;
+    const { arbeidstakerinntektErAktiv } = Søknadsperioden(søknadsperiode);
     if (
-        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+        arbeidstakerinntektErAktiv &&
         arbeidstakerHarHattInntektIPerioden === YesOrNo.YES &&
         arbeidstakerInntektIPerioden !== undefined &&
         arbeidstakerInntektIPerioden > 0
@@ -316,7 +320,10 @@ export const mapFormDataToApiData = (
                 frilanserStopReason === undefined
                     ? mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData)
                     : undefined,
-            inntektIPeriodenSomArbeidstaker: mapArbeidstakerinntektIPerioden(formData),
+            inntektIPeriodenSomArbeidstaker: mapArbeidstakerinntektIPerioden(
+                formData,
+                soknadEssentials.currentSøknadsperiode
+            ),
         };
     } catch (e) {
         triggerSentryError(SentryEventName.mapSoknadFailed, e);

@@ -2,7 +2,6 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 import { TidligerePerioder } from '../../types/SoknadEssentials';
 
@@ -10,6 +9,7 @@ type BekreftInntektFormData = SoknadFormData;
 
 type BekreftInntektPayload = Partial<BekreftInntektFormData> & { apiValues: SoknadApiData } & {
     tidligerePerioder: TidligerePerioder;
+    arbeidstakerinntektErAktiv: boolean;
 };
 
 const selvstendigOk = (values: BekreftInntektPayload): boolean => {
@@ -111,7 +111,7 @@ const bekreftInntektFormConfig: QuestionConfig<BekreftInntektPayload, SoknadForm
         isIncluded: (payload) =>
             selvstendigOk(payload) &&
             frilanserIsOk(payload) &&
-            isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+            payload.arbeidstakerinntektErAktiv &&
             payload.arbeidstakerHarHattInntektIPerioden === YesOrNo.YES,
         isAnswered: ({ bekrefterArbeidstakerinntektIPerioden }) =>
             yesOrNoIsAnswered(bekrefterArbeidstakerinntektIPerioden),

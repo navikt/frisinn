@@ -1,6 +1,5 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useFormikContext } from 'formik';
 import { Knapp } from 'nav-frontend-knapper';
 import FormBlock from 'common/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from 'common/utils/commonFieldErrorRenderer';
@@ -9,7 +8,7 @@ import Step, { StepProps } from '../components/step/Step';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { getStepTexts } from '../utils/stepUtils';
 import SoknadFormComponents from './SoknadFormComponents';
-import { getStepConfig } from './stepConfig';
+import { StepConfigInterface } from './stepConfig';
 
 export interface FormikStepProps {
     children: React.ReactNode;
@@ -17,6 +16,7 @@ export interface FormikStepProps {
     showButtonSpinner?: boolean;
     buttonDisabled?: boolean;
     onValidFormSubmit?: () => void;
+    stepConfig: StepConfigInterface;
     skipValidation?: boolean;
     stepCleanup?: (values: SoknadFormData) => SoknadFormData;
     resetSoknad: () => void;
@@ -24,11 +24,8 @@ export interface FormikStepProps {
 
 type Props = FormikStepProps & StepProps;
 
-const SoknadStep: React.FunctionComponent<Props> = ({ resetSoknad, stepCleanup, ...restProps }: Props) => {
+const SoknadStep: React.FunctionComponent<Props> = ({ resetSoknad, stepCleanup, stepConfig, ...restProps }: Props) => {
     const intl = useIntl();
-    const { values } = useFormikContext<SoknadFormData>();
-
-    const stepConfig = getStepConfig(values);
     const { children, onValidFormSubmit, showButtonSpinner, showSubmitButton = true, buttonDisabled, id } = restProps;
     const texts = getStepTexts(intl, id, stepConfig);
 
