@@ -19,6 +19,7 @@ import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUti
 import { erÅpnetForAndregangssøknad } from '../../utils/soknadsperiodeUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
+import IntroFormInfo from './intro-form/IntroFormInfo';
 
 const bem = bemUtils('introPage');
 
@@ -135,7 +136,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                         setHarIkkeSøktFør(value);
                                                     }}
                                                     legend="Har du søkt om denne kompensasjonen tidligere?"
-                                                    description="Du kan svare ja om du har søkt og ikke fått svar enda, eller fått avslag."
+                                                    description={<IntroFormInfo.infoHarDuSøktTidligere />}
                                                     radios={[
                                                         {
                                                             value: YesOrNo.YES,

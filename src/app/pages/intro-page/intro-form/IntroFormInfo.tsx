@@ -189,6 +189,17 @@ const frilanserKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøknad:
         {visInfoOmTrekkeSøknad && infoOmTrekkingAvSøknad()}
     </>
 );
+
+const infoHarDuSøktTidligere = () => (
+    <ExpandableInfo title="Hva betyr dette?">
+        Du kan svare ja hvis du har søkt, og har
+        <ul className="infoList">
+            <li>fått innvilget kompensasjon</li>
+            <li>fått avslag på kompensasjon </li>
+            <li>ikke fått svar enda</li>
+        </ul>
+    </ExpandableInfo>
+);
 const IntroFormInfo = {
     ikkeGyldigAlder,
     selvstendigIkkeTattUtInntekt,
@@ -214,5 +225,6 @@ const IntroFormInfo = {
     vilIkkeTrekkeAnnenSøknadFrilanser,
     infoSelvstendigTrekkeAnnenSøknad: infoSelvstendigTrekkeAnnenSøknad,
     infoFrilanserTrekkeAnnenSøknad: infoFrilanserTrekkeAnnenSøknad,
+    infoHarDuSøktTidligere,
 };
 export default IntroFormInfo;
