@@ -1,6 +1,13 @@
 import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import Søknadsperioden from '../søknadsperioden';
 
+jest.mock('../featureToggleUtils', () => ({
+    isFeatureEnabled: () => true,
+    Feature: {
+        ANDREGANGSSOKNAD: 'ANDREGANGSSOKNAD',
+    },
+}));
+
 describe('erÅpnetForAndregangssøknad', () => {
     it('returns false if søknadsperiode is before may 2020', () => {
         const periode: DateRange = {

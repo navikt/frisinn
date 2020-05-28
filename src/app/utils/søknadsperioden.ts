@@ -5,7 +5,7 @@ import { isFeatureEnabled, Feature } from './featureToggleUtils';
 const datoErEtterMai2020 = (dato: Date) => moment(dato).isAfter(apiStringDateToDate('2020-04-30'), 'day');
 
 const erÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
-    return datoErEtterMai2020(søknadsperiode.from);
+    return isFeatureEnabled(Feature.ANDREGANGSSOKNAD) && datoErEtterMai2020(søknadsperiode.from);
 };
 
 const skalSpørreOmArbeidstakerinntekt = (søknadsperiode: DateRange) => {
