@@ -8,16 +8,18 @@ interface HarSoktTidligereApiRespons {
     harSøktSomFrilanser: boolean;
 }
 
+const harIkkeSøktTidligere: TidligerePerioder = {
+    harSøktSomFrilanser: false,
+    harSøktSomSelvstendigNæringsdrivende: false,
+};
+
 export async function getHarSoktTidligerePeriode(søknadsperiode: DateRange): Promise<TidligerePerioder> {
     try {
         if (søknadsperiode === undefined) {
             throw new Error('søknadsperiode is undefined');
         }
         if (Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad === false) {
-            return Promise.resolve({
-                harSøktSomFrilanser: false,
-                harSøktSomSelvstendigNæringsdrivende: false,
-            });
+            return Promise.resolve(harIkkeSøktTidligere);
         }
         const { data } = await api.get<HarSoktTidligereApiRespons>(ApiEndpoint.harSoktTidligerePeriode);
         return Promise.resolve(data);
