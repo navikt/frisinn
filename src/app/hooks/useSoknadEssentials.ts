@@ -21,7 +21,7 @@ function useSoknadEssentials() {
         try {
             const person = await getSoker();
             const currentSøknadsperiode = await getSøknadsperiode();
-            const tidligerePerioder = await getHarSoktTidligerePeriode();
+            const tidligerePerioder = await getHarSoktTidligerePeriode(currentSøknadsperiode);
             const personligeForetak = await getPersonligeForetak(
                 tidligerePerioder.harSøktSomSelvstendigNæringsdrivende
             );

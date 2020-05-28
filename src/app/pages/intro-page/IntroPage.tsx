@@ -15,8 +15,8 @@ import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSøknadsperiode from '../../hooks/useSøknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
-import { erÅpnetForAndregangssøknad } from '../../utils/dateUtils';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
+import { erÅpnetForAndregangssøknad } from '../../utils/soknadsperiodeUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
 

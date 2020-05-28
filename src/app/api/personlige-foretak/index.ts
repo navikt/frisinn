@@ -31,7 +31,7 @@ const parsePersonligeForetakApiResponse = (data: PersonligeForetakApiResponse): 
     };
 };
 
-export async function getPersonligeForetak(harSøktTidligere: boolean): Promise<PersonligeForetak | undefined> {
+export async function getPersonligeForetak(harSøktTidligere?: boolean): Promise<PersonligeForetak | undefined> {
     if (harSøktTidligere) {
         return Promise.resolve(undefined);
     }

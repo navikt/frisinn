@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
 import { getSøknadsperiode } from '../api/perioder';
-import { isSameDate, erÅpnetForAndregangssøknad } from '../utils/dateUtils';
-import { usePrevious } from './usePrevious';
+import { isSameDate } from '../utils/dateUtils';
 import { KORONA_DATE } from '../utils/koronaUtils';
+import { erÅpnetForAndregangssøknad } from '../utils/soknadsperiodeUtils';
+import { usePrevious } from './usePrevious';
 
 export type NO_AVAILABLE_DATERANGE = 'NO_AVAILABLE_DATERANGE';
 
