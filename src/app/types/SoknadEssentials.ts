@@ -17,7 +17,7 @@ export interface Foretak {
 
 export interface PersonligeForetak {
     foretak: Foretak[];
-    tidligsteRegistreringsdato: Date;
+    tidligsteRegistreringsdato: Date | undefined;
 }
 
 export interface TidligerePerioder {

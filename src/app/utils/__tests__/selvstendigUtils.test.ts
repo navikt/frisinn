@@ -1,5 +1,10 @@
-import { hasValidHistoriskInntekt, harSelskaperRegistrertFør2019 } from '../selvstendigUtils';
+import {
+    hasValidHistoriskInntekt,
+    harSelskaperRegistrertFør2019,
+    isSelvstendigNæringsdrivende,
+} from '../selvstendigUtils';
 import { PersonligeForetakMock as pf } from '../../__mock__/personligeForetakMock';
+import { TidligerePerioder } from '../../types/SoknadEssentials';
 
 describe('selvstendigUtils', () => {
     describe('hasValidHistoriskInntekt', () => {
@@ -53,6 +58,41 @@ describe('selvstendigUtils', () => {
             expect(harSelskaperRegistrertFør2019(pf.personligeFortak2017)).toBeTruthy();
             expect(harSelskaperRegistrertFør2019(pf.personligeFortak2018)).toBeTruthy();
             expect(harSelskaperRegistrertFør2019(pf.personligeFortak1998)).toBeTruthy();
+        });
+    });
+
+    describe('isSelvstendigNæringsdrivende', () => {
+        const ingenTidligerePerioder: TidligerePerioder = {
+            harSøktSomFrilanser: false,
+            harSøktSomSelvstendigNæringsdrivende: false,
+        };
+        it('returns false if personligForetak is undefined or foretak is empty', () => {
+            expect(isSelvstendigNæringsdrivende(undefined, ingenTidligerePerioder)).toBeFalsy();
+            expect(
+                isSelvstendigNæringsdrivende(
+                    { foretak: [], tidligsteRegistreringsdato: undefined },
+                    ingenTidligerePerioder
+                )
+            ).toBeFalsy();
+        });
+        it('returns true user has personligeForetak', () => {
+            expect(
+                isSelvstendigNæringsdrivende(
+                    {
+                        tidligsteRegistreringsdato: new Date(),
+                        foretak: [{ navn: 'abc', organisasjonsnummer: '123', registreringsdato: new Date() }],
+                    },
+                    ingenTidligerePerioder
+                )
+            ).toBeTruthy();
+        });
+        it('returns true when harSøktSomSelvstendigNæringsdrivende === true', () => {
+            expect(
+                isSelvstendigNæringsdrivende(undefined, {
+                    harSøktSomFrilanser: false,
+                    harSøktSomSelvstendigNæringsdrivende: true,
+                })
+            ).toBeTruthy();
         });
     });
 });

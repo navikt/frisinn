@@ -1,6 +1,6 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
-import { PersonligeForetak } from '../types/SoknadEssentials';
+import { PersonligeForetak, TidligerePerioder } from '../types/SoknadEssentials';
 import { SelvstendigFormData } from '../types/SoknadFormData';
 
 export const hasValidHistoriskInntekt = ({
@@ -19,4 +19,14 @@ export const harSelskaperRegistrertFør2019 = (personligeForetak?: PersonligeFor
         return moment(personligeForetak.tidligsteRegistreringsdato).isBefore(apiStringDateToDate('2019-01-01'), 'year');
     }
     return false;
+};
+
+export const isSelvstendigNæringsdrivende = (
+    personligeForetak: PersonligeForetak | undefined,
+    tidligerePerioder: TidligerePerioder
+): boolean => {
+    return (
+        (personligeForetak !== undefined && personligeForetak.foretak.length > 0) ||
+        tidligerePerioder.harSøktSomSelvstendigNæringsdrivende
+    );
 };

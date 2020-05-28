@@ -119,7 +119,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                     svar: formatYesOrNoAnswer(selvstendigRevisorNAVKanTaKontakt),
                 });
             }
-            if (personligeForetak && harSøktTidligere === false) {
+            if (personligeForetak && personligeForetak.tidligsteRegistreringsdato && harSøktTidligere === false) {
                 const avsluttetSelskapPeriode = getPeriodeForAvsluttaSelskaper(
                     personligeForetak.tidligsteRegistreringsdato
                 );
