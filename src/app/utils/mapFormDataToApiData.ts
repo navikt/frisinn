@@ -155,9 +155,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
                 inntekt2019: selvstendigBeregnetInntektsårstall === 2019 ? selvstendigInntekt2019 : undefined,
                 inntekt2020: selvstendigBeregnetInntektsårstall === 2020 ? selvstendigInntekt2020 : undefined,
                 opphørtePersonligeForetak:
-                    selvstendigHarAvsluttetSelskaper === YesOrNo.YES &&
-                    selvstendigAvsluttaSelskaper &&
-                    isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER)
+                    selvstendigHarAvsluttetSelskaper === YesOrNo.YES && selvstendigAvsluttaSelskaper
                         ? selvstendigAvsluttaSelskaper.map((s) => ({
                               navn: s.navn,
                               registreringsdato: formatDateToApiFormat(s.opprettetDato),

@@ -50,10 +50,6 @@ spec:
           value: {{image}}
         - name: PERSISTENCE
           value: "off"
-        - name: AVSLUTTA_SELSKAPER
-          value: "on"
-        - name: STARTET_PAA_SOKNAD
-          value: "off"
         - name: ANDREGANGSSOKNAD
           value: "off"
 

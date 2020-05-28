@@ -177,11 +177,9 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({ resetSoknad, onSokn
                                     </div>
                                 </Box>
                                 <Box>
-                                    {isFeatureEnabled(Feature.STARTET_PAA_SOKNAD) && (
-                                        <SummaryBlock header="Startet på søknad">
-                                            <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
-                                        </SummaryBlock>
-                                    )}
+                                    <SummaryBlock header="Startet på søknad">
+                                        <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
+                                    </SummaryBlock>
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">
                                         <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
                                     </SummaryBlock>

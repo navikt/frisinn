@@ -9,18 +9,17 @@ import LoadWrapper from '../../../components/load-wrapper/LoadWrapper';
 import StopMessage from '../../../components/stop-message/StopMessage';
 import VeilederSVG from '../../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
-import useTilgjengeligSøkeperiode, { isValidDateRange } from '../../../hooks/useTilgjengeligSøkeperiode';
 import useInntektsperiode from '../../../hooks/useInntektsperiode';
 import { usePrevious } from '../../../hooks/usePrevious';
+import useTilgjengeligSøkeperiode, { isValidDateRange } from '../../../hooks/useTilgjengeligSøkeperiode';
 import FormSection from '../../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../../utils/dateUtils';
-import { Feature, isFeatureEnabled } from '../../../utils/featureToggleUtils';
 import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../../utils/selvstendigUtils';
 import { hasValue, MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../../validation/fieldValidations';
-import TilgjengeligSøkeperiodeInfo from '../../info/TilgjengeligSøkeperiodeInfo';
 import FrilanserInfo from '../../info/FrilanserInfo';
 import SelvstendigInfo from '../../info/SelvstendigInfo';
+import TilgjengeligSøkeperiodeInfo from '../../info/TilgjengeligSøkeperiodeInfo';
 import SoknadErrors from '../../soknad-errors/SoknadErrors';
 import FormComponents from '../../SoknadFormComponents';
 import SoknadQuestion from '../../SoknadQuestion';
@@ -73,8 +72,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
 
     const avslag = kontrollerSelvstendigSvar(values);
 
-    const skalSpørreOmAvsluttaSelskaper =
-        isFeatureEnabled(Feature.AVSLUTTA_SELSKAPER) && harSelskaperRegistrertFør2019(personligeForetak) === false;
+    const skalSpørreOmAvsluttaSelskaper = harSelskaperRegistrertFør2019(personligeForetak) === false;
 
     const payload: SelvstendigForstegangFormConfigPayload = {
         ...values,
