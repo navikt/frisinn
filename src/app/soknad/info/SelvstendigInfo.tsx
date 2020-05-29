@@ -44,8 +44,8 @@ const introAndregangssøknad = () => {
     return (
         <>
             <p>
-                Du skal oppgi inntektene samlet for alle selskapene, selv om du kanskje bare har tapt inntekt i det noen
-                av selskapene.
+                Hvis du har flere selskaper som selvstendig næringsdrivende, skal du oppgi inntektene samlet for alle
+                selskapene. Dette gjelder også hvis du for eksempel bare har tapt inntekt i ett av selskapene.
             </p>
         </>
     );
@@ -97,7 +97,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul className="infoList">
-                <li>Inntekter du har tatt ut av selskapet</li>
+                <li>Personinntekt fra næringen</li>
                 <li>Eventuelle utbetalinger fra NAV som du får som selvstendig næringsdrivende</li>
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
@@ -170,7 +170,9 @@ const getMessageForAvslag = (
     }
 };
 
-const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
+const infoNårStartetInntektstapet = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesNårStartetInntektstapet søknadsperiode={søknadsperiode} />
+);
 
 const SelvstendigInfo = {
     intro,

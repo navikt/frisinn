@@ -130,7 +130,11 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}
                         label={soknadQuestionText.frilanserInntektstapStartetDato}
-                        description={<SelvstendigInfo.infoNårStartetInntektstapet />}
+                        description={
+                            <SelvstendigInfo.infoNårStartetInntektstapet
+                                søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                            />
+                        }
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,

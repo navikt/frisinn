@@ -175,7 +175,11 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}
-                        description={<SelvstendigInfo.infoNårStartetInntektstapet />}
+                        description={
+                            <SelvstendigInfo.infoNårStartetInntektstapet
+                                søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                            />
+                        }
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,

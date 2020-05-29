@@ -1,6 +1,8 @@
 import React from 'react';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { Element } from 'nav-frontend-typografi';
+import { DateRange } from '../../utils/dateUtils';
+import moment from 'moment';
 
 export const FellesInfoHvaMenesMedTaptInntekt = () => (
     <ExpandableInfo title="Hva menes med tapt inntekt?">
@@ -10,19 +12,22 @@ export const FellesInfoHvaMenesMedTaptInntekt = () => (
     </ExpandableInfo>
 );
 
-export const FellesNårStartetInntektstapet = () => (
-    <ExpandableInfo title="Hvilken dato skal legges inn?">
-        Her skal du legge inn datoen fra da inntektstapet ditt startet på grunn av koronautbruddet.
-        <p>
-            Hvis du har hatt en utbetaling fra NAV i perioden <strong>etter</strong> at inntektstapet ditt startet,
-            legger du inn datoen fra den dagen utbetalingen fra NAV stoppet.
-        </p>
-        <p>
-            Det vil si at hvis du for eksempel har hatt omsorgspenger frem til 29. mars, skal du legge inn 30. mars som
-            dato for når inntektstapet ditt startet.
-        </p>
-    </ExpandableInfo>
-);
+export const FellesNårStartetInntektstapet = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
+    const mnd = moment(søknadsperiode.to).subtract(1, 'month').format('MMMM');
+    return (
+        <ExpandableInfo title="Hvilken dato skal legges inn?">
+            Her skal du legge inn datoen fra da inntektstapet ditt startet på grunn av koronautbruddet.
+            <p>
+                Hvis du har hatt en utbetaling fra NAV i perioden <strong>etter</strong> at inntektstapet ditt startet,
+                legger du inn datoen fra den dagen utbetalingen fra NAV stoppet.
+            </p>
+            <p>
+                Det vil si at hvis du for eksempel har hatt omsorgspenger frem til 25. {mnd}, skal du legge inn 26.{' '}
+                {mnd} som dato for når inntektstapet ditt startet.
+            </p>
+        </ExpandableInfo>
+    );
+};
 
 export const FellesInfoAndreUtbetalingerFraNav = ({ rolle }: { rolle: string }) => (
     <ExpandableInfo title="Hva vil dette si?">

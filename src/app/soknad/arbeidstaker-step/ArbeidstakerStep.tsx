@@ -48,9 +48,7 @@ const ArbeidstakerStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSu
                         validate={validateYesOrNoIsAnswered}
                         description={<ArbeidstakerInfo.infoHarHattArbeidstakerinntektIPerioden />}
                     />
-                    <SoknadQuestion
-                        name={SoknadFormField.arbeidstakerInntektIPerioden}
-                        validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}>
+                    <SoknadQuestion name={SoknadFormField.arbeidstakerInntektIPerioden}>
                         <SoknadFormComponents.Input
                             name={SoknadFormField.arbeidstakerInntektIPerioden}
                             label={txt.arbeidstakerInntektIPerioden(inntektsperiodeSomArbeidstaker)}
@@ -59,7 +57,7 @@ const ArbeidstakerStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSu
                             maxLength={8}
                             max={MAX_INNTEKT}
                             description={<ArbeidstakerInfo.infoOmArbeidstakerinntektIPerioden />}
-                            validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
+                            validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}
                         />
                     </SoknadQuestion>
                 </QuestionVisibilityContext.Provider>

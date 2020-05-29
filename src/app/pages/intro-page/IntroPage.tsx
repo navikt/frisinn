@@ -101,11 +101,21 @@ const IntroPage: React.StatelessComponent = () => {
                                                     www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/
                                                 </Lenke>{' '}
                                             </p>
-                                            <p>
-                                                Ordningen trådte i kraft 14. mars 2020. I søknaden oppgir du fra når
-                                                inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
-                                                inntektstap.
-                                            </p>
+                                            {includeHarSøktFør && (
+                                                <p>
+                                                    Du må selv dekke de første 16 dagene av inntektstapet. Dette gjøres
+                                                    kun én gang. Det vil si at om du har fått innvilget kompensasjon
+                                                    gjennom denne ordningen tidligere, og du har dekket de første 16
+                                                    dagene, skal du ikke gjøre det om igjen nå.
+                                                </p>
+                                            )}
+                                            {includeHarSøktFør === false && (
+                                                <p>
+                                                    Ordningen trådte i kraft 14. mars 2020. I søknaden oppgir du fra når
+                                                    inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
+                                                    inntektstap.
+                                                </p>
+                                            )}
                                             <p>
                                                 Du må søke etterskuddsvis måned for måned. Hvis du har inntektstap i
                                                 mai, kan du tidligst søke kompensasjon for denne måneden i begynnelsen

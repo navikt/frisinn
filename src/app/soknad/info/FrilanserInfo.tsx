@@ -61,7 +61,9 @@ const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak): React.ReactNode => 
     }
 };
 
-const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
+const infoNårStartetInntektstapet = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesNårStartetInntektstapet søknadsperiode={søknadsperiode} />
+);
 
 const FrilanserInfo = {
     StoppForSentInntektstap,
