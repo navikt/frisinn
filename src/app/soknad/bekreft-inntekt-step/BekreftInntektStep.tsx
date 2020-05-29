@@ -17,7 +17,6 @@ import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
-import InfoOmSøknadOgFrist from '../info/InfoOmSøknadOgFrist';
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadErrors from '../soknad-errors/SoknadErrors';
 import SoknadStep from '../SoknadStep';
@@ -25,6 +24,7 @@ import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
 import Søknadsperioden from '../../utils/søknadsperioden';
+import BekreftSummerInfo from '../info/BekreftSummerInfo';
 
 const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -149,7 +149,7 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
 
             {(frilanserSoknadIsOk === true || selvstendigSoknadIsOk === true) && (
                 <Box>
-                    <InfoOmSøknadOgFrist søknadsperiode={soknadEssentials.currentSøknadsperiode} />
+                    <BekreftSummerInfo />
                 </Box>
             )}
 
