@@ -121,9 +121,9 @@ const selvstendigHvaMenesMedInntekt = () => (
 
 const hvaErStartdatoForInntektstap = () => (
     <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 16. mai,
-        dekker du selv hele mai. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-        tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
+        Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. Du må selv dekke de første 16 dagene av
+        inntektstapet. Det vil si at hvis inntektstapet ditt startet 16. mai, dekker du selv hele mai. I dette tilfellet
+        betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
     </ExpandableInfo>
 );
 
