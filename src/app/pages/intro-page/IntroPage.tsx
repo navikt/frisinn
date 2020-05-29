@@ -117,11 +117,6 @@ const IntroPage: React.StatelessComponent = () => {
                                                 </p>
                                             )}
                                             <p>
-                                                Du må søke etterskuddsvis måned for måned. Hvis du har inntektstap i
-                                                mai, kan du tidligst søke kompensasjon for denne måneden i begynnelsen
-                                                av juni.
-                                            </p>
-                                            <p>
                                                 <Lenke
                                                     href="https://www.nav.no/no/person/innhold-til-person-forside/nyheter/midlertidig-ordning-for-selvstendig-naeringsdrivende-og-frilansere-som-mister-inntekt-pa-grunn-av-koronautbruddet"
                                                     target="_blank">

@@ -43,10 +43,14 @@ const ArbeidstakerStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSu
             ) : (
                 <QuestionVisibilityContext.Provider value={{ visibility }}>
                     <SoknadQuestion
+                        name={SoknadFormField.arbeidstakerErArbeidstaker}
+                        legend={txt.arbeidstakerErArbeidstaker}
+                        validate={validateYesOrNoIsAnswered}
+                    />
+                    <SoknadQuestion
                         name={SoknadFormField.arbeidstakerHarHattInntektIPerioden}
                         legend={txt.arbeidstakerHarHattInntektIPerioden(inntektsperiodeSomArbeidstaker)}
                         validate={validateYesOrNoIsAnswered}
-                        description={<ArbeidstakerInfo.infoHarHattArbeidstakerinntektIPerioden />}
                     />
                     <SoknadQuestion name={SoknadFormField.arbeidstakerInntektIPerioden}>
                         <SoknadFormComponents.Input

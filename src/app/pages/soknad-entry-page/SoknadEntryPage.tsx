@@ -45,7 +45,7 @@ const SoknadEntryPage = ({
                 <Guide kompakt={true} type="plakat" svg={<VeilederSVG mood="happy" />}>
                     <Box margin="l">
                         <Undertittel tag="h1">
-                            Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet, i perioden{' '}
+                            Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet, fra og med{' '}
                             <DateRangeView dateRange={currentSøknadsperiode} />
                         </Undertittel>
                     </Box>
@@ -61,15 +61,18 @@ const SoknadEntryPage = ({
                             du normalt ville fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske
                             inntekten du har mistet, og ikke fra når du eventuelt har mistet oppdrag.
                         </p>
+                        {/* TODO - legge på junisjekk */}
                         <p>
+                            Du må selv dekke de første 16 dagene av inntektstapet. Dette gjøres kun én gang. Det vil si
+                            at om du har fått innvilget kompensasjon gjennom denne ordningen tidligere, og du har dekket
+                            de første 16 dagene, skal du ikke gjøre det om igjen nå.
+                        </p>
+
+                        {/* <p>
                             Du kan søke om inntektstap som gjelder fra tidligst 14. mars. De første 16 dagene av
                             inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 30. mars
                             2020.
-                        </p>
-                        <p>
-                            Du må søke etterskuddsvis måned for måned. Inntektstap som gjelder for mai, kan du tidligst
-                            sende inn søknad om fra begynnelsen av juni.
-                        </p>
+                        </p> */}
                     </Box>
                 </Guide>
                 {!harKontonummer && (

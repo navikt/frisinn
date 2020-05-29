@@ -10,11 +10,16 @@ const Field = SoknadFormField;
 export type ArbeidstakerFormConfigPayload = ArbeidstakerFormData & SoknadEssentials;
 
 const ArbeidstakerFormConfig: QuestionConfig<ArbeidstakerFormConfigPayload, SoknadFormField> = {
+    [Field.arbeidstakerErArbeidstaker]: {
+        isAnswered: ({ arbeidstakerErArbeidstaker }) => yesOrNoIsAnswered(arbeidstakerErArbeidstaker),
+    },
     [Field.arbeidstakerHarHattInntektIPerioden]: {
+        isIncluded: ({ arbeidstakerErArbeidstaker }) => arbeidstakerErArbeidstaker === YesOrNo.YES,
         isAnswered: ({ arbeidstakerHarHattInntektIPerioden }) => yesOrNoIsAnswered(arbeidstakerHarHattInntektIPerioden),
     },
     [Field.arbeidstakerInntektIPerioden]: {
-        isIncluded: ({ arbeidstakerHarHattInntektIPerioden }) => arbeidstakerHarHattInntektIPerioden === YesOrNo.YES,
+        isIncluded: ({ arbeidstakerHarHattInntektIPerioden, arbeidstakerErArbeidstaker }) =>
+            arbeidstakerHarHattInntektIPerioden === YesOrNo.YES && arbeidstakerErArbeidstaker === YesOrNo.YES,
         isAnswered: ({ arbeidstakerInntektIPerioden }) => hasValue(arbeidstakerInntektIPerioden),
     },
 };

@@ -37,6 +37,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
             <ul className="infoList">
+                <li>Utbetaling fra denne ordningen</li>
                 <li>Inntekt som arbeidstaker</li>
                 <li>Inntekt som selvstendig næringsdrivende </li>
                 <li>Uføretrygd </li>

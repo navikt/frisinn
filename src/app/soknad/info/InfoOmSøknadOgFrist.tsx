@@ -7,9 +7,20 @@ const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange 
     const frist = getSøknadsfristForPeriode(søknadsperiode);
     return (
         <InfoMessage>
-            <strong>Du kan kun sende inn søknaden én gang per periode</strong>. Det vil si at hvis du sender inn en
-            søknad med opplysninger som er feil, kan du ikke sende ny søknad eller trekke den søknaden du har sendt.
-            <p
+            <strong>Du kan nå søke om kompensasjon for inntektstap i {getMonthName(søknadsperiode.to)}.</strong>
+            <p>
+                <strong>
+                    Søknadsfrist er <DateView date={frist} />
+                </strong>
+                <br />
+                Du må søke etterskuddsvis måned for måned.
+            </p>
+            <p>
+                <strong>Du kan kun sende inn søknaden én gang per periode</strong>.<br /> Det vil si at hvis du sender
+                inn en søknad med opplysninger som er feil, kan du ikke sende ny søknad eller trekke den søknaden du har
+                sendt.
+            </p>
+            {/* <p
                 style={{
                     fontSize: '1.1rem',
                     margin: '0 0 1.5rem 0',
@@ -17,12 +28,7 @@ const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange 
                     borderBottom: '1px solid #5690a2',
                 }}>
                 <strong>Det er derfor viktig at du kontrollerer at tallene du legger inn er riktige.</strong>
-            </p>
-            <p>
-                <strong>Søknadsfristen</strong> er innen utgangen av måneden <strong>etter</strong> den måneden du søker
-                for. Det vil si at frist for å søke kompensasjon for {getMonthName(søknadsperiode.to)}, er{' '}
-                <DateView date={frist} />.
-            </p>
+            </p> */}
         </InfoMessage>
     );
 };
