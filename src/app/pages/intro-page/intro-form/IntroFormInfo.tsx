@@ -1,17 +1,10 @@
 import React from 'react';
-import DateRangeView from '../../../components/date-range-view/DateRangeView';
-import { DateRange } from '../../../utils/dateUtils';
-import { Element } from 'nav-frontend-typografi';
-import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import Lenke from 'nav-frontend-lenker';
-import PhoneView from '../../../components/phone-view/PhoneView';
+import { Element } from 'nav-frontend-typografi';
+import DateRangeView from '../../../components/date-range-view/DateRangeView';
+import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import { FellesStoppSentInntektstap } from '../../../soknad/info/FellesInfo';
-
-const infoOmTrekkingAvSøknad = () => (
-    <p style={{ marginBottom: 0 }}>
-        For å trekke den andre søknaden din, må du ta kontakt med NAV på telefon <PhoneView>55 55 33 33</PhoneView>.
-    </p>
-);
+import { DateRange } from '../../../utils/dateUtils';
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
@@ -38,10 +31,9 @@ const selvstendigFårDekketTapet = () => (
     </>
 );
 
-const selvstendigKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøknad: boolean }) => (
+const selvstendigKanSøke = () => (
     <>
         Du kan søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende.
-        {visInfoOmTrekkeSøknad && infoOmTrekkingAvSøknad()}
         <p>
             <strong>Du kommer videre til søknadsskjemaet etter at du har svart på de resterende spørsmålene.</strong>
         </p>
@@ -104,7 +96,8 @@ const infoSelvstendigTrekkeAnnenSøknad = () => (
         Eksempel:
         <br />
         Du har søkt om omsorgspenger, men nå vil du heller søke om kompensasjon for tapt inntekt i denne ordningen. Da
-        må du trekke søknaden om omsorgspenger. Dette gjør du ved å kontakte oss på telefon 55 55 33 33.
+        må du trekke søknaden om omsorgspenger. Dtte gjør du ved å{' '}
+        <Lenke href="https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss">sende en beskjed til oss</Lenke>.
     </ExpandableInfo>
 );
 
@@ -113,23 +106,24 @@ const infoFrilanserTrekkeAnnenSøknad = () => (
         Eksempel:
         <br />
         Du har søkt om dagpenger, men nå vil du heller søke om kompensasjon for tapt inntekt i denne ordningen. Da må du
-        trekke søknaden om dagpenger. Dette gjør du ved å kontakte oss på telefon 55 55 33 33.
+        trekke søknaden om dagpenger. Dtte gjør du ved å{' '}
+        <Lenke href="https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss">sende en beskjed til oss</Lenke>.
     </ExpandableInfo>
 );
 
 const selvstendigHvaMenesMedInntekt = () => (
     <ExpandableInfo title="Hva menes med dette?">
-        For å kunne søke om kompensasjon for tapt inntekt, må du ha tatt ut inntekt fra selskapet ditt. Hvis selskapet
-        er registrert i 2019 eller tidligere, må du ha tatt ut inntekt i 2019.
-        <br /> Hvis selskapet er registrert i 2020, må du ha tatt ut inntekt før 1. mars 2020.
+        For å kunne søke kompensasjon for tapt inntekt, må du ha hatt personinntekt fra næringen din. Hvis selskapet er
+        registrert i 2019 eller tidligere, må du ha hatt personinntekt fra næringen i 2019. Hvis selskapet er registrert
+        i 2020, må du ha hatt personinntekt fra næringen før 1. mars 2020.
     </ExpandableInfo>
 );
 
 const hvaErStartdatoForInntektstap = () => (
     <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
-        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
+        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 16. mai,
+        dekker du selv hele mai. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
+        tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
     </ExpandableInfo>
 );
 
@@ -183,20 +177,15 @@ const vilIkkeTrekkeAnnenSøknadFrilanser = () => (
     <>Du må trekke den andre søknaden du har sendt inn for å kunne søke kompensasjon for tapt inntekt som frilanser.</>
 );
 
-const frilanserKanSøke = ({ visInfoOmTrekkeSøknad }: { visInfoOmTrekkeSøknad: boolean }) => (
-    <>
-        Du kan søke om kompensasjon for tapt inntekt som frilanser.
-        {visInfoOmTrekkeSøknad && infoOmTrekkingAvSøknad()}
-    </>
-);
+const frilanserKanSøke = () => <>Du kan søke om kompensasjon for tapt inntekt som frilanser.</>;
 
 const infoHarDuSøktTidligere = () => (
     <ExpandableInfo title="Hva betyr dette?">
-        Du kan svare ja hvis du har søkt, og har
+        Du kan svare ja hvis du har søkt, og
         <ul className="infoList">
             <li>fått innvilget kompensasjon</li>
-            <li>fått avslag på kompensasjon </li>
             <li>ikke fått svar enda</li>
+            <li>fått avslag på søknaden </li>
         </ul>
     </ExpandableInfo>
 );

@@ -155,12 +155,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                         />
                                         {selvstendigIsOk && (
                                             <SuksessMessage margin="l">
-                                                <Info.selvstendigKanSøke
-                                                    visInfoOmTrekkeSøknad={
-                                                        selvstendigVilFortsetteTilSøknad === YesOrNo.YES &&
-                                                        selvstendigHarAlleredeSøkt === YesOrNo.YES
-                                                    }
-                                                />
+                                                <Info.selvstendigKanSøke />
                                             </SuksessMessage>
                                         )}
                                     </FormSection>
@@ -213,12 +208,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                         />
                                         {frilanserIsOk && (
                                             <SuksessMessage margin="l">
-                                                <Info.frilanserKanSøke
-                                                    visInfoOmTrekkeSøknad={
-                                                        frilansVilFortsetteTilSøknad === YesOrNo.YES &&
-                                                        frilansHarAlleredeSøkt === YesOrNo.YES
-                                                    }
-                                                />
+                                                <Info.frilanserKanSøke />
                                             </SuksessMessage>
                                         )}
                                     </FormSection>
