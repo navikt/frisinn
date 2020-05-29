@@ -276,10 +276,11 @@ export const mapArbeidstakerinntektIPerioden = (
     formData: SoknadFormData,
     søknadsperiode: DateRange
 ): number | undefined => {
-    const { arbeidstakerInntektIPerioden, arbeidstakerHarHattInntektIPerioden } = formData;
+    const { arbeidstakerErArbeidstaker, arbeidstakerInntektIPerioden, arbeidstakerHarHattInntektIPerioden } = formData;
     const { arbeidstakerinntektErAktiv } = Søknadsperioden(søknadsperiode);
     if (
         arbeidstakerinntektErAktiv &&
+        arbeidstakerErArbeidstaker === YesOrNo.YES &&
         arbeidstakerHarHattInntektIPerioden === YesOrNo.YES &&
         arbeidstakerInntektIPerioden !== undefined &&
         arbeidstakerInntektIPerioden > 0
