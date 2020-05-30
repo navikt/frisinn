@@ -41,12 +41,13 @@ export const FellesStoppSentInntektstap = ({ rolle, søknadsperiode }: { rolle: 
     const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
     const dagOgMnd = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
+    const nesteMnd = moment(søknadsperiode.to).add(2, 'month').toDate();
     return (
         <>
             <Element>Du må vente med å søke kompensasjon for tapt inntekt som {rolle}</Element>
             Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet{' '}
             {dagOgMnd} eller senere, dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis
-            måned for måned. I dette tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
+            måned for måned. I dette tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av {nesteMnd}.
         </>
     );
 };
