@@ -5,6 +5,7 @@ import DateView from '../../components/date-view/DateView';
 
 const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
     const frist = getSøknadsfristForPeriode(søknadsperiode);
+    const forlengetFristApril = true;
     return (
         <InfoMessage>
             <strong>Du kan kun sende inn søknaden én gang per periode</strong>. Det vil si at hvis du sender inn en
@@ -18,11 +19,19 @@ const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange 
                 }}>
                 <strong>Det er derfor viktig at du kontrollerer at tallene du legger inn er riktige.</strong>
             </p>
-            <p>
-                <strong>Søknadsfristen</strong> er innen utgangen av måneden <strong>etter</strong> den måneden du søker
-                for. Det vil si at frist for å søke kompensasjon for {getMonthName(søknadsperiode.to)}, er{' '}
-                <DateView date={frist} />.
-            </p>
+            {forlengetFristApril === true && (
+                <p>
+                    <strong>Søknadsfristen</strong> for april er 3. juni. Fra 4. juni åpnes det for å søke om
+                    kompensasjon for tapt inntekt i mai.
+                </p>
+            )}
+            {!forlengetFristApril && (
+                <p>
+                    <strong>Søknadsfristen</strong> er innen utgangen av måneden <strong>etter</strong> den måneden du
+                    søker for. Det vil si at frist for å søke kompensasjon for {getMonthName(søknadsperiode.to)}, er{' '}
+                    <DateView date={frist} />.
+                </p>
+            )}
         </InfoMessage>
     );
 };
