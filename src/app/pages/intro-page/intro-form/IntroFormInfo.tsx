@@ -1,12 +1,13 @@
 import React from 'react';
+import moment from 'moment';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
+import DateView, { formatDate } from '../../../components/date-view/DateView';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import { FellesStoppSentInntektstap } from '../../../soknad/info/FellesInfo';
 import { DateRange, getMonthName } from '../../../utils/dateUtils';
 import Søknadsperioden from '../../../utils/søknadsperioden';
-import { formatDate } from '../../../components/date-view/DateView';
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
@@ -129,11 +130,13 @@ const hvaErStartdatoForInntektstap = ({ søknadsperiode }: { søknadsperiode: Da
     const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
     const dag = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
+    const nesteMnd = moment(søknadsperiode.to).add(2, 'month').toDate();
     return (
         <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
             Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet {dag}{' '}
             eller senere, dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis måned for
-            måned. I dette tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
+            måned. I dette tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av{' '}
+            <DateView date={nesteMnd} format="monthAndYear" />.
         </ExpandableInfo>
     );
 };
