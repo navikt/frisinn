@@ -131,9 +131,9 @@ const hvaErStartdatoForInntektstap = ({ søknadsperiode }: { søknadsperiode: Da
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
     return (
         <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
-            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet {dag},
-            dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-            tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
+            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet {dag}{' '}
+            eller senere, dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis måned for
+            måned. I dette tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
         </ExpandableInfo>
     );
 };
