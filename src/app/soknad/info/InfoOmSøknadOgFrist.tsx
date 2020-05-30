@@ -1,18 +1,23 @@
 import React from 'react';
+import moment from 'moment';
 import InfoMessage from '../../components/info-message/InfoMessage';
 import DateView from '../../components/date-view/DateView';
-import TimeView from '../../components/time-view/TimeView';
 import { DateRange, getSøknadsfristForPeriode, getMonthName } from '../../utils/dateUtils';
 
 const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
     const frist = getSøknadsfristForPeriode(søknadsperiode);
+    const åpningNestePeriode = moment(frist).add(1, 'day').toDate();
+    const mndDennePerioden = getMonthName(søknadsperiode.to);
+    const mndNestePeriode = getMonthName(moment(søknadsperiode.to).add(1, 'month').toDate());
     return (
         <InfoMessage>
             <strong>Du kan nå søke om kompensasjon for inntektstap i {getMonthName(søknadsperiode.to)}.</strong>
             <p>
                 <strong>
-                    Søknadsfrist er <DateView date={frist} />, klokken <TimeView date={frist} />
+                    Søknadsfristen for {mndDennePerioden} er <DateView date={frist} format="dateAndMonth" />
                 </strong>
+                . Fra <DateView date={åpningNestePeriode} format="dateAndMonth" /> åpnes det for å søke om kompensasjon
+                for tapt inntekt i {mndNestePeriode}.
                 <br />
                 Du må søke etterskuddsvis måned for måned.
             </p>
