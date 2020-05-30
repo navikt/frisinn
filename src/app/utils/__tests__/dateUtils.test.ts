@@ -28,7 +28,7 @@ describe('dateUtils', () => {
                 to: apiStringDateToDate('2020-04-30'),
             };
             const frist = getSøknadsfristForPeriode(periode);
-            expect(formatDateToApiFormat(frist)).toEqual('2020-06-03');
+            expect(formatDateToApiFormat(frist)).toEqual('2020-06-04');
         });
         it('returns june 30. for may period', () => {
             const periode: DateRange = {
