@@ -20,7 +20,10 @@ export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): 
 };
 
 export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {
-    return moment(søknadsperiode.to).add(1, 'month').endOf('month').toDate();
+    if (søknadsperiode.to.getMonth() === 3) {
+        return moment(apiStringDateToDate('2020-06-03')).endOf('day').toDate();
+    }
+    return moment(søknadsperiode.to).add(1, 'month').endOf('month').endOf('day').toDate();
 };
 
 export const getMonthName = (date: Date): string => {

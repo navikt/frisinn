@@ -93,7 +93,7 @@ const getInntektsperiode = () => {
     };
 };
 
-const simulerJuni = true;
+const simulerJuni = false;
 
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;

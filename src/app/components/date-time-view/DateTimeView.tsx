@@ -12,9 +12,9 @@ interface Props {
 export const formatDate = (date: Date, dateFormat: DateFormat = 'default'): string => {
     switch (dateFormat) {
         case 'monthAndYear':
-            return moment(date).format(' MMMM YYYY, HH:MM');
+            return moment(date).format(' MMMM YYYY, HH:mm');
         default:
-            return moment(date).format('D. MMMM YYYY, HH:MM');
+            return moment(date).format('D. MMMM YYYY, HH:mm');
     }
 };
 

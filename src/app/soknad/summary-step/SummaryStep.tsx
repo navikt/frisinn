@@ -9,12 +9,10 @@ import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
-import moment from 'moment';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
 import { formatName } from 'common/utils/personUtils';
 import { sendSoknad } from '../../api/soknad';
-import DateTimeView from '../../components/date-time-view/DateTimeView';
 import Guide from '../../components/guide/Guide';
 import SummaryBlock from '../../components/summary-block/SummaryBlock';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
@@ -184,9 +182,6 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                                     </div>
                                 </Box>
                                 <Box>
-                                    <SummaryBlock header="Startet på søknad">
-                                        <DateTimeView date={moment.utc(apiValues.startetSøknad).toDate()} />
-                                    </SummaryBlock>
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">
                                         <JaNeiSvar harSvartJa={apiValues.selvstendigNæringsdrivende !== undefined} />
                                     </SummaryBlock>

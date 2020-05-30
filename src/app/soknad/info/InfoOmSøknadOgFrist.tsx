@@ -1,7 +1,8 @@
 import React from 'react';
 import InfoMessage from '../../components/info-message/InfoMessage';
-import { DateRange, getSøknadsfristForPeriode, getMonthName } from '../../utils/dateUtils';
 import DateView from '../../components/date-view/DateView';
+import TimeView from '../../components/time-view/TimeView';
+import { DateRange, getSøknadsfristForPeriode, getMonthName } from '../../utils/dateUtils';
 
 const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
     const frist = getSøknadsfristForPeriode(søknadsperiode);
@@ -10,7 +11,7 @@ const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange 
             <strong>Du kan nå søke om kompensasjon for inntektstap i {getMonthName(søknadsperiode.to)}.</strong>
             <p>
                 <strong>
-                    Søknadsfrist er <DateView date={frist} />
+                    Søknadsfrist er <DateView date={frist} />, klokken <TimeView date={frist} />
                 </strong>
                 <br />
                 Du må søke etterskuddsvis måned for måned.
