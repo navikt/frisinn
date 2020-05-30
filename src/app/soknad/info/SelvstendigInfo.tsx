@@ -51,7 +51,9 @@ const introAndregangssøknad = () => {
     );
 };
 
-const StoppForSentInntektstap = () => <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} />;
+const StoppForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} søknadsperiode={søknadsperiode} />
+);
 
 const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle={rolleNavn} />;
 
@@ -153,6 +155,7 @@ const infoSelvstendigInntekt2019 = () => (
 
 const getMessageForAvslag = (
     årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
+    søknadsperiode: DateRange,
     inntektÅrstall?: HistoriskInntektÅrstall
 ): React.ReactNode => {
     switch (årsak) {
@@ -161,7 +164,7 @@ const getMessageForAvslag = (
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom:
-            return <StoppForSentInntektstap />;
+            return <StoppForSentInntektstap søknadsperiode={søknadsperiode} />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet:
             return <StoppYtelseDekkerHeleTapet />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt:

@@ -4,7 +4,9 @@ import { Element } from 'nav-frontend-typografi';
 import DateRangeView from '../../../components/date-range-view/DateRangeView';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import { FellesStoppSentInntektstap } from '../../../soknad/info/FellesInfo';
-import { DateRange } from '../../../utils/dateUtils';
+import { DateRange, getMonthName } from '../../../utils/dateUtils';
+import Søknadsperioden from '../../../utils/søknadsperioden';
+import { formatDate } from '../../../components/date-view/DateView';
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
@@ -21,7 +23,9 @@ const selvstendigIkkeTapPgaKorona = () => (
     </>
 );
 
-const selvstendigForSentInntektstap = () => <FellesStoppSentInntektstap rolle="selvstendig næringsdrivende" />;
+const selvstendigForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesStoppSentInntektstap rolle="selvstendig næringsdrivende" søknadsperiode={søknadsperiode} />
+);
 
 const selvstendigFårDekketTapet = () => (
     <>
@@ -48,7 +52,9 @@ const frilanserIkkeTapPgaKorona = () => (
     </>
 );
 
-const frilanserForSentInntektstap = () => <FellesStoppSentInntektstap rolle="frilanser" />;
+const frilanserForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesStoppSentInntektstap rolle="frilanser" søknadsperiode={søknadsperiode} />
+);
 
 const frilanserFårDekketTapet = () => (
     <>
@@ -119,13 +125,18 @@ const selvstendigHvaMenesMedInntekt = () => (
     </ExpandableInfo>
 );
 
-const hvaErStartdatoForInntektstap = () => (
-    <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 16. mai,
-        dekker du selv hele mai. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-        tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
-    </ExpandableInfo>
-);
+const hvaErStartdatoForInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
+    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
+    const dag = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
+    const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
+    return (
+        <ExpandableInfo title="Du må selv dekke de 16 første dagene av inntektstapet">
+            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet {dag},
+            dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
+            tilfellet betyr det at du tidligst kan sende inn søknad i begynnelsen av juli 2020.
+        </ExpandableInfo>
+    );
+};
 
 const ikkeValgtSelvstendigEllerFrilanser = () => (
     <>

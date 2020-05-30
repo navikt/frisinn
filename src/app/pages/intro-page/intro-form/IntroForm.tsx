@@ -6,7 +6,7 @@ import moment from 'moment';
 import StopMessage from '../../../components/stop-message/StopMessage';
 import SuksessMessage from '../../../components/suksess-message/SuksessMessage';
 import { QuestionVisibilityContext } from '../../../context/QuestionVisibilityContext';
-import { DateRange, getSisteGyldigeDagForInntektstapIPeriode } from '../../../utils/dateUtils';
+import { DateRange } from '../../../utils/dateUtils';
 import { hasValue } from '../../../validation/fieldValidations';
 import FormSection from '../FormSection';
 import { IntroResultProps } from '../IntroPage';
@@ -18,6 +18,7 @@ import introFormUtils from './introFormUtils';
 import useAccessCheck from '../../../hooks/useAccessKrav';
 import { apenAlderAccessCheck } from '../../../utils/apiAccessCheck';
 import LoadWrapper from '../../../components/load-wrapper/LoadWrapper';
+import Søknadsperioden from '../../../utils/søknadsperioden';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
@@ -64,7 +65,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
     const selvstendigIsOk = introFormUtils.canApplyAsSelvstendig(values);
     const frilanserIsOk = introFormUtils.canApplyAsFrilanser(values);
 
-    const sisteGyldigeDagForInntektstap: Date = getSisteGyldigeDagForInntektstapIPeriode(soknadsperiode);
+    const { sisteGyldigeDagForInntektstap } = Søknadsperioden(soknadsperiode);
 
     const canContinueToSoknad = areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk;
 
@@ -130,8 +131,12 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                             legend={introFormText.selvstendigInntektstapStartetFørFrist(
                                                 sisteGyldigeDagForInntektstap
                                             )}
-                                            description={<Info.hvaErStartdatoForInntektstap />}
-                                            stopMessage={<Info.selvstendigForSentInntektstap />}
+                                            description={
+                                                <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />
+                                            }
+                                            stopMessage={
+                                                <Info.selvstendigForSentInntektstap søknadsperiode={soknadsperiode} />
+                                            }
                                         />
                                         <IntroFormQuestion
                                             name={IntroFormField.selvstendigFårDekketTapet}
@@ -181,9 +186,13 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                             legend={introFormText.frilanserInntektstapStartetFørFrist(
                                                 sisteGyldigeDagForInntektstap
                                             )}
-                                            description={<Info.hvaErStartdatoForInntektstap />}
+                                            description={
+                                                <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />
+                                            }
                                             showStop={frilanserInntektstapStartetFørFrist === YesOrNo.NO}
-                                            stopMessage={<Info.frilanserForSentInntektstap />}
+                                            stopMessage={
+                                                <Info.frilanserForSentInntektstap søknadsperiode={soknadsperiode} />
+                                            }
                                         />
                                         <IntroFormQuestion
                                             name={IntroFormField.frilanserFårDekketTapet}

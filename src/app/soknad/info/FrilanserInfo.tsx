@@ -16,7 +16,9 @@ import {
 
 const rolleNavn = 'frilanser';
 
-const StoppForSentInntektstap = () => <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} />;
+const StoppForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} søknadsperiode={søknadsperiode} />
+);
 
 const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle={rolleNavn} />;
 
@@ -51,12 +53,12 @@ const infoAndreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rol
 
 const infoTaptInntektPgaKorona = () => <FellesInfoHvaMenesMedTaptInntekt />;
 
-const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak): React.ReactNode => {
+const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak, søknadsperiode: DateRange): React.ReactNode => {
     switch (årsak) {
         case FrilanserAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
         case FrilanserAvslagÅrsak.søkerIkkeForGyldigTidsrom:
-            return <StoppForSentInntektstap />;
+            return <StoppForSentInntektstap søknadsperiode={søknadsperiode} />;
         case FrilanserAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
             return <StoppYtelseDekkerHeleTapet />;
     }

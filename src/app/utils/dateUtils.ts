@@ -16,7 +16,7 @@ export const isSameDate = (date1: Date | undefined, date2: Date | undefined): bo
 };
 
 export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): Date => {
-    return moment(dateRange.to).endOf('day').subtract(15, 'days').toDate();
+    return moment(dateRange.to).endOf('day').subtract(16, 'days').toDate();
 };
 
 export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {

@@ -156,7 +156,11 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
             {selvstendigSoknadIsOk === false && selvstendigStopReason && (
                 <FormSection title="Selvstendig næringsdrivende">
                     <StopMessage>
-                        {SelvstendigInfo.getMessageForAvslag(selvstendigStopReason, selvstendigBeregnetInntektsårstall)}
+                        {SelvstendigInfo.getMessageForAvslag(
+                            selvstendigStopReason,
+                            soknadEssentials.currentSøknadsperiode,
+                            selvstendigBeregnetInntektsårstall
+                        )}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>
                                 Gå tilbake til informasjon om selvstendig næringsdrivende
@@ -224,7 +228,7 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
             {frilanserSoknadIsOk === false && frilanserStopReason && (
                 <FormSection title="Inntekt som frilanser">
                     <StopMessage>
-                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason)}
+                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.currentSøknadsperiode)}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.FRILANSER)}>
                                 Gå tilbake til informasjon om frilans

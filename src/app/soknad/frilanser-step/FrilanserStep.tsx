@@ -157,7 +157,9 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                             if (tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
-                                        <FrilanserInfo.StoppForSentInntektstap />
+                                        <FrilanserInfo.StoppForSentInntektstap
+                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                        />
                                     </StopMessage>
                                 );
                             }

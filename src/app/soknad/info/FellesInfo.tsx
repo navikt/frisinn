@@ -1,8 +1,10 @@
 import React from 'react';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { Element } from 'nav-frontend-typografi';
-import { DateRange } from '../../utils/dateUtils';
+import { DateRange, getMonthName } from '../../utils/dateUtils';
 import moment from 'moment';
+import Søknadsperioden from '../../utils/søknadsperioden';
+import { formatDate } from '../../components/date-view/DateView';
 
 export const FellesInfoHvaMenesMedTaptInntekt = () => (
     <ExpandableInfo title="Hva menes med tapt inntekt?">
@@ -35,22 +37,39 @@ export const FellesInfoAndreUtbetalingerFraNav = ({ rolle }: { rolle: string }) 
     </ExpandableInfo>
 );
 
-export const FellesStoppSentInntektstap = ({ rolle }: { rolle: string }) => (
-    <>
-        <Element>Du må vente med å søke kompensasjon for tapt inntekt som {rolle}</Element>
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
-        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned. I dette
-        tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
-    </>
-);
+export const FellesStoppSentInntektstap = ({ rolle, søknadsperiode }: { rolle: string; søknadsperiode: DateRange }) => {
+    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
+    const dagOgMnd = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
+    const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
+    return (
+        <>
+            <Element>Du må vente med å søke kompensasjon for tapt inntekt som {rolle}</Element>
+            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet{' '}
+            {dagOgMnd}. , dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis måned for
+            måned. I dette tilfelle betyr det at du tidligst kan sende inn søknad i begynnelsen av juni 2020.
+        </>
+    );
+};
 
-export const FellesStoppForSentInntektstapInnlogget = ({ rolle }: { rolle: string }) => (
-    <>
-        <Element>Du må vente med å søke som {rolle}</Element>
-        Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet 15. april,
-        dekker du selv hele april. Ordningen er lagt opp til at du må søke etterskuddsvis måned for måned.
-    </>
-);
+export const FellesStoppForSentInntektstapInnlogget = ({
+    rolle,
+    søknadsperiode,
+}: {
+    rolle: string;
+    søknadsperiode: DateRange;
+}) => {
+    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
+    const dagOgMnd = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
+    const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
+    return (
+        <>
+            <Element>Du må vente med å søke som {rolle}</Element>
+            Du må selv dekke de første 16 dagene av inntektstapet. Det vil si at hvis inntektstapet ditt startet{' '}
+            {dagOgMnd}, dekker du selv hele {mnd}. Ordningen er lagt opp til at du må søke etterskuddsvis måned for
+            måned.
+        </>
+    );
+};
 
 export const FellesStoppIkkeTapPgaKoronaInnlogget = ({ rolle }: { rolle: string }) => (
     <>

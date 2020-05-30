@@ -171,7 +171,11 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                         (avslag.søkerIkkeForGyldigTidsrom === true ||
                             tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE')
                     }
-                    stopMessage={<SelvstendigInfo.StoppForSentInntektstap />}>
+                    stopMessage={
+                        <SelvstendigInfo.StoppForSentInntektstap
+                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                        />
+                    }>
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}
@@ -201,7 +205,9 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                             if (tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
-                                        <SelvstendigInfo.StoppForSentInntektstap />
+                                        <SelvstendigInfo.StoppForSentInntektstap
+                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                        />
                                     </StopMessage>
                                 );
                             }

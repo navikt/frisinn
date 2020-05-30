@@ -111,7 +111,11 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                         (avslag.søkerIkkeForGyldigTidsrom === true ||
                             tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE')
                     }
-                    stopMessage={<SelvstendigInfo.StoppForSentInntektstap />}>
+                    stopMessage={
+                        <SelvstendigInfo.StoppForSentInntektstap
+                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                        />
+                    }>
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
                         label={txt.selvstendigInntektstapStartetDato}

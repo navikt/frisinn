@@ -6,12 +6,12 @@ interface Props {
     nowrap?: boolean;
 }
 
-export const formatDate = (date: Date): string => {
+const formatTime = (date: Date): string => {
     return moment(date).format('HH:mm');
 };
 
 const TimeView = ({ date, nowrap = true }: Props) => (
-    <span style={nowrap ? { whiteSpace: 'nowrap' } : undefined}>{formatDate(date)}</span>
+    <span style={nowrap ? { whiteSpace: 'nowrap' } : undefined}>{formatTime(date)}</span>
 );
 
 export default TimeView;
