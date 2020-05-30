@@ -14,6 +14,7 @@ import { ResetSoknadFunction } from '../../soknad/Soknad';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { createDocumentPageTitle } from '../../utils/documentPageTitle';
 import SoknadEntryForm from './SoknadEntryForm';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -36,6 +37,7 @@ const SoknadEntryPage = ({
 
     const intl = useIntl();
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;
+    const erÅpnetForAndregangssøknad = Søknadsperioden(currentSøknadsperiode).erÅpnetForAndregangssøknad;
 
     return (
         <Page
@@ -61,18 +63,20 @@ const SoknadEntryPage = ({
                             du normalt ville fått hvis det ikke var for koronautbruddet. Det gjelder altså den faktiske
                             inntekten du har mistet, og ikke fra når du eventuelt har mistet oppdrag.
                         </p>
-                        {/* TODO - legge på junisjekk */}
-                        <p>
-                            Du må selv dekke de første 16 dagene av inntektstapet. Dette gjøres kun én gang. Det vil si
-                            at om du har fått innvilget kompensasjon gjennom denne ordningen tidligere, og du har dekket
-                            de første 16 dagene, skal du ikke gjøre det om igjen nå.
-                        </p>
-
-                        {/* <p>
-                            Du kan søke om inntektstap som gjelder fra tidligst 14. mars. De første 16 dagene av
-                            inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 30. mars
-                            2020.
-                        </p> */}
+                        {erÅpnetForAndregangssøknad && (
+                            <p>
+                                Du må selv dekke de første 16 dagene av inntektstapet. Dette gjøres kun én gang. Det vil
+                                si at om du har fått innvilget kompensasjon gjennom denne ordningen tidligere, og du har
+                                dekket de første 16 dagene, skal du ikke gjøre det om igjen nå.
+                            </p>
+                        )}
+                        {erÅpnetForAndregangssøknad === false && (
+                            <p>
+                                Du kan søke om inntektstap som gjelder fra tidligst 14. mars. De første 16 dagene av
+                                inntektstapet må du dekke selv. Det betyr at du tidligst kan få kompensasjon fra 30.
+                                mars 2020.
+                            </p>
+                        )}
                     </Box>
                 </Guide>
                 {!harKontonummer && (
