@@ -11,7 +11,7 @@ describe('dateRangeView', () => {
                 from: apiStringDateToDate('2010-01-02'),
                 to: apiStringDateToDate('2020-01-02'),
             };
-            expect(formatDateRange(dr)).toEqual('02. januar 2010 - 02. januar 2020');
+            expect(formatDateRange(dr)).toEqual('2. januar 2010 - 2. januar 2020');
         });
     });
     describe('expendedFormat === false', () => {
