@@ -1,24 +1,17 @@
 import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import Søknadsperioden from '../søknadsperioden';
 
-jest.mock('../featureToggleUtils', () => ({
-    isFeatureEnabled: () => true,
-    Feature: {
-        ANDREGANGSSOKNAD: 'ANDREGANGSSOKNAD',
-    },
-}));
-
 describe('erÅpnetForAndregangssøknad', () => {
-    it('returns false if søknadsperiode is before may 2020', () => {
+    it('returns false if søknadsperiode is before end of søknadsfrist første periode', () => {
         const periode: DateRange = {
             from: apiStringDateToDate('2020-04-01'),
-            to: apiStringDateToDate('2020-04-30'),
+            to: apiStringDateToDate('2020-05-03'),
         };
         expect(Søknadsperioden(periode).erÅpnetForAndregangssøknad).toBeFalsy();
     });
-    it('returns true if søknadsperiode is from or after may 2020', () => {
+    it('returns true if søknadsperiode is after søknadsfrist første periode', () => {
         const periode: DateRange = {
-            from: apiStringDateToDate('2020-05-01'),
+            from: apiStringDateToDate('2020-05-04'),
             to: apiStringDateToDate('2020-05-31'),
         };
         expect(Søknadsperioden(periode).erÅpnetForAndregangssøknad).toBeTruthy();

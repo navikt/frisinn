@@ -129,7 +129,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                             name={IntroFormField.selvstendigInntektstapStartetFørFrist}
                                             showStop={selvstendigInntektstapStartetFørFrist === YesOrNo.NO}
                                             legend={introFormText.selvstendigInntektstapStartetFørFrist(
-                                                sisteGyldigeDagForInntektstap
+                                                moment(sisteGyldigeDagForInntektstap).add(1, 'day').toDate()
                                             )}
                                             description={
                                                 <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />

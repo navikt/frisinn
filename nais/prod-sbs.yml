@@ -50,9 +50,3 @@ spec:
           value: {{image}}
         - name: PERSISTENCE
           value: "off"
-        - name: ARBEIDSTAKERINNTEKT
-          value: "off"
-        - name: ANDREGANGSSOKNAD
-          value: "off"
-
-

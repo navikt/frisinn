@@ -1,16 +1,18 @@
 import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
 import { getSisteGyldigeDagForInntektstapIPeriode } from './dateUtils';
-import { Feature, isFeatureEnabled } from './featureToggleUtils';
 
-const datoErEtterMai2020 = (dato: Date) => moment(dato).isAfter(apiStringDateToDate('2020-04-30'), 'day');
+export const DATO_SØKNADSFRIST_FØRSTE_PERIODE = apiStringDateToDate('2020-05-03');
+
+const datoErEtterSøknadfristFørstePeriode = (dato: Date) =>
+    moment(dato).isAfter(DATO_SØKNADSFRIST_FØRSTE_PERIODE, 'day');
 
 const getErÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
-    return isFeatureEnabled(Feature.ANDREGANGSSOKNAD) && datoErEtterMai2020(søknadsperiode.from);
+    return datoErEtterSøknadfristFørstePeriode(søknadsperiode.from);
 };
 
 const getSkalSpørreOmArbeidstakerinntekt = (søknadsperiode: DateRange) => {
-    return isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) && datoErEtterMai2020(søknadsperiode.from);
+    return datoErEtterSøknadfristFørstePeriode(søknadsperiode.from);
 };
 
 const getFørsteUgyldigeStartdatoForInntektstap = (søknadsperiode: DateRange): Date => {

@@ -50,8 +50,4 @@ spec:
           value: dev
         - name: PERSISTENCE
           value: "off"
-        - name: ARBEIDSTAKERINNTEKT
-          value: "on"
-        - name: ANDREGANGSSOKNAD
-          value: "on"
 

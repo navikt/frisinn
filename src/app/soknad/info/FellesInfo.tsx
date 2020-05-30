@@ -41,7 +41,7 @@ export const FellesStoppSentInntektstap = ({ rolle, søknadsperiode }: { rolle: 
     const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
     const dagOgMnd = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
-    const nesteMnd = moment(søknadsperiode.to).add(2, 'month').toDate();
+    const nesteMnd = getMonthName(moment(søknadsperiode.to).add(2, 'month').toDate());
     return (
         <>
             <Element>Du må vente med å søke kompensasjon for tapt inntekt som {rolle}</Element>
