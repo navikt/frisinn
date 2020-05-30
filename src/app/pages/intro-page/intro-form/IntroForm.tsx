@@ -65,7 +65,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
     const selvstendigIsOk = introFormUtils.canApplyAsSelvstendig(values);
     const frilanserIsOk = introFormUtils.canApplyAsFrilanser(values);
 
-    const { sisteGyldigeDagForInntektstap } = Søknadsperioden(soknadsperiode);
+    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(soknadsperiode);
 
     const canContinueToSoknad = areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk;
 
@@ -129,7 +129,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                             name={IntroFormField.selvstendigInntektstapStartetFørFrist}
                                             showStop={selvstendigInntektstapStartetFørFrist === YesOrNo.NO}
                                             legend={introFormText.selvstendigInntektstapStartetFørFrist(
-                                                moment(sisteGyldigeDagForInntektstap).add(1, 'day').toDate()
+                                                førsteUgyldigeStartdatoForInntektstap
                                             )}
                                             description={
                                                 <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />
@@ -184,7 +184,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                         <IntroFormQuestion
                                             name={IntroFormField.frilanserInntektstapStartetFørFrist}
                                             legend={introFormText.frilanserInntektstapStartetFørFrist(
-                                                sisteGyldigeDagForInntektstap
+                                                førsteUgyldigeStartdatoForInntektstap
                                             )}
                                             description={
                                                 <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />
