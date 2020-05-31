@@ -31,7 +31,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
     const history = useHistory();
 
     const { values } = useFormikContext<SoknadFormData>();
-    const stepConfig = getStepConfig(values);
+    const stepConfig = getStepConfig(values, soknadEssentials.currentSøknadsperiode);
     const soknadSteps = Object.keys(stepConfig) as Array<StepID>;
     const { harSøktSomSelvstendigNæringsdrivende } = soknadEssentials.tidligerePerioder;
 
@@ -58,6 +58,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
                 if (harSøktSomSelvstendigNæringsdrivende) {
                     return (
                         <SelvstendigAndregangStep
+                            stepConfig={stepConfig}
                             resetSoknad={resetSoknad}
                             soknadEssentials={soknadEssentials}
                             onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
@@ -66,6 +67,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
                 }
                 return (
                     <SelvstendigForstegangStep
+                        stepConfig={stepConfig}
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.SELVSTENDIG)}
@@ -74,6 +76,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             case StepID.FRILANSER:
                 return (
                     <FrilanserStep
+                        stepConfig={stepConfig}
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.FRILANSER)}
@@ -82,6 +85,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             case StepID.ARBEIDSTAKER:
                 return (
                     <ArbeidstakerStep
+                        stepConfig={stepConfig}
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.ARBEIDSTAKER)}
@@ -90,6 +94,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             case StepID.BEKREFT_INNTEKT:
                 return (
                     <BekreftInfoStep
+                        stepConfig={stepConfig}
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onValidSubmit={() => navigateToNextStepFrom(StepID.BEKREFT_INNTEKT)}
@@ -98,6 +103,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             case StepID.SUMMARY:
                 return (
                     <SummaryStep
+                        stepConfig={stepConfig}
                         resetSoknad={resetSoknad}
                         soknadEssentials={soknadEssentials}
                         onSoknadSent={() => {

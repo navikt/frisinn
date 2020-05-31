@@ -13,23 +13,26 @@ import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import FormSection from '../../pages/intro-page/FormSection';
 import SoknadErrorPage from '../../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
 import FrilanserInfo from '../info/FrilanserInfo';
-import InfoOmSøknadOgFrist from '../info/InfoOmSøknadOgFrist';
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadErrors from '../soknad-errors/SoknadErrors';
 import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
+import Søknadsperioden from '../../utils/søknadsperioden';
+import BekreftSummerInfo from '../info/BekreftSummerInfo';
 
-const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
+const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
     const { locale } = useIntl();
     const { selvstendigBeregnetTilgjengeligSøknadsperiode, frilanserBeregnetTilgjengeligSøknadsperiode } = values;
+    const {
+        tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
+    } = soknadEssentials;
 
     const apiValues = mapFormDataToApiData(soknadEssentials, values, locale as Locale);
 
@@ -64,16 +67,18 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
     const selvstendigBekreftet = selvstendigNæringsdrivende
         ? bekrefterSelvstendigInntektIPerioden === YesOrNo.YES &&
-          (bekrefterSelvstendigInntektI2020 === YesOrNo.YES || bekrefterSelvstendigInntektI2019 === YesOrNo.YES) &&
+          (bekrefterSelvstendigInntektI2020 === YesOrNo.YES ||
+              bekrefterSelvstendigInntektI2019 === YesOrNo.YES ||
+              harSøktSomSelvstendigNæringsdrivende) &&
           (spørOmInntektSomFrilanserForSelvstendig
               ? bekrefterSelvstendigFrilanserInntektIPerioden === YesOrNo.YES
               : true)
         : true;
 
     const frilansBekreftet = frilanser ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true;
-
+    const { arbeidstakerinntektErAktiv } = Søknadsperioden(soknadEssentials.currentSøknadsperiode);
     const arbeidstakerinntektBekreftet =
-        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) && apiValues.inntektIPeriodenSomArbeidstaker !== undefined
+        arbeidstakerinntektErAktiv && apiValues.inntektIPeriodenSomArbeidstaker !== undefined
             ? bekrefterArbeidstakerinntektIPerioden === YesOrNo.YES
             : true;
 
@@ -100,6 +105,8 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
     const { isVisible } = BekreftInntektFormQuestions.getVisbility({
         ...values,
         apiValues,
+        tidligerePerioder: soknadEssentials.tidligerePerioder,
+        arbeidstakerinntektErAktiv: arbeidstakerinntektErAktiv,
     });
 
     return (
@@ -107,6 +114,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             id={StepID.BEKREFT_INNTEKT}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
+            stepConfig={stepConfig}
             showSubmitButton={showSubmitButton}>
             <Box padBottom="l" margin="xxxl">
                 {(frilanserSoknadIsOk || selvstendigSoknadIsOk) && (
@@ -141,14 +149,18 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
 
             {(frilanserSoknadIsOk === true || selvstendigSoknadIsOk === true) && (
                 <Box>
-                    <InfoOmSøknadOgFrist søknadsperiode={soknadEssentials.currentSøknadsperiode} />
+                    <BekreftSummerInfo />
                 </Box>
             )}
 
             {selvstendigSoknadIsOk === false && selvstendigStopReason && (
                 <FormSection title="Selvstendig næringsdrivende">
                     <StopMessage>
-                        {SelvstendigInfo.getMessageForAvslag(selvstendigStopReason, selvstendigBeregnetInntektsårstall)}
+                        {SelvstendigInfo.getMessageForAvslag(
+                            selvstendigStopReason,
+                            soknadEssentials.currentSøknadsperiode,
+                            selvstendigBeregnetInntektsårstall
+                        )}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.SELVSTENDIG)}>
                                 Gå tilbake til informasjon om selvstendig næringsdrivende
@@ -216,7 +228,7 @@ const BekreftInntektStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: St
             {frilanserSoknadIsOk === false && frilanserStopReason && (
                 <FormSection title="Inntekt som frilanser">
                     <StopMessage>
-                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason)}
+                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.currentSøknadsperiode)}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.FRILANSER)}>
                                 Gå tilbake til informasjon om frilans

@@ -60,7 +60,10 @@ export const getInntektsperiodeForArbeidsinntekt = (
 
 export const cleanupArbeidstakerStep = (values: SoknadFormData) => {
     const v = { ...values };
-    const { arbeidstakerHarHattInntektIPerioden } = values;
+    const { arbeidstakerHarHattInntektIPerioden, arbeidstakerErArbeidstaker } = values;
+    if (arbeidstakerErArbeidstaker === YesOrNo.NO) {
+        v.arbeidstakerHarHattInntektIPerioden = undefined;
+    }
     if (arbeidstakerHarHattInntektIPerioden === YesOrNo.NO) {
         v.arbeidstakerInntektIPerioden = undefined;
     }

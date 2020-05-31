@@ -1,7 +1,6 @@
 const os = require('os');
 const fs = require('fs');
 const express = require('express');
-const _ = require('lodash');
 const moment = require('moment-timezone');
 const server = express();
 
@@ -61,14 +60,14 @@ const søkerMock = {
     kontonummer: '17246746060',
 };
 
-const perioderMock = {
+const perioderApril = {
     søknadsperiode: {
         fom: '2020-03-14',
         tom: '2020-04-30',
     },
 };
 
-const perioderMockMai = {
+const perioderMai = {
     søknadsperiode: {
         fom: '2020-05-01',
         tom: '2020-05-31',
@@ -85,20 +84,6 @@ const ingenPersonligeForetak = {
     tidligsteRegistreringsdato: null,
 };
 
-const getPerioder = (query) => {
-    const date = moment(query.inntektstapStartet).toDate();
-    const firstApplicationDate = moment(date).add(16, 'days').toDate();
-    const isOk = moment(firstApplicationDate).isSameOrBefore(new Date(2020, 3, 30), 'day');
-    if (!isOk) {
-        return {};
-    }
-    return {
-        søknadsperiode: {
-            fom: moment(firstApplicationDate).format('YYYY-MM-DD'),
-            tom: '2020-04-30',
-        },
-    };
-};
 const getInntektsperiode = () => {
     return {
         inntektsperiode: {
@@ -107,6 +92,9 @@ const getInntektsperiode = () => {
         },
     };
 };
+
+const simulerJuni = true;
+
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
 
@@ -115,7 +103,7 @@ const startExpressServer = () => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.get('/tidspunkt', (req, res) => {
-        const m = moment().tz('Europe/Oslo');
+        const m = moment(simulerJuni ? '2020-06-01' : undefined).tz('Europe/Oslo');
         setTimeout(() => {
             res.send({
                 'Europe/Oslo': m.format(),
@@ -152,16 +140,10 @@ const startExpressServer = () => {
         }, 200);
     });
 
-    server.get('/soker2', (req, res) => {
-        setTimeout(() => {
-            res.send({ ...søkerMock, fornavn: 'Godslig2' });
-        }, 200);
-    });
-
     server.get('/har-sokt-tidligere-periode', (req, res) => {
         setTimeout(() => {
             res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: false });
-        }, 1500);
+        }, 200);
     });
 
     server.post('/inntektsperiode', (req, res) => {
@@ -172,29 +154,7 @@ const startExpressServer = () => {
 
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
-            if (req.query && req.query.inntektstapStartet) {
-                const perioder = getPerioder(req.query);
-                res.send(perioder);
-            } else {
-                res.send(perioderMock);
-            }
-        }, 220);
-    });
-
-    server.get('/perioder-juni', (req, res) => {
-        setTimeout(() => {
-            res.send(perioderMockMai);
-        }, 220);
-    });
-
-    server.get('/perioder2', (req, res) => {
-        setTimeout(() => {
-            if (req.query && req.query.inntektstapStartet) {
-                const perioder = getPerioder(req.query);
-                res.send(perioder);
-            } else {
-                res.send(perioderMockMai);
-            }
+            res.send(simulerJuni ? perioderMai : perioderApril);
         }, 220);
     });
 
@@ -241,7 +201,7 @@ const startExpressServer = () => {
     server.get('/krav/maks-en-soknad-per-periode', (req, res) => {
         setTimeout(() => {
             res.send({
-                innfrirKrav: false,
+                innfrirKrav: true,
                 beskrivelse: 'Søkeren har allerede søkt for periode 2020-03-14/2020-04-30, og kan ikke søke nå',
             });
         }, 1000);

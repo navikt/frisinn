@@ -31,11 +31,11 @@ interface DialogState {
 
 interface Props {
     kontonummer: string;
-    isSelvstendig: boolean;
+    isSelvstendigNæringsdrivende: boolean;
     onStart: () => void;
 }
 
-const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
+const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const { values } = useFormikContext<SoknadFormData>();
@@ -47,14 +47,18 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
     } = values;
 
-    const { areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({ ...values, isSelvstendig });
+    const { areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({
+        ...values,
+        isSelvstendigNæringsdrivende: isSelvstendigNæringsdrivende,
+    });
 
     const hasChosenSoknad =
         søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES;
 
     const infoStates = {
-        isSelvstendigButNoForetakFound: values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendig,
+        isSelvstendigButNoForetakFound:
+            values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendigNæringsdrivende,
         hasNotChosenSoknad:
             hasChosenSoknad === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
     };
@@ -63,7 +67,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendig, kontonummer }: Props) => {
 
     const visibility = SoknadEntryFormQuestions.getVisbility({
         ...values,
-        isSelvstendig,
+        isSelvstendigNæringsdrivende: isSelvstendigNæringsdrivende,
     });
 
     return (

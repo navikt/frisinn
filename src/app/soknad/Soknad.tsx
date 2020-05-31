@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Ingress } from 'nav-frontend-typografi';
 import LoadWrapper from '../components/load-wrapper/LoadWrapper';
+import routeConfig, { getRouteUrl } from '../config/routeConfig';
 import useAccessCheck from '../hooks/useAccessKrav';
+import useOsloTime from '../hooks/useOsloTime';
+import { usePrevious } from '../hooks/usePrevious';
 import useSoknadEssentials from '../hooks/useSoknadEssentials';
 import useTemporaryStorage from '../hooks/useTempStorage';
 import GeneralErrorPage from '../pages/general-error-page/GeneralErrorPage';
@@ -10,16 +13,12 @@ import NoAccessPage from '../pages/no-access-page/NoAccessPage';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { alderAccessCheck, maksEnSoknadPerPeriodeAccessCheck } from '../utils/apiAccessCheck';
-import { navigateTo, navigateToSoknadFrontpage, relocateToSoknad, isOnSoknadFrontpage } from '../utils/navigationUtils';
+import { isOnSoknadFrontpage, navigateTo, navigateToSoknadFrontpage, relocateToSoknad } from '../utils/navigationUtils';
 import { getSoknadRoute } from '../utils/routeUtils';
 import SoknadErrors from './soknad-errors/SoknadErrors';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { isStorageDataValid } from './SoknadTempStorage';
-import useOsloTime from '../hooks/useOsloTime';
-import routeConfig, { getRouteUrl } from '../config/routeConfig';
-import { usePrevious } from '../hooks/usePrevious';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 export type ResetSoknadFunction = (redirectToFrontpage: boolean) => void;
 
@@ -91,7 +90,7 @@ const Soknad = () => {
             osloTimeIsLoading === false &&
             tempStorageIsLoading === false &&
             alderResult !== undefined &&
-            (maksEnSøknadResult !== undefined || isFeatureEnabled(Feature.SIMULER_JUNI))
+            maksEnSøknadResult !== undefined
         ) {
             allDataLoaded();
         }
@@ -138,10 +137,7 @@ const Soknad = () => {
                         </NoAccessPage>
                     );
                 }
-                if (
-                    maksEnSoknadPerPeriodeCheck.result?.passes === false &&
-                    isFeatureEnabled(Feature.SIMULER_JUNI) === false
-                ) {
+                if (maksEnSoknadPerPeriodeCheck.result?.passes === false) {
                     return (
                         <NoAccessPage title="Du kan ikke sende inn søknad">
                             {maksEnSoknadPerPeriodeCheck.result.info}

@@ -7,6 +7,7 @@ import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avslu
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 import { getHarSoktTidligerePeriode } from '../api/har-sokt-tidligere-periode';
+import { isSelvstendigNæringsdrivende } from '../utils/selvstendigUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
@@ -21,17 +22,20 @@ function useSoknadEssentials() {
         try {
             const person = await getSoker();
             const currentSøknadsperiode = await getSøknadsperiode();
-            const personligeForetak = await getPersonligeForetak();
-            const tidligerePerioder = await getHarSoktTidligerePeriode();
+            const tidligerePerioder = await getHarSoktTidligerePeriode(currentSøknadsperiode);
+            const personligeForetak = await getPersonligeForetak(
+                tidligerePerioder.harSøktSomSelvstendigNæringsdrivende
+            );
 
             setSoknadEssentials({
                 person,
                 currentSøknadsperiode,
-                personligeForetak: personligeForetak.foretak.length > 0 ? personligeForetak : undefined,
+                personligeForetak: personligeForetak,
                 avsluttetSelskapDateRange: personligeForetak
                     ? getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato)
                     : undefined,
                 tidligerePerioder,
+                isSelvstendigNæringsdrivende: isSelvstendigNæringsdrivende(personligeForetak, tidligerePerioder),
             });
         } catch (error) {
             if (isForbidden(error) || isUnauthorized(error)) {

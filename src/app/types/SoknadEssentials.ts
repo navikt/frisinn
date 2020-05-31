@@ -17,7 +17,7 @@ export interface Foretak {
 
 export interface PersonligeForetak {
     foretak: Foretak[];
-    tidligsteRegistreringsdato: Date;
+    tidligsteRegistreringsdato: Date | undefined;
 }
 
 export interface TidligerePerioder {
@@ -28,6 +28,7 @@ export interface TidligerePerioder {
 export interface SoknadEssentials {
     person: Person;
     currentSøknadsperiode: DateRange;
+    isSelvstendigNæringsdrivende: boolean;
     personligeForetak?: PersonligeForetak;
     avsluttetSelskapDateRange: DateRange | undefined;
     tidligerePerioder: TidligerePerioder;

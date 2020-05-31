@@ -5,28 +5,29 @@ import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 
 const Q = SoknadFormField;
 
-type SoknadEntryFormPayload = SoknadFormData & { isSelvstendig: boolean };
+type SoknadEntryFormPayload = SoknadFormData & { isSelvstendigNæringsdrivende: boolean };
 
 const SoknadEntryFormConfig: QuestionConfig<SoknadEntryFormPayload, SoknadFormField> = {
     [Q.kontonummerErRiktig]: {
         isAnswered: ({ kontonummerErRiktig }) => yesOrNoIsAnswered(kontonummerErRiktig),
     },
     [Q.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: {
-        isIncluded: ({ kontonummerErRiktig, isSelvstendig }) =>
-            isSelvstendig === true && kontonummerErRiktig === YesOrNo.YES,
+        isIncluded: ({ kontonummerErRiktig, isSelvstendigNæringsdrivende }) =>
+            isSelvstendigNæringsdrivende === true && kontonummerErRiktig === YesOrNo.YES,
         isAnswered: ({ søkerOmTaptInntektSomSelvstendigNæringsdrivende }) =>
             yesOrNoIsAnswered(søkerOmTaptInntektSomSelvstendigNæringsdrivende),
     },
     [Q.søkerOmTaptInntektSomFrilanser]: {
-        visibilityFilter: ({ isSelvstendig, søkerOmTaptInntektSomSelvstendigNæringsdrivende }) =>
-            isSelvstendig === false || yesOrNoIsAnswered(søkerOmTaptInntektSomSelvstendigNæringsdrivende),
+        visibilityFilter: ({ isSelvstendigNæringsdrivende, søkerOmTaptInntektSomSelvstendigNæringsdrivende }) =>
+            isSelvstendigNæringsdrivende === false ||
+            yesOrNoIsAnswered(søkerOmTaptInntektSomSelvstendigNæringsdrivende),
         isIncluded: ({ kontonummerErRiktig }) => kontonummerErRiktig === YesOrNo.YES,
         isAnswered: ({ søkerOmTaptInntektSomFrilanser }) => yesOrNoIsAnswered(søkerOmTaptInntektSomFrilanser),
     },
     [Q.erSelvstendigNæringsdrivende]: {
         visibilityFilter: ({ søkerOmTaptInntektSomFrilanser }) => yesOrNoIsAnswered(søkerOmTaptInntektSomFrilanser),
-        isIncluded: ({ isSelvstendig, kontonummerErRiktig }) =>
-            isSelvstendig === false && kontonummerErRiktig === YesOrNo.YES,
+        isIncluded: ({ isSelvstendigNæringsdrivende, kontonummerErRiktig }) =>
+            isSelvstendigNæringsdrivende === false && kontonummerErRiktig === YesOrNo.YES,
         isAnswered: ({ erSelvstendigNæringsdrivende }) => yesOrNoIsAnswered(erSelvstendigNæringsdrivende),
     },
 };

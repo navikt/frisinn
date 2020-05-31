@@ -13,12 +13,13 @@ import StepBanner from 'common/components/step-banner/StepBanner';
 import bemUtils from 'common/utils/bemUtils';
 import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
-import useSoknadsperiode from '../../hooks/useSoknadsperiode';
+import useSøknadsperiode from '../../hooks/useSøknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
-import { erÅpnetForAndregangssøknad } from '../../utils/dateUtils';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroCheckList from './IntroCheckList';
+import IntroFormInfo from './intro-form/IntroFormInfo';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 const bem = bemUtils('introPage');
 
@@ -32,16 +33,18 @@ const IntroPage: React.StatelessComponent = () => {
     const [harSøktFør, setHarIkkeSøktFør] = useState<YesOrNo>(YesOrNo.UNANSWERED);
 
     const intl = useIntl();
-    const soknadsperiodeFetcher = useSoknadsperiode();
-    const { soknadsperiode } = soknadsperiodeFetcher;
+    const currentSøknadsperiodeFetcher = useSøknadsperiode();
+    const { søknadsperiode: currentSøknadsperiode } = currentSøknadsperiodeFetcher;
 
     const hasError =
-        soknadsperiodeFetcher.isLoading === false &&
-        (soknadsperiodeFetcher === undefined ||
-            soknadsperiodeFetcher.soknadsperiode === undefined ||
-            soknadsperiodeFetcher?.error !== undefined);
+        currentSøknadsperiodeFetcher.isLoading === false &&
+        (currentSøknadsperiodeFetcher === undefined ||
+            currentSøknadsperiodeFetcher.søknadsperiode === undefined ||
+            currentSøknadsperiodeFetcher?.error !== undefined);
 
-    const includeHarSøktFør = soknadsperiode ? erÅpnetForAndregangssøknad(soknadsperiode) : false;
+    const includeHarSøktFør = currentSøknadsperiode
+        ? Søknadsperioden(currentSøknadsperiode).erÅpnetForAndregangssøknad
+        : false;
 
     return (
         <Page
@@ -59,13 +62,13 @@ const IntroPage: React.StatelessComponent = () => {
                 </Box>
             ) : (
                 <LoadWrapper
-                    isLoading={soknadsperiodeFetcher.isLoading}
+                    isLoading={currentSøknadsperiodeFetcher.isLoading}
                     contentRenderer={() => {
                         if (hasError) {
                             relocateToErrorPage();
                             return null;
                         }
-                        if (!soknadsperiode) {
+                        if (!currentSøknadsperiode) {
                             return null;
                         }
                         return (
@@ -98,16 +101,21 @@ const IntroPage: React.StatelessComponent = () => {
                                                     www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/
                                                 </Lenke>{' '}
                                             </p>
-                                            <p>
-                                                Ordningen trådte i kraft 14. mars 2020. I søknaden oppgir du fra når
-                                                inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
-                                                inntektstap.
-                                            </p>
-                                            <p>
-                                                Du må søke etterskuddsvis måned for måned. Hvis du har inntektstap i
-                                                mai, kan du tidligst søke kompensasjon for denne måneden i begynnelsen
-                                                av juni.
-                                            </p>
+                                            {includeHarSøktFør && (
+                                                <p>
+                                                    Du må selv dekke de første 16 dagene av inntektstapet. Dette gjøres
+                                                    kun én gang. Det vil si at om du har fått innvilget kompensasjon
+                                                    gjennom denne ordningen tidligere, og du har dekket de første 16
+                                                    dagene, skal du ikke gjøre det om igjen nå.
+                                                </p>
+                                            )}
+                                            {includeHarSøktFør === false && (
+                                                <p>
+                                                    Ordningen trådte i kraft 14. mars 2020. I søknaden oppgir du fra når
+                                                    inntektstapet ditt startet. Du må selv dekke de første 16 dagene med
+                                                    inntektstap.
+                                                </p>
+                                            )}
                                             <p>
                                                 <Lenke
                                                     href="https://www.nav.no/no/person/innhold-til-person-forside/nyheter/midlertidig-ordning-for-selvstendig-naeringsdrivende-og-frilansere-som-mister-inntekt-pa-grunn-av-koronautbruddet"
@@ -120,7 +128,7 @@ const IntroPage: React.StatelessComponent = () => {
                                     </InformationPoster>
                                 </Box>
                                 <Box margin="xl">
-                                    <InfoOmSøknadOgFrist søknadsperiode={soknadsperiode} />
+                                    <InfoOmSøknadOgFrist søknadsperiode={currentSøknadsperiode} />
                                 </Box>
 
                                 <Box margin="xl">
@@ -135,7 +143,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                         setHarIkkeSøktFør(value);
                                                     }}
                                                     legend="Har du søkt om denne kompensasjonen tidligere?"
-                                                    description="Du kan svare ja om du har søkt og ikke fått svar enda, eller fått avslag."
+                                                    description={<IntroFormInfo.infoHarDuSøktTidligere />}
                                                     radios={[
                                                         {
                                                             value: YesOrNo.YES,
@@ -188,7 +196,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                 <Box padBottom="xl">
                                                     <IntroForm
                                                         onValidSubmit={(values) => setIntroResult(values)}
-                                                        soknadsperiode={soknadsperiode}
+                                                        soknadsperiode={currentSøknadsperiode}
                                                     />
                                                 </Box>
                                             </Box>

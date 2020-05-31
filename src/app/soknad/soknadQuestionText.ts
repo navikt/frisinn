@@ -29,6 +29,7 @@ export interface SoknadQuestionText {
     [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.frilanserInntektSomSelvstendigIPerioden]: (periode: DateRange) => string;
+    [SoknadFormField.arbeidstakerErArbeidstaker]: string;
     [SoknadFormField.arbeidstakerHarHattInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.arbeidstakerInntektIPerioden]: (periode: DateRange) => string;
 }
@@ -95,6 +96,7 @@ export const soknadQuestionText: SoknadQuestionText = {
         `Hvilken personinntekt har du hatt fra næring, eller utbetaling fra NAV (for eksempel sykepenger, omsorgspenger) som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
         )}`,
+    arbeidstakerErArbeidstaker: `Er du arbeidstaker i tillegg til å være selvstendig næringsdrivende og/eller frilanser?`,
     arbeidstakerHarHattInntektIPerioden: (dateRange: DateRange) =>
         `Har du hatt inntekt som arbeidstaker i perioden ${formatDateRange(dateRange)}`,
     arbeidstakerInntektIPerioden: (dateRange: DateRange) =>

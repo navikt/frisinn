@@ -21,7 +21,7 @@ export interface IntroFormTexts {
 export const introFormText: IntroFormTexts = {
     fødselsdato: 'Når er du født?',
     erSelvstendigNæringsdrivende: 'Er du registrert som selvstendig næringsdrivende før 1. mars 2020?',
-    selvstendigHarTattUtInntektFraSelskap: `Har du tatt ut inntekt fra selskapet/selskapene i 2019 og 2020?`,
+    selvstendigHarTattUtInntektFraSelskap: `Har du hatt personinntekt fra næringen din i 2019 og 2020?`,
     selvstendigHarTaptInntektPgaKorona:
         'Har du tapt inntekt som selvstendig næringsdrivende som følge av koronautbruddet? ',
     selvstendigInntektstapStartetFørFrist: (sisteGyldigeDagForInntektstap: Date) =>

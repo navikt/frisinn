@@ -1,8 +1,9 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { getSoknadRoute } from '../utils/routeUtils';
+import { DateRange } from '../utils/dateUtils';
+import Søknadsperioden from '../utils/søknadsperioden';
 
 export enum StepID {
     'SELVSTENDIG' = 'selvstendignaringsdrivende',
@@ -36,7 +37,7 @@ const getStepConfigItemTextKeys = (stepId: StepID): StepConfigItemTexts => {
     };
 };
 
-const getAvailableStep = (values?: SoknadFormData): StepID[] => {
+const getAvailableStep = (values: SoknadFormData, søknadsperiode: DateRange): StepID[] => {
     const steps: StepID[] = [];
     if (values?.søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES) {
         steps.push(StepID.SELVSTENDIG);
@@ -45,7 +46,7 @@ const getAvailableStep = (values?: SoknadFormData): StepID[] => {
         steps.push(StepID.FRILANSER);
     }
     if (
-        isFeatureEnabled(Feature.ARBEIDSTAKERINNTEKT) &&
+        Søknadsperioden(søknadsperiode).arbeidstakerinntektErAktiv &&
         (values?.selvstendigSoknadIsOk || values?.frilanserSoknadIsOk)
     ) {
         steps.push(StepID.ARBEIDSTAKER);
@@ -55,8 +56,8 @@ const getAvailableStep = (values?: SoknadFormData): StepID[] => {
     return steps;
 };
 
-export const getStepConfig = (values: SoknadFormData): StepConfigInterface => {
-    const steps = getAvailableStep(values);
+export const getStepConfig = (values: SoknadFormData, søknadsperiode: DateRange): StepConfigInterface => {
+    const steps = getAvailableStep(values, søknadsperiode);
     const numSteps = steps.length;
     const config: StepConfigInterface = {};
     let idx = 0;
@@ -74,6 +75,7 @@ export const getStepConfig = (values: SoknadFormData): StepConfigInterface => {
 
 export interface StepConfigProps {
     soknadEssentials: SoknadEssentials;
+    stepConfig: StepConfigInterface;
     resetSoknad: () => void;
     onValidSubmit: () => void;
 }

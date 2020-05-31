@@ -16,15 +16,14 @@ export const isSameDate = (date1: Date | undefined, date2: Date | undefined): bo
 };
 
 export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): Date => {
-    return moment(dateRange.to).endOf('day').subtract(15, 'days').toDate();
+    return moment(dateRange.to).endOf('day').subtract(16, 'days').toDate();
 };
 
 export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {
-    return moment(søknadsperiode.to).add(1, 'month').endOf('month').toDate();
-};
-
-export const erÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
-    return moment(søknadsperiode.from).isAfter(apiStringDateToDate('2020-04-30'), 'day');
+    if (søknadsperiode.to.getMonth() === 3) {
+        return moment(apiStringDateToDate('2020-06-03')).endOf('day').toDate();
+    }
+    return moment(søknadsperiode.to).add(1, 'month').endOf('month').endOf('day').toDate();
 };
 
 export const getMonthName = (date: Date): string => {

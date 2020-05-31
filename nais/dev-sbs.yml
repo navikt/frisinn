@@ -50,12 +50,4 @@ spec:
           value: dev
         - name: PERSISTENCE
           value: "off"
-        - name: AVSLUTTA_SELSKAPER
-          value: "on"
-        - name: ARBEIDSTAKERINNTEKT
-          value: "off"
-        - name: STARTET_PAA_SOKNAD
-          value: "on"
-        - name: ANDREGANGSSOKNAD
-          value: "off"
 

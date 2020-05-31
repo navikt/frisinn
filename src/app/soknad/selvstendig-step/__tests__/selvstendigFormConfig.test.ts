@@ -31,6 +31,7 @@ const soknadEssentials: SoknadEssentials = {
         harSøktSomFrilanser: false,
         harSøktSomSelvstendigNæringsdrivende: false,
     },
+    isSelvstendigNæringsdrivende: true,
     avsluttetSelskapDateRange: getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato),
 };
 

@@ -13,16 +13,19 @@ import {
     FellesStoppYtelseDekkerHeleTapetInnlogget,
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 const rolleNavn = 'frilanser';
 
-const StoppForSentInntektstap = () => <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} />;
+const StoppForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} søknadsperiode={søknadsperiode} />
+);
 
 const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle={rolleNavn} />;
 
 const StoppYtelseDekkerHeleTapet = () => <FellesStoppYtelseDekkerHeleTapetInnlogget rolle={rolleNavn} />;
 
-const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
+const infoHvordanBeregneInntekt = ({ periode, søknadsperiode }: { periode: DateRange; søknadsperiode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
         Inntekten du skal opplyse om er personinntekt for oppdrag, som du mottar for perioden{' '}
         <strong>
@@ -37,6 +40,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
             <ul className="infoList">
+                {Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad && <li>Utbetaling fra denne ordningen</li>}
                 <li>Inntekt som arbeidstaker</li>
                 <li>Inntekt som selvstendig næringsdrivende </li>
                 <li>Uføretrygd </li>
@@ -50,18 +54,20 @@ const infoAndreUtbetalingerFraNAV = () => <FellesInfoAndreUtbetalingerFraNav rol
 
 const infoTaptInntektPgaKorona = () => <FellesInfoHvaMenesMedTaptInntekt />;
 
-const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak): React.ReactNode => {
+const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak, søknadsperiode: DateRange): React.ReactNode => {
     switch (årsak) {
         case FrilanserAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
         case FrilanserAvslagÅrsak.søkerIkkeForGyldigTidsrom:
-            return <StoppForSentInntektstap />;
+            return <StoppForSentInntektstap søknadsperiode={søknadsperiode} />;
         case FrilanserAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
             return <StoppYtelseDekkerHeleTapet />;
     }
 };
 
-const infoNårStartetInntektstapet = () => <FellesNårStartetInntektstapet />;
+const infoNårStartetInntektstapet = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
+    <FellesNårStartetInntektstapet søknadsperiode={søknadsperiode} />
+);
 
 const FrilanserInfo = {
     StoppForSentInntektstap,

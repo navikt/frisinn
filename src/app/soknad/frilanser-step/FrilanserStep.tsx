@@ -8,12 +8,12 @@ import LoadWrapper from '../../components/load-wrapper/LoadWrapper';
 import StopMessage from '../../components/stop-message/StopMessage';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
-import useAvailableSøknadsperiode, { isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
+import useTilgjengeligSøkeperiode, { isValidDateRange } from '../../hooks/useTilgjengeligSøkeperiode';
 import FormSection from '../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../utils/dateUtils';
 import { MAX_INNTEKT } from '../../validation/fieldValidations';
-import AvailableDateRangeInfo from '../info/AvailableDateRangeInfo';
+import TilgjengeligSøkeperiodeInfo from '../info/TilgjengeligSøkeperiodeInfo';
 import FrilanserInfo from '../info/FrilanserInfo';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadQuestion from '../SoknadQuestion';
@@ -30,7 +30,7 @@ const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | u
     return feil ? (feil[0] as FrilanserAvslagÅrsak) : undefined;
 };
 
-const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepConfigProps) => {
+const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
 
     const {
@@ -42,14 +42,14 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
     } = values;
     const { currentSøknadsperiode } = soknadEssentials;
 
-    const { availableDateRange, isLoading: availableDateRangeIsLoading } = useAvailableSøknadsperiode({
+    const { tilgjengeligSøkeperiode, isLoading: tilgjengeligSøkeperiodeIsLoading } = useTilgjengeligSøkeperiode({
         inntektstapStartDato: frilanserInntektstapStartetDato,
         currentSøknadsperiode,
         currentAvailableSøknadsperiode: frilanserBeregnetTilgjengeligSøknadsperiode,
         startetSøknad: values.startetSøknadTidspunkt,
     });
 
-    const isLoading = availableDateRangeIsLoading;
+    const isLoading = tilgjengeligSøkeperiodeIsLoading;
     const avslag = kontrollerFrilanserSvar(values);
 
     const payload = {
@@ -65,23 +65,24 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
 
     const frilanserSoknadIsOk: boolean =
         allQuestionsAreAnswered &&
-        isValidDateRange(availableDateRange) &&
+        isValidDateRange(tilgjengeligSøkeperiode) &&
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
         frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
 
     useEffect(() => {
         setFieldValue(
             SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode,
-            isValidDateRange(availableDateRange) ? availableDateRange : undefined
+            isValidDateRange(tilgjengeligSøkeperiode) ? tilgjengeligSøkeperiode : undefined
         );
         setFieldValue(SoknadFormField.frilanserSoknadIsOk, frilanserSoknadIsOk);
-    }, [availableDateRange, frilanserSoknadIsOk]);
+    }, [tilgjengeligSøkeperiode, frilanserSoknadIsOk]);
 
     return (
         <SoknadStep
             id={StepID.FRILANSER}
             onValidFormSubmit={onValidSubmit}
             resetSoknad={resetSoknad}
+            stepConfig={stepConfig}
             stepCleanup={(values) => {
                 const v = { ...values };
                 v.frilanserSoknadIsOk = frilanserSoknadIsOk;
@@ -119,17 +120,21 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserInntektstapStartetDato}
-                    showInfo={isValidDateRange(availableDateRange)}
+                    showInfo={isValidDateRange(tilgjengeligSøkeperiode)}
                     infoMessage={
-                        <AvailableDateRangeInfo
+                        <TilgjengeligSøkeperiodeInfo
                             inntektstapStartetDato={frilanserInntektstapStartetDato}
-                            availableDateRange={availableDateRange}
+                            tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
                         />
                     }>
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}
                         label={soknadQuestionText.frilanserInntektstapStartetDato}
-                        description={<SelvstendigInfo.infoNårStartetInntektstapet />}
+                        description={
+                            <SelvstendigInfo.infoNårStartetInntektstapet
+                                søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                            />
+                        }
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
                             maksDato: currentSøknadsperiode.to,
@@ -145,14 +150,16 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                     <LoadWrapper
                         isLoading={isLoading}
                         contentRenderer={() => {
-                            if (availableDateRange === undefined) {
+                            if (tilgjengeligSøkeperiode === undefined) {
                                 return null;
                             }
 
-                            if (availableDateRange === 'NO_AVAILABLE_DATERANGE') {
+                            if (tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE') {
                                 return (
                                     <StopMessage>
-                                        <FrilanserInfo.StoppForSentInntektstap />
+                                        <FrilanserInfo.StoppForSentInntektstap
+                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                        />
                                     </StopMessage>
                                 );
                             }
@@ -164,9 +171,14 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             type="number"
                                             bredde="S"
                                             description={
-                                                <FrilanserInfo.infoHvordanBeregneInntekt periode={availableDateRange} />
+                                                <FrilanserInfo.infoHvordanBeregneInntekt
+                                                    periode={tilgjengeligSøkeperiode}
+                                                    søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                                />
                                             }
-                                            label={soknadQuestionText.frilanserInntektIPerioden(availableDateRange)}
+                                            label={soknadQuestionText.frilanserInntektIPerioden(
+                                                tilgjengeligSøkeperiode
+                                            )}
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
                                             maxLength={8}
                                             max={MAX_INNTEKT}
@@ -189,7 +201,7 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                             <SoknadQuestion
                                                 name={SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}
                                                 legend={soknadQuestionText.frilanserHarHattInntektSomSelvstendigIPerioden(
-                                                    availableDateRange
+                                                    tilgjengeligSøkeperiode
                                                 )}
                                             />
                                             <SoknadQuestion
@@ -199,13 +211,14 @@ const FrilanserStep = ({ soknadEssentials, resetSoknad, onValidSubmit }: StepCon
                                                     type="number"
                                                     bredde="S"
                                                     label={soknadQuestionText.frilanserInntektSomSelvstendigIPerioden(
-                                                        availableDateRange
+                                                        tilgjengeligSøkeperiode
                                                     )}
                                                     maxLength={8}
                                                     max={MAX_INNTEKT}
                                                     description={
                                                         <SelvstendigInfo.infoHvordanBeregneInntekt
-                                                            periode={availableDateRange}
+                                                            periode={tilgjengeligSøkeperiode}
+                                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
                                                         />
                                                     }
                                                     validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}

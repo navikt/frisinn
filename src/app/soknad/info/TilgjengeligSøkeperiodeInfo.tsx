@@ -1,16 +1,16 @@
 import React from 'react';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import { isDateBeforeKoronatiltak } from '../../utils/koronaUtils';
-import { AvailableDateRange, isValidDateRange } from '../../hooks/useAvailableSøknadsperiode';
+import { TilgjengeligSøkeperiode, isValidDateRange } from '../../hooks/useTilgjengeligSøkeperiode';
 import DateView from '../../components/date-view/DateView';
 
 interface Props {
     inntektstapStartetDato: Date;
-    availableDateRange: AvailableDateRange;
+    tilgjengeligSøkeperiode: TilgjengeligSøkeperiode;
 }
 
-const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: Props) => {
-    if (isValidDateRange(availableDateRange)) {
+const TilgjengeligSøkeperiodeInfo = ({ inntektstapStartetDato, tilgjengeligSøkeperiode }: Props) => {
+    if (isValidDateRange(tilgjengeligSøkeperiode)) {
         const startIsBeforeKoronatiltak = isDateBeforeKoronatiltak(inntektstapStartetDato);
         return startIsBeforeKoronatiltak ? (
             <>
@@ -18,7 +18,7 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
                 inntektsstapet ditt startet <DateView date={inntektstapStartetDato} />, og du har dekket de 16 første
                 dagene av inntektstapet ditt selv, søker du kompensasjon for perioden{' '}
                 <strong>
-                    <DateRangeView dateRange={availableDateRange} />
+                    <DateRangeView dateRange={tilgjengeligSøkeperiode} />
                 </strong>
                 .
             </>
@@ -27,7 +27,7 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
                 Når inntektsstapet ditt startet <DateView date={inntektstapStartetDato} />, og du har dekket de 16
                 første dagene av inntektstapet ditt selv, søker du kompensasjon for perioden{' '}
                 <strong>
-                    <DateRangeView dateRange={availableDateRange} />
+                    <DateRangeView dateRange={tilgjengeligSøkeperiode} />
                 </strong>
                 .
             </>
@@ -35,4 +35,4 @@ const AvailableDateRangeInfo = ({ inntektstapStartetDato, availableDateRange }: 
     }
     return null;
 };
-export default AvailableDateRangeInfo;
+export default TilgjengeligSøkeperiodeInfo;
