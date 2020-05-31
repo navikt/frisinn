@@ -1,5 +1,7 @@
 import React from 'react';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
+import Søknadsperioden from '../../utils/søknadsperioden';
+import { DateRange } from '../../utils/dateUtils';
 
 const infoHarHattArbeidstakerinntektIPerioden = () => (
     <ExpandableInfo title="Hva betyr inntekt som arbeidstaker?">
@@ -7,7 +9,7 @@ const infoHarHattArbeidstakerinntektIPerioden = () => (
     </ExpandableInfo>
 );
 
-const infoOmArbeidstakerinntektIPerioden = () => (
+const infoOmArbeidstakerinntektIPerioden = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
     <ExpandableInfo title="Hvilken inntekt skal jeg oppgi her? ">
         Her skal du oppgi pensjonsgivende inntekten du har hatt som arbeidstaker i perioden du søker for. Hvis du har
         jobbet som arbeidstaker for flere arbeidsgivere, oppgir du inntektene samlet.
@@ -26,7 +28,7 @@ const infoOmArbeidstakerinntektIPerioden = () => (
             <strong>Inntekter som ikke skal tas med:</strong>
         </p>
         <ul>
-            <li>Utbetaling fra denne ordningen</li>
+            {Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad && <li>Utbetaling fra denne ordningen</li>}
             <li>Inntekt som frilanser</li>
             <li>Inntekt som selvstendig næringsdrivende </li>
             <li>Uføretrygd</li>

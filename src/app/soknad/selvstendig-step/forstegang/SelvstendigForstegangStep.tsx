@@ -226,6 +226,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                             description={
                                                 <SelvstendigInfo.infoHvordanBeregneInntekt
                                                     periode={tilgjengeligSøkeperiode}
+                                                    søknadsperiode={soknadEssentials.currentSøknadsperiode}
                                                 />
                                             }
                                             validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
@@ -344,6 +345,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                                     description={
                                                         <FrilanserInfo.infoHvordanBeregneInntekt
                                                             periode={tilgjengeligSøkeperiode}
+                                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
                                                         />
                                                     }
                                                 />

@@ -60,7 +60,11 @@ const ArbeidstakerStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSu
                             bredde="S"
                             maxLength={8}
                             max={MAX_INNTEKT}
-                            description={<ArbeidstakerInfo.infoOmArbeidstakerinntektIPerioden />}
+                            description={
+                                <ArbeidstakerInfo.infoOmArbeidstakerinntektIPerioden
+                                    søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                />
+                            }
                             validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}
                         />
                     </SoknadQuestion>

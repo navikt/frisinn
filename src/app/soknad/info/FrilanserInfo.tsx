@@ -13,6 +13,7 @@ import {
     FellesStoppYtelseDekkerHeleTapetInnlogget,
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 const rolleNavn = 'frilanser';
 
@@ -24,7 +25,7 @@ const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle=
 
 const StoppYtelseDekkerHeleTapet = () => <FellesStoppYtelseDekkerHeleTapetInnlogget rolle={rolleNavn} />;
 
-const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
+const infoHvordanBeregneInntekt = ({ periode, søknadsperiode }: { periode: DateRange; søknadsperiode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
         Inntekten du skal opplyse om er personinntekt for oppdrag, som du mottar for perioden{' '}
         <strong>
@@ -39,7 +40,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
             <ul className="infoList">
-                <li>Utbetaling fra denne ordningen</li>
+                {Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad && <li>Utbetaling fra denne ordningen</li>}
                 <li>Inntekt som arbeidstaker</li>
                 <li>Inntekt som selvstendig næringsdrivende </li>
                 <li>Uføretrygd </li>

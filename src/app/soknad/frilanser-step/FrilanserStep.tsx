@@ -173,6 +173,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                                             description={
                                                 <FrilanserInfo.infoHvordanBeregneInntekt
                                                     periode={tilgjengeligSøkeperiode}
+                                                    søknadsperiode={soknadEssentials.currentSøknadsperiode}
                                                 />
                                             }
                                             label={soknadQuestionText.frilanserInntektIPerioden(
@@ -217,6 +218,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                                                     description={
                                                         <SelvstendigInfo.infoHvordanBeregneInntekt
                                                             periode={tilgjengeligSøkeperiode}
+                                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
                                                         />
                                                     }
                                                     validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}

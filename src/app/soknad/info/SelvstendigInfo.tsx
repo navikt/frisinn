@@ -16,6 +16,7 @@ import {
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
+import Søknadsperioden from '../../utils/søknadsperioden';
 
 const rolleNavn = 'selvstendig næringsdrivende';
 
@@ -89,7 +90,7 @@ const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall?: num
 
 const StoppIkkeAlleAvsluttaSelskaperErRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
 
-const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
+const infoHvordanBeregneInntekt = ({ periode, søknadsperiode }: { periode: DateRange; søknadsperiode: DateRange }) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
         Inntekten du skal opplyse om er personinntekt for næring, og som gjelder for perioden{' '}
         <strong>
@@ -104,7 +105,7 @@ const infoHvordanBeregneInntekt = ({ periode }: { periode: DateRange }) => (
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
             <ul className="infoList">
-                <li>Utbetaling fra denne ordningen</li>
+                {Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad && <li>Utbetaling fra denne ordningen</li>}
                 <li>Inntekt som arbeidstaker</li>
                 <li>Inntekt som frilanser</li>
                 <li>Uføretrygd</li>
