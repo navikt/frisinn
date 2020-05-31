@@ -1,18 +1,13 @@
-import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
 import { getSisteGyldigeDagForInntektstapIPeriode } from './dateUtils';
 
-export const DATO_SØKNADSFRIST_FØRSTE_PERIODE = apiStringDateToDate('2020-05-03');
-
-const datoErEtterSøknadfristFørstePeriode = (dato: Date) =>
-    moment(dato).isAfter(DATO_SØKNADSFRIST_FØRSTE_PERIODE, 'day');
-
 const getErÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
-    return datoErEtterSøknadfristFørstePeriode(søknadsperiode.from);
+    return søknadsperiode.to.getMonth() >= 4;
 };
 
 const getSkalSpørreOmArbeidstakerinntekt = (søknadsperiode: DateRange) => {
-    return datoErEtterSøknadfristFørstePeriode(søknadsperiode.from);
+    return getErÅpnetForAndregangssøknad(søknadsperiode);
 };
 
 const getFørsteUgyldigeStartdatoForInntektstap = (søknadsperiode: DateRange): Date => {

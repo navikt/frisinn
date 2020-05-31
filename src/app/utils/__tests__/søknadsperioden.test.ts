@@ -2,16 +2,16 @@ import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/s
 import Søknadsperioden from '../søknadsperioden';
 
 describe('erÅpnetForAndregangssøknad', () => {
-    it('returns false if søknadsperiode is before end of søknadsfrist første periode', () => {
+    it('returns false if søknadsperiode is march/april', () => {
         const periode: DateRange = {
             from: apiStringDateToDate('2020-04-01'),
-            to: apiStringDateToDate('2020-05-03'),
+            to: apiStringDateToDate('2020-04-30'),
         };
         expect(Søknadsperioden(periode).erÅpnetForAndregangssøknad).toBeFalsy();
     });
-    it('returns true if søknadsperiode is after søknadsfrist første periode', () => {
+    it('returns true if søknadsperiode is may or later', () => {
         const periode: DateRange = {
-            from: apiStringDateToDate('2020-05-04'),
+            from: apiStringDateToDate('2020-05-01'),
             to: apiStringDateToDate('2020-05-31'),
         };
         expect(Søknadsperioden(periode).erÅpnetForAndregangssøknad).toBeTruthy();
