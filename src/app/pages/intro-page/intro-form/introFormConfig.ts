@@ -41,7 +41,7 @@ export interface IntroFormData {
 
 const Q = IntroFormField;
 
-type IntroFormQuestionsPayload = IntroFormData & { soknadsperiode: DateRange };
+type IntroFormQuestionsPayload = IntroFormData & { søknadsperiode: DateRange };
 
 const IntroFormConfig: QuestionConfig<IntroFormQuestionsPayload, IntroFormField> = {
     [Q.fødselsdato]: {

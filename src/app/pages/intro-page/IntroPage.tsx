@@ -194,7 +194,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                 <Box padBottom="xl">
                                                     <IntroForm
                                                         onValidSubmit={(values) => setIntroResult(values)}
-                                                        soknadsperiode={søknadsperiode}
+                                                        søknadsperiode={søknadsperiode}
                                                     />
                                                 </Box>
                                             </Box>
