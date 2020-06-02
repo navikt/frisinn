@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import GlobalRoutes from '../config/routeConfig';
+import useOsloTime from '../hooks/useOsloTime';
+import { usePrevious } from '../hooks/usePrevious';
 import SoknadEntryPage from '../pages/soknad-entry-page/SoknadEntryPage';
 import SoknadErrorPage from '../pages/soknad-error-page/SoknadErrorPage';
 import { SoknadEssentials } from '../types/SoknadEssentials';
@@ -11,16 +13,17 @@ import { isRunningInDevEnvironment } from '../utils/envUtils';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { navigateTo, relocateToReceiptPage } from '../utils/navigationUtils';
 import { getNextStepRoute, getSoknadRoute } from '../utils/routeUtils';
-import { SentryEventName, triggerSentryCustomError } from '../utils/sentryUtils';
+import { SentryEventName, triggerSentryCustomError, triggerSentryMessage } from '../utils/sentryUtils';
+import { erSøknadStartetTidspunktErGyldig } from '../utils/startetSøknadTidspunktUtils';
 import ArbeidstakerStep from './arbeidstaker-step/ArbeidstakerStep';
 import BekreftInfoStep from './bekreft-inntekt-step/BekreftInntektStep';
 import FrilanserStep from './frilanser-step/FrilanserStep';
+import SelvstendigAndregangStep from './selvstendig-step/andregang/SelvstendigAndregangStep';
 import SelvstendigForstegangStep from './selvstendig-step/forstegang/SelvstendigForstegangStep';
 import SoknadErrors from './soknad-errors/SoknadErrors';
 import soknadTempStorage from './SoknadTempStorage';
 import { getStepConfig, StepID } from './stepConfig';
 import SummaryStep from './summary-step/SummaryStep';
-import SelvstendigAndregangStep from './selvstendig-step/andregang/SelvstendigAndregangStep';
 
 interface Props {
     resetSoknad: () => void;
@@ -34,8 +37,24 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
     const stepConfig = getStepConfig(values, soknadEssentials.søknadsperiodeinfo);
     const soknadSteps = Object.keys(stepConfig) as Array<StepID>;
     const { harSøktSomSelvstendigNæringsdrivende } = soknadEssentials.tidligerePerioder;
+    const [søknadIsToOld, setSøknadIsToOld] = useState<boolean>(false);
+
+    const osloTime = useOsloTime();
+    const { utcString } = osloTime;
+
+    const preUtcString = usePrevious(utcString);
+    useEffect(() => {
+        if (
+            utcString &&
+            preUtcString !== utcString &&
+            erSøknadStartetTidspunktErGyldig(values.startetSøknadTidspunkt, utcString) === false
+        ) {
+            setSøknadIsToOld(true);
+        }
+    }, [utcString]);
 
     const navigateToNextStepFrom = (stepID: StepID) => {
+        osloTime.triggerFetch();
         if (values) {
             if (isFeatureEnabled(Feature.PERSISTENCE)) {
                 const stepToPersist = stepConfig[stepID].nextStep;
@@ -126,6 +145,21 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
             navigateTo(`${getSoknadRoute(nextStepID)}`, history);
         });
     };
+
+    if (søknadIsToOld === true) {
+        triggerSentryMessage(
+            SentryEventName.startetSøknadTidspunktIsTooOld,
+            JSON.stringify({
+                time: osloTime.timestamp,
+                startet: values.startetSøknadTidspunkt,
+            })
+        );
+        return (
+            <SoknadErrorPage>
+                <SoknadErrors.MissingApiDataError />
+            </SoknadErrorPage>
+        );
+    }
 
     return (
         <Switch>

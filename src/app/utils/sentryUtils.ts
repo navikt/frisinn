@@ -12,6 +12,7 @@ export enum SentryEventName {
     'mapSoknadFailed' = 'mapSoknadFailed',
     'getInntektsperiodeError' = 'getInntektsperiodeError',
     'getInntektsperiodeLog' = 'getInntektsperiodeLog',
+    'startetSøknadTidspunktIsTooOld' = 'startetSøknadTidspunktIsTooOld',
 }
 
 interface CustomError extends Error {
