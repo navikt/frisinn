@@ -1,5 +1,5 @@
 import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import Søknadsperioden from '../søknadsperioden';
+import { getSøknadsperiodeinfo } from '../søknadsperiodeUtils';
 
 describe('erÅpnetForAndregangssøknad', () => {
     it('returns false if søknadsperiode is march/april', () => {
@@ -7,14 +7,16 @@ describe('erÅpnetForAndregangssøknad', () => {
             from: apiStringDateToDate('2020-04-01'),
             to: apiStringDateToDate('2020-04-30'),
         };
-        expect(Søknadsperioden(periode).erÅpnetForAndregangssøknad).toBeFalsy();
+        const { erÅpnetForAndregangssøknad } = getSøknadsperiodeinfo(periode);
+        expect(erÅpnetForAndregangssøknad).toBeFalsy();
     });
     it('returns true if søknadsperiode is may or later', () => {
         const periode: DateRange = {
             from: apiStringDateToDate('2020-05-01'),
             to: apiStringDateToDate('2020-05-31'),
         };
-        expect(Søknadsperioden(periode).erÅpnetForAndregangssøknad).toBeTruthy();
+        const { erÅpnetForAndregangssøknad } = getSøknadsperiodeinfo(periode);
+        expect(erÅpnetForAndregangssøknad).toBeTruthy();
     });
 });
 describe('førsteUgyldigeStartdatoForInntektstap', () => {
@@ -23,7 +25,7 @@ describe('førsteUgyldigeStartdatoForInntektstap', () => {
             from: apiStringDateToDate('2020-03-13'),
             to: apiStringDateToDate('2020-04-30'),
         };
-        const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(periode);
+        const { førsteUgyldigeStartdatoForInntektstap } = getSøknadsperiodeinfo(periode);
         expect(formatDateToApiFormat(førsteUgyldigeStartdatoForInntektstap)).toEqual('2020-04-15');
     });
     it('returns correct date for mai søknadsperiode', () => {
@@ -31,7 +33,7 @@ describe('førsteUgyldigeStartdatoForInntektstap', () => {
             from: apiStringDateToDate('2020-05-01'),
             to: apiStringDateToDate('2020-05-31'),
         };
-        const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(periode);
+        const { førsteUgyldigeStartdatoForInntektstap } = getSøknadsperiodeinfo(periode);
         expect(formatDateToApiFormat(førsteUgyldigeStartdatoForInntektstap)).toEqual('2020-05-16');
     });
 });

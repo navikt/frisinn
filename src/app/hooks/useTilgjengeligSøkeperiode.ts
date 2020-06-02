@@ -20,7 +20,7 @@ function useTilgjengeligSøkeperiode({
     startetSøknad,
 }: {
     inntektstapStartDato: Date;
-    currentSøknadsperiode: DateRange;
+    søknadsperiode: DateRange;
     currentAvailableSøknadsperiode: TilgjengeligSøkeperiode;
     startetSøknad: Date;
 }) {

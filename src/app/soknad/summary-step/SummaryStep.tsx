@@ -30,13 +30,12 @@ import { validateBekrefterOpplysninger } from '../../validation/fieldValidations
 import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadStep from '../SoknadStep';
-import { StepID, StepConfigInterface } from '../stepConfig';
+import { StepConfigInterface, StepID } from '../stepConfig';
 import FrilanserSummary from './FrilanserSummary';
 import JaNeiSvar from './JaNeiSvar';
 import KronerSvar from './KronerSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
-import Søknadsperioden from '../../utils/søknadsperioden';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -57,14 +56,14 @@ const getAnonymizedSoknadData = (
     sendCounter: number
 ): string => {
     try {
-        const { avsluttetSelskapDateRange, currentSøknadsperiode, personligeForetak } = soknadEssentials;
+        const { avsluttetSelskapDateRange, søknadsperiode, personligeForetak } = soknadEssentials;
         const { selvstendigAvsluttaSelskaper, selvstendigBeregnetInntektsårstall } = values;
         const { selvstendigNæringsdrivende } = apiData;
 
         const data = {
             sendCounter,
             avsluttetSelskapDateRange,
-            currentSøknadsperiode,
+            søknadsperiode,
             foretak: personligeForetak ? personligeForetak.foretak.map((f) => f.registreringsdato) : undefined,
             selvstendigBeregnetInntektsårstall,
             avsluttetSoknad: selvstendigAvsluttaSelskaper
@@ -201,7 +200,7 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                                         <FrilanserSummary apiData={apiValues.frilanser} />
                                     </Box>
                                 )}
-                                {Søknadsperioden(soknadEssentials.currentSøknadsperiode).arbeidstakerinntektErAktiv &&
+                                {soknadEssentials.søknadsperiodeinfo.arbeidstakerinntektErAktiv &&
                                     apiValues.inntektIPeriodenSomArbeidstaker !== undefined &&
                                     inntektsperiodeSomArbeidstaker && (
                                         <Box margin={'xxl'}>

@@ -36,7 +36,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
     if (harSøktSomSelvstendigNæringsdrivende === false) {
         return <SoknadErrors.MissingApiDataError />;
     }
-    const { currentSøknadsperiode } = soknadEssentials;
+    const { søknadsperiode } = soknadEssentials;
     const { selvstendigInntektstapStartetDato, selvstendigBeregnetTilgjengeligSøknadsperiode } = values;
 
     const avslag = kontrollerSelvstendigAndregangsSvar(values);
@@ -52,7 +52,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
 
     const { tilgjengeligSøkeperiode, isLoading: tilgjengeligSøkeperiodeIsLoading } = useTilgjengeligSøkeperiode({
         inntektstapStartDato: selvstendigInntektstapStartetDato,
-        currentSøknadsperiode,
+        søknadsperiode: søknadsperiode,
         currentAvailableSøknadsperiode: selvstendigBeregnetTilgjengeligSøknadsperiode,
         startetSøknad: values.startetSøknadTidspunkt,
     });
@@ -91,7 +91,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                 </Guide>
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigHarTaptInntektPgaKorona}
-                    legend={txt.selvstendigHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                    legend={txt.selvstendigHarTaptInntektPgaKorona(søknadsperiode)}
                     description={<SelvstendigInfo.infoTaptInntektPgaKorona />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<SelvstendigInfo.StoppIkkeTapPgaKorona />}
@@ -113,7 +113,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                     }
                     stopMessage={
                         <SelvstendigInfo.StoppForSentInntektstap
-                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                            søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                         />
                     }>
                     <FormComponents.DatePicker
@@ -121,15 +121,15 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                         label={txt.selvstendigInntektstapStartetDato}
                         description={
                             <SelvstendigInfo.infoNårStartetInntektstapet
-                                søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                søknadsperiode={soknadEssentials.søknadsperiode}
                             />
                         }
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
-                            maksDato: currentSøknadsperiode.to,
+                            maksDato: søknadsperiode.to,
                         }}
                         dayPickerProps={{
-                            initialMonth: currentSøknadsperiode.to,
+                            initialMonth: søknadsperiode.to,
                         }}
                         useErrorBoundary={true}
                     />
@@ -158,7 +158,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                                         description={
                                             <SelvstendigInfo.infoHvordanBeregneInntekt
                                                 periode={tilgjengeligSøkeperiode}
-                                                søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                                søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                                             />
                                         }
                                         validate={validateRequiredNumber({ min: 0, max: MAX_INNTEKT })}
@@ -197,7 +197,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                                                 description={
                                                     <FrilanserInfo.infoHvordanBeregneInntekt
                                                         periode={tilgjengeligSøkeperiode}
-                                                        søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                                        søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                                                     />
                                                 }
                                             />

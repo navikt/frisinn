@@ -7,10 +7,6 @@ jest.mock('../../../utils/envUtils', () => ({
     getEnvironmentVariable: () => 'env',
 }));
 
-jest.mock('../../../utils/søknadsperioden', () => () => ({
-    erÅpnetForAndregangssøknad: false,
-}));
-
 describe('getHarSoktTidligerePeriode', () => {
     it('skips request and returns false if erÅpnetForAndregangssøknad returns false', () => {
         const søknadsperiode: DateRange = {

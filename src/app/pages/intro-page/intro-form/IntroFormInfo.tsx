@@ -7,7 +7,7 @@ import DateView, { formatDate } from '../../../components/date-view/DateView';
 import ExpandableInfo from '../../../components/expandable-content/ExpandableInfo';
 import { FellesStoppSentInntektstap } from '../../../soknad/info/FellesInfo';
 import { DateRange, getMonthName } from '../../../utils/dateUtils';
-import Søknadsperioden from '../../../utils/søknadsperioden';
+import { Søknadsperiodeinfo } from '../../../types/SoknadEssentials';
 
 const ikkeGyldigAlder = ({ periode }: { periode: DateRange }) => (
     <>
@@ -24,8 +24,8 @@ const selvstendigIkkeTapPgaKorona = () => (
     </>
 );
 
-const selvstendigForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
-    <FellesStoppSentInntektstap rolle="selvstendig næringsdrivende" søknadsperiode={søknadsperiode} />
+const selvstendigForSentInntektstap = ({ søknadsperiodeinfo }: { søknadsperiodeinfo: Søknadsperiodeinfo }) => (
+    <FellesStoppSentInntektstap rolle="selvstendig næringsdrivende" søknadsperiodeinfo={søknadsperiodeinfo} />
 );
 
 const selvstendigFårDekketTapet = () => (
@@ -53,8 +53,8 @@ const frilanserIkkeTapPgaKorona = () => (
     </>
 );
 
-const frilanserForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
-    <FellesStoppSentInntektstap rolle="frilanser" søknadsperiode={søknadsperiode} />
+const frilanserForSentInntektstap = ({ søknadsperiodeinfo }: { søknadsperiodeinfo: Søknadsperiodeinfo }) => (
+    <FellesStoppSentInntektstap rolle="frilanser" søknadsperiodeinfo={søknadsperiodeinfo} />
 );
 
 const frilanserFårDekketTapet = () => (
@@ -126,8 +126,11 @@ const selvstendigHvaMenesMedInntekt = () => (
     </ExpandableInfo>
 );
 
-const hvaErStartdatoForInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
-    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
+const hvaErStartdatoForInntektstap = ({
+    søknadsperiodeinfo: { førsteUgyldigeStartdatoForInntektstap, søknadsperiode },
+}: {
+    søknadsperiodeinfo: Søknadsperiodeinfo;
+}) => {
     const dag = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
     const nesteMnd = moment(søknadsperiode.to).add(2, 'month').toDate();

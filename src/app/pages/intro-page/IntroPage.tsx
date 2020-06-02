@@ -16,10 +16,10 @@ import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSøknadsperiode from '../../hooks/useSøknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
+import { getSøknadsperiodeinfo } from '../../utils/søknadsperiodeUtils';
 import IntroForm from './intro-form/IntroForm';
-import IntroCheckList from './IntroCheckList';
 import IntroFormInfo from './intro-form/IntroFormInfo';
-import Søknadsperioden from '../../utils/søknadsperioden';
+import IntroCheckList from './IntroCheckList';
 
 const bem = bemUtils('introPage');
 
@@ -33,18 +33,16 @@ const IntroPage: React.StatelessComponent = () => {
     const [harSøktFør, setHarIkkeSøktFør] = useState<YesOrNo>(YesOrNo.UNANSWERED);
 
     const intl = useIntl();
-    const currentSøknadsperiodeFetcher = useSøknadsperiode();
-    const { søknadsperiode: currentSøknadsperiode } = currentSøknadsperiodeFetcher;
+    const søknadsperiodeFetcher = useSøknadsperiode();
+    const { søknadsperiode } = søknadsperiodeFetcher;
 
     const hasError =
-        currentSøknadsperiodeFetcher.isLoading === false &&
-        (currentSøknadsperiodeFetcher === undefined ||
-            currentSøknadsperiodeFetcher.søknadsperiode === undefined ||
-            currentSøknadsperiodeFetcher?.error !== undefined);
+        søknadsperiodeFetcher.isLoading === false &&
+        (søknadsperiodeFetcher === undefined ||
+            søknadsperiodeFetcher.søknadsperiode === undefined ||
+            søknadsperiodeFetcher?.error !== undefined);
 
-    const includeHarSøktFør = currentSøknadsperiode
-        ? Søknadsperioden(currentSøknadsperiode).erÅpnetForAndregangssøknad
-        : false;
+    const includeHarSøktFør = søknadsperiode ? getSøknadsperiodeinfo(søknadsperiode).erÅpnetForAndregangssøknad : false;
 
     return (
         <Page
@@ -62,13 +60,13 @@ const IntroPage: React.StatelessComponent = () => {
                 </Box>
             ) : (
                 <LoadWrapper
-                    isLoading={currentSøknadsperiodeFetcher.isLoading}
+                    isLoading={søknadsperiodeFetcher.isLoading}
                     contentRenderer={() => {
                         if (hasError) {
                             relocateToErrorPage();
                             return null;
                         }
-                        if (!currentSøknadsperiode) {
+                        if (!søknadsperiode) {
                             return null;
                         }
                         return (
@@ -128,7 +126,7 @@ const IntroPage: React.StatelessComponent = () => {
                                     </InformationPoster>
                                 </Box>
                                 <Box margin="xl">
-                                    <InfoOmSøknadOgFrist søknadsperiode={currentSøknadsperiode} />
+                                    <InfoOmSøknadOgFrist søknadsperiode={søknadsperiode} />
                                 </Box>
 
                                 <Box margin="xl">
@@ -196,7 +194,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                 <Box padBottom="xl">
                                                     <IntroForm
                                                         onValidSubmit={(values) => setIntroResult(values)}
-                                                        soknadsperiode={currentSøknadsperiode}
+                                                        soknadsperiode={søknadsperiode}
                                                     />
                                                 </Box>
                                             </Box>

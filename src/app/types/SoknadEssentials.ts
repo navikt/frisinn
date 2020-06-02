@@ -25,9 +25,19 @@ export interface TidligerePerioder {
     harSøktSomFrilanser: boolean;
 }
 
+export interface Søknadsperiodeinfo {
+    søknadsperiode: DateRange;
+    søknadsfrist: Date;
+    erÅpnetForAndregangssøknad: boolean;
+    arbeidstakerinntektErAktiv: boolean;
+    sisteGyldigeDagForInntektstap: Date;
+    førsteUgyldigeStartdatoForInntektstap: Date;
+}
+
 export interface SoknadEssentials {
     person: Person;
-    currentSøknadsperiode: DateRange;
+    søknadsperiode: DateRange;
+    søknadsperiodeinfo: Søknadsperiodeinfo;
     isSelvstendigNæringsdrivende: boolean;
     personligeForetak?: PersonligeForetak;
     avsluttetSelskapDateRange: DateRange | undefined;

@@ -1,4 +1,4 @@
-import { formatDateToApiFormat, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { Locale } from 'common/types/Locale';
 import { soknadQuestionText } from '../soknad/soknadQuestionText';
@@ -8,14 +8,13 @@ import {
     SelvstendigNæringsdrivendeApiData,
     SoknadApiData,
 } from '../types/SoknadApiData';
-import { PersonligeForetak, SoknadEssentials } from '../types/SoknadEssentials';
+import { PersonligeForetak, SoknadEssentials, Søknadsperiodeinfo } from '../types/SoknadEssentials';
 import { FrilanserFormData, SelvstendigFormData, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { isRunningInDevEnvironment } from './envUtils';
 import { hasValidHistoriskInntekt } from './selvstendigUtils';
 import { SentryEventName, triggerSentryCustomError, triggerSentryError } from './sentryUtils';
 import { getPeriodeForAvsluttaSelskaper } from '../soknad/selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { formatDateRange } from './dateRangeUtils';
-import Søknadsperioden from './søknadsperioden';
 
 const formatYesOrNoAnswer = (answer: YesOrNo): string => {
     switch (answer) {
@@ -274,10 +273,10 @@ export const mapFrilanserFormDataToApiData = (
 
 export const mapArbeidstakerinntektIPerioden = (
     formData: SoknadFormData,
-    søknadsperiode: DateRange
+    søknadsperiodeinfo: Søknadsperiodeinfo
 ): number | undefined => {
     const { arbeidstakerErArbeidstaker, arbeidstakerInntektIPerioden, arbeidstakerHarHattInntektIPerioden } = formData;
-    const { arbeidstakerinntektErAktiv } = Søknadsperioden(søknadsperiode);
+    const { arbeidstakerinntektErAktiv } = søknadsperiodeinfo;
     if (
         arbeidstakerinntektErAktiv &&
         arbeidstakerErArbeidstaker === YesOrNo.YES &&
@@ -323,7 +322,7 @@ export const mapFormDataToApiData = (
                     : undefined,
             inntektIPeriodenSomArbeidstaker: mapArbeidstakerinntektIPerioden(
                 formData,
-                soknadEssentials.currentSøknadsperiode
+                soknadEssentials.søknadsperiodeinfo
             ),
         };
     } catch (e) {
