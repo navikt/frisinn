@@ -14,7 +14,6 @@ import { ResetSoknadFunction } from '../../soknad/Soknad';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { createDocumentPageTitle } from '../../utils/documentPageTitle';
 import SoknadEntryForm from './SoknadEntryForm';
-import Søknadsperioden from '../../utils/søknadsperioden';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -27,7 +26,8 @@ const SoknadEntryPage = ({
     soknadEssentials: {
         person: { kontonummer },
         isSelvstendigNæringsdrivende,
-        currentSøknadsperiode,
+        søknadsperiode,
+        søknadsperiodeinfo: { erÅpnetForAndregangssøknad },
     },
     resetSoknad,
 }: Props) => {
@@ -37,7 +37,6 @@ const SoknadEntryPage = ({
 
     const intl = useIntl();
     const harKontonummer = kontonummer !== undefined && kontonummer !== null;
-    const erÅpnetForAndregangssøknad = Søknadsperioden(currentSøknadsperiode).erÅpnetForAndregangssøknad;
 
     return (
         <Page
@@ -48,7 +47,7 @@ const SoknadEntryPage = ({
                     <Box margin="l">
                         <Undertittel tag="h1">
                             Du kan nå søke om kompensasjon for tapt inntekt som følge av koronautbruddet, fra og med{' '}
-                            <DateRangeView dateRange={currentSøknadsperiode} />
+                            <DateRangeView dateRange={søknadsperiode} />
                         </Undertittel>
                     </Box>
                     <Box margin="l"></Box>

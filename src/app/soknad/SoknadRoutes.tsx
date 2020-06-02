@@ -31,7 +31,7 @@ const SoknadRoutes = ({ resetSoknad, soknadEssentials }: Props) => {
     const history = useHistory();
 
     const { values } = useFormikContext<SoknadFormData>();
-    const stepConfig = getStepConfig(values, soknadEssentials.currentSøknadsperiode);
+    const stepConfig = getStepConfig(values, soknadEssentials.søknadsperiodeinfo);
     const soknadSteps = Object.keys(stepConfig) as Array<StepID>;
     const { harSøktSomSelvstendigNæringsdrivende } = soknadEssentials.tidligerePerioder;
 

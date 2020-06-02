@@ -40,11 +40,10 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         frilanserBeregnetTilgjengeligSøknadsperiode,
     } = values;
-    const { currentSøknadsperiode } = soknadEssentials;
-
+    const { søknadsperiode } = soknadEssentials;
     const { tilgjengeligSøkeperiode, isLoading: tilgjengeligSøkeperiodeIsLoading } = useTilgjengeligSøkeperiode({
         inntektstapStartDato: frilanserInntektstapStartetDato,
-        currentSøknadsperiode,
+        søknadsperiode: søknadsperiode,
         currentAvailableSøknadsperiode: frilanserBeregnetTilgjengeligSøknadsperiode,
         startetSøknad: values.startetSøknadTidspunkt,
     });
@@ -112,7 +111,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserHarTaptInntektPgaKorona}
-                    legend={soknadQuestionText.frilanserHarTaptInntektPgaKorona(currentSøknadsperiode)}
+                    legend={soknadQuestionText.frilanserHarTaptInntektPgaKorona(søknadsperiode)}
                     description={<FrilanserInfo.infoTaptInntektPgaKorona />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<FrilanserInfo.StoppIkkeTapPgaKorona />}
@@ -132,15 +131,15 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                         label={soknadQuestionText.frilanserInntektstapStartetDato}
                         description={
                             <SelvstendigInfo.infoNårStartetInntektstapet
-                                søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                søknadsperiode={soknadEssentials.søknadsperiode}
                             />
                         }
                         dateLimitations={{
                             minDato: MIN_DATE_PERIODEVELGER,
-                            maksDato: currentSøknadsperiode.to,
+                            maksDato: søknadsperiode.to,
                         }}
                         dayPickerProps={{
-                            initialMonth: currentSøknadsperiode.to,
+                            initialMonth: søknadsperiode.to,
                         }}
                         useErrorBoundary={true}
                     />
@@ -158,7 +157,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                                 return (
                                     <StopMessage>
                                         <FrilanserInfo.StoppForSentInntektstap
-                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                            søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                                         />
                                     </StopMessage>
                                 );
@@ -173,7 +172,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                                             description={
                                                 <FrilanserInfo.infoHvordanBeregneInntekt
                                                     periode={tilgjengeligSøkeperiode}
-                                                    søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                                    søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                                                 />
                                             }
                                             label={soknadQuestionText.frilanserInntektIPerioden(
@@ -218,7 +217,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                                                     description={
                                                         <SelvstendigInfo.infoHvordanBeregneInntekt
                                                             periode={tilgjengeligSøkeperiode}
-                                                            søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                                            søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                                                         />
                                                     }
                                                     validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}

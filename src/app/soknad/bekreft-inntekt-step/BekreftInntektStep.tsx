@@ -16,6 +16,7 @@ import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { mapFormDataToApiData } from '../../utils/mapFormDataToApiData';
 import { getSoknadRoute } from '../../utils/routeUtils';
 import { getInntektsperiodeForArbeidsinntekt } from '../arbeidstaker-step/arbeidstakerUtils';
+import BekreftSummerInfo from '../info/BekreftSummerInfo';
 import FrilanserInfo from '../info/FrilanserInfo';
 import SelvstendigInfo from '../info/SelvstendigInfo';
 import SoknadErrors from '../soknad-errors/SoknadErrors';
@@ -23,8 +24,6 @@ import SoknadStep from '../SoknadStep';
 import { StepConfigProps, StepID } from '../stepConfig';
 import BekreftSumRad from './bekreft-sum-rad/BekreftSumRad';
 import { BekreftInntektFormQuestions } from './bekreftInntektFormConfig';
-import Søknadsperioden from '../../utils/søknadsperioden';
-import BekreftSummerInfo from '../info/BekreftSummerInfo';
 
 const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmit }: StepConfigProps) => {
     const { values, setValues } = useFormikContext<SoknadFormData>();
@@ -76,7 +75,7 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
         : true;
 
     const frilansBekreftet = frilanser ? bekrefterFrilansinntektIPerioden === YesOrNo.YES : true;
-    const { arbeidstakerinntektErAktiv } = Søknadsperioden(soknadEssentials.currentSøknadsperiode);
+    const { arbeidstakerinntektErAktiv } = soknadEssentials.søknadsperiodeinfo;
     const arbeidstakerinntektBekreftet =
         arbeidstakerinntektErAktiv && apiValues.inntektIPeriodenSomArbeidstaker !== undefined
             ? bekrefterArbeidstakerinntektIPerioden === YesOrNo.YES
@@ -158,7 +157,7 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
                     <StopMessage>
                         {SelvstendigInfo.getMessageForAvslag(
                             selvstendigStopReason,
-                            soknadEssentials.currentSøknadsperiode,
+                            soknadEssentials.søknadsperiodeinfo,
                             selvstendigBeregnetInntektsårstall
                         )}
                         <p>
@@ -228,7 +227,7 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
             {frilanserSoknadIsOk === false && frilanserStopReason && (
                 <FormSection title="Inntekt som frilanser">
                     <StopMessage>
-                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.currentSøknadsperiode)}
+                        {FrilanserInfo.getMessageForAvslag(frilanserStopReason, soknadEssentials.søknadsperiodeinfo)}
                         <p>
                             <Link className="lenke" to={getSoknadRoute(StepID.FRILANSER)}>
                                 Gå tilbake til informasjon om frilans

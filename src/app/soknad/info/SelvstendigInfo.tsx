@@ -3,7 +3,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Element } from 'nav-frontend-typografi';
 import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import ForetakList from '../../components/foretak-list/ForetakList';
-import { Foretak } from '../../types/SoknadEssentials';
+import { Foretak, Søknadsperiodeinfo } from '../../types/SoknadEssentials';
 import { DateRange } from '../../utils/dateUtils';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendig-step/selvstendigAvslag';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
@@ -16,7 +16,6 @@ import {
     FellesNårStartetInntektstapet,
 } from './FellesInfo';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
-import Søknadsperioden from '../../utils/søknadsperioden';
 
 const rolleNavn = 'selvstendig næringsdrivende';
 
@@ -52,8 +51,8 @@ const introAndregangssøknad = () => {
     );
 };
 
-const StoppForSentInntektstap = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
-    <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} søknadsperiode={søknadsperiode} />
+const StoppForSentInntektstap = ({ søknadsperiodeinfo }: { søknadsperiodeinfo: Søknadsperiodeinfo }) => (
+    <FellesStoppForSentInntektstapInnlogget rolle={rolleNavn} søknadsperiodeinfo={søknadsperiodeinfo} />
 );
 
 const StoppIkkeTapPgaKorona = () => <FellesStoppIkkeTapPgaKoronaInnlogget rolle={rolleNavn} />;
@@ -90,7 +89,13 @@ const StoppIngenHistoriskInntekt = ({ inntektÅrstall }: { inntektÅrstall?: num
 
 const StoppIkkeAlleAvsluttaSelskaperErRegistrert = () => <>Du må registrere alle selskapene før du kan fortsette.</>;
 
-const infoHvordanBeregneInntekt = ({ periode, søknadsperiode }: { periode: DateRange; søknadsperiode: DateRange }) => (
+const infoHvordanBeregneInntekt = ({
+    periode,
+    søknadsperiodeinfo,
+}: {
+    periode: DateRange;
+    søknadsperiodeinfo: Søknadsperiodeinfo;
+}) => (
     <ExpandableInfo title="Hvordan beregner du inntekt?">
         Inntekten du skal opplyse om er personinntekt for næring, og som gjelder for perioden{' '}
         <strong>
@@ -105,7 +110,7 @@ const infoHvordanBeregneInntekt = ({ periode, søknadsperiode }: { periode: Date
             </ul>
             <Element>Inntekter som ikke skal tas med:</Element>
             <ul className="infoList">
-                {Søknadsperioden(søknadsperiode).erÅpnetForAndregangssøknad && <li>Utbetaling fra denne ordningen</li>}
+                {søknadsperiodeinfo.erÅpnetForAndregangssøknad && <li>Utbetaling fra denne ordningen</li>}
                 <li>Inntekt som arbeidstaker</li>
                 <li>Inntekt som frilanser</li>
                 <li>Uføretrygd</li>
@@ -156,7 +161,7 @@ const infoSelvstendigInntekt2019 = () => (
 
 const getMessageForAvslag = (
     årsak: SelvstendigNæringdsrivendeAvslagÅrsak,
-    søknadsperiode: DateRange,
+    søknadsperiodeinfo: Søknadsperiodeinfo,
     inntektÅrstall?: HistoriskInntektÅrstall
 ): React.ReactNode => {
     switch (årsak) {
@@ -165,7 +170,7 @@ const getMessageForAvslag = (
         case SelvstendigNæringdsrivendeAvslagÅrsak.harIkkeHattInntektstapPgaKorona:
             return <StoppIkkeTapPgaKorona />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.søkerIkkeForGyldigTidsrom:
-            return <StoppForSentInntektstap søknadsperiode={søknadsperiode} />;
+            return <StoppForSentInntektstap søknadsperiodeinfo={søknadsperiodeinfo} />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet:
             return <StoppYtelseDekkerHeleTapet />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt:

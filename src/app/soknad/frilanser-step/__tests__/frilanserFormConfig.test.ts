@@ -1,12 +1,13 @@
 import { SoknadFormField, FrilanserFormData } from '../../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { apiStringDateToDate } from '../../../utils/dateUtils';
+import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
 import { SoknadEssentials, Person } from '../../../types/SoknadEssentials';
 import { PersonligeForetakMock as pfm } from '../../../__mock__/personligeForetakMock';
 import { getPeriodeForAvsluttaSelskaper } from '../../selvstendig-step/avsluttet-selskap/avsluttetSelskapUtils';
 import { FrilanserAvslagStatus, FrilanserAvslagÅrsak } from '../frilanserAvslag';
 import { FrilanserFormConfigPayload, FrilanserFormQuestions } from '../frilanserFormConfig';
 import { SelvstendigNæringdsrivendeAvslagÅrsak } from '../../selvstendig-step/selvstendigAvslag';
+import { getSøknadsperiodeinfo } from '../../../utils/søknadsperiodeUtils';
 
 const person: Person = {
     fornavn: 'a',
@@ -18,19 +19,22 @@ const person: Person = {
 
 const personligeForetak = pfm.personligeFortak2019;
 
+const søknadsperiode: DateRange = {
+    from: apiStringDateToDate('2020-04-01'),
+    to: apiStringDateToDate('2020-04-30'),
+};
+
 const soknadEssentials: SoknadEssentials = {
     person,
     personligeForetak,
-    currentSøknadsperiode: {
-        from: apiStringDateToDate('2020-04-01'),
-        to: apiStringDateToDate('2020-04-30'),
-    },
+    søknadsperiode: søknadsperiode,
     tidligerePerioder: {
         harSøktSomSelvstendigNæringsdrivende: false,
         harSøktSomFrilanser: false,
     },
     isSelvstendigNæringsdrivende: true,
     avsluttetSelskapDateRange: getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato),
+    søknadsperiodeinfo: getSøknadsperiodeinfo(søknadsperiode),
 };
 
 const initialFormData: FrilanserFormData = {

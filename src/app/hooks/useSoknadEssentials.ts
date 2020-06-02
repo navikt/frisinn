@@ -8,6 +8,7 @@ import { SoknadEssentials } from '../types/SoknadEssentials';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 import { getHarSoktTidligerePeriode } from '../api/har-sokt-tidligere-periode';
 import { isSelvstendigNæringsdrivende } from '../utils/selvstendigUtils';
+import { getSøknadsperiodeinfo } from '../utils/søknadsperiodeUtils';
 
 function useSoknadEssentials() {
     const [soknadEssentials, setSoknadEssentials] = useState<SoknadEssentials | undefined>();
@@ -21,15 +22,16 @@ function useSoknadEssentials() {
         setIsLoading(true);
         try {
             const person = await getSoker();
-            const currentSøknadsperiode = await getSøknadsperiode();
-            const tidligerePerioder = await getHarSoktTidligerePeriode(currentSøknadsperiode);
+            const søknadsperiode = await getSøknadsperiode();
+            const tidligerePerioder = await getHarSoktTidligerePeriode(søknadsperiode);
             const personligeForetak = await getPersonligeForetak(
                 tidligerePerioder.harSøktSomSelvstendigNæringsdrivende
             );
 
             setSoknadEssentials({
                 person,
-                currentSøknadsperiode,
+                søknadsperiode,
+                søknadsperiodeinfo: getSøknadsperiodeinfo(søknadsperiode),
                 personligeForetak: personligeForetak,
                 avsluttetSelskapDateRange: personligeForetak
                     ? getPeriodeForAvsluttaSelskaper(personligeForetak.tidligsteRegistreringsdato)

@@ -62,7 +62,7 @@ const ArbeidstakerStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSu
                             max={MAX_INNTEKT}
                             description={
                                 <ArbeidstakerInfo.infoOmArbeidstakerinntektIPerioden
-                                    søknadsperiode={soknadEssentials.currentSøknadsperiode}
+                                    søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
                                 />
                             }
                             validate={validateRequiredNumber({ min: 1, max: MAX_INNTEKT })}

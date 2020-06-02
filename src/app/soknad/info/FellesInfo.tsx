@@ -3,8 +3,8 @@ import ExpandableInfo from '../../components/expandable-content/ExpandableInfo';
 import { Element } from 'nav-frontend-typografi';
 import { DateRange, getMonthName } from '../../utils/dateUtils';
 import moment from 'moment';
-import Søknadsperioden from '../../utils/søknadsperioden';
 import { formatDate } from '../../components/date-view/DateView';
+import { Søknadsperiodeinfo } from '../../types/SoknadEssentials';
 
 export const FellesInfoHvaMenesMedTaptInntekt = () => (
     <ExpandableInfo title="Hva menes med tapt inntekt?">
@@ -37,8 +37,13 @@ export const FellesInfoAndreUtbetalingerFraNav = ({ rolle }: { rolle: string }) 
     </ExpandableInfo>
 );
 
-export const FellesStoppSentInntektstap = ({ rolle, søknadsperiode }: { rolle: string; søknadsperiode: DateRange }) => {
-    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
+export const FellesStoppSentInntektstap = ({
+    rolle,
+    søknadsperiodeinfo: { førsteUgyldigeStartdatoForInntektstap, søknadsperiode },
+}: {
+    rolle: string;
+    søknadsperiodeinfo: Søknadsperiodeinfo;
+}) => {
     const dagOgMnd = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
     const nesteMnd = getMonthName(moment(søknadsperiode.to).add(2, 'month').toDate());
@@ -54,12 +59,11 @@ export const FellesStoppSentInntektstap = ({ rolle, søknadsperiode }: { rolle: 
 
 export const FellesStoppForSentInntektstapInnlogget = ({
     rolle,
-    søknadsperiode,
+    søknadsperiodeinfo: { førsteUgyldigeStartdatoForInntektstap },
 }: {
     rolle: string;
-    søknadsperiode: DateRange;
+    søknadsperiodeinfo: Søknadsperiodeinfo;
 }) => {
-    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(søknadsperiode);
     const dagOgMnd = formatDate(førsteUgyldigeStartdatoForInntektstap, 'dateAndMonth');
     const mnd = getMonthName(førsteUgyldigeStartdatoForInntektstap);
     return (

@@ -18,21 +18,21 @@ import introFormUtils from './introFormUtils';
 import useAccessCheck from '../../../hooks/useAccessKrav';
 import { apenAlderAccessCheck } from '../../../utils/apiAccessCheck';
 import LoadWrapper from '../../../components/load-wrapper/LoadWrapper';
-import Søknadsperioden from '../../../utils/søknadsperioden';
+import { getSøknadsperiodeinfo } from '../../../utils/søknadsperiodeUtils';
 
 const FormComponent = getTypedFormComponents<IntroFormField, IntroFormData>();
 
 interface Props {
-    soknadsperiode: DateRange;
+    søknadsperiode: DateRange;
     onValidSubmit: (values: IntroResultProps) => void;
 }
 
-const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: IntroFormData }) => {
+const IntroForm = ({ onValidSubmit, søknadsperiode, values }: Props & { values: IntroFormData }) => {
     const intl = useIntl();
 
     const visibility = IntroFormQuestions.getVisbility({
         ...values,
-        soknadsperiode,
+        søknadsperiode,
     });
 
     const { isVisible, areAllQuestionsAnswered } = visibility;
@@ -65,7 +65,8 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
     const selvstendigIsOk = introFormUtils.canApplyAsSelvstendig(values);
     const frilanserIsOk = introFormUtils.canApplyAsFrilanser(values);
 
-    const { førsteUgyldigeStartdatoForInntektstap } = Søknadsperioden(soknadsperiode);
+    const søknadsperiodeinfo = getSøknadsperiodeinfo(søknadsperiode);
+    const { førsteUgyldigeStartdatoForInntektstap } = søknadsperiodeinfo;
 
     const canContinueToSoknad = areAllQuestionsAnswered() && (selvstendigIsOk || frilanserIsOk) && alderIsOk;
 
@@ -86,7 +87,7 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                     <IntroFormQuestion
                         name={IntroFormField.fødselsdato}
                         showStop={hasValue(fødselsdato) && !alderIsOk && isLoading === false}
-                        stopMessage={<Info.ikkeGyldigAlder periode={soknadsperiode} />}>
+                        stopMessage={<Info.ikkeGyldigAlder periode={søknadsperiode} />}>
                         <FormComponent.DatePicker
                             name={IntroFormField.fødselsdato}
                             label={introFormText.fødselsdato}
@@ -132,10 +133,14 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                                 førsteUgyldigeStartdatoForInntektstap
                                             )}
                                             description={
-                                                <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />
+                                                <Info.hvaErStartdatoForInntektstap
+                                                    søknadsperiodeinfo={søknadsperiodeinfo}
+                                                />
                                             }
                                             stopMessage={
-                                                <Info.selvstendigForSentInntektstap søknadsperiode={soknadsperiode} />
+                                                <Info.selvstendigForSentInntektstap
+                                                    søknadsperiodeinfo={søknadsperiodeinfo}
+                                                />
                                             }
                                         />
                                         <IntroFormQuestion
@@ -187,11 +192,15 @@ const IntroForm = ({ onValidSubmit, soknadsperiode, values }: Props & { values: 
                                                 førsteUgyldigeStartdatoForInntektstap
                                             )}
                                             description={
-                                                <Info.hvaErStartdatoForInntektstap søknadsperiode={soknadsperiode} />
+                                                <Info.hvaErStartdatoForInntektstap
+                                                    søknadsperiodeinfo={søknadsperiodeinfo}
+                                                />
                                             }
                                             showStop={frilanserInntektstapStartetFørFrist === YesOrNo.NO}
                                             stopMessage={
-                                                <Info.frilanserForSentInntektstap søknadsperiode={soknadsperiode} />
+                                                <Info.frilanserForSentInntektstap
+                                                    søknadsperiodeinfo={søknadsperiodeinfo}
+                                                />
                                             }
                                         />
                                         <IntroFormQuestion
