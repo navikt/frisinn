@@ -115,10 +115,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
                                 delt ansvar (DA). Selskapet må være registrert før 1. mars 2020 for å kunne søke
                                 kompensasjon gjennom denne ordningen.
                             </p>
-                            <p>
-                                Det er ikke registrert noe selskap på deg som selvstendig næringsdrivende. Hvis du mener
-                                det er feil, må du kontakte Brønnøysundregistrene.
-                            </p>
+                            <p>Det er ikke registrert noe selskap på deg som selvstendig næringsdrivende.</p>
                         </Guide>
                     </FormBlock>
                 )}
