@@ -8,7 +8,6 @@ import moment from 'moment-timezone';
 import Modal from 'nav-frontend-modal';
 import { Locale } from 'common/types/Locale';
 import ApplicationWrapper from './components/application-wrapper/ApplicationWrapper';
-import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
 import TilgjengeligCheck from './components/tilgjengelig-check/TilgjengeligCheck';
 import GlobalRoutes from './config/routeConfig';
 import GeneralErrorPage from './pages/general-error-page/GeneralErrorPage';
@@ -34,7 +33,7 @@ Sentry.init({
     dsn: 'https://64c0ee4a1a8b4212b685764604cce997@sentry.gc.nav.no/29',
     release: getEnvironmentVariable('APP_VERSION'),
     environment: window.location.hostname,
-    integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
+    // integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
 
 const isBrowserSupported = (): boolean => {
@@ -55,30 +54,28 @@ const App: React.FunctionComponent = () => {
     const isSupportedBrowser = isBrowserSupported();
 
     return (
-        <ErrorBoundary>
-            <ApplicationWrapper
-                locale={locale}
-                onChangeLocale={(activeLocale: Locale) => {
-                    setLocaleInSessionStorage(activeLocale);
-                    setLocale(activeLocale);
-                }}>
-                {isSupportedBrowser && (
-                    <TilgjengeligCheck
-                        tilgjengenligRender={() => (
-                            <Switch>
-                                <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
-                                <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
-                                <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
-                                <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
-                                <Route path="/" component={IntroPage} exact={true} />
-                                <Route component={NotFoundPage} />
-                            </Switch>
-                        )}
-                    />
-                )}
-                {isSupportedBrowser === false && <UnsupportedBrowserPage />}
-            </ApplicationWrapper>
-        </ErrorBoundary>
+        <ApplicationWrapper
+            locale={locale}
+            onChangeLocale={(activeLocale: Locale) => {
+                setLocaleInSessionStorage(activeLocale);
+                setLocale(activeLocale);
+            }}>
+            {isSupportedBrowser && (
+                <TilgjengeligCheck
+                    tilgjengenligRender={() => (
+                        <Switch>
+                            <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
+                            <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
+                            <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
+                            <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                            <Route path="/" component={IntroPage} exact={true} />
+                            <Route component={NotFoundPage} />
+                        </Switch>
+                    )}
+                />
+            )}
+            {isSupportedBrowser === false && <UnsupportedBrowserPage />}
+        </ApplicationWrapper>
     );
 };
 
