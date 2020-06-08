@@ -57,10 +57,11 @@ const getAnonymizedSoknadData = (
 ): string => {
     try {
         const { avsluttetSelskapDateRange, søknadsperiode, personligeForetak } = soknadEssentials;
-        const { selvstendigAvsluttaSelskaper, selvstendigBeregnetInntektsårstall } = values;
+        const { selvstendigAvsluttaSelskaper, selvstendigBeregnetInntektsårstall, startetSøknadTidspunkt } = values;
         const { selvstendigNæringsdrivende } = apiData;
 
         const data = {
+            startetSøknadTidspunkt,
             sendCounter,
             avsluttetSelskapDateRange,
             søknadsperiode,
