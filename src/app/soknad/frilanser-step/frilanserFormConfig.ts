@@ -30,13 +30,23 @@ const skalSpørreOmSelvstendig = ({
     søkerOmTaptInntektSomSelvstendigNæringsdrivende,
     erSelvstendigNæringsdrivende,
     selvstendigStopReason,
+    tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
     avslag,
 }: FrilanserFormConfigPayload) => {
     if (avslag.utebetalingFraNAVDekkerHeleInntektstapet === true) {
         return false;
     }
-    if (personligeForetak === undefined) {
+    if (
+        (personligeForetak === undefined || personligeForetak.foretak.length === 0) &&
+        harSøktSomSelvstendigNæringsdrivende === false
+    ) {
         return erSelvstendigNæringsdrivende === YesOrNo.YES;
+    }
+    if (
+        harSøktSomSelvstendigNæringsdrivende === true &&
+        søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO
+    ) {
+        return true;
     }
     return søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.NO || selvstendigStopReason !== undefined;
 };

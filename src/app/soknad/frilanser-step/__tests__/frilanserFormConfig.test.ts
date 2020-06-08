@@ -109,6 +109,14 @@ describe('frilanserFormConfig', () => {
                 });
                 expect(isIncluded(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden)).toBeTruthy();
             });
+            it(`includes ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden} when ${soknadEssentials.tidligerePerioder.harSøktSomSelvstendigNæringsdrivende} === true`, () => {
+                const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.NO,
+                    tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: true },
+                });
+                expect(isIncluded(SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden)).toBeTruthy();
+            });
             it(`does not include ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden} when ${SoknadFormField.selvstendigStopReason} is undefined`, () => {
                 const { isIncluded } = FrilanserFormQuestions.getVisbility({
                     ...payload,
