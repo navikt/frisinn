@@ -80,6 +80,7 @@
     "fieldvalidation.bekrefterOpplysningerPåkrevd": "Du må bekrefte opplysningene",
     "fieldvalidation.dato_utenfor_gyldig_tidsrom": "Dato er ikke innfor gyldig tidsrom",
     "fieldvalidation.ugyldig_telefonnummer": "Telefonnummer er ikke gyldig",
+    "fieldvalidation.ingenUttaksdagerIPeriode": "Perioden fra inntektstapet ditt startet til periodens slutt inneholder kun helgedager. Du kan ikke få dekket inntektstapet ditt disse dagene.",
 
     "page.receipt.sidetittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",
     "page.receipt.tittel": "Vi har mottatt søknad fra deg om inntektskompensasjon",

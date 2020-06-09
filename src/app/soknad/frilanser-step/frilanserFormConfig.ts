@@ -62,15 +62,19 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
     },
     [Field.frilanserInntektIPerioden]: {
         parentQuestion: Field.frilanserInntektstapStartetDato,
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
-            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
+            harIkkeHattInntektstapPgaKorona === false &&
+            søkerIkkeForGyldigTidsrom === false &&
+            ingenUttaksdager === false,
         isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.frilanserInntektIPerioden,
         visibilityFilter: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
-            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
+            harIkkeHattInntektstapPgaKorona === false &&
+            søkerIkkeForGyldigTidsrom === false &&
+            ingenUttaksdager === false,
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },

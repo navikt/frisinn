@@ -44,6 +44,7 @@ const avslag: SelvstendigNæringsdrivendeAvslagStatus = {
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: false,
     [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: false,
     [SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert]: false,
+    [SelvstendigNæringdsrivendeAvslagÅrsak.ingenUttaksdager]: false,
 };
 
 const minValidPayload: SoknadFormData = {

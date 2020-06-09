@@ -1,7 +1,10 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { SelvstendigFormData } from '../../../types/SoknadFormData';
 import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
-import { kontrollerSelvstendigSvar, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
+import {
+    kontrollerSelvstendigSvar,
+    SelvstendigNæringsdrivendeAvslagStatus,
+    SelvstendigAvslagPayload,
+} from '../selvstendigAvslag';
 
 const periode: DateRange = {
     from: apiStringDateToDate('2020-04-01'),
@@ -9,7 +12,7 @@ const periode: DateRange = {
 };
 
 describe('selvstendigAvslag', () => {
-    const payload: SelvstendigFormData = {
+    const payload: SelvstendigAvslagPayload = {
         selvstendigBeregnetInntektsårstall: 2019,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
         selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
@@ -26,6 +29,7 @@ describe('selvstendigAvslag', () => {
         selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
         selvstendigInntekt2020: undefined,
         søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
+        søknadsperiode: { from: new Date(), to: new Date() },
     };
     describe('selvstendigHarTaptInntektPgaKorona', () => {
         it('returns error when selvstendigHarTaptInntektPgaKorona === NO', () => {

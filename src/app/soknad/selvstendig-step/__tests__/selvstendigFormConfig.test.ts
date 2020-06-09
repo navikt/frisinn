@@ -64,6 +64,7 @@ const avslag: SelvstendigNæringsdrivendeAvslagStatus = {
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: false,
     [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: false,
     [SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert]: false,
+    [SelvstendigNæringdsrivendeAvslagÅrsak.ingenUttaksdager]: false,
 };
 
 describe('selvstendigFormConfig', () => {
@@ -234,6 +235,17 @@ describe('selvstendigFormConfig', () => {
                 const { isIncluded } = SelvstendigFormQuestions.getVisbility({
                     ...payload,
                     avslag: { ...payload.avslag, søkerIkkeForGyldigTidsrom: true },
+                });
+                expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.selvstendigInntektIPerioden)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.selvstendigHarRegnskapsfører)).toBeFalsy();
+            });
+            it(`does not include default following questions when ${SelvstendigNæringdsrivendeAvslagÅrsak.ingenUttaksdager} === true`, () => {
+                const { isIncluded } = SelvstendigFormQuestions.getVisbility({
+                    ...payload,
+                    avslag: { ...payload.avslag, ingenUttaksdager: true },
                 });
                 expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
                 expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeTruthy();

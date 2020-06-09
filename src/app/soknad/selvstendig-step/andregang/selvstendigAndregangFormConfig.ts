@@ -21,8 +21,10 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigAndregangFormConfigPayloa
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Field.selvstendigInntektIPerioden]: {
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
-            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
+            harIkkeHattInntektstapPgaKorona === false &&
+            søkerIkkeForGyldigTidsrom === false &&
+            ingenUttaksdager === false,
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
@@ -32,8 +34,14 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigAndregangFormConfigPayloa
     },
     [Field.selvstendigErFrilanser]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
-        isIncluded: ({ selvstendigHarYtelseFraNavSomDekkerTapet, søkerOmTaptInntektSomFrilanser }) =>
-            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO && søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
+        isIncluded: ({
+            selvstendigHarYtelseFraNavSomDekkerTapet,
+            søkerOmTaptInntektSomFrilanser,
+            avslag: { ingenUttaksdager },
+        }) =>
+            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO &&
+            søkerOmTaptInntektSomFrilanser === YesOrNo.NO &&
+            ingenUttaksdager === false,
         isAnswered: ({ selvstendigErFrilanser }) => yesOrNoIsAnswered(selvstendigErFrilanser),
     },
     [Field.selvstendigHarHattInntektSomFrilanserIPerioden]: {

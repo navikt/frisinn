@@ -49,7 +49,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
     });
 
     const isLoading = tilgjengeligSøkeperiodeIsLoading;
-    const avslag = kontrollerFrilanserSvar(values);
+    const avslag = kontrollerFrilanserSvar({ ...values, søknadsperiode });
 
     const payload = {
         ...values,
@@ -66,7 +66,8 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
         allQuestionsAreAnswered &&
         isValidDateRange(tilgjengeligSøkeperiode) &&
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
-        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
+        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO &&
+        avslag.ingenUttaksdager === false;
 
     useEffect(() => {
         setFieldValue(
@@ -91,7 +92,8 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
             showSubmitButton={
                 !isLoading &&
                 (frilanserSoknadIsOk ||
-                    (allQuestionsAreAnswered && søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES))
+                    (allQuestionsAreAnswered &&
+                        (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES || avslag.ingenUttaksdager)))
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
@@ -119,13 +121,15 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserInntektstapStartetDato}
-                    showInfo={isValidDateRange(tilgjengeligSøkeperiode)}
+                    showInfo={isValidDateRange(tilgjengeligSøkeperiode) && avslag.ingenUttaksdager === false}
                     infoMessage={
                         <TilgjengeligSøkeperiodeInfo
                             inntektstapStartetDato={frilanserInntektstapStartetDato}
                             tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
                         />
-                    }>
+                    }
+                    stopMessage={<FrilanserInfo.StopIngenUttaksdager />}
+                    showStop={avslag.ingenUttaksdager}>
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}
                         label={soknadQuestionText.frilanserInntektstapStartetDato}

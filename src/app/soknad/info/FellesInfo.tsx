@@ -89,3 +89,10 @@ export const FellesStoppYtelseDekkerHeleTapetInnlogget = ({ rolle }: { rolle: st
         at du ikke kan søke om kompensasjon for tapt inntekt som {rolle}.
     </>
 );
+
+export const FellesStopIngentUttaksdagerIPeriode = () => (
+    <span>
+        Perioden fra inntektstapet ditt startet til periodens slutt inneholder kun helgedager. Du kan ikke få dekket
+        inntektstapet ditt disse dagene.
+    </span>
+);
