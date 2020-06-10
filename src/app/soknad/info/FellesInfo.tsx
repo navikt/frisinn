@@ -5,6 +5,7 @@ import { DateRange, getMonthName } from '../../utils/dateUtils';
 import moment from 'moment';
 import { formatDate } from '../../components/date-view/DateView';
 import { Søknadsperiodeinfo } from '../../types/SoknadEssentials';
+import { FormattedMessage } from 'react-intl';
 
 export const FellesInfoHvaMenesMedTaptInntekt = () => (
     <ExpandableInfo title="Hva menes med tapt inntekt?">
@@ -91,7 +92,5 @@ export const FellesStoppYtelseDekkerHeleTapetInnlogget = ({ rolle }: { rolle: st
 );
 
 export const FellesStopIngentUttaksdagerIPeriode = () => (
-    <span>
-        Perioden du kan søke for inneholder kun helgedager. Du kan ikke få dekket inntektstapet ditt disse dagene.
-    </span>
+    <FormattedMessage id="fieldvalidation.ingenUttaksdagerIPeriode" />
 );
