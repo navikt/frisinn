@@ -92,7 +92,6 @@ export const FellesStoppYtelseDekkerHeleTapetInnlogget = ({ rolle }: { rolle: st
 
 export const FellesStopIngentUttaksdagerIPeriode = () => (
     <span>
-        Perioden fra inntektstapet ditt startet til periodens slutt inneholder kun helgedager. Du kan ikke få dekket
-        inntektstapet ditt disse dagene.
+        Perioden du kan søke for inneholder kun helgedager. Du kan ikke få dekket inntektstapet ditt disse dagene.
     </span>
 );
