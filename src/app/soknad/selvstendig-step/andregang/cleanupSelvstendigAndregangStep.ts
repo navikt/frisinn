@@ -12,7 +12,11 @@ export const cleanupSelvstendigAndregangStep = (
     if (v.selvstendigHarTaptInntektPgaKorona !== YesOrNo.YES) {
         v.selvstendigInntektstapStartetDato = undefined as any;
     }
-    if (v.selvstendigInntektstapStartetDato === undefined || avslag.søkerIkkeForGyldigTidsrom) {
+    if (
+        v.selvstendigInntektstapStartetDato === undefined ||
+        avslag.søkerIkkeForGyldigTidsrom ||
+        avslag.ingenUttaksdager
+    ) {
         v.selvstendigInntektIPerioden = undefined as any;
         v.selvstendigBeregnetTilgjengeligSøknadsperiode = undefined;
     }
