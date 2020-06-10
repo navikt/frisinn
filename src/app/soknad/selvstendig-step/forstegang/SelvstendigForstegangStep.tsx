@@ -38,7 +38,6 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
     const {
         selvstendigInntektstapStartetDato,
         selvstendigHarTaptInntektPgaKorona,
-        søkerOmTaptInntektSomFrilanser,
         selvstendigHarYtelseFraNavSomDekkerTapet,
         selvstendigHarAvsluttetSelskaper,
         selvstendigAvsluttaSelskaper,
@@ -70,7 +69,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
 
     const isLoading = tilgjengeligSøkeperiodeIsLoading || inntektsperiodeIsLoading;
 
-    const avslag = kontrollerSelvstendigSvar({ ...values, søknadsperiode });
+    const avslag = kontrollerSelvstendigSvar(values);
 
     const skalSpørreOmAvsluttaSelskaper = harSelskaperRegistrertFør2019(personligeForetak) === false;
 
@@ -141,9 +140,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                 (selvstendigHarAvsluttetSelskaper === YesOrNo.YES
                     ? avslag.ikkeAlleAvsluttaSelskaperErRegistrert === false
                     : true) &&
-                (hasValidSelvstendigFormData ||
-                    (allQuestionsAreAnswered &&
-                        (søkerOmTaptInntektSomFrilanser === YesOrNo.YES || avslag.ingenUttaksdager)))
+                (hasValidSelvstendigFormData || allQuestionsAreAnswered)
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>

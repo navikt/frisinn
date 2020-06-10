@@ -1,9 +1,6 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FrilanserFormData } from '../../types/SoknadFormData';
-import { DateRange } from '../../utils/dateUtils';
 import { getAntallUttaksdagerITidsperiode } from '../../utils/uttaksdagerUtils';
-
-export type FrilanserAvslagPayload = FrilanserFormData & { søknadsperiode: DateRange };
 
 export enum FrilanserAvslagÅrsak {
     'harIkkeHattInntektstapPgaKorona' = 'harIkkeHattInntektstapPgaKorona',
@@ -30,18 +27,18 @@ const utbetalingFraNAVDekkerHeleTapet = ({ frilanserHarYtelseFraNavSomDekkerTape
     return frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.YES;
 };
 
-const ingenUttaksdagerIPeriode = ({ frilanserInntektstapStartetDato, søknadsperiode }: FrilanserAvslagPayload) => {
-    if (frilanserInntektstapStartetDato === undefined) {
+const ingenUttaksdagerIPeriode = ({ frilanserBeregnetTilgjengeligSøknadsperiode }: FrilanserFormData) => {
+    if (frilanserBeregnetTilgjengeligSøknadsperiode === undefined) {
         return false;
     }
     const antallUttaksdagerIPeriode = getAntallUttaksdagerITidsperiode({
-        from: frilanserInntektstapStartetDato,
-        to: søknadsperiode.to,
+        from: frilanserBeregnetTilgjengeligSøknadsperiode.from,
+        to: frilanserBeregnetTilgjengeligSøknadsperiode.to,
     });
     return antallUttaksdagerIPeriode === 0;
 };
 
-export const kontrollerFrilanserSvar = (payload: FrilanserAvslagPayload) => ({
+export const kontrollerFrilanserSvar = (payload: FrilanserFormData) => ({
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
     utebetalingFraNAVDekkerHeleInntektstapet: utbetalingFraNAVDekkerHeleTapet(payload),

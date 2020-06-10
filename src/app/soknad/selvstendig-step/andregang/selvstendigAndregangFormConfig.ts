@@ -34,14 +34,8 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigAndregangFormConfigPayloa
     },
     [Field.selvstendigErFrilanser]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
-        isIncluded: ({
-            selvstendigHarYtelseFraNavSomDekkerTapet,
-            søkerOmTaptInntektSomFrilanser,
-            avslag: { ingenUttaksdager },
-        }) =>
-            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO &&
-            søkerOmTaptInntektSomFrilanser === YesOrNo.NO &&
-            ingenUttaksdager === false,
+        isIncluded: ({ selvstendigHarYtelseFraNavSomDekkerTapet, søkerOmTaptInntektSomFrilanser }) =>
+            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO && søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
         isAnswered: ({ selvstendigErFrilanser }) => yesOrNoIsAnswered(selvstendigErFrilanser),
     },
     [Field.selvstendigHarHattInntektSomFrilanserIPerioden]: {

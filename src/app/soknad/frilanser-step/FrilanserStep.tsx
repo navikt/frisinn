@@ -37,7 +37,6 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
         frilanserInntektstapStartetDato,
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
-        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         frilanserBeregnetTilgjengeligSøknadsperiode,
     } = values;
     const { søknadsperiode } = soknadEssentials;
@@ -49,7 +48,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
     });
 
     const isLoading = tilgjengeligSøkeperiodeIsLoading;
-    const avslag = kontrollerFrilanserSvar({ ...values, søknadsperiode });
+    const avslag = kontrollerFrilanserSvar(values);
 
     const payload = {
         ...values,
@@ -89,12 +88,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                 v.frilanserStopReason = frilanserSoknadIsOk ? undefined : getStopReason(avslag);
                 return cleanupFrilanserStep(v, avslag);
             }}
-            showSubmitButton={
-                !isLoading &&
-                (frilanserSoknadIsOk ||
-                    (allQuestionsAreAnswered &&
-                        (søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES || avslag.ingenUttaksdager)))
-            }>
+            showSubmitButton={!isLoading && (frilanserSoknadIsOk || allQuestionsAreAnswered)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     Du er frilanser når du mottar lønn for enkeltstående oppdrag uten å være fast eller midlertidig

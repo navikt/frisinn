@@ -28,7 +28,7 @@ const txt = soknadQuestionText;
 
 const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials, stepConfig }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
-    const { søkerOmTaptInntektSomFrilanser, selvstendigHarYtelseFraNavSomDekkerTapet } = values;
+    const { selvstendigHarYtelseFraNavSomDekkerTapet } = values;
     const {
         tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
     } = soknadEssentials;
@@ -39,7 +39,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
     const { søknadsperiode } = soknadEssentials;
     const { selvstendigInntektstapStartetDato, selvstendigBeregnetTilgjengeligSøknadsperiode } = values;
 
-    const avslag = kontrollerSelvstendigAndregangsSvar({ ...values, ...soknadEssentials });
+    const avslag = kontrollerSelvstendigAndregangsSvar(values);
 
     const payload: SelvstendigAndregangFormConfigPayload = {
         ...values,
@@ -81,11 +81,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                 v.selvstendigStopReason = hasValidSelvstendigAndregangsFormData ? undefined : getAvslagÅrsak(avslag);
                 return cleanupSelvstendigAndregangStep(v, avslag);
             }}
-            showSubmitButton={
-                hasValidSelvstendigAndregangsFormData ||
-                (allQuestionsAreAnswered && søkerOmTaptInntektSomFrilanser === YesOrNo.YES) ||
-                avslag.ingenUttaksdager === true
-            }>
+            showSubmitButton={hasValidSelvstendigAndregangsFormData || allQuestionsAreAnswered}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <SelvstendigInfo.introAndregangssøknad />

@@ -1,10 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
-import {
-    kontrollerSelvstendigSvar,
-    SelvstendigNæringsdrivendeAvslagStatus,
-    SelvstendigAvslagPayload,
-} from '../selvstendigAvslag';
+import { kontrollerSelvstendigSvar, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
+import { SelvstendigFormData } from '../../../types/SoknadFormData';
 
 const periode: DateRange = {
     from: apiStringDateToDate('2020-04-01'),
@@ -12,7 +9,7 @@ const periode: DateRange = {
 };
 
 describe('selvstendigAvslag', () => {
-    const payload: SelvstendigAvslagPayload = {
+    const payload: SelvstendigFormData = {
         selvstendigBeregnetInntektsårstall: 2019,
         søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.YES,
         selvstendigHarAvsluttetSelskaper: YesOrNo.NO,
@@ -29,7 +26,6 @@ describe('selvstendigAvslag', () => {
         selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
         selvstendigInntekt2020: undefined,
         søkerOmTaptInntektSomFrilanser: YesOrNo.NO,
-        søknadsperiode: { from: new Date(), to: new Date() },
     };
     describe('selvstendigHarTaptInntektPgaKorona', () => {
         it('returns error when selvstendigHarTaptInntektPgaKorona === NO', () => {
@@ -149,6 +145,28 @@ describe('selvstendigAvslag', () => {
                 selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
             });
             expect(status.harYtelseFraNavSomDekkerTapet).toBeFalsy();
+        });
+    });
+    describe('ingenUttaksdager', () => {
+        it('returns error when ingenUttaksdager i tilgjegeligSøkeperiode', () => {
+            const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
+                ...payload,
+                selvstendigBeregnetTilgjengeligSøknadsperiode: {
+                    from: apiStringDateToDate('2020-05-30'),
+                    to: apiStringDateToDate('2020-05-31'),
+                },
+            });
+            expect(status.ingenUttaksdager).toBeTruthy();
+        });
+        it('returns no error when there are uttaksdager i tilgjegeligSøkeperiode', () => {
+            const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
+                ...payload,
+                selvstendigBeregnetTilgjengeligSøknadsperiode: {
+                    from: apiStringDateToDate('2020-05-29'),
+                    to: apiStringDateToDate('2020-05-31'),
+                },
+            });
+            expect(status.ingenUttaksdager).toBeFalsy();
         });
     });
 });

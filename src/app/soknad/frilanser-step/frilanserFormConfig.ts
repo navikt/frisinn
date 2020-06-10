@@ -71,10 +71,9 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.frilanserInntektIPerioden,
         visibilityFilter: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
-            harIkkeHattInntektstapPgaKorona === false &&
-            søkerIkkeForGyldigTidsrom === false &&
-            ingenUttaksdager === false,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
+            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
+
         isAnswered: ({ frilanserHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(frilanserHarYtelseFraNavSomDekkerTapet),
     },
