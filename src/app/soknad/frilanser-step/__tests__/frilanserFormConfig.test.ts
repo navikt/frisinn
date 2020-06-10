@@ -53,6 +53,7 @@ const avslag: FrilanserAvslagStatus = {
     [FrilanserAvslagÅrsak.harIkkeHattInntektstapPgaKorona]: false,
     [FrilanserAvslagÅrsak.søkerIkkeForGyldigTidsrom]: false,
     [FrilanserAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet]: false,
+    [FrilanserAvslagÅrsak.ingenUttaksdager]: false,
 };
 
 describe('frilanserFormConfig', () => {

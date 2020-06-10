@@ -130,7 +130,7 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
                         </p>
                     </Guide>
                 )}
-                {frilanserSoknadIsOk === false && selvstendigSoknadIsOk === false && (
+                {frilanserSoknadIsOk !== true && selvstendigSoknadIsOk !== true && (
                     <>
                         <Guide
                             svg={<VeilederSVG mood={'uncertain'} />}

@@ -21,8 +21,10 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigAndregangFormConfigPayloa
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Field.selvstendigInntektIPerioden]: {
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom } }) =>
-            harIkkeHattInntektstapPgaKorona === false && søkerIkkeForGyldigTidsrom === false,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
+            harIkkeHattInntektstapPgaKorona === false &&
+            søkerIkkeForGyldigTidsrom === false &&
+            ingenUttaksdager === false,
         isAnswered: ({ selvstendigInntektIPerioden }) => hasValue(selvstendigInntektIPerioden),
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {

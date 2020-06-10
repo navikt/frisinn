@@ -1,7 +1,7 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { SelvstendigFormData } from '../../../types/SoknadFormData';
 import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
 import { kontrollerSelvstendigSvar, SelvstendigNæringsdrivendeAvslagStatus } from '../selvstendigAvslag';
+import { SelvstendigFormData } from '../../../types/SoknadFormData';
 
 const periode: DateRange = {
     from: apiStringDateToDate('2020-04-01'),
@@ -145,6 +145,28 @@ describe('selvstendigAvslag', () => {
                 selvstendigHarYtelseFraNavSomDekkerTapet: YesOrNo.NO,
             });
             expect(status.harYtelseFraNavSomDekkerTapet).toBeFalsy();
+        });
+    });
+    describe('ingenUttaksdager', () => {
+        it('returns error when ingenUttaksdager i tilgjegeligSøkeperiode', () => {
+            const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
+                ...payload,
+                selvstendigBeregnetTilgjengeligSøknadsperiode: {
+                    from: apiStringDateToDate('2020-05-30'),
+                    to: apiStringDateToDate('2020-05-31'),
+                },
+            });
+            expect(status.ingenUttaksdager).toBeTruthy();
+        });
+        it('returns no error when there are uttaksdager i tilgjegeligSøkeperiode', () => {
+            const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
+                ...payload,
+                selvstendigBeregnetTilgjengeligSøknadsperiode: {
+                    from: apiStringDateToDate('2020-05-29'),
+                    to: apiStringDateToDate('2020-05-31'),
+                },
+            });
+            expect(status.ingenUttaksdager).toBeFalsy();
         });
     });
 });

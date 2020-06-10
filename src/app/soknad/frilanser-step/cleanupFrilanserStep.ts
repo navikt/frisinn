@@ -12,6 +12,9 @@ export const cleanupFrilanserStep = (values: SoknadFormData, avslag: FrilanserAv
     if (v.frilanserInntektstapStartetDato === undefined || avslag.søkerIkkeForGyldigTidsrom) {
         v.frilanserInntektIPerioden = undefined as any;
     }
+    if (avslag.ingenUttaksdager === true) {
+        v.frilanserInntektIPerioden = undefined as any;
+    }
     if (v.frilanserInntektIPerioden === undefined) {
         v.frilanserHarYtelseFraNavSomDekkerTapet = YesOrNo.UNANSWERED;
     }

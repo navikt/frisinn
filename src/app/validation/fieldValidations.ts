@@ -13,6 +13,7 @@ export enum AppFieldValidationErrors {
     'bekrefterOpplysningerPåkrevd' = 'fieldvalidation.bekrefterOpplysningerPåkrevd',
     'dato_utenfor_gyldig_tidsrom' = 'fieldvalidation.dato_utenfor_gyldig_tidsrom',
     'ugyldig_telefonnummer' = 'fieldvalidation.ugyldig_telefonnummer',
+    'ingenUttaksdagerIPeriode' = 'fieldvalidation.ingenUttaksdagerIPeriode',
 }
 
 export const MAX_INNTEKT = 10000000;

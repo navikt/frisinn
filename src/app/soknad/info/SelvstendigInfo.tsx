@@ -14,6 +14,7 @@ import {
     FellesStoppIkkeTapPgaKoronaInnlogget,
     FellesStoppYtelseDekkerHeleTapetInnlogget,
     FellesNårStartetInntektstapet,
+    FellesStopIngentUttaksdagerIPeriode,
 } from './FellesInfo';
 import { HistoriskInntektÅrstall } from '../../types/HistoriskInntektÅrstall';
 
@@ -177,13 +178,14 @@ const getMessageForAvslag = (
             return <StoppIngenHistoriskInntekt inntektÅrstall={inntektÅrstall} />;
         case SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert:
             return <StoppIkkeAlleAvsluttaSelskaperErRegistrert />;
+        case SelvstendigNæringdsrivendeAvslagÅrsak.ingenUttaksdager:
+            return <FellesStopIngentUttaksdagerIPeriode />;
     }
 };
 
 const infoNårStartetInntektstapet = ({ søknadsperiode }: { søknadsperiode: DateRange }) => (
     <FellesNårStartetInntektstapet søknadsperiode={søknadsperiode} />
 );
-
 const SelvstendigInfo = {
     intro,
     introAndregangssøknad,

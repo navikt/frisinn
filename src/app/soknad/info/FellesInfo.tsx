@@ -5,6 +5,7 @@ import { DateRange, getMonthName } from '../../utils/dateUtils';
 import moment from 'moment';
 import { formatDate } from '../../components/date-view/DateView';
 import { Søknadsperiodeinfo } from '../../types/SoknadEssentials';
+import { FormattedMessage } from 'react-intl';
 
 export const FellesInfoHvaMenesMedTaptInntekt = () => (
     <ExpandableInfo title="Hva menes med tapt inntekt?">
@@ -88,4 +89,8 @@ export const FellesStoppYtelseDekkerHeleTapetInnlogget = ({ rolle }: { rolle: st
         For å søke om kompensasjon for tapt inntekt som {rolle}, kan ikke inntektstapet allerede være dekket. Det vil si
         at du ikke kan søke om kompensasjon for tapt inntekt som {rolle}.
     </>
+);
+
+export const FellesStopIngentUttaksdagerIPeriode = () => (
+    <FormattedMessage id="fieldvalidation.ingenUttaksdagerIPeriode" />
 );

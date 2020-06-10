@@ -2,6 +2,7 @@ import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { hasValidHistoriskInntekt } from '../../utils/selvstendigUtils';
 import { hasValue } from '../../validation/fieldValidations';
 import { SelvstendigFormData } from '../../types/SoknadFormData';
+import { getAntallUttaksdagerITidsperiode } from '../../utils/uttaksdagerUtils';
 
 export enum SelvstendigNæringdsrivendeAvslagÅrsak {
     'oppgirHarIkkeHattInntektFraForetak' = 'oppgirHarIkkeHattInntektFraForetak',
@@ -10,6 +11,7 @@ export enum SelvstendigNæringdsrivendeAvslagÅrsak {
     'harYtelseFraNavSomDekkerTapet' = 'harYtelseFraNavSomDekkerTapet',
     'oppgirNullHistoriskInntekt' = 'oppgirNullHistoriskInntekt',
     'ikkeAlleAvsluttaSelskaperErRegistrert' = 'ikkeAlleAvsluttaSelskaperErRegistrert',
+    'ingenUttaksdager' = 'ingenUttaksdager',
 }
 
 export interface SelvstendigNæringsdrivendeAvslagStatus {
@@ -18,6 +20,7 @@ export interface SelvstendigNæringsdrivendeAvslagStatus {
     [SelvstendigNæringdsrivendeAvslagÅrsak.harYtelseFraNavSomDekkerTapet]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.oppgirNullHistoriskInntekt]: boolean;
     [SelvstendigNæringdsrivendeAvslagÅrsak.ikkeAlleAvsluttaSelskaperErRegistrert]: boolean;
+    [SelvstendigNæringdsrivendeAvslagÅrsak.ingenUttaksdager]: boolean;
 }
 
 const harIkkeHattInntektstapPgaKorona = ({ selvstendigHarTaptInntektPgaKorona }: SelvstendigFormData) =>
@@ -54,9 +57,21 @@ const valgtIkkeAlleSelskaperErRegistrert = ({ selvstendigAlleAvsluttaSelskaperEr
     return selvstendigAlleAvsluttaSelskaperErRegistrert === YesOrNo.NO;
 };
 
+const ingenUttaksdagerIPeriode = ({ selvstendigBeregnetTilgjengeligSøknadsperiode }: SelvstendigFormData) => {
+    if (selvstendigBeregnetTilgjengeligSøknadsperiode === undefined) {
+        return false;
+    }
+    const antallUttaksdagerIPeriode = getAntallUttaksdagerITidsperiode({
+        from: selvstendigBeregnetTilgjengeligSøknadsperiode.from,
+        to: selvstendigBeregnetTilgjengeligSøknadsperiode.to,
+    });
+    return antallUttaksdagerIPeriode === 0;
+};
+
 export const kontrollerSelvstendigSvar = (payload: SelvstendigFormData): SelvstendigNæringsdrivendeAvslagStatus => ({
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
+    ingenUttaksdager: ingenUttaksdagerIPeriode(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
     oppgirNullHistoriskInntekt: oppgirNullHistoriskInntekt(payload),
     ikkeAlleAvsluttaSelskaperErRegistrert: valgtIkkeAlleSelskaperErRegistrert(payload),
@@ -67,6 +82,7 @@ export const kontrollerSelvstendigAndregangsSvar = (
 ): Partial<SelvstendigNæringsdrivendeAvslagStatus> => ({
     harIkkeHattInntektstapPgaKorona: harIkkeHattInntektstapPgaKorona(payload),
     søkerIkkeForGyldigTidsrom: søkerIkkeForGyldigTidsrom(payload),
+    ingenUttaksdager: ingenUttaksdagerIPeriode(payload),
     harYtelseFraNavSomDekkerTapet: utbetalingFraNAVDekkerHeleTapet(payload),
 });
 

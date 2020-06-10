@@ -13,6 +13,7 @@ import {
     FellesStoppForSentInntektstapInnlogget,
     FellesStoppIkkeTapPgaKoronaInnlogget,
     FellesStoppYtelseDekkerHeleTapetInnlogget,
+    FellesStopIngentUttaksdagerIPeriode,
 } from './FellesInfo';
 
 const rolleNavn = 'frilanser';
@@ -68,6 +69,8 @@ const getMessageForAvslag = (årsak: FrilanserAvslagÅrsak, søknadsperiodeinfo:
             return <StoppForSentInntektstap søknadsperiodeinfo={søknadsperiodeinfo} />;
         case FrilanserAvslagÅrsak.utebetalingFraNAVDekkerHeleInntektstapet:
             return <StoppYtelseDekkerHeleTapet />;
+        case FrilanserAvslagÅrsak.ingenUttaksdager:
+            return <FellesStopIngentUttaksdagerIPeriode />;
     }
 };
 

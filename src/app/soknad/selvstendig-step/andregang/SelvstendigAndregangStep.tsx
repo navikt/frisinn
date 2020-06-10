@@ -23,12 +23,13 @@ import { StepConfigProps, StepID } from '../../stepConfig';
 import { getAvslagÅrsak, kontrollerSelvstendigAndregangsSvar } from '../selvstendigAvslag';
 import { cleanupSelvstendigAndregangStep } from './cleanupSelvstendigAndregangStep';
 import { SelvstendigAndregangFormConfigPayload, SelvstendigFormQuestions } from './selvstendigAndregangFormConfig';
+import { FellesStopIngentUttaksdagerIPeriode } from '../../info/FellesInfo';
 
 const txt = soknadQuestionText;
 
 const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials, stepConfig }: StepConfigProps) => {
     const { values, setFieldValue } = useFormikContext<SoknadFormData>();
-    const { søkerOmTaptInntektSomFrilanser, selvstendigHarYtelseFraNavSomDekkerTapet } = values;
+    const { selvstendigHarYtelseFraNavSomDekkerTapet } = values;
     const {
         tidligerePerioder: { harSøktSomSelvstendigNæringsdrivende },
     } = soknadEssentials;
@@ -81,10 +82,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                 v.selvstendigStopReason = hasValidSelvstendigAndregangsFormData ? undefined : getAvslagÅrsak(avslag);
                 return cleanupSelvstendigAndregangStep(v, avslag);
             }}
-            showSubmitButton={
-                hasValidSelvstendigAndregangsFormData ||
-                (allQuestionsAreAnswered && søkerOmTaptInntektSomFrilanser === YesOrNo.YES)
-            }>
+            showSubmitButton={hasValidSelvstendigAndregangsFormData || allQuestionsAreAnswered}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <SelvstendigInfo.introAndregangssøknad />
@@ -98,7 +96,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                 />
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigInntektstapStartetDato}
-                    showInfo={isValidDateRange(tilgjengeligSøkeperiode)}
+                    showInfo={isValidDateRange(tilgjengeligSøkeperiode) && avslag.ingenUttaksdager === false}
                     infoMessage={
                         <TilgjengeligSøkeperiodeInfo
                             inntektstapStartetDato={selvstendigInntektstapStartetDato}
@@ -106,15 +104,20 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                         />
                     }
                     showStop={
-                        tilgjengeligSøkeperiodeIsLoading === false &&
-                        hasValue(selvstendigInntektstapStartetDato) &&
-                        (avslag.søkerIkkeForGyldigTidsrom === true ||
-                            tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE')
+                        avslag.ingenUttaksdager === true ||
+                        (tilgjengeligSøkeperiodeIsLoading === false &&
+                            hasValue(selvstendigInntektstapStartetDato) &&
+                            (avslag.søkerIkkeForGyldigTidsrom === true ||
+                                tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE'))
                     }
                     stopMessage={
-                        <SelvstendigInfo.StoppForSentInntektstap
-                            søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
-                        />
+                        avslag.ingenUttaksdager ? (
+                            <FellesStopIngentUttaksdagerIPeriode />
+                        ) : (
+                            <SelvstendigInfo.StoppForSentInntektstap
+                                søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
+                            />
+                        )
                     }>
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}
@@ -139,7 +142,8 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                     contentRenderer={() => {
                         if (
                             tilgjengeligSøkeperiode === undefined ||
-                            tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE'
+                            tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE' ||
+                            avslag.ingenUttaksdager === true
                         ) {
                             return null;
                         }

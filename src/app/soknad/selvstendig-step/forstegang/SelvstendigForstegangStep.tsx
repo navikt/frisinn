@@ -30,6 +30,7 @@ import AvsluttetSelskapListAndDialog from '../avsluttet-selskap/AvsluttetSelskap
 import { getAvslagÅrsak, kontrollerSelvstendigSvar } from '../selvstendigAvslag';
 import { cleanupSelvstendigForstegangStep } from './cleanupSelvstendigForstegangStep';
 import { SelvstendigFormQuestions, SelvstendigForstegangFormConfigPayload } from './selvstendigForstegangFormConfig';
+import { FellesStopIngentUttaksdagerIPeriode } from '../../info/FellesInfo';
 
 const txt = soknadQuestionText;
 
@@ -38,7 +39,6 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
     const {
         selvstendigInntektstapStartetDato,
         selvstendigHarTaptInntektPgaKorona,
-        søkerOmTaptInntektSomFrilanser,
         selvstendigHarYtelseFraNavSomDekkerTapet,
         selvstendigHarAvsluttetSelskaper,
         selvstendigAvsluttaSelskaper,
@@ -141,8 +141,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                 (selvstendigHarAvsluttetSelskaper === YesOrNo.YES
                     ? avslag.ikkeAlleAvsluttaSelskaperErRegistrert === false
                     : true) &&
-                (hasValidSelvstendigFormData ||
-                    (allQuestionsAreAnswered && søkerOmTaptInntektSomFrilanser === YesOrNo.YES))
+                (hasValidSelvstendigFormData || allQuestionsAreAnswered)
             }>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
@@ -158,7 +157,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                 />
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigInntektstapStartetDato}
-                    showInfo={isValidDateRange(tilgjengeligSøkeperiode)}
+                    showInfo={isValidDateRange(tilgjengeligSøkeperiode) && avslag.ingenUttaksdager === false}
                     infoMessage={
                         <TilgjengeligSøkeperiodeInfo
                             inntektstapStartetDato={selvstendigInntektstapStartetDato}
@@ -166,15 +165,20 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                         />
                     }
                     showStop={
-                        tilgjengeligSøkeperiodeIsLoading === false &&
-                        hasValue(selvstendigInntektstapStartetDato) &&
-                        (avslag.søkerIkkeForGyldigTidsrom === true ||
-                            tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE')
+                        avslag.ingenUttaksdager === true ||
+                        (tilgjengeligSøkeperiodeIsLoading === false &&
+                            hasValue(selvstendigInntektstapStartetDato) &&
+                            (avslag.søkerIkkeForGyldigTidsrom === true ||
+                                tilgjengeligSøkeperiode === 'NO_AVAILABLE_DATERANGE'))
                     }
                     stopMessage={
-                        <SelvstendigInfo.StoppForSentInntektstap
-                            søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
-                        />
+                        avslag.ingenUttaksdager ? (
+                            <FellesStopIngentUttaksdagerIPeriode />
+                        ) : (
+                            <SelvstendigInfo.StoppForSentInntektstap
+                                søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}
+                            />
+                        )
                     }>
                     <FormComponents.DatePicker
                         name={SoknadFormField.selvstendigInntektstapStartetDato}

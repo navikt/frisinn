@@ -24,6 +24,7 @@ import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserAvslagStatus, FrilanserAvslagÅrsak, kontrollerFrilanserSvar } from './frilanserAvslag';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import SelvstendigInfo from '../info/SelvstendigInfo';
+import { FellesStopIngentUttaksdagerIPeriode } from '../info/FellesInfo';
 
 const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | undefined => {
     const feil = Object.keys(status).filter((key) => status[key] === true);
@@ -37,7 +38,6 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
         frilanserInntektstapStartetDato,
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
-        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         frilanserBeregnetTilgjengeligSøknadsperiode,
     } = values;
     const { søknadsperiode } = soknadEssentials;
@@ -66,7 +66,8 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
         allQuestionsAreAnswered &&
         isValidDateRange(tilgjengeligSøkeperiode) &&
         frilanserHarTaptInntektPgaKorona === YesOrNo.YES &&
-        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO;
+        frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO &&
+        avslag.ingenUttaksdager === false;
 
     useEffect(() => {
         setFieldValue(
@@ -88,11 +89,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                 v.frilanserStopReason = frilanserSoknadIsOk ? undefined : getStopReason(avslag);
                 return cleanupFrilanserStep(v, avslag);
             }}
-            showSubmitButton={
-                !isLoading &&
-                (frilanserSoknadIsOk ||
-                    (allQuestionsAreAnswered && søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES))
-            }>
+            showSubmitButton={!isLoading && (frilanserSoknadIsOk || allQuestionsAreAnswered)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     Du er frilanser når du mottar lønn for enkeltstående oppdrag uten å være fast eller midlertidig
@@ -119,13 +116,15 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
 
                 <SoknadQuestion
                     name={SoknadFormField.frilanserInntektstapStartetDato}
-                    showInfo={isValidDateRange(tilgjengeligSøkeperiode)}
+                    showInfo={isValidDateRange(tilgjengeligSøkeperiode) && avslag.ingenUttaksdager === false}
                     infoMessage={
                         <TilgjengeligSøkeperiodeInfo
                             inntektstapStartetDato={frilanserInntektstapStartetDato}
                             tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
                         />
-                    }>
+                    }
+                    stopMessage={<FellesStopIngentUttaksdagerIPeriode />}
+                    showStop={avslag.ingenUttaksdager}>
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}
                         label={soknadQuestionText.frilanserInntektstapStartetDato}
