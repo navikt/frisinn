@@ -23,6 +23,7 @@ import { StepConfigProps, StepID } from '../../stepConfig';
 import { getAvslagÅrsak, kontrollerSelvstendigAndregangsSvar } from '../selvstendigAvslag';
 import { cleanupSelvstendigAndregangStep } from './cleanupSelvstendigAndregangStep';
 import { SelvstendigAndregangFormConfigPayload, SelvstendigFormQuestions } from './selvstendigAndregangFormConfig';
+import { FellesStopIngentUttaksdagerIPeriode } from '../../info/FellesInfo';
 
 const txt = soknadQuestionText;
 
@@ -111,7 +112,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                     }
                     stopMessage={
                         avslag.ingenUttaksdager ? (
-                            <SelvstendigInfo.stopIngenUttaksdager />
+                            <FellesStopIngentUttaksdagerIPeriode />
                         ) : (
                             <SelvstendigInfo.StoppForSentInntektstap
                                 søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}

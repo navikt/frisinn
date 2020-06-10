@@ -24,6 +24,7 @@ import { cleanupFrilanserStep } from './cleanupFrilanserStep';
 import { FrilanserAvslagStatus, FrilanserAvslagÅrsak, kontrollerFrilanserSvar } from './frilanserAvslag';
 import { FrilanserFormQuestions } from './frilanserFormConfig';
 import SelvstendigInfo from '../info/SelvstendigInfo';
+import { FellesStopIngentUttaksdagerIPeriode } from '../info/FellesInfo';
 
 const getStopReason = (status: FrilanserAvslagStatus): FrilanserAvslagÅrsak | undefined => {
     const feil = Object.keys(status).filter((key) => status[key] === true);
@@ -122,7 +123,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                             tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
                         />
                     }
-                    stopMessage={<FrilanserInfo.StopIngenUttaksdager />}
+                    stopMessage={<FellesStopIngentUttaksdagerIPeriode />}
                     showStop={avslag.ingenUttaksdager}>
                     <SoknadFormComponents.DatePicker
                         name={SoknadFormField.frilanserInntektstapStartetDato}

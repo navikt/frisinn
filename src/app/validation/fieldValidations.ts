@@ -86,14 +86,3 @@ export const validatePhoneNumber = (value: string): FieldValidationResult => {
     }
     return undefined;
 };
-
-// export const validateInntektstapStartdato = (date: Date, søknadsperiode: DateRange) => {
-//     const uttaksdagerIPeriode = getAntallUttaksdagerITidsperiode({
-//         from: date,
-//         to: søknadsperiode.to,
-//     });
-//     if (uttaksdagerIPeriode === 0) {
-//         return createAppFieldValidationError(AppFieldValidationErrors.ingenUttaksdagerIPeriode);
-//     }
-//     return undefined;
-// };

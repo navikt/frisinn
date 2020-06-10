@@ -30,6 +30,7 @@ import AvsluttetSelskapListAndDialog from '../avsluttet-selskap/AvsluttetSelskap
 import { getAvslagÅrsak, kontrollerSelvstendigSvar } from '../selvstendigAvslag';
 import { cleanupSelvstendigForstegangStep } from './cleanupSelvstendigForstegangStep';
 import { SelvstendigFormQuestions, SelvstendigForstegangFormConfigPayload } from './selvstendigForstegangFormConfig';
+import { FellesStopIngentUttaksdagerIPeriode } from '../../info/FellesInfo';
 
 const txt = soknadQuestionText;
 
@@ -172,7 +173,7 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                     }
                     stopMessage={
                         avslag.ingenUttaksdager ? (
-                            <SelvstendigInfo.stopIngenUttaksdager />
+                            <FellesStopIngentUttaksdagerIPeriode />
                         ) : (
                             <SelvstendigInfo.StoppForSentInntektstap
                                 søknadsperiodeinfo={soknadEssentials.søknadsperiodeinfo}

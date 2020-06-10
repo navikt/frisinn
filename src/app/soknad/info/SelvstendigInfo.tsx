@@ -202,7 +202,6 @@ const SelvstendigInfo = {
     getMessageForAvslag,
     infoSelvstendigInntekt2019,
     infoNårStartetInntektstapet,
-    stopIngenUttaksdager: FellesStopIngentUttaksdagerIPeriode,
 };
 
 export default SelvstendigInfo;

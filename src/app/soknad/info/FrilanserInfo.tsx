@@ -82,7 +82,6 @@ const FrilanserInfo = {
     StoppForSentInntektstap,
     StoppIkkeTapPgaKorona,
     StoppYtelseDekkerHeleTapet,
-    StopIngenUttaksdager: FellesStopIngentUttaksdagerIPeriode,
     infoHvordanBeregneInntekt,
     infoAndreUtbetalingerFraNAV,
     infoTaptInntektPgaKorona,
