@@ -66,7 +66,7 @@ const AvsluttetSelskapForm = ({ foretak: initialValues = {}, periode, onSubmit, 
                                 <Form.DatePicker
                                     name={FieldName.opprettetDato}
                                     label="Når ble selskapet opprettet?"
-                                    dateLimitations={{ maksDato: periode.to }}
+                                    maxDate={periode.to}
                                     showYearSelector={true}
                                     dayPickerProps={{ initialMonth: apiStringDateToDate('2018-08-01') }}
                                     fullscreenOverlay={true}
@@ -90,10 +90,8 @@ const AvsluttetSelskapForm = ({ foretak: initialValues = {}, periode, onSubmit, 
                                     name={FieldName.avsluttetDato}
                                     label="Når ble selskapet avsluttet?"
                                     showYearSelector={true}
-                                    dateLimitations={{
-                                        minDato: avsluttetDateRange.from,
-                                        maksDato: avsluttetDateRange.to,
-                                    }}
+                                    minDate={avsluttetDateRange.from}
+                                    maxDate={avsluttetDateRange.to}
                                     dayPickerProps={{
                                         initialMonth:
                                             moment.max(moment(opprettetDato), moment(minAvsluttetDate)).toDate() ||
