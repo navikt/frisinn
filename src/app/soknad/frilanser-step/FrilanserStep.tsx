@@ -133,10 +133,8 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                                 søknadsperiode={soknadEssentials.søknadsperiode}
                             />
                         }
-                        dateLimitations={{
-                            minDato: MIN_DATE_PERIODEVELGER,
-                            maksDato: søknadsperiode.to,
-                        }}
+                        minDate={MIN_DATE_PERIODEVELGER}
+                        maxDate={søknadsperiode.to}
                         dayPickerProps={{
                             initialMonth: søknadsperiode.to,
                         }}
