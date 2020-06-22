@@ -14,6 +14,7 @@ export enum AppFieldValidationErrors {
     'dato_utenfor_gyldig_tidsrom' = 'fieldvalidation.dato_utenfor_gyldig_tidsrom',
     'ugyldig_telefonnummer' = 'fieldvalidation.ugyldig_telefonnummer',
     'ingenUttaksdagerIPeriode' = 'fieldvalidation.ingenUttaksdagerIPeriode',
+    'ugyldig_navn' = 'fieldvalidation.ugyldig_navn',
 }
 
 export const MAX_INNTEKT = 10000000;
@@ -81,8 +82,18 @@ export const validatePhoneNumber = (value: string): FieldValidationResult => {
     if (!hasValue(value)) {
         return fieldIsRequiredError();
     }
-    if (value.length < 5 || value.length > 15) {
+    if (value.length < 5 || value.length > 12) {
         return createAppFieldValidationError(AppFieldValidationErrors.ugyldig_telefonnummer);
+    }
+    return undefined;
+};
+
+export const validateRequiredName = (value: string): FieldValidationResult => {
+    if (!hasValue(value)) {
+        return fieldIsRequiredError();
+    }
+    if (value.length > 75) {
+        return createAppFieldValidationError(AppFieldValidationErrors.ugyldig_navn);
     }
     return undefined;
 };
