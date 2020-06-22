@@ -16,7 +16,13 @@ import FormSection from '../../../pages/intro-page/FormSection';
 import { SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
 import { MIN_DATE_PERIODEVELGER } from '../../../utils/dateUtils';
 import { harSelskaperRegistrertFør2019, hasValidHistoriskInntekt } from '../../../utils/selvstendigUtils';
-import { hasValue, MAX_INNTEKT, validateAll, validatePhoneNumber } from '../../../validation/fieldValidations';
+import {
+    hasValue,
+    MAX_INNTEKT,
+    validateAll,
+    validatePhoneNumber,
+    validateRequiredName,
+} from '../../../validation/fieldValidations';
 import FrilanserInfo from '../../info/FrilanserInfo';
 import SelvstendigInfo from '../../info/SelvstendigInfo';
 import TilgjengeligSøkeperiodeInfo from '../../info/TilgjengeligSøkeperiodeInfo';
@@ -373,7 +379,8 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                                                 <FormComponents.Input
                                                                     name={SoknadFormField.selvstendigRegnskapsførerNavn}
                                                                     label={txt.selvstendigRegnskapsførerNavn}
-                                                                    validate={validateRequiredField}
+                                                                    maxLength={75}
+                                                                    validate={validateRequiredName}
                                                                 />
                                                             </SoknadQuestion>
 
@@ -415,7 +422,8 @@ const SelvstendigForstegangStep = ({ resetSoknad, onValidSubmit, soknadEssential
                                                                 <FormComponents.Input
                                                                     name={SoknadFormField.selvstendigRevisorNavn}
                                                                     label={txt.selvstendigRevisorNavn}
-                                                                    validate={validateRequiredField}
+                                                                    validate={validateRequiredName}
+                                                                    maxLength={75}
                                                                 />
                                                             </SoknadQuestion>
                                                             <SoknadQuestion
