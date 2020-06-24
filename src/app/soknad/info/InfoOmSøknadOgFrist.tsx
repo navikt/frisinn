@@ -14,7 +14,7 @@ const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange 
             <strong>Du kan nå søke om kompensasjon for inntektstap i {getMonthName(søknadsperiode.to)}.</strong>
             <p>
                 <strong>
-                    Søknadsfristen for {mndDennePerioden} er <DateView date={frist} format="dateAndMonth" />
+                    Søknadsfristen for {mndDennePerioden} er <DateView date={frist} format="dateAndMonthAndYear" />
                 </strong>
                 . Fra <DateView date={åpningNestePeriode} format="dateAndMonth" /> åpnes det for å søke om kompensasjon
                 for tapt inntekt i {mndNestePeriode}.
