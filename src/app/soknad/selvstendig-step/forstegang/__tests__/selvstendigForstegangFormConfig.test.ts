@@ -1,15 +1,15 @@
-import {
-    SelvstendigForstegangFormConfigPayload,
-    SelvstendigFormQuestions,
-} from '../forstegang/selvstendigForstegangFormConfig';
-import { SelvstendigFormData, SoknadFormField } from '../../../types/SoknadFormData';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { apiStringDateToDate, DateRange } from '../../../utils/dateUtils';
-import { SoknadEssentials, Person } from '../../../types/SoknadEssentials';
-import { PersonligeForetakMock as pfm } from '../../../__mock__/personligeForetakMock';
-import { SelvstendigNæringsdrivendeAvslagStatus, SelvstendigNæringdsrivendeAvslagÅrsak } from '../selvstendigAvslag';
-import { getPeriodeForAvsluttaSelskaper } from '../avsluttet-selskap/avsluttetSelskapUtils';
-import { getSøknadsperiodeinfo } from '../../../utils/søknadsperiodeUtils';
+import { PersonligeForetakMock as pfm } from '../../../../__mock__/personligeForetakMock';
+import { Person, SoknadEssentials } from '../../../../types/SoknadEssentials';
+import { SelvstendigFormData, SoknadFormField } from '../../../../types/SoknadFormData';
+import { apiStringDateToDate, DateRange } from '../../../../utils/dateUtils';
+import { getSøknadsperiodeinfo } from '../../../../utils/søknadsperiodeUtils';
+import { getPeriodeForAvsluttaSelskaper } from '../../avsluttet-selskap/avsluttetSelskapUtils';
+import {
+    SelvstendigFormQuestions,
+    SelvstendigForstegangFormConfigPayload,
+} from '../../forstegang/selvstendigForstegangFormConfig';
+import { SelvstendigNæringdsrivendeAvslagÅrsak, SelvstendigNæringsdrivendeAvslagStatus } from '../../selvstendigAvslag';
 
 const person: Person = {
     fornavn: 'a',
@@ -47,6 +47,7 @@ const initialFormData: SelvstendigFormData = {
     selvstendigHarAvsluttetSelskaper: YesOrNo.UNANSWERED,
     selvstendigAvsluttaSelskaper: [],
     selvstendigHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
+    selvstendigHarMottattUtbetalingTidligere: YesOrNo.UNANSWERED,
     selvstendigInntektstapStartetDato: undefined as any,
     selvstendigInntektIPerioden: undefined as any,
     selvstendigInntekt2019: undefined,
@@ -79,7 +80,6 @@ describe('selvstendigFormConfig', () => {
             const { isIncluded } = SelvstendigFormQuestions.getVisbility(payload);
             it(`includes all required and fixed questions`, () => {
                 expect(isIncluded(SoknadFormField.selvstendigHarTaptInntektPgaKorona)).toBeTruthy();
-                expect(isIncluded(SoknadFormField.selvstendigInntektstapStartetDato)).toBeTruthy();
                 expect(isIncluded(SoknadFormField.selvstendigInntektIPerioden)).toBeTruthy();
                 expect(isIncluded(SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet)).toBeTruthy();
                 expect(isIncluded(SoknadFormField.selvstendigHarRegnskapsfører)).toBeTruthy();

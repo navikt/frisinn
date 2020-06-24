@@ -142,7 +142,7 @@ const startExpressServer = () => {
 
     server.get('/har-sokt-tidligere-periode', (req, res) => {
         setTimeout(() => {
-            res.send({ harSøktSomSelvstendigNæringsdrivende: false, harSøktSomFrilanser: false });
+            res.send({ harSøktSomSelvstendigNæringsdrivende: true, harSøktSomFrilanser: false });
         }, 200);
     });
 

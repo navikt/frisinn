@@ -17,6 +17,7 @@ export enum SoknadFormField {
     selvstendigAvsluttaSelskaper = 'selvstendigAvsluttaSelskaper',
     selvstendigAlleAvsluttaSelskaperErRegistrert = 'selvstendigAlleAvsluttaSelskaperErRegistrert',
     selvstendigHarTaptInntektPgaKorona = 'selvstendigHarTaptInntektPgaKorona',
+    selvstendigHarMottattUtbetalingTidligere = 'selvstendigHarMottattUtbetalingTidligere',
     selvstendigInntektstapStartetDato = 'selvstendigInntektstapStartetDato',
     selvstendigHarYtelseFraNavSomDekkerTapet = 'selvstendigHarYtelseFraNavSomDekkerTapet',
     selvstendigInntektIPerioden = 'selvstendigInntektIPerioden',
@@ -70,6 +71,7 @@ export interface SoknadFormData {
     [SoknadFormField.selvstendigAvsluttaSelskaper]?: AvsluttetSelskap[];
     [SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert]?: YesOrNo;
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: YesOrNo;
+    [SoknadFormField.selvstendigHarMottattUtbetalingTidligere]?: YesOrNo;
     [SoknadFormField.selvstendigInntektstapStartetDato]: Date;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: YesOrNo;
     [SoknadFormField.selvstendigInntektIPerioden]: number;
@@ -131,6 +133,7 @@ export type SelvstendigFormData = Pick<
     | SoknadFormField.selvstendigAlleAvsluttaSelskaperErRegistrert
     | SoknadFormField.selvstendigHarTaptInntektPgaKorona
     | SoknadFormField.selvstendigInntektstapStartetDato
+    | SoknadFormField.selvstendigHarMottattUtbetalingTidligere
     | SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet
     | SoknadFormField.selvstendigInntektIPerioden
     | SoknadFormField.selvstendigErFrilanser

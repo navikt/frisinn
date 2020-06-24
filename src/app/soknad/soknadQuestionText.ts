@@ -5,6 +5,7 @@ import { maxAvsluttetDate, minAvsluttetDate } from './selvstendig-step/avsluttet
 
 export interface SoknadQuestionText {
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
+    [SoknadFormField.selvstendigHarMottattUtbetalingTidligere]: string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
@@ -48,6 +49,8 @@ export const soknadQuestionText: SoknadQuestionText = {
         `Har du tapt inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
         )}, som følge av koronautbruddet?`,
+    selvstendigHarMottattUtbetalingTidligere:
+        'Har du som selvstendig næringsdrivende fått utbetalt fra denne ordningen tidligere?',
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',

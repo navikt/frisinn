@@ -38,6 +38,7 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         søkerOmTaptInntektSomSelvstendigNæringsdrivende,
         selvstendigHarTaptInntektPgaKorona,
         selvstendigInntektstapStartetDato,
+        selvstendigHarMottattUtbetalingTidligere,
         selvstendigHarYtelseFraNavSomDekkerTapet,
         selvstendigInntektIPerioden,
         selvstendigInntekt2019,
@@ -59,12 +60,13 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         selvstendigSoknadIsOk,
         selvstendigBeregnetInntektsårstall,
     } = formData;
+
     if (
         (personligeForetak !== undefined || harSøktTidligere === true) &&
         selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined &&
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES &&
         selvstendigHarTaptInntektPgaKorona === YesOrNo.YES &&
-        selvstendigInntektstapStartetDato !== undefined &&
+        (selvstendigInntektstapStartetDato !== undefined || selvstendigHarMottattUtbetalingTidligere === YesOrNo.YES) &&
         (harSøktTidligere ||
             (selvstendigBeregnetInntektsårstall &&
                 hasValidHistoriskInntekt({
@@ -76,20 +78,29 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         const harFrilanserInntekt =
             selvstendigErFrilanser === YesOrNo.YES && selvstendigHarHattInntektSomFrilanserIPerioden === YesOrNo.YES;
 
-        const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [
-            {
-                field: SoknadFormField.selvstendigHarTaptInntektPgaKorona,
-                spørsmål: soknadQuestionText.selvstendigHarTaptInntektPgaKorona(
-                    selvstendigBeregnetTilgjengeligSøknadsperiode
-                ),
-                svar: formatYesOrNoAnswer(selvstendigHarTaptInntektPgaKorona),
-            },
-            {
-                field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
-                spørsmål: soknadQuestionText.selvstendigHarYtelseFraNavSomDekkerTapet,
-                svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
-            },
-        ];
+        const spørsmålOgSvar: ApiSpørsmålOgSvar[] = [];
+        if (
+            selvstendigHarMottattUtbetalingTidligere &&
+            selvstendigHarMottattUtbetalingTidligere !== YesOrNo.UNANSWERED
+        ) {
+            spørsmålOgSvar.push({
+                field: SoknadFormField.selvstendigHarMottattUtbetalingTidligere,
+                spørsmål: soknadQuestionText.selvstendigHarMottattUtbetalingTidligere,
+                svar: formatYesOrNoAnswer(selvstendigHarMottattUtbetalingTidligere),
+            });
+        }
+        spørsmålOgSvar.push({
+            field: SoknadFormField.selvstendigHarTaptInntektPgaKorona,
+            spørsmål: soknadQuestionText.selvstendigHarTaptInntektPgaKorona(
+                selvstendigBeregnetTilgjengeligSøknadsperiode
+            ),
+            svar: formatYesOrNoAnswer(selvstendigHarTaptInntektPgaKorona),
+        });
+        spørsmålOgSvar.push({
+            field: SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet,
+            spørsmål: soknadQuestionText.selvstendigHarYtelseFraNavSomDekkerTapet,
+            svar: formatYesOrNoAnswer(selvstendigHarYtelseFraNavSomDekkerTapet),
+        });
 
         if (selvstendigHarRegnskapsfører === YesOrNo.NO && selvstendigHarRevisor === YesOrNo.YES) {
             spørsmålOgSvar.push({
@@ -139,7 +150,9 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
         }
 
         let apiData: SelvstendigNæringsdrivendeApiData = {
-            inntektstapStartet: formatDateToApiFormat(selvstendigInntektstapStartetDato),
+            inntektstapStartet: selvstendigInntektstapStartetDato
+                ? formatDateToApiFormat(selvstendigInntektstapStartetDato)
+                : undefined,
             inntektIPerioden: selvstendigInntektIPerioden,
             inntektIPeriodenSomFrilanser: harFrilanserInntekt ? selvstendigInntektSomFrilanserIPerioden : undefined,
             info: {

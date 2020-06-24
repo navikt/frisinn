@@ -15,9 +15,15 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigAndregangFormConfigPayloa
     [Field.selvstendigHarTaptInntektPgaKorona]: {
         isAnswered: ({ selvstendigHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(selvstendigHarTaptInntektPgaKorona),
     },
-    [Field.selvstendigInntektstapStartetDato]: {
+    [Field.selvstendigHarMottattUtbetalingTidligere]: {
         parentQuestion: Field.selvstendigHarTaptInntektPgaKorona,
         isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
+        isAnswered: ({ selvstendigHarMottattUtbetalingTidligere }) =>
+            yesOrNoIsAnswered(selvstendigHarMottattUtbetalingTidligere),
+    },
+    [Field.selvstendigInntektstapStartetDato]: {
+        isIncluded: ({ selvstendigHarMottattUtbetalingTidligere }) =>
+            selvstendigHarMottattUtbetalingTidligere === YesOrNo.NO,
         isAnswered: ({ selvstendigInntektstapStartetDato }) => hasValue(selvstendigInntektstapStartetDato),
     },
     [Field.selvstendigInntektIPerioden]: {
@@ -29,13 +35,17 @@ const SelvstendigFormConfig: QuestionConfig<SelvstendigAndregangFormConfigPayloa
     },
     [Field.selvstendigHarYtelseFraNavSomDekkerTapet]: {
         parentQuestion: Field.selvstendigInntektIPerioden,
+        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
+            harIkkeHattInntektstapPgaKorona === false &&
+            søkerIkkeForGyldigTidsrom === false &&
+            ingenUttaksdager === false,
         isAnswered: ({ selvstendigHarYtelseFraNavSomDekkerTapet }) =>
             yesOrNoIsAnswered(selvstendigHarYtelseFraNavSomDekkerTapet),
     },
     [Field.selvstendigErFrilanser]: {
         parentQuestion: Field.selvstendigHarYtelseFraNavSomDekkerTapet,
-        isIncluded: ({ selvstendigHarYtelseFraNavSomDekkerTapet, søkerOmTaptInntektSomFrilanser }) =>
-            selvstendigHarYtelseFraNavSomDekkerTapet === YesOrNo.NO && søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
+        isIncluded: ({ avslag: { harYtelseFraNavSomDekkerTapet }, søkerOmTaptInntektSomFrilanser }) =>
+            harYtelseFraNavSomDekkerTapet === false && søkerOmTaptInntektSomFrilanser === YesOrNo.NO,
         isAnswered: ({ selvstendigErFrilanser }) => yesOrNoIsAnswered(selvstendigErFrilanser),
     },
     [Field.selvstendigHarHattInntektSomFrilanserIPerioden]: {

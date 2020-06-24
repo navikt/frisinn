@@ -41,11 +41,13 @@ const oppgirNullHistoriskInntekt = ({
 };
 
 const søkerIkkeForGyldigTidsrom = ({
+    selvstendigHarMottattUtbetalingTidligere,
     selvstendigBeregnetTilgjengeligSøknadsperiode,
     selvstendigInntektstapStartetDato,
 }: SelvstendigFormData) => {
     const gyldig =
-        hasValue(selvstendigInntektstapStartetDato) && selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined;
+        (hasValue(selvstendigInntektstapStartetDato) || selvstendigHarMottattUtbetalingTidligere === YesOrNo.YES) &&
+        selvstendigBeregnetTilgjengeligSøknadsperiode !== undefined;
     return !gyldig;
 };
 

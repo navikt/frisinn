@@ -5,6 +5,7 @@ import { getSøknadsperiode } from '../api/perioder';
 import { isSameDate } from '../utils/dateUtils';
 import { KORONA_DATE } from '../utils/koronaUtils';
 import { usePrevious } from './usePrevious';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export type NO_AVAILABLE_DATERANGE = 'NO_AVAILABLE_DATERANGE';
 
@@ -18,11 +19,14 @@ function useTilgjengeligSøkeperiode({
     inntektstapStartDato,
     currentAvailableSøknadsperiode,
     startetSøknad,
+    søknadsperiode,
+    harMottattUtbetalingTidligere,
 }: {
     inntektstapStartDato: Date;
     søknadsperiode: DateRange;
     currentAvailableSøknadsperiode: TilgjengeligSøkeperiode;
     startetSøknad: Date;
+    harMottattUtbetalingTidligere?: YesOrNo;
 }) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tilgjengeligSøkeperiode, setTilgjengeligSøkeperiode] = useState<TilgjengeligSøkeperiode>(undefined);
@@ -54,13 +58,14 @@ function useTilgjengeligSøkeperiode({
             }
             return;
         }
-        if (inntektstapStartDato === undefined) {
+        if (harMottattUtbetalingTidligere === YesOrNo.YES) {
+            setTilgjengeligSøkeperiode(søknadsperiode);
+        } else if (inntektstapStartDato === undefined) {
             setTilgjengeligSøkeperiode(undefined);
         } else if (!isSameDate(inntektstapStartDato, prevSelectedDate)) {
-            const dateToUse = moment.max(moment(KORONA_DATE), moment(inntektstapStartDato)).toDate();
-            fetchStorage(dateToUse);
+            fetchStorage(moment.max(moment(KORONA_DATE), moment(inntektstapStartDato)).toDate());
         }
-    }, [inntektstapStartDato]);
+    }, [inntektstapStartDato, harMottattUtbetalingTidligere]);
 
     return { tilgjengeligSøkeperiode, isLoading };
 }

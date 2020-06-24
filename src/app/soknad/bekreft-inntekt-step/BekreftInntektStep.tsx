@@ -108,6 +108,8 @@ const BekreftInntektStep = ({ soknadEssentials, stepConfig, resetSoknad, onValid
         arbeidstakerinntektErAktiv: arbeidstakerinntektErAktiv,
     });
 
+    console.log({ selvstendigSoknadIsOk, selvstendigNæringsdrivende, selvstendigBeregnetTilgjengeligSøknadsperiode });
+
     return (
         <SoknadStep
             id={StepID.BEKREFT_INNTEKT}
