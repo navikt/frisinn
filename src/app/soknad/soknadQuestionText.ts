@@ -25,6 +25,7 @@ export interface SoknadQuestionText {
     [SoknadFormField.selvstendigRevisorTelefon]: string;
     [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]: string;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
+    [SoknadFormField.frilanserHarMottattUtbetalingTidligere]: string;
     [SoknadFormField.frilanserInntektstapStartetDato]: string;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
     [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
@@ -84,6 +85,7 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigRevisorNAVKanTaKontakt: 'Gir du NAV fullmakt til å innhente opplysninger fra revisor?',
     frilanserHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som frilanser i perioden ${formatDateRange(dateRange)}, som følge av koronautbruddet?`,
+    frilanserHarMottattUtbetalingTidligere: 'Har du tidligere fått utbetalt fra denne ordningen som frilanser?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',

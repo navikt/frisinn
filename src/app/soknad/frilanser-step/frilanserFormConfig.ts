@@ -11,6 +11,7 @@ const Field = SoknadFormField;
 type FrilanserFormData = Pick<
     SoknadFormData,
     | SoknadFormField.frilanserBeregnetTilgjengeligSøknadsperiode
+    | SoknadFormField.frilanserHarMottattUtbetalingTidligere
     | SoknadFormField.frilanserHarTaptInntektPgaKorona
     | SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende
     | SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet
@@ -55,17 +56,39 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
     [Field.frilanserHarTaptInntektPgaKorona]: {
         isAnswered: ({ frilanserHarTaptInntektPgaKorona }) => yesOrNoIsAnswered(frilanserHarTaptInntektPgaKorona),
     },
+    [Field.frilanserHarMottattUtbetalingTidligere]: {
+        visibilityFilter: ({ frilanserHarTaptInntektPgaKorona }) => frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
+        isIncluded: ({ tidligerePerioder: { harSøktSomFrilanser } }) => harSøktSomFrilanser === true,
+        isAnswered: ({ frilanserHarMottattUtbetalingTidligere }) =>
+            yesOrNoIsAnswered(frilanserHarMottattUtbetalingTidligere),
+    },
     [Field.frilanserInntektstapStartetDato]: {
-        parentQuestion: Field.frilanserHarTaptInntektPgaKorona,
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona } }) => harIkkeHattInntektstapPgaKorona === false,
+        visibilityFilter: ({
+            tidligerePerioder: { harSøktSomFrilanser },
+            frilanserHarMottattUtbetalingTidligere,
+            frilanserHarTaptInntektPgaKorona,
+        }) =>
+            (harSøktSomFrilanser && frilanserHarMottattUtbetalingTidligere === YesOrNo.NO) ||
+            frilanserHarTaptInntektPgaKorona === YesOrNo.NO,
+        isIncluded: ({
+            avslag: { harIkkeHattInntektstapPgaKorona },
+            frilanserHarMottattUtbetalingTidligere,
+            tidligerePerioder: { harSøktSomFrilanser },
+        }) =>
+            harIkkeHattInntektstapPgaKorona === false &&
+            (harSøktSomFrilanser === false || frilanserHarMottattUtbetalingTidligere === YesOrNo.NO),
         isAnswered: ({ frilanserInntektstapStartetDato }) => hasValue(frilanserInntektstapStartetDato),
     },
     [Field.frilanserInntektIPerioden]: {
-        parentQuestion: Field.frilanserInntektstapStartetDato,
-        isIncluded: ({ avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager } }) =>
-            harIkkeHattInntektstapPgaKorona === false &&
-            søkerIkkeForGyldigTidsrom === false &&
-            ingenUttaksdager === false,
+        isIncluded: ({
+            avslag: { harIkkeHattInntektstapPgaKorona, søkerIkkeForGyldigTidsrom, ingenUttaksdager },
+            tidligerePerioder: { harSøktSomFrilanser },
+            frilanserHarMottattUtbetalingTidligere,
+        }) =>
+            (harIkkeHattInntektstapPgaKorona === false &&
+                søkerIkkeForGyldigTidsrom === false &&
+                ingenUttaksdager === false) ||
+            (harSøktSomFrilanser && frilanserHarMottattUtbetalingTidligere === YesOrNo.YES),
         isAnswered: ({ frilanserInntektIPerioden }) => hasValue(frilanserInntektIPerioden),
     },
     [Field.frilanserHarYtelseFraNavSomDekkerTapet]: {

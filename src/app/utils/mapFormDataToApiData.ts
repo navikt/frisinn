@@ -225,9 +225,11 @@ export const mapSelvstendigNæringsdrivendeFormDataToApiData = (
 
 export const mapFrilanserFormDataToApiData = (
     personligeForetak: PersonligeForetak | undefined,
+    harSøktSomFrilanserTidligere: boolean,
     formData: FrilanserFormData
 ): FrilanserApiData | undefined => {
     const {
+        frilanserHarMottattUtbetalingTidligere,
         frilanserHarTaptInntektPgaKorona,
         frilanserInntektIPerioden,
         frilanserHarYtelseFraNavSomDekkerTapet,
@@ -244,15 +246,18 @@ export const mapFrilanserFormDataToApiData = (
         frilanserHarYtelseFraNavSomDekkerTapet === YesOrNo.NO
     ) {
         const questions: ApiSpørsmålOgSvar[] = [];
-        if (personligeForetak && frilanserHarYtelseFraNavSomDekkerTapet) {
+        if (harSøktSomFrilanserTidligere && frilanserHarMottattUtbetalingTidligere)
             questions.push({
-                field: SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet,
-                spørsmål: soknadQuestionText.frilanserHarYtelseFraNavSomDekkerTapet,
-                svar: formatYesOrNoAnswer(frilanserHarYtelseFraNavSomDekkerTapet),
+                field: SoknadFormField.frilanserHarMottattUtbetalingTidligere,
+                spørsmål: soknadQuestionText.frilanserHarMottattUtbetalingTidligere,
+                svar: formatYesOrNoAnswer(frilanserHarMottattUtbetalingTidligere),
             });
-        }
+
         return {
-            inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato),
+            ...(frilanserInntektstapStartetDato &&
+            (harSøktSomFrilanserTidligere === false || frilanserHarMottattUtbetalingTidligere === YesOrNo.NO)
+                ? { inntektstapStartet: formatDateToApiFormat(frilanserInntektstapStartetDato) }
+                : {}),
             inntektIPerioden: frilanserInntektIPerioden,
             inntektIPeriodenSomSelvstendigNæringsdrivende:
                 frilanserHarHattInntektSomSelvstendigIPerioden === YesOrNo.YES
@@ -331,7 +336,11 @@ export const mapFormDataToApiData = (
                     : undefined,
             frilanser:
                 frilanserStopReason === undefined
-                    ? mapFrilanserFormDataToApiData(soknadEssentials.personligeForetak, formData)
+                    ? mapFrilanserFormDataToApiData(
+                          soknadEssentials.personligeForetak,
+                          soknadEssentials.tidligerePerioder.harSøktSomFrilanser,
+                          formData
+                      )
                     : undefined,
             inntektIPeriodenSomArbeidstaker: mapArbeidstakerinntektIPerioden(
                 formData,

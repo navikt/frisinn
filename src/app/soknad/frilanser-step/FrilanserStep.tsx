@@ -39,13 +39,18 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
         frilanserHarTaptInntektPgaKorona,
         frilanserHarYtelseFraNavSomDekkerTapet,
         frilanserBeregnetTilgjengeligSøknadsperiode,
+        frilanserHarMottattUtbetalingTidligere,
     } = values;
-    const { søknadsperiode } = soknadEssentials;
+    const {
+        søknadsperiode,
+        tidligerePerioder: { harSøktSomFrilanser },
+    } = soknadEssentials;
     const { tilgjengeligSøkeperiode, isLoading: tilgjengeligSøkeperiodeIsLoading } = useTilgjengeligSøkeperiode({
         inntektstapStartDato: frilanserInntektstapStartetDato,
         søknadsperiode: søknadsperiode,
         currentAvailableSøknadsperiode: frilanserBeregnetTilgjengeligSøknadsperiode,
         startetSøknad: values.startetSøknadTidspunkt,
+        harMottattUtbetalingTidligere: frilanserHarMottattUtbetalingTidligere,
     });
 
     const isLoading = tilgjengeligSøkeperiodeIsLoading;
@@ -87,7 +92,7 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                 const v = { ...values };
                 v.frilanserSoknadIsOk = frilanserSoknadIsOk;
                 v.frilanserStopReason = frilanserSoknadIsOk ? undefined : getStopReason(avslag);
-                return cleanupFrilanserStep(v, avslag);
+                return cleanupFrilanserStep(v, avslag, harSøktSomFrilanser);
             }}
             showSubmitButton={!isLoading && (frilanserSoknadIsOk || allQuestionsAreAnswered)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
@@ -112,6 +117,19 @@ const FrilanserStep = ({ soknadEssentials, stepConfig, resetSoknad, onValidSubmi
                     description={<FrilanserInfo.infoTaptInntektPgaKorona />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<FrilanserInfo.StoppIkkeTapPgaKorona />}
+                />
+
+                <SoknadQuestion
+                    name={SoknadFormField.frilanserHarMottattUtbetalingTidligere}
+                    legend={soknadQuestionText.frilanserHarMottattUtbetalingTidligere}
+                    showInfo={frilanserHarMottattUtbetalingTidligere === YesOrNo.YES}
+                    infoMessage={
+                        <TilgjengeligSøkeperiodeInfo
+                            inntektstapStartetDato={frilanserInntektstapStartetDato}
+                            tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
+                            harAlleredeMottatUtbetalingFraOrdning={true}
+                        />
+                    }
                 />
 
                 <SoknadQuestion
