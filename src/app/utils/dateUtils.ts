@@ -25,7 +25,7 @@ export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => 
     }
     /** Forlenget frist for å søke for juni */
     if (formatDateToApiFormat(søknadsperiode.to) === '2020-06-30') {
-        return moment(apiStringDateToDate('2020-08-07')).endOf('day').toDate();
+        return moment(apiStringDateToDate('2020-08-06')).endOf('day').toDate();
     }
     return moment(søknadsperiode.to).add(1, 'month').endOf('month').endOf('day').toDate();
 };
