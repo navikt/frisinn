@@ -38,5 +38,13 @@ describe('dateUtils', () => {
             const frist = getSøknadsfristForPeriode(periode);
             expect(formatDateToApiFormat(frist)).toEqual('2020-06-30');
         });
+        it('returns august 7. for june period', () => {
+            const periode: DateRange = {
+                from: apiStringDateToDate('2020-06-1'),
+                to: apiStringDateToDate('2020-06-30'),
+            };
+            const frist = getSøknadsfristForPeriode(periode);
+            expect(formatDateToApiFormat(frist)).toEqual('2020-08-07');
+        });
     });
 });

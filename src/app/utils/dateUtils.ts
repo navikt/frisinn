@@ -20,7 +20,7 @@ export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): 
 };
 
 export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {
-    if (formatDateToApiFormat(søknadsperiode.to) === '2020-03-30') {
+    if (formatDateToApiFormat(søknadsperiode.to) === '2020-04-30') {
         return moment(apiStringDateToDate('2020-06-03')).endOf('day').toDate();
     }
     /** Forlenget frist for å søke for juni */
