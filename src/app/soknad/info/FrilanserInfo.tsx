@@ -38,7 +38,7 @@ const infoHvordanBeregneInntekt = ({
         <strong>
             <DateRangeView dateRange={periode} />
         </strong>
-        .
+        . Inntekten skal oppgis <strong>før</strong> skatt.
         <Box margin="l">
             <Element>Inntekter som skal tas med:</Element>
             <ul className="infoList">

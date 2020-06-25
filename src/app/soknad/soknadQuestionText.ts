@@ -50,7 +50,7 @@ export const soknadQuestionText: SoknadQuestionText = {
             dateRange
         )}, som følge av koronautbruddet?`,
     selvstendigHarMottattUtbetalingTidligere:
-        'Har du som selvstendig næringsdrivende fått utbetalt fra denne ordningen tidligere?',
+        'Har du tidligere fått utbetalt fra denne ordningen som selvstendig næringsdrivende?',
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',

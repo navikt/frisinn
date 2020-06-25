@@ -20,11 +20,12 @@ const TilgjengeligSøkeperiodeInfo = ({
         if (harAlleredeMottatUtbetalingFraOrdning) {
             return (
                 <>
-                    Når du har fått utbetalt tidligere, søker du kompensasjon for perioden{' '}
+                    Du søker nå kompensasjon for{' '}
                     <strong>
                         <DateRangeView dateRange={tilgjengeligSøkeperiode} />
                     </strong>
-                    .
+                    . Du søker for hele måneden selv om du eventuelt har jobbet noe. Vi beregner hva du kan få i
+                    kompensasjon for denne måneden, når du senere i søknaden legger inn eventuell inntekt fra jobb.
                 </>
             );
         }
