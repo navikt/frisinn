@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Route, Switch } from 'react-router-dom';
+import AppStatusWrapper from '@navikt/sif-common-core/lib/components/app-status-wrapper/AppStatusWrapper';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/sif-common-core/lib/utils/localeUtils';
 import * as Sentry from '@sentry/browser';
 import { detect } from 'detect-browser';
@@ -61,18 +62,30 @@ const App: React.FunctionComponent = () => {
                 setLocale(activeLocale);
             }}>
             {isSupportedBrowser && (
-                <TilgjengeligCheck
-                    tilgjengenligRender={() => (
-                        <Switch>
-                            <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
-                            <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
-                            <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
-                            <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
-                            <Route path="/" component={IntroPage} exact={true} />
-                            <Route component={NotFoundPage} />
-                        </Switch>
-                    )}
-                />
+                <>
+                    <AppStatusWrapper
+                        applicationKey={'frisinn'}
+                        sanityConfig={{
+                            projectId: getEnvironmentVariable('APPSTATUS_PROJECT_ID'),
+                            dataset: getEnvironmentVariable('APPSTATUS_DATASET'),
+                        }}
+                        contentRenderer={() => (
+                            <TilgjengeligCheck
+                                tilgjengenligRender={() => (
+                                    <Switch>
+                                        <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
+                                        <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
+                                        <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
+                                        <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                                        <Route path="/" component={IntroPage} exact={true} />
+                                        <Route component={NotFoundPage} />
+                                    </Switch>
+                                )}
+                            />
+                        )}
+                        unavailableContentRenderer={() => <NotOpenPage />}
+                    />
+                </>
             )}
             {isSupportedBrowser === false && <UnsupportedBrowserPage />}
         </ApplicationWrapper>
