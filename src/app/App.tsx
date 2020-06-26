@@ -50,9 +50,34 @@ const isBrowserSupported = (): boolean => {
     return true;
 };
 
+const getAppStatusSanityConfig = () => {
+    const projectId = getEnvironmentVariable('APPSTATUS_PROJECT_ID');
+    const dataset = getEnvironmentVariable('APPSTATUS_DATASET');
+    return !projectId || !dataset ? undefined : { projectId, dataset };
+};
+
+const APPLICATION_KEY = 'frisinn';
+
 const App: React.FunctionComponent = () => {
     const [locale, setLocale] = React.useState<Locale>(localeFromSessionStorage);
     const isSupportedBrowser = isBrowserSupported();
+
+    const appStatusSanityConfig = getAppStatusSanityConfig();
+
+    const renderContent = () => (
+        <TilgjengeligCheck
+            tilgjengenligRender={() => (
+                <Switch>
+                    <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
+                    <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
+                    <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
+                    <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
+                    <Route path="/" component={IntroPage} exact={true} />
+                    <Route component={NotFoundPage} />
+                </Switch>
+            )}
+        />
+    );
 
     return (
         <ApplicationWrapper
@@ -63,28 +88,16 @@ const App: React.FunctionComponent = () => {
             }}>
             {isSupportedBrowser && (
                 <>
-                    <AppStatusWrapper
-                        applicationKey={'frisinn'}
-                        sanityConfig={{
-                            projectId: getEnvironmentVariable('APPSTATUS_PROJECT_ID'),
-                            dataset: getEnvironmentVariable('APPSTATUS_DATASET'),
-                        }}
-                        contentRenderer={() => (
-                            <TilgjengeligCheck
-                                tilgjengenligRender={() => (
-                                    <Switch>
-                                        <Route path={GlobalRoutes.NOT_OPEN} component={NotOpenPage} />
-                                        <Route path={GlobalRoutes.SOKNAD_SENT} component={ReceiptPage} />
-                                        <Route path={GlobalRoutes.SOKNAD} component={Soknad} />
-                                        <Route path={GlobalRoutes.ERROR} component={GeneralErrorPage} />
-                                        <Route path="/" component={IntroPage} exact={true} />
-                                        <Route component={NotFoundPage} />
-                                    </Switch>
-                                )}
-                            />
-                        )}
-                        unavailableContentRenderer={() => <NotOpenPage />}
-                    />
+                    {appStatusSanityConfig ? (
+                        <AppStatusWrapper
+                            applicationKey={APPLICATION_KEY}
+                            sanityConfig={appStatusSanityConfig}
+                            contentRenderer={renderContent}
+                            unavailableContentRenderer={() => <NotOpenPage />}
+                        />
+                    ) : (
+                        renderContent()
+                    )}
                 </>
             )}
             {isSupportedBrowser === false && <UnsupportedBrowserPage />}
