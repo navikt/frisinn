@@ -69,7 +69,7 @@ const FrilanserFormConfig: QuestionConfig<FrilanserFormConfigPayload, SoknadForm
             frilanserHarTaptInntektPgaKorona,
         }) =>
             (harSøktSomFrilanser && frilanserHarMottattUtbetalingTidligere === YesOrNo.NO) ||
-            frilanserHarTaptInntektPgaKorona === YesOrNo.NO,
+            frilanserHarTaptInntektPgaKorona === YesOrNo.YES,
         isIncluded: ({
             avslag: { harIkkeHattInntektstapPgaKorona },
             frilanserHarMottattUtbetalingTidligere,
