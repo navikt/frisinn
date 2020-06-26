@@ -95,28 +95,50 @@ describe('frilanserFormConfig', () => {
                 expect(isIncluded(SoknadFormField.frilanserInntektSomSelvstendigIPerioden)).toBeFalsy();
             });
         });
-        describe('when andregang', () => {
-            const andregangPayload = {
-                ...payload,
-                frilanserHarMottattUtbetalingTidligere: YesOrNo.UNANSWERED,
-                tidligerePerioder: { ...payload.tidligerePerioder, harSøktSomFrilanser: true },
-            };
+        describe('when forstegang', () => {
+            it(`It does not show ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarTaptInntektPgaKorona} is unanswered`, () => {
+                const { isVisible } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                });
+                expect(isVisible(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
+            });
+            it(`It does not show ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarTaptInntektPgaKorona} is NO`, () => {
+                const { isVisible } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    frilanserHarTaptInntektPgaKorona: YesOrNo.NO,
+                });
+                expect(isVisible(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
+            });
+            it(`It shows ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarTaptInntektPgaKorona} is YES`, () => {
+                const { isVisible } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    frilanserHarTaptInntektPgaKorona: YesOrNo.YES,
+                });
+                expect(isVisible(SoknadFormField.frilanserInntektstapStartetDato)).toBeTruthy();
+            });
+        }),
+            describe('when andregang', () => {
+                const andregangPayload = {
+                    ...payload,
+                    frilanserHarMottattUtbetalingTidligere: YesOrNo.UNANSWERED,
+                    tidligerePerioder: { ...payload.tidligerePerioder, harSøktSomFrilanser: true },
+                };
 
-            it(`includes ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarMottattUtbetalingTidligere} === NO`, () => {
-                const { isIncluded } = FrilanserFormQuestions.getVisbility({
-                    ...andregangPayload,
-                    frilanserHarMottattUtbetalingTidligere: YesOrNo.NO,
+                it(`includes ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarMottattUtbetalingTidligere} === NO`, () => {
+                    const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                        ...andregangPayload,
+                        frilanserHarMottattUtbetalingTidligere: YesOrNo.NO,
+                    });
+                    expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeTruthy();
                 });
-                expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeTruthy();
-            });
-            it(`does not include ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarMottattUtbetalingTidligere} === YES`, () => {
-                const { isIncluded } = FrilanserFormQuestions.getVisbility({
-                    ...andregangPayload,
-                    frilanserHarMottattUtbetalingTidligere: YesOrNo.YES,
+                it(`does not include ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarMottattUtbetalingTidligere} === YES`, () => {
+                    const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                        ...andregangPayload,
+                        frilanserHarMottattUtbetalingTidligere: YesOrNo.YES,
+                    });
+                    expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
                 });
-                expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
             });
-        });
         describe('when user is onlyFrilanser', () => {
             it(`includes ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}`, () => {
                 const { isIncluded } = FrilanserFormQuestions.getVisbility({
