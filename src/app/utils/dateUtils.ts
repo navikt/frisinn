@@ -1,4 +1,4 @@
-import { apiStringDateToDate, DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { apiStringDateToDate, DateRange, formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import moment from 'moment';
 
 export * from '@navikt/sif-common-core/lib/utils/dateUtils';
@@ -20,8 +20,12 @@ export const getSisteGyldigeDagForInntektstapIPeriode = (dateRange: DateRange): 
 };
 
 export const getSøknadsfristForPeriode = (søknadsperiode: DateRange): Date => {
-    if (søknadsperiode.to.getMonth() === 3) {
+    if (formatDateToApiFormat(søknadsperiode.to) === '2020-04-30') {
         return moment(apiStringDateToDate('2020-06-03')).endOf('day').toDate();
+    }
+    /** Forlenget frist for å søke for juni */
+    if (formatDateToApiFormat(søknadsperiode.to) === '2020-06-30') {
+        return moment(apiStringDateToDate('2020-08-06')).endOf('day').toDate();
     }
     return moment(søknadsperiode.to).add(1, 'month').endOf('month').endOf('day').toDate();
 };

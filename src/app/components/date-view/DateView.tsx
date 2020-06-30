@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-type DateFormat = 'default' | 'monthAndYear' | 'dateAndMonth';
+type DateFormat = 'default' | 'monthAndYear' | 'dateAndMonth' | 'dateAndMonthAndYear';
 
 interface Props {
     date: Date;
@@ -13,6 +13,8 @@ export const formatDate = (date: Date, dateFormat: DateFormat = 'default'): stri
     switch (dateFormat) {
         case 'dateAndMonth':
             return moment(date).format('D. MMMM');
+        case 'dateAndMonthAndYear':
+            return moment(date).format('D. MMMM YYYY');
         case 'monthAndYear':
             return moment(date).format(' MMMM YYYY');
         default:

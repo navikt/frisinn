@@ -10,8 +10,9 @@ const infoHarHattArbeidstakerinntektIPerioden = () => (
 
 const infoOmArbeidstakerinntektIPerioden = ({ søknadsperiodeinfo }: { søknadsperiodeinfo: Søknadsperiodeinfo }) => (
     <ExpandableInfo title="Hvilken inntekt skal jeg oppgi her? ">
-        Her skal du oppgi pensjonsgivende inntekten du har hatt som arbeidstaker i perioden du søker for. Hvis du har
-        jobbet som arbeidstaker for flere arbeidsgivere, oppgir du inntektene samlet.
+        Her skal du oppgi den pensjonsgivende inntekten du har hatt som arbeidstaker i perioden du søker for. Hvis du
+        har jobbet som arbeidstaker for flere arbeidsgivere, oppgir du inntektene samlet. Inntektene skal oppgis{' '}
+        <strong>før</strong> skatt.
         <p>
             <strong>Inntekter som skal tas med:</strong>
         </p>

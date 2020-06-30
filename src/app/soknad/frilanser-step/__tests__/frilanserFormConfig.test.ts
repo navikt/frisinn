@@ -39,6 +39,7 @@ const soknadEssentials: SoknadEssentials = {
 
 const initialFormData: FrilanserFormData = {
     søkerOmTaptInntektSomSelvstendigNæringsdrivende: YesOrNo.NO,
+    frilanserHarMottattUtbetalingTidligere: YesOrNo.UNANSWERED,
     søkerOmTaptInntektSomFrilanser: YesOrNo.YES,
     frilanserHarTaptInntektPgaKorona: YesOrNo.UNANSWERED,
     frilanserHarYtelseFraNavSomDekkerTapet: YesOrNo.UNANSWERED,
@@ -63,7 +64,7 @@ describe('frilanserFormConfig', () => {
         avslag,
     };
     describe('included questions', () => {
-        describe('initial state', () => {
+        describe('initial state - førstegang', () => {
             const { isIncluded } = FrilanserFormQuestions.getVisbility(payload);
             it(`includes all required and fixed questions`, () => {
                 expect(isIncluded(SoknadFormField.frilanserHarTaptInntektPgaKorona)).toBeTruthy();
@@ -72,10 +73,72 @@ describe('frilanserFormConfig', () => {
                 expect(isIncluded(SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet)).toBeTruthy();
             });
             it(`does not include questions which depends on different payload states`, () => {
+                expect(isIncluded(SoknadFormField.frilanserHarMottattUtbetalingTidligere)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.frilanserErSelvstendigNæringsdrivende)).toBeFalsy();
                 expect(isIncluded(SoknadFormField.frilanserInntektSomSelvstendigIPerioden)).toBeFalsy();
             });
         });
+        describe('initial state - andregang', () => {
+            const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                ...payload,
+                tidligerePerioder: { ...payload.tidligerePerioder, harSøktSomFrilanser: true },
+            });
+            it(`includes all required and fixed questions`, () => {
+                expect(isIncluded(SoknadFormField.frilanserHarTaptInntektPgaKorona)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.frilanserHarMottattUtbetalingTidligere)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.frilanserInntektIPerioden)).toBeTruthy();
+                expect(isIncluded(SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet)).toBeTruthy();
+            });
+            it(`does not include questions which depends on different payload states`, () => {
+                expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.frilanserErSelvstendigNæringsdrivende)).toBeFalsy();
+                expect(isIncluded(SoknadFormField.frilanserInntektSomSelvstendigIPerioden)).toBeFalsy();
+            });
+        });
+        describe('when forstegang', () => {
+            it(`It does not show ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarTaptInntektPgaKorona} is unanswered`, () => {
+                const { isVisible } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                });
+                expect(isVisible(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
+            });
+            it(`It does not show ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarTaptInntektPgaKorona} is NO`, () => {
+                const { isVisible } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    frilanserHarTaptInntektPgaKorona: YesOrNo.NO,
+                });
+                expect(isVisible(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
+            });
+            it(`It shows ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarTaptInntektPgaKorona} is YES`, () => {
+                const { isVisible } = FrilanserFormQuestions.getVisbility({
+                    ...payload,
+                    frilanserHarTaptInntektPgaKorona: YesOrNo.YES,
+                });
+                expect(isVisible(SoknadFormField.frilanserInntektstapStartetDato)).toBeTruthy();
+            });
+        }),
+            describe('when andregang', () => {
+                const andregangPayload = {
+                    ...payload,
+                    frilanserHarMottattUtbetalingTidligere: YesOrNo.UNANSWERED,
+                    tidligerePerioder: { ...payload.tidligerePerioder, harSøktSomFrilanser: true },
+                };
+
+                it(`includes ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarMottattUtbetalingTidligere} === NO`, () => {
+                    const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                        ...andregangPayload,
+                        frilanserHarMottattUtbetalingTidligere: YesOrNo.NO,
+                    });
+                    expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeTruthy();
+                });
+                it(`does not include ${SoknadFormField.frilanserInntektstapStartetDato} when ${SoknadFormField.frilanserHarMottattUtbetalingTidligere} === YES`, () => {
+                    const { isIncluded } = FrilanserFormQuestions.getVisbility({
+                        ...andregangPayload,
+                        frilanserHarMottattUtbetalingTidligere: YesOrNo.YES,
+                    });
+                    expect(isIncluded(SoknadFormField.frilanserInntektstapStartetDato)).toBeFalsy();
+                });
+            });
         describe('when user is onlyFrilanser', () => {
             it(`includes ${SoknadFormField.frilanserHarHattInntektSomSelvstendigIPerioden}`, () => {
                 const { isIncluded } = FrilanserFormQuestions.getVisbility({

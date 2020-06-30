@@ -25,9 +25,11 @@ const SelvstendigNæringsdrivendeSummary = ({
 }: Props) => (
     <>
         <Undertittel className="sectionTitle">Selvstendig næringsdrivende</Undertittel>
-        <SummaryBlock header={'Inntektstapet som selvstendig næringsdrivende startet'}>
-            <DatoSvar apiDato={inntektstapStartet} />
-        </SummaryBlock>
+        {inntektstapStartet && (
+            <SummaryBlock header={'Inntektstapet som selvstendig næringsdrivende startet'}>
+                <DatoSvar apiDato={inntektstapStartet} />
+            </SummaryBlock>
+        )}
         <SummaryBlock header={'Periode det søkes for som selvstendig næringsdrivende'}>{info.periode}</SummaryBlock>
         <SummaryBlock header={`Personinntekt fra næring i perioden ${info.periode}`}>
             <KronerSvar verdi={inntektIPerioden} />

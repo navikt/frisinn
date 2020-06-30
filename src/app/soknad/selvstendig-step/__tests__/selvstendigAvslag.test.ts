@@ -121,7 +121,7 @@ describe('selvstendigAvslag', () => {
             });
             expect(status.søkerIkkeForGyldigTidsrom).toBeTruthy();
         });
-        it('returns no error when selvstendigInntektstapStartetDato is  set and selvstendigBeregnetTilgjengeligSøknadsperiode is set ', () => {
+        it('returns no error when selvstendigInntektstapStartetDato is set and selvstendigBeregnetTilgjengeligSøknadsperiode is set ', () => {
             const status: SelvstendigNæringsdrivendeAvslagStatus = kontrollerSelvstendigSvar({
                 ...payload,
                 selvstendigInntektstapStartetDato: new Date(),

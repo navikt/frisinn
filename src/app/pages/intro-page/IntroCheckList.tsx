@@ -30,7 +30,7 @@ const IntroCheckList = ({ canApplyAsSelvstending, canApplyAsFrilanser }: Props) 
                         </Lenke>
                     </li>
                     <li>
-                        Du vil måtte svare på noen av de samme spørsmålene som ovenfor når du har logget deg inn. En del
+                        Du vil måtte svare på noen av de samme spørsmålene når du har logget deg inn. En del
                         opplysninger henter vi fra offentlige registre, mens noen opplysninger må du skrive inn på nytt.
                     </li>
                 </ul>

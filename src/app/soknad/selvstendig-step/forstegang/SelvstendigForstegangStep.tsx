@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { validateRequiredField, validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { validateRequiredNumber } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import ResponsivePanel from 'common/components/responsive-panel/ResponsivePanel';

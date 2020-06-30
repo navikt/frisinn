@@ -21,9 +21,11 @@ const FrilanserSummary = ({
 }: Props) => (
     <>
         <Undertittel className="sectionTitle">Frilanser</Undertittel>
-        <SummaryBlock header={'Inntektstapet som frilanser startet'}>
-            <DatoSvar apiDato={inntektstapStartet} />
-        </SummaryBlock>
+        {inntektstapStartet && (
+            <SummaryBlock header={'Inntektstapet som frilanser startet'}>
+                <DatoSvar apiDato={inntektstapStartet} />
+            </SummaryBlock>
+        )}
         <SummaryBlock header={`Periode det søkes for som frilanser`}>{info.periode}</SummaryBlock>
         <SummaryBlock header={`Personinntekt for oppdrag i perioden ${info.periode}`}>
             <KronerSvar verdi={inntektIPerioden} />

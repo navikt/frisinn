@@ -50,3 +50,7 @@ spec:
           value: {{image}}
         - name: PERSISTENCE
           value: "off"
+        - name: APPSTATUS_PROJECT_ID
+          value: "ryujtq87"
+        - name: APPSTATUS_DATASET
+          value: "production"

@@ -10,13 +10,12 @@ export const cleanupSelvstendigAndregangStep = (
         ...values,
     };
     if (v.selvstendigHarTaptInntektPgaKorona !== YesOrNo.YES) {
+        v.selvstendigHarMottattUtbetalingTidligere = YesOrNo.UNANSWERED;
+    }
+    if (v.selvstendigHarMottattUtbetalingTidligere === YesOrNo.YES) {
         v.selvstendigInntektstapStartetDato = undefined as any;
     }
-    if (
-        v.selvstendigInntektstapStartetDato === undefined ||
-        avslag.søkerIkkeForGyldigTidsrom ||
-        avslag.ingenUttaksdager
-    ) {
+    if (avslag.søkerIkkeForGyldigTidsrom || avslag.ingenUttaksdager) {
         v.selvstendigInntektIPerioden = undefined as any;
         v.selvstendigBeregnetTilgjengeligSøknadsperiode = undefined;
     }

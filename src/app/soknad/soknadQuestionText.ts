@@ -5,6 +5,7 @@ import { maxAvsluttetDate, minAvsluttetDate } from './selvstendig-step/avsluttet
 
 export interface SoknadQuestionText {
     [SoknadFormField.selvstendigHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
+    [SoknadFormField.selvstendigHarMottattUtbetalingTidligere]: string;
     [SoknadFormField.selvstendigInntektstapStartetDato]: string;
     [SoknadFormField.selvstendigInntektIPerioden]: (periode: DateRange) => string;
     [SoknadFormField.selvstendigHarYtelseFraNavSomDekkerTapet]: string;
@@ -24,6 +25,7 @@ export interface SoknadQuestionText {
     [SoknadFormField.selvstendigRevisorTelefon]: string;
     [SoknadFormField.selvstendigRevisorNAVKanTaKontakt]: string;
     [SoknadFormField.frilanserHarTaptInntektPgaKorona]: (søknadsperiode: DateRange) => string;
+    [SoknadFormField.frilanserHarMottattUtbetalingTidligere]: string;
     [SoknadFormField.frilanserInntektstapStartetDato]: string;
     [SoknadFormField.frilanserHarYtelseFraNavSomDekkerTapet]: string;
     [SoknadFormField.frilanserInntektIPerioden]: (periode: DateRange) => string;
@@ -48,6 +50,8 @@ export const soknadQuestionText: SoknadQuestionText = {
         `Har du tapt inntekt som selvstendig næringsdrivende i perioden ${formatDateRange(
             dateRange
         )}, som følge av koronautbruddet?`,
+    selvstendigHarMottattUtbetalingTidligere:
+        'Har du tidligere fått utbetalt fra denne ordningen som selvstendig næringsdrivende?',
     selvstendigInntektstapStartetDato: 'Når startet inntektstapet ditt som selvstendig næringsdrivende?',
     selvstendigHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som selvstendig næringsdrivende?',
@@ -81,6 +85,7 @@ export const soknadQuestionText: SoknadQuestionText = {
     selvstendigRevisorNAVKanTaKontakt: 'Gir du NAV fullmakt til å innhente opplysninger fra revisor?',
     frilanserHarTaptInntektPgaKorona: (dateRange: DateRange) =>
         `Har du tapt inntekt som frilanser i perioden ${formatDateRange(dateRange)}, som følge av koronautbruddet?`,
+    frilanserHarMottattUtbetalingTidligere: 'Har du tidligere fått utbetalt fra denne ordningen som frilanser?',
     frilanserInntektstapStartetDato: 'Når startet inntektstapet ditt som frilanser?',
     frilanserHarYtelseFraNavSomDekkerTapet:
         'Har du allerede en utbetaling fra NAV som kompenserer det samme inntektstapet som frilanser?',

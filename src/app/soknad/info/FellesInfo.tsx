@@ -19,7 +19,7 @@ export const FellesNårStartetInntektstapet = ({ søknadsperiode }: { søknadspe
     const mnd = moment(søknadsperiode.to).subtract(1, 'month').format('MMMM');
     return (
         <ExpandableInfo title="Hvilken dato skal legges inn?">
-            Her skal du legge inn datoen fra da inntektstapet ditt startet på grunn av koronautbruddet. Hvis
+            Her skal du legge inn datoen fra første gang inntektstapet ditt startet på grunn av koronautbruddet. Hvis
             inntektstapet for eksempel startet 14. mars 2020, er det denne datoen du skal legge inn her.
             <p>
                 Hvis du har hatt en <strong>annen</strong> utbetaling fra NAV i perioden <strong>etter</strong> at

@@ -38,7 +38,11 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
         return <SoknadErrors.MissingApiDataError />;
     }
     const { søknadsperiode } = soknadEssentials;
-    const { selvstendigInntektstapStartetDato, selvstendigBeregnetTilgjengeligSøknadsperiode } = values;
+    const {
+        selvstendigInntektstapStartetDato,
+        selvstendigBeregnetTilgjengeligSøknadsperiode,
+        selvstendigHarMottattUtbetalingTidligere,
+    } = values;
 
     const avslag = kontrollerSelvstendigAndregangsSvar(values);
 
@@ -56,6 +60,7 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
         søknadsperiode: søknadsperiode,
         currentAvailableSøknadsperiode: selvstendigBeregnetTilgjengeligSøknadsperiode,
         startetSøknad: values.startetSøknadTidspunkt,
+        harMottattUtbetalingTidligere: selvstendigHarMottattUtbetalingTidligere,
     });
 
     const hasValidSelvstendigAndregangsFormData: boolean =
@@ -93,6 +98,21 @@ const SelvstendigAndregangStep = ({ resetSoknad, onValidSubmit, soknadEssentials
                     description={<SelvstendigInfo.infoTaptInntektPgaKorona />}
                     showStop={avslag.harIkkeHattInntektstapPgaKorona}
                     stopMessage={<SelvstendigInfo.StoppIkkeTapPgaKorona />}
+                />
+                <SoknadQuestion
+                    name={SoknadFormField.selvstendigHarMottattUtbetalingTidligere}
+                    legend={txt.selvstendigHarMottattUtbetalingTidligere}
+                    showInfo={
+                        isValidDateRange(tilgjengeligSøkeperiode) &&
+                        selvstendigHarMottattUtbetalingTidligere === YesOrNo.YES
+                    }
+                    infoMessage={
+                        <TilgjengeligSøkeperiodeInfo
+                            inntektstapStartetDato={selvstendigInntektstapStartetDato}
+                            tilgjengeligSøkeperiode={tilgjengeligSøkeperiode}
+                            harAlleredeMottatUtbetalingFraOrdning={true}
+                        />
+                    }
                 />
                 <SoknadQuestion
                     name={SoknadFormField.selvstendigInntektstapStartetDato}

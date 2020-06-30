@@ -10,7 +10,7 @@ export interface ApiSpørsmålOgSvar {
 }
 
 export interface SelvstendigNæringsdrivendeApiData {
-    inntektstapStartet: ApiStringDate;
+    inntektstapStartet?: ApiStringDate;
     inntektIPerioden: number;
     inntekt2019?: number;
     inntekt2020?: number;
@@ -27,7 +27,7 @@ export interface SelvstendigNæringsdrivendeApiData {
 }
 
 export interface FrilanserApiData {
-    inntektstapStartet: ApiStringDate;
+    inntektstapStartet?: ApiStringDate;
     inntektIPerioden: number;
     inntektIPeriodenSomSelvstendigNæringsdrivende?: number;
     info: {
