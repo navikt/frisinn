@@ -28,7 +28,7 @@
         "testEnvironment": "node"
     },
     "dependencies": {
-        "@formatjs/intl-pluralrules": "^2.2.9",
+        "@formatjs/intl-pluralrules": "^3.2.3",
         "@formatjs/intl-relativetimeformat": "^5.2.9",
         "@navikt/fnrvalidator": "^1.1.0",
         "@navikt/sif-common-core": "^4.0.16",
