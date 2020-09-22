@@ -33,6 +33,7 @@ const IntroCheckList = ({ canApplyAsSelvstending, canApplyAsFrilanser }: Props) 
                         Du vil måtte svare på noen av de samme spørsmålene når du har logget deg inn. En del
                         opplysninger henter vi fra offentlige registre, mens noen opplysninger må du skrive inn på nytt.
                     </li>
+                    <li>Søknaden blir automatisk behandlet, det er ikke mulig for deg å velge noe annet.</li>
                 </ul>
                 <p>
                     <strong>
