@@ -34,7 +34,7 @@ Sentry.init({
     dsn: 'https://64c0ee4a1a8b4212b685764604cce997@sentry.gc.nav.no/29',
     release: getEnvironmentVariable('APP_VERSION'),
     environment: window.location.hostname,
-    // integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
+    allowUrls: ['inntektskompensasjon'],
 });
 
 const isBrowserSupported = (): boolean => {
