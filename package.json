@@ -71,7 +71,7 @@
         "react-modal": "^3.10.1",
         "react-router-dom": "^5.2.0",
         "react-simple-timefield": "^3.0.0",
-        "snyk": "^1.377.1",
+        "snyk": "^1.433.0",
         "use-media": "^1.4.0"
     },
     "devDependencies": {
