@@ -4,7 +4,7 @@ import { Søknadsperiodeinfo } from '../types/SoknadEssentials';
 import { getSisteGyldigeDagForInntektstapIPeriode, getSøknadsfristForPeriode } from './dateUtils';
 
 const getErÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
-    return søknadsperiode.to.getMonth() >= 4;
+    return søknadsperiode.to.getMonth() >= 4 || søknadsperiode.to.getFullYear() >= 2021;
 };
 
 const getSkalSpørreOmArbeidstakerinntekt = (søknadsperiode: DateRange) => {
