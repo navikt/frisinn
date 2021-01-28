@@ -4,11 +4,7 @@ import { Søknadsperiodeinfo } from '../types/SoknadEssentials';
 import { getSisteGyldigeDagForInntektstapIPeriode, getSøknadsfristForPeriode } from './dateUtils';
 
 const getErÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
-    return søknadsperiode.to.getMonth() >= 4;
-};
-
-const getSkalSpørreOmArbeidstakerinntekt = (søknadsperiode: DateRange) => {
-    return getErÅpnetForAndregangssøknad(søknadsperiode);
+    return søknadsperiode.to.getMonth() >= 4 || søknadsperiode.to.getFullYear() >= 2021;
 };
 
 const getFørsteUgyldigeStartdatoForInntektstap = (søknadsperiode: DateRange): Date => {
@@ -19,7 +15,7 @@ export const getSøknadsperiodeinfo = (søknadsperiode: DateRange): Søknadsperi
     søknadsperiode,
     søknadsfrist: getSøknadsfristForPeriode(søknadsperiode),
     erÅpnetForAndregangssøknad: getErÅpnetForAndregangssøknad(søknadsperiode),
-    arbeidstakerinntektErAktiv: getSkalSpørreOmArbeidstakerinntekt(søknadsperiode),
+    arbeidstakerinntektErAktiv: true,
     sisteGyldigeDagForInntektstap: getSisteGyldigeDagForInntektstapIPeriode(søknadsperiode),
     førsteUgyldigeStartdatoForInntektstap: getFørsteUgyldigeStartdatoForInntektstap(søknadsperiode),
 });
