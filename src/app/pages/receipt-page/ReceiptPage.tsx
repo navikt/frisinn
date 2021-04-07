@@ -25,7 +25,7 @@ const ReceiptPage: React.FunctionComponent = () => {
                 <ul className="checklist">
                     <li>Søknaden din vil bli behandlet så raskt som mulig</li>
                     <li>Du vil få et svar fra oss, når søknaden er ferdig behandlet</li>
-                    <li>Hvis søknaden blir innvilget, får du utbetaling til kontoen din i løpet av 3 dager</li>
+                    <li>Hvis søknaden blir innvilget, får du utbetaling til kontoen din innen en uke</li>
                 </ul>
             </Box>
         </Page>
