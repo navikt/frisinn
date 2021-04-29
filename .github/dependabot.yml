@@ -1,0 +1,74 @@
+version: 2
+registries:
+  npm-registry-npm-pkg-github-com-navikt-data-catalog-components:
+    type: npm-registry
+    url: https://npm.pkg.github.com/@navikt/data-catalog-components
+    token: "${{secrets.NPM_REGISTRY_NPM_PKG_GITHUB_COM_NAVIKT_DATA_CATALOG_COMPONENTS_TOKEN}}"
+  npm-registry-npm-pkg-github-com-deetly-plotly-view:
+    type: npm-registry
+    url: https://npm.pkg.github.com/@deetly/plotly-view
+    token: "${{secrets.NPM_REGISTRY_NPM_PKG_GITHUB_COM_DEETLY_PLOTLY_VIEW_TOKEN}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: snyk
+    versions:
+    - 1.439.1
+    - 1.440.1
+    - 1.440.4
+    - 1.440.5
+    - 1.448.0
+    - 1.452.0
+    - 1.458.0
+    - 1.459.0
+    - 1.462.0
+    - 1.474.0
+    - 1.476.0
+    - 1.478.0
+    - 1.483.0
+    - 1.486.0
+    - 1.509.0
+    - 1.514.0
+    - 1.521.0
+    - 1.538.0
+    - 1.557.0
+    - 1.563.0
+    - 1.564.0
+  - dependency-name: "@formatjs/intl-pluralrules"
+    versions:
+    - 4.0.10
+    - 4.0.11
+    - 4.0.12
+    - 4.0.13
+    - 4.0.14
+    - 4.0.6
+    - 4.0.9
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.20
+    - 26.0.21
+    - 26.0.22
+  - dependency-name: i18n-iso-countries
+    versions:
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+  - dependency-name: bl
+    versions:
+    - 4.0.3
+    - 4.0.4
+  - dependency-name: helmet
+    versions:
+    - 4.4.1
+  - dependency-name: html-webpack-plugin
+    versions:
+    - 4.5.1
+  registries:
+  - npm-registry-npm-pkg-github-com-navikt-data-catalog-components
+  - npm-registry-npm-pkg-github-com-deetly-plotly-view
