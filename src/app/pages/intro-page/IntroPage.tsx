@@ -82,7 +82,8 @@ const IntroPage: React.StatelessComponent = () => {
                                                 Dette er en <strong>ny og midlertidig</strong> ordning som er opprettet
                                                 som en følge av koronasituasjonen. Den er for deg som er selvstendig
                                                 næringsdrivende og/eller frilanser som helt eller delvis har tapt
-                                                inntekt på grunn av koronautbruddet.
+                                                inntekt på grunn av koronautbruddet. Ordningen varer til og med 30.
+                                                september 2021.
                                             </p>
                                             <p>
                                                 Er du selvstendig næringsdrivende må du enten ha et enkeltpersonforetak
