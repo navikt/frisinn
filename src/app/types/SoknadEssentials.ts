@@ -32,6 +32,7 @@ export interface Søknadsperiodeinfo {
     arbeidstakerinntektErAktiv: boolean;
     sisteGyldigeDagForInntektstap: Date;
     førsteUgyldigeStartdatoForInntektstap: Date;
+    erISisteSøknadsperiode: boolean;
 }
 
 export interface SoknadEssentials {

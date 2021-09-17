@@ -67,10 +67,10 @@ const perioderApril = {
     },
 };
 
-const søknadsperiodeJuni = {
+const søknadsperiodeSistePeriode = {
     søknadsperiode: {
-        fom: '2020-06-01',
-        tom: '2020-06-30',
+        fom: '2021-09-01',
+        tom: '2021-09-30',
     },
 };
 
@@ -93,7 +93,7 @@ const getInntektsperiode = () => {
     };
 };
 
-const simulerJuli = true;
+const simulerSistePeriode = true;
 
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
@@ -103,7 +103,7 @@ const startExpressServer = () => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.get('/tidspunkt', (req, res) => {
-        const m = moment(simulerJuli ? '2020-06-01' : undefined).tz('Europe/Oslo');
+        const m = moment(simulerSistePeriode ? '2021-10-01' : undefined).tz('Europe/Oslo');
         setTimeout(() => {
             res.send({
                 'Europe/Oslo': m.format(),
@@ -154,7 +154,7 @@ const startExpressServer = () => {
 
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
-            res.send(simulerJuli ? søknadsperiodeJuni : perioderApril);
+            res.send(simulerSistePeriode ? søknadsperiodeSistePeriode : perioderApril);
         }, 220);
     });
 

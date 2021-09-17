@@ -4,11 +4,18 @@ import InfoMessage from '../../components/info-message/InfoMessage';
 import DateView from '../../components/date-view/DateView';
 import { DateRange, getSøknadsfristForPeriode, getMonthName } from '../../utils/dateUtils';
 
-const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange }) => {
+const InfoOmSøknadOgFrist = ({
+    søknadsperiode,
+    erISisteSøknadsperiode,
+}: {
+    søknadsperiode: DateRange;
+    erISisteSøknadsperiode: boolean;
+}) => {
     const frist = getSøknadsfristForPeriode(søknadsperiode);
     const åpningNestePeriode = moment(frist).add(1, 'day').toDate();
     const mndDennePerioden = getMonthName(søknadsperiode.to);
     const mndNestePeriode = getMonthName(moment(søknadsperiode.to).add(1, 'month').toDate());
+
     return (
         <InfoMessage>
             <strong>Du kan nå søke om kompensasjon for inntektstap i {getMonthName(søknadsperiode.to)}.</strong>
@@ -19,7 +26,11 @@ const InfoOmSøknadOgFrist = ({ søknadsperiode }: { søknadsperiode: DateRange 
                 . Fra <DateView date={åpningNestePeriode} format="dateAndMonth" /> åpnes det for å søke om kompensasjon
                 for tapt inntekt i {mndNestePeriode}.
                 <br />
-                Du må søke etterskuddsvis måned for måned.
+                {erISisteSøknadsperiode ? (
+                    <>Det blir den siste måneden det er mulig å søke kompensasjon gjennom denne ordningen.</>
+                ) : (
+                    <>Du må søke etterskuddsvis måned for måned.</>
+                )}
             </p>
             <p>
                 <strong>Du kan kun sende inn søknaden én gang per periode</strong>.<br /> Det vil si at hvis du sender
