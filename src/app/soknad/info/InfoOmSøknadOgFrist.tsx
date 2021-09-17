@@ -21,15 +21,21 @@ const InfoOmSøknadOgFrist = ({
             <strong>Du kan nå søke om kompensasjon for inntektstap i {getMonthName(søknadsperiode.to)}.</strong>
             <p>
                 <strong>
-                    Søknadsfristen for {mndDennePerioden} er <DateView date={frist} format="dateAndMonthAndYear" />
+                    Søknadsfristen for {mndDennePerioden} er <DateView date={frist} format="dateAndMonthAndYear" />.
                 </strong>
-                . Fra <DateView date={åpningNestePeriode} format="dateAndMonth" /> åpnes det for å søke om kompensasjon
-                for tapt inntekt i {mndNestePeriode}.
-                <br />
+
                 {erISisteSøknadsperiode ? (
-                    <>Det blir den siste måneden det er mulig å søke kompensasjon gjennom denne ordningen.</>
+                    <>
+                        <br />
+                        Det blir den siste måneden det er mulig å søke kompensasjon gjennom denne ordningen.
+                    </>
                 ) : (
-                    <>Du må søke etterskuddsvis måned for måned.</>
+                    <>
+                        Fra <DateView date={åpningNestePeriode} format="dateAndMonth" /> åpnes det for å søke om
+                        kompensasjon for tapt inntekt i {mndNestePeriode}.
+                        <br />
+                        Du må søke etterskuddsvis måned for måned.
+                    </>
                 )}
             </p>
             <p>
