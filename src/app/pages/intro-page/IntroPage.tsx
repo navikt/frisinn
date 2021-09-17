@@ -79,12 +79,17 @@ const IntroPage: React.StatelessComponent = () => {
                                         </Undertittel>
                                         <Normaltekst tag="div">
                                             <p>
-                                                Dette er en <strong>ny og midlertidig</strong> ordning som er opprettet
-                                                som en følge av koronasituasjonen. Den er for deg som er selvstendig
-                                                næringsdrivende og/eller frilanser som helt eller delvis har tapt
-                                                inntekt på grunn av koronautbruddet. Ordningen varer til og med 30.
-                                                september 2021.
+                                                Dette er en midlertidig ordning som er opprettet som en følge av
+                                                koronastituasjonen. Den er for deg som er selvstendig næringsdrivende
+                                                eller frilanser som helt eller delvis har tapt inntekt på grunn av
+                                                koronautbruddet.
                                             </p>
+                                            <p>
+                                                <strong>Ordningen gjelder til og med 30. september 2021</strong>. Du må
+                                                søke etterskuddsvis måned for måned. Søknadsfristen er innen utgangen av
+                                                måneden etter den måneden du søker for.{' '}
+                                            </p>
+
                                             <p>
                                                 Er du selvstendig næringsdrivende må du enten ha et enkeltpersonforetak
                                                 (ENK), et ansvarlig selskap (ANS), eller et ansvarlig selskap med delt
@@ -127,7 +132,12 @@ const IntroPage: React.StatelessComponent = () => {
                                     </InformationPoster>
                                 </Box>
                                 <Box margin="xl">
-                                    <InfoOmSøknadOgFrist søknadsperiode={søknadsperiode} />
+                                    <InfoOmSøknadOgFrist
+                                        søknadsperiode={søknadsperiode}
+                                        erISisteSøknadsperiode={
+                                            getSøknadsperiodeinfo(søknadsperiode).erISisteSøknadsperiode
+                                        }
+                                    />
                                 </Box>
 
                                 <Box margin="xl">
