@@ -62,8 +62,8 @@ const søkerMock = {
 
 const perioderApril = {
     søknadsperiode: {
-        fom: '2020-03-14',
-        tom: '2020-04-30',
+        fom: '2021-08-14',
+        tom: '2021-08-30',
     },
 };
 
@@ -93,7 +93,7 @@ const getInntektsperiode = () => {
     };
 };
 
-const simulerSistePeriode = true;
+const simulerSistePeriode = false;
 
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;

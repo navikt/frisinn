@@ -31,6 +31,7 @@ const InfoOmSøknadOgFrist = ({
                     </>
                 ) : (
                     <>
+                        <br />
                         Fra <DateView date={åpningNestePeriode} format="dateAndMonth" /> åpnes det for å søke om
                         kompensasjon for tapt inntekt i {mndNestePeriode}.
                         <br />
