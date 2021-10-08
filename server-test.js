@@ -5,9 +5,7 @@ const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const compression = require('compression');
 const helmet = require('helmet');
-const createEnvSettingsFile = require('./src/build/scripts/envSettings');
-
-createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
+const envSettings = require('./envSettings');
 
 const server = express();
 server.use(helmet());
@@ -30,6 +28,15 @@ const routerHealth = express.Router();
 server.use(`${PUBLIC_PATH}/health`, routerHealth);
 routerHealth.get('/isAlive', (req, res) => res.sendStatus(200));
 routerHealth.get('/isReady', (req, res) => res.sendStatus(200));
+
+server.get(`${process.env.PUBLIC_PATH}/dist/settings.js`, (req, res) => {
+    res.set('content-type', 'application/javascript');
+    res.send(`${envSettings()}`);
+});
+server.get(`/dist/settings.js`, (req, res) => {
+    res.set('content-type', 'application/javascript');
+    res.send(`${envSettings()}`);
+});
 
 const renderApp = () =>
     new Promise((resolve, reject) => {

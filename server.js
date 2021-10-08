@@ -4,8 +4,8 @@ const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const compression = require('compression');
 const helmet = require('helmet');
-const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 const getDecorator = require('./src/build/scripts/decorator');
+const envSettings = require('./envSettings');
 
 const server = express();
 server.use(helmet());
@@ -13,8 +13,6 @@ server.use(compression());
 server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
-
-createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
 const verifyLoginUrl = () =>
     new Promise((resolve, reject) => {
@@ -44,6 +42,11 @@ const startServer = (html) => {
 
     server.get(/^\/(?!.*dist).*$/, (req, res) => {
         res.send(html);
+    });
+
+    server.get(`${process.env.PUBLIC_PATH}/dist/settings.js`, (req, res) => {
+        res.set('content-type', 'application/javascript');
+        res.send(`${envSettings()}`);
     });
 
     const port = process.env.PORT || 8080;
