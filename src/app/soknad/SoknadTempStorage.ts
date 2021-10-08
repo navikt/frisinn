@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import * as hash from 'object-hash';
 import { ApiEndpoint } from '../api/api';
-import axiosConfig from '../config/axiosConfig';
+import { axiosJsonConfig } from '../config/axiosConfig';
 import { SoknadEssentials } from '../types/SoknadEssentials';
 import { SoknadFormData } from '../types/SoknadFormData';
 import persistence, { PersistenceInterface } from '../utils/persistence/persistence';
@@ -24,7 +24,7 @@ interface SoknadTemporartStorage extends Omit<PersistenceInterface<TemporaryStor
 
 const persistSetup = persistence<TemporaryStorageData>({
     url: ApiEndpoint.mellomlagring,
-    requestConfig: { ...axiosConfig },
+    requestConfig: { ...axiosJsonConfig },
 });
 
 export const isStorageDataValid = (
