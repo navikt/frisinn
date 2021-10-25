@@ -4,8 +4,8 @@ import { Søknadsperiodeinfo } from '../types/SoknadEssentials';
 import { getSisteGyldigeDagForInntektstapIPeriode, getSøknadsfristForPeriode } from './dateUtils';
 
 const SISTE_SØKNADSPERIODE: DateRange = {
-    from: new Date(2021, 8, 1),
-    to: new Date(2021, 8, 30),
+    from: new Date(2021, 11, 1),
+    to: new Date(2021, 11, 31),
 };
 
 const getErÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {

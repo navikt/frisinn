@@ -85,9 +85,11 @@ const IntroPage: React.StatelessComponent = () => {
                                                 koronautbruddet.
                                             </p>
                                             <p>
-                                                <strong>Ordningen gjelder til og med 30. september 2021</strong>. Du må
-                                                søke etterskuddsvis måned for måned. Søknadsfristen er innen utgangen av
-                                                måneden etter den måneden du søker for.{' '}
+                                                <strong>
+                                                    Ordningen er forlenget og gjelder til og med 31. desember 2021.
+                                                </strong>{' '}
+                                                Du må søke etterskuddsvis måned for måned. Søknadsfristen er innen
+                                                utgangen av måneden etter den måneden du søker for.{' '}
                                             </p>
 
                                             <p>
