@@ -93,7 +93,7 @@ const IntroPage: React.StatelessComponent = () => {
                                                         Ordningen gjelder til og med 30. september 2021. Regjeringen har
                                                         foreslått å forlenge ordningen ut 2021.
                                                     </strong>
-                                                )}
+                                                )}{' '}
                                                 Du må søke etterskuddsvis måned for måned. Søknadsfristen er innen
                                                 utgangen av måneden etter den måneden du søker for.{' '}
                                             </p>
