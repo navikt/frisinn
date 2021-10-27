@@ -3,10 +3,17 @@ import moment from 'moment';
 import { Søknadsperiodeinfo } from '../types/SoknadEssentials';
 import { getSisteGyldigeDagForInntektstapIPeriode, getSøknadsfristForPeriode } from './dateUtils';
 
-const SISTE_SØKNADSPERIODE: DateRange = {
-    from: new Date(2021, 11, 1),
-    to: new Date(2021, 11, 31),
-};
+export const ytelseErForlengetUt2022 = false;
+
+const SISTE_SØKNADSPERIODE: DateRange = ytelseErForlengetUt2022
+    ? {
+          from: new Date(2021, 11, 1),
+          to: new Date(2021, 11, 31),
+      }
+    : {
+          from: new Date(2021, 8, 1),
+          to: new Date(2021, 8, 30),
+      };
 
 const getErÅpnetForAndregangssøknad = (søknadsperiode: DateRange): boolean => {
     return søknadsperiode.to.getMonth() >= 4 || søknadsperiode.to.getFullYear() >= 2021;

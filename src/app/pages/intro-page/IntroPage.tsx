@@ -16,13 +16,12 @@ import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSøknadsperiode from '../../hooks/useSøknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
-import { getSøknadsperiodeinfo } from '../../utils/søknadsperiodeUtils';
+import { ytelseErForlengetUt2022, getSøknadsperiodeinfo } from '../../utils/søknadsperiodeUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroFormInfo from './intro-form/IntroFormInfo';
 import IntroCheckList from './IntroCheckList';
 
 const bem = bemUtils('introPage');
-
 export interface IntroResultProps {
     canApplyAsSelvstending?: boolean;
     canApplyAsFrilanser?: boolean;
@@ -85,9 +84,16 @@ const IntroPage: React.StatelessComponent = () => {
                                                 koronautbruddet.
                                             </p>
                                             <p>
-                                                <strong>
-                                                    Ordningen er forlenget og gjelder til og med 31. desember 2021.
-                                                </strong>{' '}
+                                                {ytelseErForlengetUt2022 ? (
+                                                    <strong>
+                                                        Ordningen er forlenget og gjelder til og med 31. desember 2021.
+                                                    </strong>
+                                                ) : (
+                                                    <strong>
+                                                        Ordningen gjelder til og med 30. september 2021. Regjeringen har
+                                                        foreslått å forlenge ordningen ut 2021.
+                                                    </strong>
+                                                )}
                                                 Du må søke etterskuddsvis måned for måned. Søknadsfristen er innen
                                                 utgangen av måneden etter den måneden du søker for.{' '}
                                             </p>
