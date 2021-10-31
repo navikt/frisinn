@@ -6,8 +6,12 @@ import { Ingress } from 'nav-frontend-typografi';
 const NotOpenPage: React.StatelessComponent<{}> = () => {
     return (
         <ErrorPage pageTitle="Søknaden er ikke tilgjengelig">
-            <ErrorGuide title="Søknaden er dessverre ikke tilgjengelig" stillHappy={false}>
-                <Ingress tag="div">Vi jobber så raskt vi kan med å få den tilgjengelig.</Ingress>
+            <ErrorGuide title="Søknaden er ikke tilgjengelig" stillHappy={false}>
+                <Ingress tag="div">
+                    Ordningen opphørte 31. oktober 2021, men det er lagt frem forslag om at ordningen skal forlenges ut
+                    2021. Vi oppdaterer informasjonen på denne siden når Stortinget har vurdert forslaget og fattet et
+                    nytt vedtak for ordningen.
+                </Ingress>
             </ErrorGuide>
         </ErrorPage>
     );
