@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Søknadsperiodeinfo } from '../types/SoknadEssentials';
 import { getSisteGyldigeDagForInntektstapIPeriode, getSøknadsfristForPeriode } from './dateUtils';
 
-export const ytelseErForlengetUt2022 = false;
+export const ytelseErForlengetUt2022 = true;
 
 const SISTE_SØKNADSPERIODE: DateRange = ytelseErForlengetUt2022
     ? {

@@ -60,19 +60,19 @@ const søkerMock = {
     kontonummer: '17246746060',
 };
 
-const perioderApril = {
-    søknadsperiode: {
-        fom: '2021-09-14',
-        tom: '2021-09-30',
-    },
-};
+// const perioderApril = {
+//     søknadsperiode: {
+//         fom: '2021-09-14',
+//         tom: '2021-09-30',
+//     },
+// };
 
-const søknadsperiodeSistePeriode = {
-    søknadsperiode: {
-        fom: '2021-09-01',
-        tom: '2021-09-30',
-    },
-};
+// const søknadsperiodeSistePeriode = {
+//     søknadsperiode: {
+//         fom: '2021-09-01',
+//         tom: '2021-09-30',
+//     },
+// };
 
 const personligeForetak = {
     personligeForetak: [{ organisasjonsnummer: '996532912', navn: 'DELT ANSVARLIG', registreringsdato: '2018-12-31' }],
@@ -93,8 +93,6 @@ const getInntektsperiode = () => {
     };
 };
 
-const simulerSistePeriode = true;
-
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
 
@@ -103,7 +101,7 @@ const startExpressServer = () => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.get('/tidspunkt', (req, res) => {
-        const m = moment(simulerSistePeriode ? '2021-10-01' : undefined).tz('Europe/Oslo');
+        const m = moment().tz('Europe/Oslo');
         setTimeout(() => {
             res.send({
                 'Europe/Oslo': m.format(),
@@ -154,7 +152,12 @@ const startExpressServer = () => {
 
     server.get('/perioder', (req, res) => {
         setTimeout(() => {
-            res.send(simulerSistePeriode ? søknadsperiodeSistePeriode : perioderApril);
+            res.send({
+                søknadsperiode: {
+                    fom: '2021-10-01',
+                    tom: '2021-10-30',
+                },
+            });
         }, 220);
     });
 
