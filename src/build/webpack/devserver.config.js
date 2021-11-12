@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mustacheExpress = require('mustache-express');
 const path = require('path');
-
+const envSettings = require('../../../envSettings');
 /* Start */
 
 const configureDevServer = (decoratorFragments) => ({
@@ -12,8 +12,13 @@ const configureDevServer = (decoratorFragments) => ({
         app.get('/dist/js/settings.js', (req, res) => {
             res.sendFile(path.resolve(`${__dirname}/../../../dist/js/settings.js`));
         });
-        app.get(`${process.env.PUBLIC_PATH}/dist/js/settings.js`, (req, res) => {
-            res.sendFile(path.resolve(`${__dirname}/../../../dist/js/settings.js`));
+        app.get(`${process.env.PUBLIC_PATH}/dist/settings.js`, (req, res) => {
+            res.set('content-type', 'application/javascript');
+            res.send(`${envSettings()}`);
+        });
+        app.get(`/dist/settings.js`, (req, res) => {
+            res.set('content-type', 'application/javascript');
+            res.send(`${envSettings()}`);
         });
         app.get(/^\/(?!.*dist).*$/, (req, res) => {
             res.render('index.html', Object.assign(decoratorFragments));
