@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import axiosConfig from '../config/axiosConfig';
+import { axiosJsonConfig } from '../config/axiosConfig';
 import { isForbidden, isUnauthorized } from '../utils/apiUtils';
 import { getEnvironmentVariable, isRunningInDevEnvironment } from '../utils/envUtils';
 import { relocateToLoginPage } from '../utils/navigationUtils';
@@ -44,10 +44,10 @@ export enum ApiEndpoint {
 const api = {
     get: <ResponseType>(endpoint: ApiEndpoint, paramString?: string, config?: AxiosRequestConfig) => {
         const url = `${endpoint}${paramString ? `?${paramString}` : ''}`;
-        return axios.get<ResponseType>(url, config || axiosConfig);
+        return axios.get<ResponseType>(url, config || axiosJsonConfig);
     },
     post: <DataType = any, ResponseType = any>(endpoint: ApiEndpoint, data: DataType) =>
-        axios.post<ResponseType>(endpoint, data, axiosConfig),
+        axios.post<ResponseType>(endpoint, data, axiosJsonConfig),
 };
 
 export default api;
