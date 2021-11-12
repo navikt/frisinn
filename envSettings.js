@@ -11,8 +11,8 @@ const envSettings = () => {
         PERSISTENCE: '${process.env.PERSISTENCE}',
         APP_VERSION: '${process.env.APP_VERSION}',
         APPSTATUS_PROJECT_ID: '${process.env.APPSTATUS_PROJECT_ID}',
-        APPSTATUS_DATASET: '${process.env.APPSTATUS_DATASET}'
-    };`
+        APPSTATUS_DATASET: '${process.env.APPSTATUS_DATASET}',
+};`
         .trim()
         .replace(/ /g, '');
 

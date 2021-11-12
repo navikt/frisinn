@@ -48,6 +48,11 @@ const startServer = (html) => {
         res.send(html);
     });
 
+    server.get(`${process.env.PUBLIC_PATH}/dist/settings.js`, (req, res) => {
+        res.set('content-type', 'application/javascript');
+        res.send(`${envSettings()}`);
+    });
+
     const port = process.env.PORT || 8080;
     server.listen(port, () => {
         console.log(`App listening on port: ${port}`);

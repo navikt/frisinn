@@ -29,6 +29,15 @@ server.use(`${PUBLIC_PATH}/health`, routerHealth);
 routerHealth.get('/isAlive', (req, res) => res.sendStatus(200));
 routerHealth.get('/isReady', (req, res) => res.sendStatus(200));
 
+server.get(`${process.env.PUBLIC_PATH}/dist/settings.js`, (req, res) => {
+    res.set('content-type', 'application/javascript');
+    res.send(`${envSettings()}`);
+});
+server.get(`/dist/settings.js`, (req, res) => {
+    res.set('content-type', 'application/javascript');
+    res.send(`${envSettings()}`);
+});
+
 const renderApp = () =>
     new Promise((resolve, reject) => {
         server.render('index.html', (err, html) => {
