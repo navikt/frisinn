@@ -19,6 +19,7 @@ import SoknadQuestion from '../../soknad/SoknadQuestion';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import { stringToSpacedCharString } from '../../utils/accessibility';
 import { validateSamtykke } from '../../validation/fieldValidations';
+import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
 import EntryQuestion from './EntryFormQuestion';
@@ -41,6 +42,8 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
     const { values } = useFormikContext<SoknadFormData>();
     const intl = useIntl();
 
+    const utelatKontonummer = isFeatureEnabled(Feature.INKLUDER_KONTONUMMER) === false;
+
     const {
         kontonummerErRiktig,
         søkerOmTaptInntektSomFrilanser,
@@ -49,6 +52,7 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
 
     const { areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({
         ...values,
+        utelatKontonummer,
         isSelvstendigNæringsdrivende: isSelvstendigNæringsdrivende,
     });
 
@@ -56,17 +60,24 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
         søkerOmTaptInntektSomFrilanser === YesOrNo.YES ||
         søkerOmTaptInntektSomSelvstendigNæringsdrivende === YesOrNo.YES;
 
+    const erKontonummerRiktig = () => {
+        if (utelatKontonummer) {
+            return true;
+        }
+        return kontonummerErRiktig === YesOrNo.YES;
+    };
+
     const infoStates = {
         isSelvstendigButNoForetakFound:
             values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendigNæringsdrivende,
-        hasNotChosenSoknad:
-            hasChosenSoknad === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
+        hasNotChosenSoknad: hasChosenSoknad === false && areAllQuestionsAnswered() && erKontonummerRiktig(),
     };
 
-    const canContinue = areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && hasChosenSoknad;
+    const canContinue = areAllQuestionsAnswered() && erKontonummerRiktig() && hasChosenSoknad;
 
     const visibility = SoknadEntryFormQuestions.getVisbility({
         ...values,
+        utelatKontonummer,
         isSelvstendigNæringsdrivende: isSelvstendigNæringsdrivende,
     });
 

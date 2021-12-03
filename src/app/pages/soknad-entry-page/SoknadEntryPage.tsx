@@ -14,6 +14,7 @@ import { ResetSoknadFunction } from '../../soknad/Soknad';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { createDocumentPageTitle } from '../../utils/documentPageTitle';
 import SoknadEntryForm from './SoknadEntryForm';
+import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -36,7 +37,9 @@ const SoknadEntryPage = ({
     }, []);
 
     const intl = useIntl();
-    const harKontonummer = kontonummer !== undefined && kontonummer !== null;
+
+    const visKontonummerStoppMelding =
+        isFeatureEnabled(Feature.INKLUDER_KONTONUMMER) && kontonummer !== undefined && kontonummer !== null;
 
     return (
         <Page
@@ -78,14 +81,14 @@ const SoknadEntryPage = ({
                         )}
                     </Box>
                 </Guide>
-                {!harKontonummer && (
+                {visKontonummerStoppMelding && (
                     <FormBlock>
                         <AlertStripeAdvarsel>
                             <EndreKontonummer />
                         </AlertStripeAdvarsel>
                     </FormBlock>
                 )}
-                {harKontonummer && (
+                {visKontonummerStoppMelding === false && (
                     <FormBlock>
                         <SoknadEntryForm
                             onStart={onStart}

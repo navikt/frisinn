@@ -64,7 +64,7 @@ export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
     [SoknadFormField.startetSøknadTidspunkt]: Date;
-    [SoknadFormField.kontonummerErRiktig]: YesOrNo;
+    [SoknadFormField.kontonummerErRiktig]?: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;

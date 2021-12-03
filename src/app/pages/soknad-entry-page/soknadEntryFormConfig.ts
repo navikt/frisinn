@@ -5,15 +5,17 @@ import { yesOrNoIsAnswered } from '../../utils/yesOrNoUtils';
 
 const Q = SoknadFormField;
 
-type SoknadEntryFormPayload = SoknadFormData & { isSelvstendigNæringsdrivende: boolean };
+type SoknadEntryFormPayload = SoknadFormData & { utelatKontonummer: boolean; isSelvstendigNæringsdrivende: boolean };
 
 const SoknadEntryFormConfig: QuestionConfig<SoknadEntryFormPayload, SoknadFormField> = {
     [Q.kontonummerErRiktig]: {
+        isIncluded: ({ utelatKontonummer }) => utelatKontonummer === false,
         isAnswered: ({ kontonummerErRiktig }) => yesOrNoIsAnswered(kontonummerErRiktig),
     },
     [Q.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: {
-        isIncluded: ({ kontonummerErRiktig, isSelvstendigNæringsdrivende }) =>
-            isSelvstendigNæringsdrivende === true && kontonummerErRiktig === YesOrNo.YES,
+        isIncluded: ({ utelatKontonummer, kontonummerErRiktig, isSelvstendigNæringsdrivende }) =>
+            utelatKontonummer === true ||
+            (isSelvstendigNæringsdrivende === true && kontonummerErRiktig === YesOrNo.YES),
         isAnswered: ({ søkerOmTaptInntektSomSelvstendigNæringsdrivende }) =>
             yesOrNoIsAnswered(søkerOmTaptInntektSomSelvstendigNæringsdrivende),
     },

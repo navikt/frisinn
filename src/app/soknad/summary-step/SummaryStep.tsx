@@ -36,6 +36,7 @@ import JaNeiSvar from './JaNeiSvar';
 import KronerSvar from './KronerSvar';
 import SelvstendigNæringsdrivendeSummary from './SelvstendigNæringsdrivendeSummary';
 import SpacedCharString from './SpacedCharString';
+import { Feature, isFeatureEnabled } from '../../utils/featureToggleUtils';
 
 interface Props {
     soknadEssentials: SoknadEssentials;
@@ -177,9 +178,11 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                                     <div>
                                         Fødselsnummer: <SpacedCharString str={person.fødselsnummer} />
                                     </div>
-                                    <div>
-                                        Kontonummer: <SpacedCharString str={person.kontonummer} />
-                                    </div>
+                                    {isFeatureEnabled(Feature.INKLUDER_KONTONUMMER) && (
+                                        <div>
+                                            Kontonummer: <SpacedCharString str={person.kontonummer} />
+                                        </div>
+                                    )}
                                 </Box>
                                 <Box>
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">

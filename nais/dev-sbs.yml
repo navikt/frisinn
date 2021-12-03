@@ -54,4 +54,6 @@ spec:
           value: "ryujtq87"
         - name: APPSTATUS_DATASET
           value: "staging"
+        - name: INKLUDER_KONTONUMMER
+          value: "off"
 
