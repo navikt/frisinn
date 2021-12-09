@@ -9,7 +9,6 @@ export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
     startetSøknadTidspunkt = 'startetSøknadTidspunkt',
-    kontonummerErRiktig = 'kontonummerErRiktig',
     erSelvstendigNæringsdrivende = 'erSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomSelvstendigNæringsdrivende = 'søkerOmTaptInntektSomSelvstendigNæringsdrivende',
     søkerOmTaptInntektSomFrilanser = 'søkerOmTaptInntektSomFrilanser',
@@ -64,7 +63,6 @@ export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
     [SoknadFormField.startetSøknadTidspunkt]: Date;
-    [SoknadFormField.kontonummerErRiktig]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo;
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo;
     [SoknadFormField.erSelvstendigNæringsdrivende]?: YesOrNo;
@@ -119,7 +117,6 @@ export interface SoknadFormData {
 export const initialSoknadFormData: Partial<SoknadFormData> = {
     [SoknadFormField.harForståttRettigheterOgPlikter]: false,
     [SoknadFormField.harBekreftetOpplysninger]: false,
-    [SoknadFormField.kontonummerErRiktig]: YesOrNo.UNANSWERED,
     [SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende]: YesOrNo.UNANSWERED,
     [SoknadFormField.søkerOmTaptInntektSomFrilanser]: YesOrNo.UNANSWERED,
 };

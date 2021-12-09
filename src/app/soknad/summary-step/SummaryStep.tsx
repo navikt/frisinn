@@ -177,9 +177,6 @@ const OppsummeringStep: React.StatelessComponent<Props> = ({
                                     <div>
                                         Fødselsnummer: <SpacedCharString str={person.fødselsnummer} />
                                     </div>
-                                    <div>
-                                        Kontonummer: <SpacedCharString str={person.kontonummer} />
-                                    </div>
                                 </Box>
                                 <Box>
                                     <SummaryBlock header="Søker som selvstendig næringsdrivende">

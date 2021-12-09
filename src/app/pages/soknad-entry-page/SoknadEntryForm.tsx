@@ -13,11 +13,8 @@ import Lenke from 'nav-frontend-lenker';
 import Guide from '../../components/guide/Guide';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
 import { QuestionVisibilityContext } from '../../context/QuestionVisibilityContext';
-import EndreKontonummer from '../../information/EndreKontonummer';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import SoknadQuestion from '../../soknad/SoknadQuestion';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { stringToSpacedCharString } from '../../utils/accessibility';
 import { validateSamtykke } from '../../validation/fieldValidations';
 import BehandlingAvPersonopplysningerContent from './behandling-av-personopplysninger-content/BehandlingAvPersonopplysningerContent';
 import DinePlikterContent from './dine-plikter-content/DinePlikterContent';
@@ -30,22 +27,17 @@ interface DialogState {
 }
 
 interface Props {
-    kontonummer: string;
     isSelvstendigNæringsdrivende: boolean;
     onStart: () => void;
 }
 
-const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }: Props) => {
+const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende }: Props) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const { values } = useFormikContext<SoknadFormData>();
     const intl = useIntl();
 
-    const {
-        kontonummerErRiktig,
-        søkerOmTaptInntektSomFrilanser,
-        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-    } = values;
+    const { søkerOmTaptInntektSomFrilanser, søkerOmTaptInntektSomSelvstendigNæringsdrivende } = values;
 
     const { areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({
         ...values,
@@ -59,11 +51,10 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
     const infoStates = {
         isSelvstendigButNoForetakFound:
             values.erSelvstendigNæringsdrivende === YesOrNo.YES && !isSelvstendigNæringsdrivende,
-        hasNotChosenSoknad:
-            hasChosenSoknad === false && areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES,
+        hasNotChosenSoknad: hasChosenSoknad === false && areAllQuestionsAnswered(),
     };
 
-    const canContinue = areAllQuestionsAnswered() && kontonummerErRiktig === YesOrNo.YES && hasChosenSoknad;
+    const canContinue = areAllQuestionsAnswered() && hasChosenSoknad;
 
     const visibility = SoknadEntryFormQuestions.getVisbility({
         ...values,
@@ -76,18 +67,6 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
             includeButtons={false}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
-                <SoknadQuestion
-                    name={SoknadFormField.kontonummerErRiktig}
-                    legend={
-                        <>
-                            Vi har registrert kontonummeret{' '}
-                            <span aria-label={stringToSpacedCharString(kontonummer)}>{kontonummer}</span> på deg. Er
-                            dette riktig kontonummer?
-                        </>
-                    }
-                    showStop={kontonummerErRiktig === YesOrNo.NO}
-                    stopMessage={<EndreKontonummer />}
-                />
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}>
                     <SoknadFormComponents.YesOrNoQuestion
                         legend={`Skal du søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
@@ -129,13 +108,6 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
                         </FormBlock>
                     </>
                 )}
-                {(kontonummerErRiktig === YesOrNo.NO ||
-                    (infoStates.hasNotChosenSoknad && !infoStates.isSelvstendigButNoForetakFound)) && (
-                    <Box textAlignCenter={true} className="stepFooter">
-                        <Lenke href="https://www.nav.no/">Avbryt søknad, og gå til nav.no forside</Lenke>
-                    </Box>
-                )}
-
                 {canContinue && (
                     <FormBlock>
                         <SoknadFormComponents.ConfirmationCheckbox
