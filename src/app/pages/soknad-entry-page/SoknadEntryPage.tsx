@@ -38,8 +38,9 @@ const SoknadEntryPage = ({
 
     const intl = useIntl();
 
-    const visKontonummerStoppMelding =
-        isFeatureEnabled(Feature.INKLUDER_KONTONUMMER) && kontonummer !== undefined && kontonummer !== null;
+    const inkluderKontonummer = isFeatureEnabled(Feature.INKLUDER_KONTONUMMER);
+
+    const manglerKontonummer = inkluderKontonummer && (kontonummer === undefined || kontonummer === null);
 
     return (
         <Page
@@ -81,21 +82,23 @@ const SoknadEntryPage = ({
                         )}
                     </Box>
                 </Guide>
-                {visKontonummerStoppMelding && (
+                {manglerKontonummer && (
                     <FormBlock>
                         <AlertStripeAdvarsel>
                             <EndreKontonummer />
                         </AlertStripeAdvarsel>
                     </FormBlock>
                 )}
-                {visKontonummerStoppMelding === false && (
-                    <FormBlock>
-                        <SoknadEntryForm
-                            onStart={onStart}
-                            kontonummer={kontonummer}
-                            isSelvstendigNæringsdrivende={isSelvstendigNæringsdrivende}
-                        />
-                    </FormBlock>
+                {manglerKontonummer === false && (
+                    <>
+                        <FormBlock>
+                            <SoknadEntryForm
+                                onStart={onStart}
+                                kontonummer={kontonummer}
+                                isSelvstendigNæringsdrivende={isSelvstendigNæringsdrivende}
+                            />
+                        </FormBlock>
+                    </>
                 )}
             </Box>
         </Page>

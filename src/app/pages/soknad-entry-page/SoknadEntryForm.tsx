@@ -31,7 +31,7 @@ interface DialogState {
 }
 
 interface Props {
-    kontonummer: string;
+    kontonummer?: string;
     isSelvstendigNæringsdrivende: boolean;
     onStart: () => void;
 }
@@ -42,13 +42,10 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
     const { values } = useFormikContext<SoknadFormData>();
     const intl = useIntl();
 
-    const utelatKontonummer = isFeatureEnabled(Feature.INKLUDER_KONTONUMMER) === false;
+    const utelatKontonummer = isFeatureEnabled(Feature.INKLUDER_KONTONUMMER) === false || kontonummer == undefined;
 
-    const {
-        kontonummerErRiktig,
-        søkerOmTaptInntektSomFrilanser,
-        søkerOmTaptInntektSomSelvstendigNæringsdrivende,
-    } = values;
+    const { kontonummerErRiktig, søkerOmTaptInntektSomFrilanser, søkerOmTaptInntektSomSelvstendigNæringsdrivende } =
+        values;
 
     const { areAllQuestionsAnswered } = SoknadEntryFormQuestions.getVisbility({
         ...values,
@@ -87,18 +84,20 @@ const SoknadEntryForm = ({ onStart, isSelvstendigNæringsdrivende, kontonummer }
             includeButtons={false}
             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
             <QuestionVisibilityContext.Provider value={{ visibility }}>
-                <SoknadQuestion
-                    name={SoknadFormField.kontonummerErRiktig}
-                    legend={
-                        <>
-                            Vi har registrert kontonummeret{' '}
-                            <span aria-label={stringToSpacedCharString(kontonummer)}>{kontonummer}</span> på deg. Er
-                            dette riktig kontonummer?
-                        </>
-                    }
-                    showStop={kontonummerErRiktig === YesOrNo.NO}
-                    stopMessage={<EndreKontonummer />}
-                />
+                {kontonummer !== undefined && (
+                    <SoknadQuestion
+                        name={SoknadFormField.kontonummerErRiktig}
+                        legend={
+                            <>
+                                Vi har registrert kontonummeret{' '}
+                                <span aria-label={stringToSpacedCharString(kontonummer)}>{kontonummer}</span> på deg. Er
+                                dette riktig kontonummer?
+                            </>
+                        }
+                        showStop={kontonummerErRiktig === YesOrNo.NO}
+                        stopMessage={<EndreKontonummer />}
+                    />
+                )}
                 <EntryQuestion question={SoknadFormField.søkerOmTaptInntektSomSelvstendigNæringsdrivende}>
                     <SoknadFormComponents.YesOrNoQuestion
                         legend={`Skal du søke om kompensasjon for tapt inntekt som selvstendig næringsdrivende?`}
