@@ -16,7 +16,7 @@ export interface TemporaryStorageData {
     formData: SoknadFormData;
 }
 
-export const STORAGE_VERSION = '2';
+export const STORAGE_VERSION = '3';
 
 interface SoknadTemporartStorage extends Omit<PersistenceInterface<TemporaryStorageData>, 'persist'> {
     persist: (formData: SoknadFormData, lastStepID: StepID, essentials: SoknadEssentials) => Promise<AxiosResponse>;
