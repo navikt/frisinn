@@ -25,6 +25,8 @@ import './styles/app.less';
 require('../../node_modules/moment/locale/nb.js');
 require('../../node_modules/moment/locale/nn.js');
 
+// Trigger
+
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 moment.locale(localeFromSessionStorage);
