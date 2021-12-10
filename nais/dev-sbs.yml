@@ -41,7 +41,7 @@ spec:
         - name: APPRES_CMS_URL
           value: https://appres.nav.no
         - name: API_URL
-          value: https://frisinn-api-q.nav.no
+          value: https://frisinn-api.dev.nav.no
         - name: PUBLIC_PATH
           value: /arbeid/inntektskompensasjon
         - name: LOGIN_URL

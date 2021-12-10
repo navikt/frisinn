@@ -4,12 +4,10 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
 import DateRangeView from '../../components/date-range-view/DateRangeView';
 import Guide from '../../components/guide/Guide';
 import VeilederSVG from '../../components/veileder-svg/VeilederSVG';
-import EndreKontonummer from '../../information/EndreKontonummer';
 import { ResetSoknadFunction } from '../../soknad/Soknad';
 import { SoknadEssentials } from '../../types/SoknadEssentials';
 import { createDocumentPageTitle } from '../../utils/documentPageTitle';
@@ -24,7 +22,6 @@ interface Props {
 const SoknadEntryPage = ({
     onStart,
     soknadEssentials: {
-        person: { kontonummer },
         isSelvstendigNæringsdrivende,
         søknadsperiode,
         søknadsperiodeinfo: { erÅpnetForAndregangssøknad },
@@ -36,7 +33,6 @@ const SoknadEntryPage = ({
     }, []);
 
     const intl = useIntl();
-    const harKontonummer = kontonummer !== undefined && kontonummer !== null;
 
     return (
         <Page
@@ -78,22 +74,9 @@ const SoknadEntryPage = ({
                         )}
                     </Box>
                 </Guide>
-                {!harKontonummer && (
-                    <FormBlock>
-                        <AlertStripeAdvarsel>
-                            <EndreKontonummer />
-                        </AlertStripeAdvarsel>
-                    </FormBlock>
-                )}
-                {harKontonummer && (
-                    <FormBlock>
-                        <SoknadEntryForm
-                            onStart={onStart}
-                            kontonummer={kontonummer}
-                            isSelvstendigNæringsdrivende={isSelvstendigNæringsdrivende}
-                        />
-                    </FormBlock>
-                )}
+                <FormBlock>
+                    <SoknadEntryForm onStart={onStart} isSelvstendigNæringsdrivende={isSelvstendigNæringsdrivende} />
+                </FormBlock>
             </Box>
         </Page>
     );

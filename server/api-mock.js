@@ -57,7 +57,6 @@ const søkerMock = {
     fornavn: 'GODSLIG',
     mellomnavn: null,
     etternavn: 'KRONJUVEL',
-    kontonummer: '17246746060',
 };
 
 // const perioderApril = {

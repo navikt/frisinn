@@ -16,7 +16,6 @@ const person: Person = {
     etternavn: 'b',
     fødselsnummer: '12345678901',
     kjønn: 'M',
-    kontonummer: '123',
 };
 
 const personligeForetak = pfm.personligeFortak2019;
