@@ -1,0 +1,22 @@
+{
+    "app": "frisinn",
+    "cluster": "dev-gcp",
+    "namespace": "dusseldorf",
+    "team": "dusseldorf",
+    "minReplicas": "1",
+    "maxReplicas": "1",
+    "ingresses": ["https://frisinn-soknad.dev.nav.no"],
+    "externalHosts": ["www.nav.no", "dekoratoren.dev.nav.no", "dekoratoren.ekstern.dev.nav.no"],
+    "livenessPath": "/arbeid/inntektskompensasjon/health/isAlive",
+    "readinessPath": "/arbeid/inntektskompensasjon/health/isReady",
+    "env": {
+        "APPRES_CMS_URL": "https://appres.nav.no",
+        "API_URL": "https://frisinn-api.dev.nav.no",
+        "PUBLIC_PATH": "/arbeid/inntektskompensasjon",
+        "LOGIN_URL": "https://loginservice.dev.nav.no/login?redirect=https://frisinn-soknad.dev.nav.no/arbeid/inntektskompensasjon/soknad",
+        "APP_VERSION": "dev",
+        "PERSISTENCE": "off",
+        "APPSTATUS_PROJECT_ID": "ryujtq87",
+        "APPSTATUS_DATASET": "staging"
+    }
+}

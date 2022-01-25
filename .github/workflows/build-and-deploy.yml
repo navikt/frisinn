@@ -1,84 +1,91 @@
 # This workflow trigger on push to any branch
 name: CI / CD
 on:
-  push:
-    paths-ignore:
-      - "**.md"
-      - ".gitignore"
-      - "LICENCE"
-      - "CODEOWNERS"
-    branches:
+    push:
+        paths-ignore:
+            - '**.md'
+            - '.gitignore'
+            - 'LICENCE'
+            - 'CODEOWNERS'
+        branches:
 
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/frisinn:${{ github.sha }}
+    IMAGE: docker.pkg.github.com/${{ github.repository }}/frisinn:${{ github.sha }}
+    GITHUB_USERNAME: x-access-token
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  test:
-    name: Test Code
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
+    test:
+        name: Test Code with Jest
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [12.x]
 
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Test code
-        run: |
-          npm ci
-          npm run test
+        steps:
+            - uses: actions/checkout@v1
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Test code
+              run: |
+                  npm ci
+                  npm run test
 
-  build-code-and-push-docker:
-    name: Build code and push docker image
-    if: startsWith(github.ref, 'refs/heads/dev-') || startsWith(github.ref, 'refs/heads/master') || github.event.deployment.payload.triggered # Build and push docker if branch is either master or dev-*
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: build code
-        run: |
-          npm ci
-          npm run build
-      - name: Build Docker image
-        run: |
-          docker build --tag ${IMAGE} .
-      - name: Login to Github Package Registry
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-          docker push ${IMAGE}
+    build-code-and-push-docker-gcp:
+        name: Build code and push docker image gcp
+        if: startsWith(github.ref, 'refs/heads/dev-') || startsWith(github.ref, 'refs/heads/master') || github.event.deployment.payload.triggered # Build and push docker if branch is either master or dev-*
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v1
+            - name: Cache NPM dependencies
+              uses: actions/cache@v1
+              with:
+                  path: node_modules
+                  key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.OS }}-npm-cache-
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: build code
+              run: |
+                  npm i
+                  npm run build
+            - name: Build and publish Docker image
+              run: |
+                  docker build --tag ${IMAGE} . -f Dockerfile
+                  echo ${GITHUB_TOKEN} | docker login --username ${GITHUB_REPOSITORY} --password-stdin https://docker.pkg.github.com
+                  docker push ${IMAGE}
 
-  deploy-dev-sbs:
-    name: deploy-dev-sbs
-    if: startsWith(github.ref, 'refs/heads/dev-') || startsWith(github.ref, 'refs/heads/master') # Build and push docker if branch is either master or dev-*
-    needs: build-code-and-push-docker # Depends on build-code-and-push-docker job
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-sbs
-          RESOURCE: nais/dev-sbs.yml
+    deploy-dev-gcp:
+        name: Deploy to dev-gcp
+        if: startsWith(github.ref, 'refs/heads/dev-')
+        needs: build-code-and-push-docker-gcp
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: nais/deploy/actions/deploy@v1
+              env:
+                  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                  CLUSTER: dev-gcp
+                  RESOURCE: nais/naiserator.yml
+                  VARS: nais/dev-gcp.json
 
-  deploy-prod:
-    name: deploy-prod
-    if: startsWith(github.ref, 'refs/heads/master')
-    needs: build-code-and-push-docker # Depends on build-code-and-push-docker job
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-sbs
-          RESOURCE: nais/prod-sbs.yml
+    deploy-prod-gcp:
+        name: Deploy-prod-gcp
+        if: startsWith(github.ref, 'refs/heads/master')
+        needs: build-code-and-push-docker-gcp
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: nais/deploy/actions/deploy@v1
+              env:
+                  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                  CLUSTER: prod-gcp
+                  RESOURCE: nais/naiserator.yml
+                  VARS: nais/prod-gcp.json
