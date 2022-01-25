@@ -21,7 +21,7 @@ const getDecorator = () =>
                     NAV_STYLES: document.getElementById('styles')[prop],
                     NAV_HEADING: document.getElementById('header')[prop],
                     NAV_FOOTER: document.getElementById('footer')[prop],
-                    PUBLIC_PATH: `${process.env.PUBLIC_PATH}`
+                    PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
                 };
                 resolve(data);
             } else {
