@@ -27,8 +27,7 @@ const InfoOmSøknadOgFrist = ({
                 {erISisteSøknadsperiode ? (
                     <>
                         <br />
-                        Det blir den siste måneden det er mulig å søke kompensasjon gjennom denne ordningen. Regjeringen
-                        har foreslått å forlenge ordningen ut 2021.
+                        Det blir den siste måneden det er mulig å søke kompensasjon gjennom denne ordningen.
                     </>
                 ) : (
                     <>
