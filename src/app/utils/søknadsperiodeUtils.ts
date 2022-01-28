@@ -7,7 +7,7 @@ export const ytelseErForlengetUt2022 = true;
 
 const SISTE_SØKNADSPERIODE: DateRange = ytelseErForlengetUt2022
     ? {
-          from: new Date(2021, 11, 1),
+          from: new Date(2022, 2, 1),
           to: new Date(2022, 2, 31),
       }
     : {
