@@ -153,8 +153,8 @@ const startExpressServer = () => {
         setTimeout(() => {
             res.send({
                 søknadsperiode: {
-                    fom: '2021-10-01',
-                    tom: '2021-10-30',
+                    fom: '2022-01-01',
+                    tom: '2022-01-31',
                 },
             });
         }, 220);

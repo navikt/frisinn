@@ -85,15 +85,9 @@ const IntroPage: React.StatelessComponent = () => {
                                             </p>
                                             <p>
                                                 {ytelseErForlengetUt2022 ? (
-                                                    <>
-                                                        <strong>
-                                                            Ordningen er forlenget og gjelder til og med 31. desember
-                                                            2021.
-                                                        </strong>{' '}
-                                                        Det er forslått at ordningen blir ytterligere forlenget til 31.
-                                                        januar 2022. Vi oppdaterer informasjonen når det er endelig
-                                                        bestemt.
-                                                    </>
+                                                    <strong>
+                                                        Ordningen er forlenget og gjelder til og med 31. mars 2022.
+                                                    </strong>
                                                 ) : (
                                                     <strong>
                                                         Ordningen gjelder til og med 30. september 2021. Regjeringen har
