@@ -16,7 +16,7 @@ import GlobalRoutes, { getRouteUrl } from '../../config/routeConfig';
 import useSøknadsperiode from '../../hooks/useSøknadsperiode';
 import InfoOmSøknadOgFrist from '../../soknad/info/InfoOmSøknadOgFrist';
 import { relocateToErrorPage, relocateToSoknad } from '../../utils/navigationUtils';
-import { ytelseErForlengetUt2022, getSøknadsperiodeinfo } from '../../utils/søknadsperiodeUtils';
+import { getSøknadsperiodeinfo } from '../../utils/søknadsperiodeUtils';
 import IntroForm from './intro-form/IntroForm';
 import IntroFormInfo from './intro-form/IntroFormInfo';
 import IntroCheckList from './IntroCheckList';
@@ -68,6 +68,8 @@ const IntroPage: React.StatelessComponent = () => {
                         if (!søknadsperiode) {
                             return null;
                         }
+                        const erISisteSøknadsperiode = getSøknadsperiodeinfo(søknadsperiode).erISisteSøknadsperiode;
+
                         return (
                             <>
                                 <Box margin="xxxl">
@@ -84,18 +86,18 @@ const IntroPage: React.StatelessComponent = () => {
                                                 koronautbruddet.
                                             </p>
                                             <p>
-                                                {ytelseErForlengetUt2022 ? (
-                                                    <strong>
-                                                        Ordningen er forlenget og gjelder til og med 31. mars 2022.
-                                                    </strong>
+                                                <strong>Ordningen gjelder til og med 31. mars 2022.</strong>{' '}
+                                                {erISisteSøknadsperiode ? (
+                                                    <>
+                                                        Det betyr at siste mulighet for å søke kompensasjon gjennom
+                                                        denne ordningen for mars, er 30. april 2022.
+                                                    </>
                                                 ) : (
-                                                    <strong>
-                                                        Ordningen gjelder til og med 30. september 2021. Regjeringen har
-                                                        foreslått å forlenge ordningen ut 2021.
-                                                    </strong>
-                                                )}{' '}
-                                                Du må søke etterskuddsvis måned for måned. Søknadsfristen er innen
-                                                utgangen av måneden etter den måneden du søker for.{' '}
+                                                    <>
+                                                        Du må søke etterskuddsvis måned for måned. Søknadsfristen er
+                                                        innen utgangen av måneden etter den måneden du søker for.
+                                                    </>
+                                                )}
                                             </p>
 
                                             <p>
@@ -142,9 +144,7 @@ const IntroPage: React.StatelessComponent = () => {
                                 <Box margin="xl">
                                     <InfoOmSøknadOgFrist
                                         søknadsperiode={søknadsperiode}
-                                        erISisteSøknadsperiode={
-                                            getSøknadsperiodeinfo(søknadsperiode).erISisteSøknadsperiode
-                                        }
+                                        erISisteSøknadsperiode={erISisteSøknadsperiode}
                                     />
                                 </Box>
 
