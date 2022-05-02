@@ -20,7 +20,7 @@ const NotOpenPage: React.StatelessComponent<{}> = () => {
 
                     <Box margin="xl" padBottom="l">
                         <AlertStripeInfo>
-                            <strong>Ordningen gjaldt til og med 31. mars 2022.</strong>
+                            <strong>Ordningen opphørte 31. mars 2022</strong>
                             <br /> Det betyr at det nå ikke lenger er mulig å søke kompensasjon gjennom denne ordningen.
                         </AlertStripeInfo>
                     </Box>
