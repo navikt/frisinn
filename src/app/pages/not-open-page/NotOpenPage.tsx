@@ -1,12 +1,10 @@
 import React from 'react';
-import ErrorPage from '../../components/error-page/ErrorPage';
-import ErrorGuide from '../../components/error-guide/ErrorGuide';
-import { Ingress } from 'nav-frontend-typografi';
-import InformationPoster from '@navikt/sif-common-core/lib/components/information-poster/InformationPoster';
-import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import InformationPoster from '@navikt/sif-common-core/lib/components/information-poster/InformationPoster';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { Ingress, Undertittel } from 'nav-frontend-typografi';
+import ErrorGuide from '../../components/error-guide/ErrorGuide';
+import ErrorPage from '../../components/error-page/ErrorPage';
 
 const isClosed = true;
 
